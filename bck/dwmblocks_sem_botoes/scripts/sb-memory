@@ -1,0 +1,6 @@
+#!/bin/bash
+# Display RAM usage.
+
+memory=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+
+echo "^c#859900^ ^d^$(printf "%.0f" "$memory")󰏰  "

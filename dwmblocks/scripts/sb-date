@@ -1,0 +1,8 @@
+#!/bin/bash
+# Display the current time in HH:MM:SS.
+
+day=$(date "+%d")
+data=$(date +'%d/%m/%Y')
+image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
+
+echo "^c#2aa198^ ^d^$data  "

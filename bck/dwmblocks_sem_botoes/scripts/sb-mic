@@ -1,0 +1,13 @@
+#!/bin/bash
+# Display an icon if the microphone is muted.
+microfoneOn=$(cat /proc/asound/card0/pcm3p/sub0/status | grep "RUNNING")
+microfone=$(pactl get-source-volume @DEFAULT_SOURCE@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
+muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep 'sim' -ic)
+
+if [ "$muteMic" -eq 1 ]; then
+    iconMic="^c#4A5947^ $microfone󰏰"
+else
+    iconMic="^c#d33682^ ^d^$microfone󰏰"
+fi
+
+echo "$iconMic  "

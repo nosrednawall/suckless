@@ -1,0 +1,6 @@
+#!/bin/bash
+
+day=$(date "+%d")
+image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
+
+echo "^c#2aa198^󰥔 ^d^$(date '+%H:%M')"

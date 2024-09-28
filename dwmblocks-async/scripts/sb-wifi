@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# funcoes cliclaveis
+case $BUTTON in
+   # 1) bash ~/.dotfiles/.local/bin/dwm/toggle_wifi.sh ;;
+    1) xsetroot -name "fsignal:togglescratch ui 5" ;;
+    3) bash ~/.dotfiles/.local/bin/dmenu/dmenu-vpn ;;
+	6) setsid -f st -e emacs -nw "$0" ;;
+    8)
+        myip=$(ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip')
+        notify-send "Ips atuais" "$myip" --icon "/usr/share/icons/Numix/64/devices/network-modem.svg"
+    ;;
+esac
+
+
+status_wifi=$(cat /sys/class/net/wlp5s0/operstate | grep "up" -ic)
+status_ethernet=$(cat /sys/class/net/enp4s0/operstate | grep "up" -ic)
+
+if [ $status_wifi -eq 1 ]; then
+    if [ $status_ethernet -eq 1 ]; then
+        # nesse caso eu preferi pular o primeiro resultado, e separar dois, depois pego o ultimo
+        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1]" | head -2 | tail -1)
+    else
+        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1]" | head -1)
+    fi
+
+    ip=$(ip addr show wlp5s0  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
+    wifi="^c#b58900^ ^d^$wifiname  "
+else
+    wifi=""
+fi
+
+echo "$wifi"
