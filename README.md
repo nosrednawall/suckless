@@ -1,7 +1,3 @@
----
-output:
-  html_document: default
----
 # Suckless Configuration Repository
 
 This repository contains custom builds and patches for various Suckless software, including dwm, st, dmenu, and more. It is designed to fit my personal workflow with a focus on efficiency, minimalism, and customization.
