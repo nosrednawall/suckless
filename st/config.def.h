@@ -5,8 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-//static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-static char *font = "CaskaydiaMono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
+static char *font = "Liberation Mono:pixelsize=16:antialias=true:autohint=true";
+//static char *font = "CaskaydiaMono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
 
 static int borderpx = 20;
 
