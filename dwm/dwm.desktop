@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Dwm
+Name=dwm
 Comment=Dynamic window manager
-Exec=dwm
+Exec=/usr/local/bin/dwm
 Icon=dwm
 Type=XSession

@@ -16,7 +16,7 @@
 // Control whether a trailing delimiter should be appended to the status.
 #define TRAILING_DELIMITER 0
 
-#define PATH(name) "/home/anderson/.dotfiles/.config/suckless/dwmblocks-async/scripts/"name
+#define PATH(name) "/home/anderson/.config/suckless/dwmblocks-async/scripts/"name
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)             \
