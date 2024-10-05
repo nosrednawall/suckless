@@ -47,7 +47,7 @@ int allowaltscreen = 1;
 
 /* allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
-int allowwindowops = 0;
+int allowwindowops = 1;
 
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
@@ -99,7 +99,7 @@ unsigned int tabspaces = 8;
 float alpha = 1.0;
 
 /* Terminal colors (16 first used in escape sequence) */
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 /*
  * Default shape of cursor
@@ -148,6 +148,9 @@ static MouseShortcut mshortcuts[] = {
 	{ 0,		            Button5, kscrolldown,    {.i = 3},      0, S_PRI},
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	/*Zoom do terminal*/
+	{ ControlMask,          Button4, zoom,           {.i = +1},    1,        S_PRI },
+	{ ControlMask,          Button5, zoom, 			 {.i = -1},    1,        S_PRI },
 };
 
 /* Internal keyboard shortcuts. */
