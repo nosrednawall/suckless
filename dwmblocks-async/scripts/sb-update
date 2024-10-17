@@ -6,14 +6,13 @@ case $BUTTON in
 	6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
+icon="^c#6c71c4^󱧕^d^"
 
-# Verifica o número de pacotes com atualizações disponíveis
-updates=$(aptitude search "~U" | wc -l)
+updates=$(apt list --upgradable 2>/dev/null | grep -c 'upgradable')
 
-# Informa atualizacao
-if [[ $updates -ge 1 ]]; then
+if [ "$updates" -eq 0 ]; then
+    echo "$icon 0  "
+else
+    echo "$icon $updates  "
     notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis."
 fi
-
-# Exibe o número de pacotes com atualizações
-echo "^c#6c71c4^󱧕 ^d^$updates  "
