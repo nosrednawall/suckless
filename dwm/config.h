@@ -57,7 +57,7 @@ static const int quit_empty_window_count = 5;   /* only allow dwm to quit if no 
 static const char statussep              = ';'; /* separator between status bars */
 static const char *fonts[]          	 = {"Liberation Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=17"};
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/nord_dark.h"
+#include "themes/catppuccin_frappe.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

@@ -10,7 +10,7 @@ static const char *fonts[] =
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 
-#include "themes/nord_dark.h"
+#include "themes/catppuccin_frappe.h"
 
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines      = 30;
