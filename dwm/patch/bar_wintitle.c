@@ -7,7 +7,7 @@ width_wintitle(Bar *bar, BarArg *a)
 int
 draw_wintitle(Bar *bar, BarArg *a)
 {
-	int x = a->x + lrpad / 2, w = a->w - lrpad / 2;
+	int x = a->x, w = a->w;
 	Monitor *m = bar->mon;
 	Client *c = m->sel;
 
@@ -18,6 +18,7 @@ draw_wintitle(Bar *bar, BarArg *a)
 	}
 
 	int tpad = lrpad / 2;
+	int ipad = c->icon ? c->icw + ICONSPACING : 0;
 	int cpad = 0;
 	int tx = x;
 	int tw = w;
@@ -26,8 +27,8 @@ draw_wintitle(Bar *bar, BarArg *a)
 
 	if (w <= TEXTW("A") - lrpad + tpad) // reduce text padding if wintitle is too small
 		tpad = (w - TEXTW("A") + lrpad < 0 ? 0 : (w - TEXTW("A") + lrpad) / 2);
-	else if (TEXTW(c->name) < w)
-		cpad = (w - TEXTW(c->name)) / 2;
+	else if (TEXTW(c->name) + ipad < w)
+		cpad = (w - TEXTW(c->name) - ipad) / 2;
 
 	XSetForeground(drw->dpy, drw->gc, drw->scheme[ColBg].pixel);
 	XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, a->y, w, a->h);
@@ -38,6 +39,12 @@ draw_wintitle(Bar *bar, BarArg *a)
 
 	tx += tpad;
 	tw -= lrpad;
+
+	if (ipad) {
+		drw_pic(drw, tx, a->y + (a->h - c->ich) / 2, c->icw, c->ich, c->icon);
+		tx += ipad;
+		tw -= ipad;
+	}
 
 	drw_text(drw, tx, a->y, tw, a->h, 0, c->name, 0, False);
 

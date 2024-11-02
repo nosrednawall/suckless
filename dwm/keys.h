@@ -45,7 +45,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask|ShiftMask, XK_r,          aspectresize,           {.i = -24} },
 
 	{ MODKEY,                       XK_Return,     zoom,                    {0} },
-	{ Mod1Mask,                     XK_Tab,        alttabstart,            {0} },
+//	{ Mod1Mask,                     XK_Tab,        alttabstart,            {0} },
 
 	/*Muda as tags*/
 	{ MODKEY,                       XK_t,          togglealttag,           {0} },
@@ -93,7 +93,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_F1,      setlayout,      {.v = &layouts[12]} },
 	{ MODKEY|ShiftMask,             XK_F2,      setlayout,      {.v = &layouts[13]} },
     { MODKEY|ShiftMask,             XK_F3,      setlayout,      {.v = &layouts[14]} },
-	{ MODKEY|ShiftMask,             XK_F4,      setlayout,      {.v = &layouts[15]} },
 
     /*Scratpads*/
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } }, //nao uso
@@ -116,12 +115,22 @@ static const Key keys[] = {
     /*Mudar de monitor*/
 	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
 	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
+
+	/*Troca de foco entre monitores*/
 	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
 	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },
+
+	/*Envia o aplicativo selecionado para o outro monitor*/
 	{ MODKEY|ShiftMask,             XK_comma,      tagmon,                 {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,     tagmon,                 {.i = +1 } },
+
+	/*Move todas as janelas para o outro monitor*/
     { ControlMask|Mod1Mask,         XK_comma,      tagallmon,              {.i = +1 } }, //new
 	{ ControlMask|Mod1Mask,         XK_period,     tagallmon,              {.i = -1 } }, //new
+
+	/*Troca a tag aberta entre monitores*/
+	{ MODKEY|Mod1Mask|ControlMask,  XK_comma,      tagswapmon,             {.i = +1 } }, //new
+	{ MODKEY|Mod1Mask|ControlMask,  XK_period,     tagswapmon,             {.i = -1 } }, //new
 
 	/*Layout ciclico*/
 	{ MODKEY,          				XK_minus,      cyclelayout,            {.i = -1 } }, //new
@@ -135,11 +144,11 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_3,                                  2)
 	TAGKEYS(                        XK_4,                                  3)
 	TAGKEYS(                        XK_5,                                  4)
-/*	TAGKEYS(                        XK_6,                                  5)
+	TAGKEYS(                        XK_6,                                  5)
 	TAGKEYS(                        XK_7,                                  6)
 	TAGKEYS(                        XK_8,                                  7)
 	TAGKEYS(                        XK_9,                                  8)
-*/
+
 	/*Meus atalhos*/
 	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD("~/.local/bin/dwm/slock_personalizado") },
 	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD("~/.local/bin/dwm/som_capslock_numlock") },
@@ -210,8 +219,8 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,                   Button4,        cyclelayout,    {.i = +1 } },  //avanca para o proximo layout
 	{ ClkLtSymbol,          0,                   Button5,        cyclelayout,    {.i = -1 } },  //retorna para o layout anterior
 
-	//{ ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
-	//{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
+	{ ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
+	{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
 	{ ClkWinTitle,          0,                   Button2,        zoom,           {0} },
 	{ ClkWinTitle,          0,                   Button4,        focusstack,     {.i = +1 } },  //avanca o foco para a proxima janela
 	{ ClkWinTitle,          0,                   Button5,        focusstack,     {.i = -1 } },  //o foco retona para a janela anterior

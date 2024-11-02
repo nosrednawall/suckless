@@ -37,9 +37,9 @@ swallow(Client *p, Client *c)
 	XChangeProperty(dpy, c->win, netatom[NetClientList], XA_WINDOW, 32, PropModeReplace,
 		(unsigned char *) &(p->win), 1);
 
+	updateicon(p);
 	updatetitle(p);
 	s = scanner ? c : p;
-	setfloatinghint(s);
 
 	wc.border_width = p->bw;
 	XConfigureWindow(dpy, p->win, CWBorderWidth, &wc);
@@ -67,6 +67,7 @@ unswallow(Client *c)
 
 	/* unfullscreen the client */
 	setfullscreen(c, 0);
+	updateicon(c);
 	updatetitle(c);
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
@@ -76,7 +77,6 @@ unswallow(Client *c)
 	XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
 	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
 
-	setfloatinghint(c);
 	setclientstate(c, NormalState);
 	arrange(c->mon);
 	focus(NULL);
