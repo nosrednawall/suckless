@@ -150,15 +150,15 @@ static const Rule rules[] = {
 	RULE(.class = "Soffice", .instance = "soffice", .title = "Presenting:", .monitor = 1, .tags = 0, .isfloating = 0)
 	RULE(.class = "Soffice", .instance = "soffice", .title = "Apresentando", .monitor = 1, .tags = 0, .isfloating = 0)
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
-	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
-	RULE(.instance = "spfm",  .tags = SPTAG(1), .isfloating = 1)
+	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1 TERMINAL)
+	RULE(.instance = "spfm",  .tags = SPTAG(1), .isfloating = 1 TERMINAL)
 	RULE(.instance = "bitwarden",  .tags = SPTAG(2), .isfloating = 1)
 	RULE(.instance = "sppulse",  .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
 	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
 	RULE(.instance = "spncmpcpp",  .tags = SPTAG(6), .isfloating = 1)
 	RULE(.instance = "crx_hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
-	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1)
+	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
 	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
 };
 
