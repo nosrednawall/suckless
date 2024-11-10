@@ -3,6 +3,9 @@
 /*imports*/
 #include <X11/XF86keysym.h>
 
+// Atalho para chamar os scripts
+#define PATH(name) "/home/anderson/.config/suckless/dwm/scripts/"name
+
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
     { MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
@@ -51,7 +54,11 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,          togglealttag,           {0} },
 
 	/*Renomeia a tag*/
-	{ MODKEY|ShiftMask,             XK_n,          nametag,                {0} },
+//	{ MODKEY|ShiftMask,             XK_n,          nametag,                {0} },
+
+	/*Reorganiza as Tags*/
+	{ MODKEY|ControlMask,           XK_r,          reorganizetags,         {0} },
+
 
 	/*Gaps*/
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
@@ -112,6 +119,21 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,  setlayout,              {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating,         {0} },
 
+	/*Da zoom nas janelas*/
+	{ MODKEY|ControlMask|ShiftMask, XK_h,          togglehorizontalmax,    {0} },
+	{ MODKEY|ControlMask|ShiftMask, XK_l,          togglehorizontalmax,    {0} },
+	{ MODKEY|ControlMask|ShiftMask, XK_j,          toggleverticalmax,      {0} },
+	{ MODKEY|ControlMask|ShiftMask, XK_k,          toggleverticalmax,      {0} },
+	{ MODKEY|ControlMask,           XK_m,          togglemax,              {0} },
+
+	{ MODKEY|ControlMask|Mod1Mask,  XK_Up,          toggleverticalmax,    {0} },
+	{ MODKEY|ControlMask|Mod1Mask,  XK_Down,        toggleverticalmax,    {0} },
+	{ MODKEY|ControlMask|Mod1Mask,  XK_Right,       togglehorizontalmax,  {0} },
+	{ MODKEY|ControlMask|Mod1Mask,  XK_Left,        togglehorizontalmax,  {0} },
+	{ MODKEY|ControlMask|Mod1Mask,  XK_space,       togglemax,            {0} },
+
+
+
     /*Mudar de monitor*/
 	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
 	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
@@ -150,56 +172,56 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                                  8)
 
 	/*Meus atalhos*/
-	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD("~/.local/bin/dwm/slock_personalizado") },
-	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD("~/.local/bin/dwm/som_capslock_numlock") },
-	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD("~/.local/bin/dwm/som_capslock_numlock") },
-	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD("~/.local/bin/dwm/som_capslock_numlock") },
-	{ MODKEY,			            XK_k,                           spawn,          SHCMD("~/.local/bin/dwm/altera-layout-teclado") },
-	{ MODKEY,			            XK_l,                           spawn,          SHCMD("~/.local/bin/dwm/conky_toggle") },
+	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/slock_personalizado")) },
+	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
+	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
+	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
+	{ MODKEY,			            XK_k,                           spawn,          SHCMD(PATH("dwm/altera-layout-teclado")) },
+	{ MODKEY,			            XK_l,                           spawn,          SHCMD(PATH("dwm/conky_toggle")) },
 
 	/*volume pulseaudio*/
-	{ 0,                            XF86XK_AudioLowerVolume,        spawn,          SHCMD("~/.local/bin/dwm/diminui_volume") },
-	{ 0,                            XF86XK_AudioRaiseVolume,        spawn,          SHCMD("~/.local/bin/dwm/aumenta_volume") },
-	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD("~/.local/bin/dwm/muta_volume") },
+	{ 0,                            XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/diminui_volume")) },
+	{ 0,                            XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/aumenta_volume")) },
+	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/muta_volume")) },
 
 	/*Volume Microfone Pulseaudio*/
-	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD("~/.local/bin/dwm/aumenta_volume_microfone") },
-	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD("~/.local/bin/dwm/diminui_volume_microfone") },
-	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD("~/.local/bin/dwm/muta_microfone") },
+	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/aumenta_volume_microfone")) },
+	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/diminui_volume_microfone")) },
+	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/muta_microfone")) },
 
 	/*Player de musica*/
-	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD("~/.local/bin/dwm/playerctl_play") },
-	{ 0,                            XF86XK_AudioStop,               spawn,          SHCMD("~/.local/bin/dwm/playerctl_stop") },
-	{ 0,                            XF86XK_AudioPrev,               spawn,          SHCMD("~/.local/bin/dwm/playerctl_prev") },
-	{ 0,                            XF86XK_AudioNext,               spawn,          SHCMD("~/.local/bin/dwm/playerctl_next") },
+	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/playerctl_play")) },
+	{ 0,                            XF86XK_AudioStop,               spawn,          SHCMD(PATH("dwm/playerctl_stop")) },
+	{ 0,                            XF86XK_AudioPrev,               spawn,          SHCMD(PATH("dwm/playerctl_prev")) },
+	{ 0,                            XF86XK_AudioNext,               spawn,          SHCMD(PATH("dwm/playerctl_next")) },
 
 	/*Outros atalhos teclado*/
-	{ 0,                            XF86XK_HomePage,                spawn,          SHCMD("~/.local/bin/dwm/homepage_program") },
-	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD("~/.local/bin/dwm/mail_program") },
-	{ 0,                            XF86XK_Search,                  spawn,          SHCMD("~/.local/bin/dwm/search_program") },
-	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD("~/.local/bin/dwm/calculator_program") },
+	{ 0,                            XF86XK_HomePage,                spawn,          SHCMD(PATH("dwm/homepage_program")) },
+	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD(PATH("dwm/mail_program")) },
+	{ 0,                            XF86XK_Search,                  spawn,          SHCMD(PATH("dwm/search_program")) },
+	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD(PATH("dwm/calculator_program")) },
 
 	/*Printscreen*/
-	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD("~/.local/bin/dwm/print_edita") },
-	{ 0,                            XK_Print,                       spawn,          SHCMD("~/.local/bin/dwm/print_copia") },
+	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD(PATH("dwm/print_edita")) },
+	{ 0,                            XK_Print,                       spawn,          SHCMD(PATH("dwm/print_copia")) },
 
 	/*Brilho tela notebook*/
-	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD("~/.local/bin/dwm/brilho_tela_aumenta") },
-	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD("~/.local/bin/dwm/brilho_tela_diminui") },
+	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/brilho_tela_aumenta")) },
+	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/brilho_tela_diminui")) },
 
 	/*Dmenus*/
-	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-saida-sistema" ) },
-	{ ControlMask|Mod1Mask,         XK_p,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-pass" ) },
-	{ MODKEY|ShiftMask,             XK_d,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-docker" ) },
-	{ MODKEY|ShiftMask,			    XK_w,	     					spawn,			SHCMD("~/.local/bin/dmenu/dmenu-controle-monitor" ) },
-	{ MODKEY|ShiftMask,             XK_a,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-controle-som") },
-	{ MODKEY|ShiftMask,             XK_l,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-layouts-dwm") },
-	{ MODKEY|ShiftMask,             XK_t,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-tema") },
-	{ MODKEY|ShiftMask,             XK_v,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-vpn") },
-	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD("~/.local/bin/dmenu/dmenu-powertop") },
+	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
+	{ ControlMask|Mod1Mask,         XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-pass" )) },
+	{ MODKEY|ShiftMask,             XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker" )) },
+	{ MODKEY|ShiftMask,			    XK_w,	     					spawn,			SHCMD(PATH("dmenu/dmenu-controle-monitor" )) },
+	{ MODKEY|ShiftMask,             XK_a,                           spawn,          SHCMD(PATH("dmenu/dmenu-controle-som")) },
+	{ MODKEY|ShiftMask,             XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },
+	{ MODKEY|ShiftMask,             XK_t,                           spawn,          SHCMD(PATH("dmenu/dmenu-tema")) },
+	{ MODKEY|ShiftMask,             XK_v,                           spawn,          SHCMD(PATH("dmenu/dmenu-vpn")) },
+	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD(PATH("dmenu/dmenu-powertop")) },
 
 	/*Rofi menus*/
-	{ MODKEY,						XK_d,	  						spawn,          SHCMD("~/.local/bin/dwm/roficmd") },
+	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/roficmd")) },
 
 	/*Lancamento Programas*/
 	{ MODKEY,						XK_w,							spawn,			SHCMD("google-chrome" ) },
@@ -211,10 +233,10 @@ static const Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask           button          function        argument */
-	{ ClkButton,            0,                   Button1,        spawn,          SHCMD("~/.local/bin/dwm/roficmd") },  //abre rofi
-	{ ClkButton,            0,                   Button3,        spawn,          SHCMD("~/.local/bin/dwm/timeshiftcmd") },  //abre timeshift
+	{ ClkButton,            0,                   Button1,        spawn,          SHCMD(PATH("dwm/roficmd")) },  //abre rofi
+	{ ClkButton,            0,                   Button3,        spawn,          SHCMD(PATH("dwm/timeshiftcmd")) },  //abre timeshift
 
-	{ ClkLtSymbol,          0,                   Button1,        spawn,          SHCMD("~/.local/bin/dmenu/dmenu-layouts-dwm")},  //abre dmenu de layouts
+	{ ClkLtSymbol,          0,                   Button1,        spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },  //abre dmenu de layouts
 	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[0]} },  //retorna ao layout padrao
 	{ ClkLtSymbol,          0,                   Button4,        cyclelayout,    {.i = +1 } },  //avanca para o proximo layout
 	{ ClkLtSymbol,          0,                   Button5,        cyclelayout,    {.i = -1 } },  //retorna para o layout anterior
@@ -247,10 +269,11 @@ static const Button buttons[] = {
 	{ ClkClientWin,         MODKEY,              Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,              Button3,        resizemouse,    {0} },
 
-	{ ClkClientWin,         MODKEY,              Button4,        resizemousescroll, {.v = &scrollargs[0]} },
-	{ ClkClientWin,         MODKEY,              Button5,        resizemousescroll, {.v = &scrollargs[1]} },
-	{ ClkClientWin,         MODKEY,              Button6,        resizemousescroll, {.v = &scrollargs[2]} },
-	{ ClkClientWin,         MODKEY,              Button7,        resizemousescroll, {.v = &scrollargs[3]} },
+	{ ClkClientWin,         MODKEY,              Button4,        resizemousescroll, {.v = &scrollargs[1]} },
+	{ ClkClientWin,         MODKEY,              Button5,        resizemousescroll, {.v = &scrollargs[0]} },
+	{ ClkClientWin,         MODKEY,              Button6,        resizemousescroll, {.v = &scrollargs[3]} },
+	{ ClkClientWin,         MODKEY,              Button7,        resizemousescroll, {.v = &scrollargs[2]} },
+
 	{ ClkClientWin,         MODKEY|ShiftMask,    Button3,        dragcfact,      {0} },
 	{ ClkClientWin,         MODKEY|ShiftMask,    Button1,        dragmfact,      {0} },
 

@@ -35,17 +35,9 @@ static const char buttonbar[]            = " 󰕰 ";
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
 
-#define NAMETAG_FORMAT "%s"
-/* The maximum amount of bytes reserved for each tag text. */
-#define MAX_TAGLEN 16
-/* The command to run (via popen). This can be tailored by adding a prompt, passing other command
- * line arguments or providing name options. Optionally you can use other dmenu like alternatives
- * like rofi -dmenu. */
-#define NAMETAG_COMMAND "dmenu < /dev/null"
-
 /* Indicators: see patch/bar_indicators.h for options */
 static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
-static int tiledindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
+static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 static const char *fonts[]          	 = {"Liberation Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=17"};
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
@@ -68,7 +60,7 @@ const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
 const char *spcmd3[] = {"flatpak", "run", "com.bitwarden.desktop", NULL };
 const char *spcmd4[] = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
-const char *spcmd5[] = {"st", "-n", "sptop", "-g", "150x50", "-e", "btop", NULL };
+const char *spcmd5[] = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
 const char *spcmd6[] = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
 const char *spcmd7[] = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
 const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
@@ -115,7 +107,7 @@ static Sp scratchpads[] = {
  * until it an icon matches. Similarly if there are two tag icons then it would alternate between
  * them. This works seamlessly with alternative tags and alttagsdecoration patches.
  */
-static char tagicons[][NUMTAGS][MAX_TAGLEN] =
+static char *tagicons[][NUMTAGS] =
 {
 	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
 	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
@@ -151,8 +143,12 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
+	RULE(.class = "st-256color" TERMINAL) RULE(.class = "st-256color" TERMINAL)
 	RULE(.class = "Gimp", .tags = 1 << 4)
 	RULE(.class = "Firefox", .tags = 1 << 7)
+	RULE(.class = "Soffice", .instance = "soffice", .title = NULL, .monitor = 0, .tags = 0, .isfloating = 0)
+	RULE(.class = "Soffice", .instance = "soffice", .title = "Presenting:", .monitor = 1, .tags = 0, .isfloating = 0)
+	RULE(.class = "Soffice", .instance = "soffice", .title = "Apresentando", .monitor = 1, .tags = 0, .isfloating = 0)
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
 	RULE(.instance = "spfm",  .tags = SPTAG(1), .isfloating = 1)
@@ -268,7 +264,6 @@ static const Signal signals[] = {
 	{ "togglefloating",          togglefloating },
 	{ "focusmon",                focusmon },
 	{ "setcfact",                setcfact },
-	{ "nametag",                 nametag },
 	{ "tagmon",                  tagmon },
 	{ "zoom",                    zoom },
 	{ "incrgaps",                incrgaps },
@@ -297,6 +292,9 @@ static const Signal signals[] = {
 	{ "tagallmon",               tagallmon },
 	{ "tagswapmon",              tagswapmon},
 	{ "togglealttag",            togglealttag },
+	{ "togglehorizontalmax",     togglehorizontalmax },
+	{ "toggleverticalmax",       toggleverticalmax },
+	{ "togglemax",               togglemax },
 	{ "togglescratch",           togglescratch },
 	{ "killclient",              killclient },
 	{ "winview",                 winview },

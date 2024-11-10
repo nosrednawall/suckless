@@ -209,6 +209,7 @@ struct Client {
 	unsigned int tags;
 	unsigned int switchtag;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
+	int ismax, wasfloating;
 	int ispermanent;
 	int beingmoved;
 	int isterminal, noswallow;
@@ -1562,6 +1563,8 @@ manage(Window w, XWindowAttributes *wa)
 
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
+	c->wasfloating = 0;
+	c->ismax = 0;
 
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
@@ -1992,16 +1995,25 @@ sendmon(Client *c, Monitor *m)
 {
 	if (c->mon == m)
 		return;
+	int hadfocus = (c == selmon->sel);
 	unfocus(c, 1, NULL);
 	detach(c);
 	detachstack(c);
+	arrange(c->mon);
 	c->mon = m;
 	if (!(c->tags & SPTAGMASK))
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
+	c->x = m->mx + (m->mw - WIDTH(c)) / 2;
+	c->y = m->my + (m->mh - HEIGHT(c)) / 2;
 	attachx(c);
 	attachstack(c);
-	arrange(NULL);
-	focus(NULL);
+	arrange(m);
+	if (hadfocus) {
+		focus(c);
+		restack(m);
+	} else {
+		focus(NULL);
+	}
 	if (c->switchtag)
 		c->switchtag = 0;
 }

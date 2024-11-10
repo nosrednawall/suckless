@@ -778,7 +778,7 @@
  * windows using keybindings.
  * https://dwm.suckless.org/patches/maximize/
  */
-#define MAXIMIZE_PATCH 0
+#define MAXIMIZE_PATCH 1
 
 /* Control Music Player Daemon via keybinds.
  * You need to uncomment the corresponding line in config.mk to use the -lmpdclient library
@@ -840,7 +840,7 @@
  *
  * https://dwm.suckless.org/patches/nametag/
  */
-#define NAMETAG_PATCH 1
+#define NAMETAG_PATCH 0
 
 /* Variant of the above which prepends the tag number to the given string.
  * The toggle does nothing on its own and need to be enabled in combination with the above. */
@@ -970,7 +970,7 @@
  * leftmost tag, and will be reduced to one tag after the operation is complete.
  * https://dwm.suckless.org/patches/reorganizetags/
  */
-#define REORGANIZETAGS_PATCH 0
+#define REORGANIZETAGS_PATCH 1
 
 /* By default, windows only resize from the bottom right corner. With this
  * patch the mouse is warped to the nearest corner and you resize from there.
@@ -1065,12 +1065,12 @@
 /* Floating windows being sent to another monitor will be centered.
  * https://dwm.suckless.org/patches/sendmoncenter/
  */
-#define SENDMON_CENTER_PATCH 0
+#define SENDMON_CENTER_PATCH 1
 
 /* This patch allow clients to keep focus when being sent to another monitor.
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-sendmon_keepfocus-6.2.diff
  */
-#define SENDMON_KEEPFOCUS_PATCH 0
+#define SENDMON_KEEPFOCUS_PATCH 1
 
 /* This patch allows border pixels to be changed during runtime.
  * https://dwm.suckless.org/patches/setborderpx/
@@ -1395,7 +1395,7 @@
  */
 #define WARP_PATCH 0
 
-/* Sometimes a single application opens different windows depending on the task
+ /* Sometimes a single application opens different windows depending on the task
  * at hand and this is often reflected in the WM_WINDOW_ROLE(STRING) x property.
  * This patch adds the role field to the rule configuration so that one can
  * differentiate between, say, Firefox "browser" vs "Preferences" vs "Manager"
