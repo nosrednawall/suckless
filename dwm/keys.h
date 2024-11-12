@@ -173,8 +173,8 @@ static const Key keys[] = {
 
 	/*Meus atalhos*/
 	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/slock_personalizado")) },
-	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
-	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
+	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/dwm_capslock_indicator")) },
+	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/dwm_numlock_indicator")) },
 	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
 	{ MODKEY,			            XK_k,                           spawn,          SHCMD(PATH("dwm/altera-layout-teclado")) },
 	{ MODKEY,			            XK_l,                           spawn,          SHCMD(PATH("dwm/conky_toggle")) },
