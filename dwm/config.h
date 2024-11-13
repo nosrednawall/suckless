@@ -8,7 +8,7 @@
 static const unsigned int borderpx       = 4;   /* border pixel of windows */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
-static const int scalepreview            = 4;        /* Tag preview scaling */
+static const int scalepreview            = 5;        /* Tag preview scaling */
 static const unsigned int gappih         = 20;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
@@ -205,13 +205,12 @@ static const int scrollargs[][2] = {
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-    { "|M|",      centeredmaster },
     { "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 	{ "TTT",      bstack },
 	{ "===",      bstackhoriz },
-
+    { "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
 	{ "|||",      col },
 	{ "[D]",      deck },

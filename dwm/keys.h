@@ -103,7 +103,7 @@ static const Key keys[] = {
 
     /*Scratpads*/
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } }, //nao uso
-	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } }, //nao uso
+	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } }, //nao uso																			 //
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
 	{ MODKEY,                       XK_b,      togglescratch,  {.ui = 2 } },
@@ -219,6 +219,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,                           spawn,          SHCMD(PATH("dmenu/dmenu-tema")) },
 	{ MODKEY|ShiftMask,             XK_v,                           spawn,          SHCMD(PATH("dmenu/dmenu-vpn")) },
 	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD(PATH("dmenu/dmenu-powertop")) },
+	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
+
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/roficmd")) },

@@ -22,10 +22,10 @@ is_running() {
 # is_running "xfce4-power-manager" || xfce4-power-manager &
 
 # Applet som
-is_running "pasystray" || pasystray &
+#is_running "pasystray" || pasystray &
 
 # Wifi
-is_running "nm-applet" || nm-applet &
+#is_running "nm-applet" || nm-applet &
 
 # Polkit - para autenticar programas
 is_running "lxpolkit" || lxpolkit &
@@ -48,12 +48,9 @@ is_running "dwmblocks" || dwmblocks &
 # Inicia o daemon do emacs se não estiver rodando
 is_running "emacs --daemon" || emacs --daemon &
 
-is_running "solaar" || /usr/bin/solaar -w hide
+#is_running "solaar" || /usr/bin/solaar -w hide
 
 # Desabilita o aplicativo de notificacao do xfce4
 #systemctl --user stop xfce4-notifyd
-
-# Nem sei se preciso disso instalando o xfce primeiro
-# is_running "polkit-gnome-authentication-agent-1" || /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 
 exit
