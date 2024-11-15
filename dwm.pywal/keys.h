@@ -59,7 +59,6 @@ static const Key keys[] = {
 	/*Reorganiza as Tags*/
 	{ MODKEY|ControlMask,           XK_r,          reorganizetags,         {0} },
 
-
 	/*Gaps*/
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
 	{ ControlMask|Mod1Mask|ShiftMask,    XK_1,          incrgaps,               {.i = -1 } },
@@ -131,8 +130,6 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask|Mod1Mask,  XK_Right,       togglehorizontalmax,  {0} },
 	{ MODKEY|ControlMask|Mod1Mask,  XK_Left,        togglehorizontalmax,  {0} },
 	{ MODKEY|ControlMask|Mod1Mask,  XK_space,       togglemax,            {0} },
-
-
 
     /*Mudar de monitor*/
 	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
@@ -221,14 +218,17 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD(PATH("dmenu/dmenu-powertop")) },
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
 
-
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/roficmd")) },
 
 	/*Lancamento Programas*/
 	{ MODKEY,						XK_w,							spawn,			SHCMD("google-chrome" ) },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
-	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) }
+	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
+
+	/*Novo - Aplica o tema do xresources*/
+	{ MODKEY|ShiftMask,             XK_F5,                          xrdb,           {.v = NULL } }
+
 };
 
 /* button definitions */
