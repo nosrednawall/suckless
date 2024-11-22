@@ -41,7 +41,7 @@ static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 static const char *fonts[]          	 = {"Liberation Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=17"};
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -63,7 +63,9 @@ const char *spcmd4[] = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer
 const char *spcmd5[] = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
 const char *spcmd6[] = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
 const char *spcmd7[] = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
-const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
+const char *spcmd8[] = {"/usr/bin/firefoxpwa", "site", "launch", "01JD9TS1DSJWPBNMTT0D9WXFYT", NULL };
+
+//const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
 const char *spcmd9[] = {"st", "-n", "spytfzf", "-g", "100x34", "-e", "ytfzf", NULL };
 const char *spcmd10[] = {"qalculate-gtk", NULL };
 static Sp scratchpads[] = {
@@ -75,7 +77,7 @@ static Sp scratchpads[] = {
 	{"sptop",       		spcmd5},
 	{"spnmtui",     		spcmd6},
 	{"spncmpcpp",   		spcmd7},
-	{"whatsapp-chrome",   	spcmd8},
+	{"whatsapp-firefox",   	spcmd8},
 	{"spytfzf",		   		spcmd9},
 	{"qalculate-gtk",		spcmd10},
 };
@@ -143,7 +145,7 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.class = "st-256color" TERMINAL) RULE(.class = "st-256color" TERMINAL)
+	RULE(.class = "st-256color" TERMINAL)
 	RULE(.class = "Gimp", .tags = 1 << 4)
 	RULE(.class = "Firefox", .tags = 1 << 7)
 	RULE(.class = "Soffice", .instance = "soffice", .title = NULL, .monitor = 0, .tags = 0, .isfloating = 0)
@@ -151,13 +153,13 @@ static const Rule rules[] = {
 	RULE(.class = "Soffice", .instance = "soffice", .title = "Apresentando", .monitor = 1, .tags = 0, .isfloating = 0)
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1 TERMINAL)
-	RULE(.instance = "spfm",  .tags = SPTAG(1), .isfloating = 1 TERMINAL)
+	RULE(.instance = "spfm", .tags = SPTAG(1), .isfloating = 1)
 	RULE(.instance = "bitwarden",  .tags = SPTAG(2), .isfloating = 1)
 	RULE(.instance = "sppulse",  .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
 	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
 	RULE(.instance = "spncmpcpp",  .tags = SPTAG(6), .isfloating = 1)
-	RULE(.instance = "crx_hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
+	RULE(.instance = "01JD9TS1DSJWPBNMTT0D9WXFYT",  .tags = SPTAG(7), .isfloating = 1)
 	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
 	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
 };

@@ -1,7 +1,9 @@
 #!/bin/bash
+# Configuração do PATH
+export PATH=/usr/local/bin:/usr/bin:/bin
 
 case $BUTTON in
-	1) bash ~/.dotfiles/.local/bin/dwm/altera-layout-teclado ;;
+	1) bash ~/.config/suckless/scripts/dwm/altera-layout-teclado ;;
 	6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
@@ -28,16 +30,17 @@ else
 fi
 
 # Logica para visualizacao
-if [[ ! -z "$caps" ]] then
-   if [[ ! -z "$num" ]] then
-      echo "$layout_atual $caps $num  "
+if [[ ! -z "$caps" ]]; then
+   if [[ ! -z "$num" ]]; then
+     echo "$layout_atual $caps $num  "
    else
        echo "$layout_atual $caps  "
    fi
 else
-   if [[ ! -z "$num" ]] then
+   if [[ ! -z "$num" ]]; then
       echo "$layout_atual $num  "
    else
        echo "$layout_atual  "
    fi
 fi
+exit 0

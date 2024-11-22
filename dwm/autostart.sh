@@ -48,7 +48,7 @@ is_running "dwmblocks" || dwmblocks &
 # Inicia o daemon do emacs se não estiver rodando
 is_running "emacs --daemon" || emacs --daemon &
 
-#is_running "solaar" || /usr/bin/solaar -w hide
+is_running "solaar" || /usr/bin/solaar -w hide
 
 # Desabilita o aplicativo de notificacao do xfce4
 #systemctl --user stop xfce4-notifyd

@@ -5,9 +5,10 @@ hdmi="󰡁 Hdmi"
 headset_redragon="󰋎 Headset Redragon"
 microfone_integrado=" Mic Notebook"
 microfone_headset_redragon=" Mic Redragon"
+microfone_webcam_razer=" Mic Razer"
 
 # Variable passed to dmenu
-options="$hdmi\n$integrado\n$headset_redragon\n$microfone_integrado\n$microfone_headset_redragon"
+options="$hdmi\n$integrado\n$headset_redragon\n$microfone_integrado\n$microfone_headset_redragon\n$microfone_webcam_razer"
 
 chosen="$(echo -e "$options" | dmenu -p "Scripts de controle de som " )"
 case $chosen in
@@ -31,5 +32,9 @@ case $chosen in
     $microfone_headset_redragon)
 	pactl set-default-source alsa_input.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.mono-fallback
 	notify-send -t 3000 "Microfone ReDragon" "Alterado o microfone padrão para o Headset ReDragon"  --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
+	;;
+    $microfone_webcam_razer)
+	pactl set-default-source alsa_input.usb-Alpha_Imaging_Tech._Corp._Razer_Kiyo-02.analog-stereo
+	notify-send -t 3000 "Microfone Razer" "Alterado o microfone padrão para a WebCam Razer"  --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
 	;;
 esac

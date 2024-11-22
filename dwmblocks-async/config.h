@@ -32,7 +32,7 @@
     X("", PATH("dwmblocks/sb-volume"), 	  0, 9)  \
     X("", PATH("dwmblocks/sb-mic"), 		  0, 10)  \
     X("", PATH("dwmblocks/sb-record"), 	 30, 11)  \
-    X("", PATH("dwmblocks/sb-keyboard"),    0, 12)  \
+    X("", PATH("dwmblocks/sb-keyboard"),    1, 12)  \
     X("", PATH("dwmblocks/sb-battery"), 	 30, 13)  \
     X("", PATH("dwmblocks/sb-date"), 	600, 14)     \
     X("", PATH("dwmblocks/sb-hour"), 	  1, 15)
