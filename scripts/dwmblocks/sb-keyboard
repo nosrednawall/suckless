@@ -10,13 +10,13 @@ esac
 
 layout=$(setxkbmap -query | grep layout | awk '{print$2}' | grep 'br' -ic)
 lay=$(setxkbmap -query | grep layout | awk '{print$2}')
-layout_atual="^c#2aa198^󰌌 ^d^$lay^c#2aa198^"
+layout_atual="^c#268bd2^󰌌 ^d^$lay"
 
 # Verifique o estado atual do Caps Lock
 CAPS_STATE=$(xset q | grep "Caps Lock:" | awk '{print $4}')
 
 if [ "$CAPS_STATE" == "on" ]; then
-    caps="󰪛"
+    caps="^c#dc322f^󰪛"
 else
     caps=""
 fi
@@ -25,7 +25,7 @@ fi
 NUMLOCK_STATE=$(xset q | grep "Num Lock:" | awk '{print $8}')
 
 if [ "$NUMLOCK_STATE" == "on" ]; then
-    num="󰎠"
+    num="^c#b58900^󰎠"
 else
     num=""
 fi
