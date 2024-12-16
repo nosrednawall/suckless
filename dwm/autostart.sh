@@ -7,7 +7,12 @@ source $HOME/.theme_selected
 xrdb ~/.Xresources
 
 # Executa o script para verificar se o segundo monitor está ativo
-bash ~/.local/bin/check_second_monitor_is_active.sh
+if [ ! -f ~/.monitor_config.sh ]
+then
+    bash ~/.local/bin/check_second_monitor_is_active.sh
+else
+    bash ~/.monitor_config.sh
+fi
 
 # Define o papel de parede usando feh
 feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
