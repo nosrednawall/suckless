@@ -1,2 +1,4 @@
 #!/bin/bash
-SUDO_ASKPASS=/usr/bin/ssh-askpass sudo timeshift-gtk
+#SUDO_ASKPASS=/usr/bin/ssh-askpass sudo timeshift-gtk
+#SUDO_ASKPASS=/usr/src/debug/gnome-ssh-askpass3 sudo timeshift-gtk
+pkexec timeshift-gtk

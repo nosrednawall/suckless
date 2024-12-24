@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# Lê o nome da distribuição a partir do arquivo /etc/os-release
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID" in
+        arch)
+            sudo_askpass="/usr/lib/ssh/gnome-ssh-askpass3"
+            ;;
+        debian)
+            sudo_askpass="/usr/bin/ssh-askpass"
+            ;;
+        *)
+            echo "Sistema desconhecido ou não suportado: $ID"
+            ;;
+    esac
+else
+    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
+fi
+
+
 dwm_pywal="  Mudar para Dwm com Pywal"
 dwm_normal="  Mudar para Dwm Normal"
 pywal_aleatorio="  Aleatório"
@@ -26,7 +45,7 @@ case $chosen in
         cd ~/.config/suckless/dwm/
         rm config.h
         make
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+        SUDO_ASKPASS="$sudo_askpass" sudo make clean install
         xdotool key Super_L+shift+r
         exit 0
     ;;
@@ -34,7 +53,7 @@ case $chosen in
         cd ~/.config/suckless/dwm.pywal/
         rm config.h
         make
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+        SUDO_ASKPASS="$sudo_askpass" sudo make clean install
         xdotool key Super_L+shift+r
         my_array=(/home/anderson/.wallpapers/Aleatorios/*)
          /home/anderson/.dotfiles/.local/bin/wal -i ${my_array[$(( $RANDOM % ${#my_array[@]}))]}
@@ -77,7 +96,7 @@ case $chosen in
 
         #Flatpak
         SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=NumixSolarizedDarkCyan
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=NumixSolarizedDarkCyan
 
 
     # Suckless
@@ -112,8 +131,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=NumixSolarizedLightCyan
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=NumixSolarizedLightCyan
 
 
     # Suckless
@@ -147,8 +166,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Gruvbox-Material-Dark
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Gruvbox-Material-Dark
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/gruvbox_dark.h"|' ~/.config/suckless/dwm/config.def.h
@@ -181,8 +200,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Gruvbox-Plus-Light
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Gruvbox-Plus-Light
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/gruvbox_light.h"|' ~/.config/suckless/dwm/config.def.h
@@ -215,8 +234,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Catppuccin-Frappe-Standard-Pink-Dark
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Catppuccin-Frappe-Standard-Pink-Dark
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/catppuccin_frappe.h"|' ~/.config/suckless/dwm/config.def.h
@@ -250,8 +269,8 @@ case $chosen in
         sed -i 's|^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0|' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Catppuccin-Latte-Standard-Sapphire-Light
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Catppuccin-Latte-Standard-Sapphire-Light
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/catppuccin_latte.h"|' ~/.config/suckless/dwm/config.def.h
@@ -286,8 +305,8 @@ case $chosen in
 
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Nordic-darker-v40
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Nordic-darker-v40
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/nord_dark.h"|' ~/.config/suckless/dwm/config.def.h
@@ -320,8 +339,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Nordic-Polar-v40
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Nordic-Polar-v40
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/nord_light.h"|' ~/.config/suckless/dwm/config.def.h
@@ -355,8 +374,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Dracula
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Dracula
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/dracula_dark.h"|' ~/.config/suckless/dwm/config.def.h
@@ -389,8 +408,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Yaru-Pink-light
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Yaru-Pink-light
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/dracula_light.h"|' ~/.config/suckless/dwm/config.def.h
@@ -423,8 +442,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=retrowave-glow
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=retrowave-glow
 
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/vaporwave_dark.h"|' ~/.config/suckless/dwm/config.def.h
@@ -457,8 +476,8 @@ case $chosen in
         sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
 
         #Flatpak
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
-        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Lavanda-Light
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=Lavanda-Light
 
 
     # Suckless
@@ -498,7 +517,7 @@ else
     cd $HOME/.config/suckless/dwm
     rm config.h
     make
-    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
 
     dunstify "Aplicando tema" "Aguarde.." -h int:value:40 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
@@ -506,7 +525,7 @@ else
     cd $HOME/.config/suckless/st
     rm config.h
     make
-    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
 
     dunstify "Aplicando tema" "Aguarde.." -h int:value:60 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
@@ -514,13 +533,13 @@ else
     cd $HOME/.config/suckless/dmenu
     rm config.h
     make
-    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
 
     # Compila slock
     cd $HOME/.config/suckless/slock
     rm config.h
     make
-    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
 
 
     dunstify "Aplicando tema" "Aguarde.." -h int:value:80 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
