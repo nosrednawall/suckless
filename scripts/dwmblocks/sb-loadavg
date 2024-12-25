@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Funções clicáveis
+# funcoes cliclaveis
 case $BUTTON in
     1) xsetroot -name "fsignal:togglescratch ui 4" ;;
-    3) st -g 150x50 -e htop ;;
+    #3) st -g 150x50 -e htop ;;
+    3) st -n "htop"  -e "htop"  &>/dev/null & ;;
     6) setsid -f st -e emacs -nw "$0" ;;
 esac
 

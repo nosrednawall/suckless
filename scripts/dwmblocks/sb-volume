@@ -12,7 +12,7 @@ case $BUTTON in
 esac
 
 
-muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep "sim" -ic)
+muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -E 'sim|yes' -ic)
 volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
 
 if [ "$muteVol" -eq 1 ]; then

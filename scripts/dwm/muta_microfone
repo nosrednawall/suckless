@@ -2,7 +2,7 @@
 
 pactl set-source-mute @DEFAULT_SOURCE@ toggle
 #volume=$(pactl get-source-mute @DEFAULT_SOURCE@)
-is_mute=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep 'sim' -ic)
+is_mute=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
 
 # Atualiza dwmblocks
 kill -44 $(pidof dwmblocks)
