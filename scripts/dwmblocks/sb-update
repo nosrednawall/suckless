@@ -2,7 +2,7 @@
 
 # funcoes cliclaveis
 case $BUTTON in
-    1) st -n "updates" -e sh -c "sudo pacman -Syuv" & ;;
+    1) st -n "updates" -e sh -c "sudo pacman -Syuv ; kill -36 $(pidof dwmblocks)" & ;;
     3) x-www-browser "https://flathub.org/" ;;
     6) setsid -f st -e emacs -nw "$0" ;;
 esac
