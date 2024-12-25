@@ -5,8 +5,8 @@ layout_atual=$(setxkbmap -query | awk '/layout/ {print $2}')
 variante_atual=$(setxkbmap -query | awk '/variant/ {print $2}')
 
 # Exibe valores para depuração
-echo "Layout atual: $layout_atual"
-echo "Variante atual: ${variante_atual:-none}"
+#echo "Layout atual: $layout_atual"
+#echo "Variante atual: ${variante_atual:-none}"
 
 # Define os layouts e variantes para alternar
 case "$layout_atual-$variante_atual" in

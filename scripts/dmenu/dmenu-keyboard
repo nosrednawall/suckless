@@ -25,7 +25,6 @@ case $chosen in
 esac
 
 # Verifica se foi escolhido alguma opção, caso contrário não faz nada
-echo $chosen
 if [[ -z $chosen ]]; then
     exit 0
 
