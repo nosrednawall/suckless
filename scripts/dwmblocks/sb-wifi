@@ -1,5 +1,27 @@
 #!/bin/bash
 
+# Lê o nome da distribuição a partir do arquivo /etc/os-release
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID" in
+        arch)
+            DEVICE_WIFI="wlp1s0"
+            DEVICE_ETHERNET="enp1s0"
+            ;;
+
+        debian)
+            DEVICE_WIFI="wlp5s0"
+            DEVICE_ETHERNET="enp4s0"
+            ;;
+        *)
+            echo "Sistema desconhecido ou não suportado: $ID"
+            ;;
+    esac
+else
+    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
+fi
+
+
 # funcoes cliclaveis
 case $BUTTON in
    # 1) bash ~/.dotfiles/.local/bin/dwm/toggle_wifi.sh ;;
@@ -13,8 +35,24 @@ case $BUTTON in
 esac
 
 
-status_wifi=$(cat /sys/class/net/wlp5s0/operstate | grep "up" -ic)
-status_ethernet=$(cat /sys/class/net/enp4s0/operstate | grep "up" -ic)
+# Verifica se o wifi existe
+if [ -e /sys/class/net/$DEVICE_WIFI/operstate ]; then
+
+    # Verifica se o wifi esta ligado
+    status_wifi=$(cat /sys/class/net/$DEVICE_WIFI/operstate | grep "up" -ic)
+else
+    status_wifi=0
+fi
+
+# Verifica se o ethernet existe
+if [ -e /sys/class/net/$DEVICE_ETHERNET/operstate ]; then
+
+    # Verifica se o ethernet esta ligado
+    status_ethernet=$(cat /sys/class/net/$DEVICE_ETHERNET/operstate | grep "up" -ic)
+else
+    status_ethernet=0
+fi
+
 
 if [ $status_wifi -eq 1 ]; then
     if [ $status_ethernet -eq 1 ]; then
@@ -24,7 +62,7 @@ if [ $status_wifi -eq 1 ]; then
         wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1]" | head -1)
     fi
 
-    ip=$(ip addr show wlp5s0  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
+    ip=$(ip addr show $DEVICE_WIFI  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
     wifi="^c#b58900^ ^d^$wifiname  "
 else
     wifi="^c#4A5947^󰖪  "
