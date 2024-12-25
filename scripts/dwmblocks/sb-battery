@@ -6,34 +6,69 @@ case $BUTTON in
 	6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
+# Lê o nome da distribuição a partir do arquivo /etc/os-release
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID" in
+        arch)
+            DEVICE_CARREGADOR="ACAD"
+            DEVICE_BATERIA="BAT0"
+            ;;
 
-# Coloque aqui o local que identifica sem seu dispositivo está carregando ou descarregando
-# IMPORTANTE ! A saída deve ser em binário, caso contrário resultará em erro!
-is_plugged=$(cat /sys/class/power_supply/ACAD/online)
+        debian)
+            DEVICE_CARREGADOR="ACAD"
+            DEVICE_BATERIA="BAT1"
+            ;;
+        *)
+            echo "Sistema desconhecido ou não suportado: $ID"
+            ;;
+    esac
+else
+    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
+fi
 
-# Coloque aqui o local que identifica o número relativo a porcentagem da bateria de seu dispositivo
-battery_level=$(cat /sys/class/power_supply/BAT1/capacity)
 
-# EXTRA! Altere os ícones para qualquer um de sua preferência, assim como os valores da %
+# Verifica se o carregador existe
+if [ -e /sys/class/power_supply/ACAD/online ]; then
+
+    # Verifica se o carregador esta ligado
+    is_plugged=$(cat /sys/class/power_supply/$DEVICE_CARREGADOR/online)
+else
+    # Nao existe, nem vai cair no if abaixo
+    is_plugged=2
+fi
+
+# Verifica se o carregador existe
+if [ -e /sys/class/power_supply/ACAD/online ]; then
+    # Verifica se o carregador esta ligado
+    battery_level=$(cat /sys/class/power_supply/$DEVICE_BATERIA/capacity)
+else
+    # nao existe, logo vai ter -1% de carga
+    battery_level=-1
+fi
+
+
 # EXTRA! Customize a cor do ícone começando com %{F#} e fechando com %{F-}
 if [[ "$is_plugged" -eq 1 ]]; then
     icon="^c#2aa198^"
 else
-    if [ "$battery_level" -le 30 ]; then
-	icon="^c#dc322f^"
-    elif [ "$battery_level" -le 40 ]; then
-	icon="^c#cb4b16^"
-    elif [ "$battery_level" -le 60 ]; then
-	icon="^c#b58900^"
-    elif [ "$battery_level" -le 90 ]; then
-	icon="^c#2aa198^"
+    if [[ "$battery_level" -eq "-1"  ]]; then
+       icon=""
     else
-	icon="^c#2aa198^"
+        if [ "$battery_level" -le 30 ]; then
+			icon="^c#dc322f^"
+        elif [ "$battery_level" -le 40 ]; then
+			icon="^c#cb4b16^"
+        elif [ "$battery_level" -le 60 ]; then
+			icon="^c#b58900^"
+        elif [ "$battery_level" -le 90 ]; then
+			icon="^c#2aa198^"
+
+        elif [ "$battery_level" -le 95 ]; then
+    		echo "$icon ^d^$battery_level󰏰  "
+        else
+            echo "^c#2aa198^ ^d^$battery_level󰏰  "
+		fi
     fi
 fi
 
-if [ "$battery_level" -le 95 ]; then
-    echo "$icon ^d^$battery_level󰏰  "
-else
-    echo "^c#2aa198^ ^d^$battery_level󰏰  "
-fi
