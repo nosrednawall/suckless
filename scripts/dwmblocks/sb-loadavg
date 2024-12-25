@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# funcoes cliclaveis
+# Funções clicáveis
 case $BUTTON in
     1) xsetroot -name "fsignal:togglescratch ui 4" ;;
     3) st -g 150x50 -e htop ;;
-	6) setsid -f st -e emacs -nw "$0" ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
-
-# Captura a temperatura do CPU
-tempCpu=$(sensors | awk '/edge/ {print $2}' | sed 's/+//')
+# Captura a temperatura do CPU (verifica se "sensors" retorna resultado)
+tempCpu=$(sensors 2>/dev/null | awk '/edge/ {print $2}' | sed 's/+//')
+if [ -z "$tempCpu" ]; then
+    tempCpu="" # Substituto caso sensores não estejam disponíveis
+fi
 
 # Lê o estado atual do CPU
 read cpu a b c previdle rest < /proc/stat
@@ -44,4 +46,3 @@ fi
 
 # Exibe o resultado
 echo "$icon^d^$usageCpu󰏰 $tempCpu  "
-#echo "$icon^d^$usageCpu󰏰  "

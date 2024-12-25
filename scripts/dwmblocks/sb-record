@@ -2,7 +2,7 @@
 # Display an indicator during screen records.
 camera=$(lsmod | grep "uvcvideo" | awk '{print$3}' | head -1)
 
-if [ "$camera" -eq 1 ]; then
+if [ "$camera" = "1" ]; then
 	iconCam="^c#dc322f^   "
 else
     iconCam=""
