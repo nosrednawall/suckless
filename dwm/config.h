@@ -41,7 +41,7 @@ static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 static const char *fonts[]          	 = {"Liberation Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=17"};
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/gruvbox_dark.h"
+#include "themes/solarized_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -164,6 +164,7 @@ static const Rule rules[] = {
 	RULE(.instance = "01JD9TS1DSJWPBNMTT0D9WXFYT",  .tags = SPTAG(7), .isfloating = 1)
 	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
 	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
+	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as

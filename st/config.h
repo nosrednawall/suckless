@@ -5,8 +5,10 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=16:antialias=true:autohint=true";
+//static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 //static char *font = "CaskaydiaMono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
+
+static char *font = "Liberation Mono:pixelsize=16:antialias=true:autohint=true";
 
 static int borderpx = 20;
 
@@ -47,7 +49,7 @@ int allowaltscreen = 1;
 
 /* allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
-int allowwindowops = 1;
+int allowwindowops = 0;
 
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
@@ -96,10 +98,10 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 1.0;
+float alpha = 0.8;
 
 /* Terminal colors (16 first used in escape sequence) */
-#include "themes/gruvbox_dark.h"
+#include "themes/solarized_dark.h"
 
 /*
  * Default shape of cursor

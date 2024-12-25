@@ -33,5 +33,4 @@ unsigned int defaultbg = 256; /* Background */
 unsigned int defaultcs = 257; /* Cursor color */
 unsigned int defaultrcs = 257; /* Reverse cursor color */
 
-
 #endif // DRACULA_LIGHT_H_

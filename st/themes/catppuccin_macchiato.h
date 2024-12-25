@@ -26,7 +26,6 @@ static const char *colorname[] = {
 
 };
 
-
 /*
  * foreground, background, cursor, reverse cursor
  */

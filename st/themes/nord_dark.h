@@ -29,5 +29,4 @@ unsigned int defaultbg = 0;
 unsigned int defaultcs = 15;
 unsigned int defaultrcs = 257;
 
-
 #endif // NORDIC_DARK_H_
