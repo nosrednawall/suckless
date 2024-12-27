@@ -12,7 +12,7 @@ if [ -f /etc/os-release ]; then
     case "$ID" in
         arch)
             DEVICE_CARREGADOR="ACAD"
-            DEVICE_BATERIA="BAT0"
+            DEVICE_BATERIA="BAT1"
             ;;
 
         debian)
