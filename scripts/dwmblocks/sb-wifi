@@ -12,26 +12,9 @@ case $BUTTON in
     ;;
 esac
 
-# Lê o nome da distribuição a partir do arquivo /etc/os-release
-if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    case "$ID" in
-        arch)
-            DEVICE_WIFI="wlp1s0"
-            DEVICE_ETHERNET="enp1s0"
-            ;;
-
-        debian)
-            DEVICE_WIFI="wlp5s0"
-            DEVICE_ETHERNET="enp4s0"
-            ;;
-        *)
-            echo "Sistema desconhecido ou não suportado: $ID"
-            ;;
-    esac
-else
-    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
-fi
+# Identifica os devices de rede do sistema
+DEVICE_WIFI=$(ls /sys/class/net/ | grep "wlp" | awk '{print $1}')
+DEVICE_ETHERNET=$(ls /sys/class/net/ | grep "enp" | awk '{print $1}')
 
 # Verifica se o wifi existe
 if [ -e /sys/class/net/$DEVICE_WIFI/operstate ]; then
@@ -55,9 +38,9 @@ fi
 if [ $status_wifi -eq 1 ]; then
     if [ $status_ethernet -eq 1 ]; then
         # nesse caso eu preferi pular o primeiro resultado, e separar dois, depois pego o ultimo
-        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1]" | head -2 | tail -1)
+        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo]" | head -2 | tail -1)
     else
-        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1]" | head -1)
+        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo]" | head -1)
     fi
 
     ip=$(ip addr show $DEVICE_WIFI  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)

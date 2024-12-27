@@ -17,7 +17,6 @@ fi
 # Define o papel de parede usando feh
 feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
 
-
 # Função para verificar se um processo está rodando
 is_running() {
     ps aux | grep -v grep | grep -q "$1"

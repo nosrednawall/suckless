@@ -31,7 +31,8 @@ options="$hybrid\n$integrated\n$nvidia"
 chosen="$(echo -e "$options" | dmenu -p "Controle Modo Operação Nvidia - Atual é: $status" )"
 case $chosen in
     $hybrid)
-	    SUDO_ASKPASS="$sudo_askpass" sudo envycontrol -s hybrid --rtd3
+	    SUDO_ASKPASS="$sudo_askpass" sudo envycontrol --switch hybrid --force
+
 	    notify-send -t 3000 "EnvyControl Change" "Alterado modo de operação para Hybrid" --icon="/usr/share/icons/ePapirus/16x16/devices/computer-laptop.svg"
 
         # Definir o tempo de espera entre as notificações
