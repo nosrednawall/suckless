@@ -1,74 +1,41 @@
 #!/bin/bash
 
-# funcoes cliclaveis
+# Funções clicáveis
 case $BUTTON in
     1) bash ~/.dotfiles/.local/bin/dmenu/dmenu-powertop ;;
-	6) setsid -f st -e emacs -nw "$0" ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
-# Lê o nome da distribuição a partir do arquivo /etc/os-release
-if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    case "$ID" in
-        arch)
-            DEVICE_CARREGADOR="ACAD"
-            DEVICE_BATERIA="BAT1"
-            ;;
+# Identifica os dispositivos de bateria e carregador
+DEVICE_CARREGADOR=$(ls /sys/class/power_supply/ | grep -m1 "ACAD")
+DEVICE_BATERIA=$(ls /sys/class/power_supply/ | grep -m1 "BAT")
 
-        debian)
-            DEVICE_CARREGADOR="ACAD"
-            DEVICE_BATERIA="BAT1"
-            ;;
-        *)
-            echo "Sistema desconhecido ou não suportado: $ID"
-            ;;
-    esac
+# Verifica se o carregador existe e está ligado
+if [[ -n "$DEVICE_CARREGADOR" ]] && [[ -e "/sys/class/power_supply/$DEVICE_CARREGADOR/online" ]]; then
+    is_plugged=$(cat "/sys/class/power_supply/$DEVICE_CARREGADOR/online")
 else
-    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
+    is_plugged=2 # Valor indicando ausência do carregador
 fi
 
-
-# Verifica se o carregador existe
-if [ -e /sys/class/power_supply/ACAD/online ]; then
-
-    # Verifica se o carregador esta ligado
-    is_plugged=$(cat /sys/class/power_supply/$DEVICE_CARREGADOR/online)
+# Verifica se a bateria existe e obtém o nível de carga
+if [[ -n "$DEVICE_BATERIA" ]] && [[ -e "/sys/class/power_supply/$DEVICE_BATERIA/capacity" ]]; then
+    battery_level=$(cat "/sys/class/power_supply/$DEVICE_BATERIA/capacity")
 else
-    # Nao existe, nem vai cair no if abaixo
-    is_plugged=2
+    battery_level=0 # Assume 0% se a bateria não for detectada
 fi
 
-# Verifica se o carregador existe
-if [ -e /sys/class/power_supply/ACAD/online ]; then
-    # Verifica se o carregador esta ligado
-    battery_level=$(cat /sys/class/power_supply/$DEVICE_BATERIA/capacity)
-else
-    # nao existe, logo vai ter -1% de carga
-    battery_level=-1
-fi
-
-
-# EXTRA! Customize a cor do ícone começando com %{F#} e fechando com %{F-}
+# Define o ícone e a cor com base no estado do carregador e nível de bateria
 if [[ "$is_plugged" -eq 1 ]]; then
     icon="^c#2aa198^"
 else
-    if [[ "$battery_level" -eq "-1"  ]]; then
-       icon=""
-    else
-        if [ "$battery_level" -le 30 ]; then
-			icon="^c#dc322f^"
-        elif [ "$battery_level" -le 40 ]; then
-			icon="^c#cb4b16^"
-        elif [ "$battery_level" -le 60 ]; then
-			icon="^c#b58900^"
-        elif [ "$battery_level" -le 90 ]; then
-			icon="^c#2aa198^"
-
-        elif [ "$battery_level" -le 95 ]; then
-    		echo "$icon ^d^$battery_level󰏰  "
-        else
-            echo "^c#2aa198^ ^d^$battery_level󰏰  "
-		fi
-    fi
+    case $battery_level in
+        [0-30])   icon="^c#dc322f^" ;; # Bateria crítica
+        [31-40])  icon="^c#cb4b16^" ;; # Bateria baixa
+        [41-60])  icon="^c#b58900^" ;; # Bateria moderada
+        [61-90])  icon="^c#2aa198^" ;; # Bateria boa
+        *)        icon="^c#859900^" ;; # Bateria cheia
+    esac
 fi
 
+# Saída formatada
+echo "$icon ^d^$battery_level󰏰  "
