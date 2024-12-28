@@ -21,7 +21,8 @@ LDLIBS := $(shell pkg-config --libs $(LIBS))
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(subst $(SRC_DIR)/,$(BUILD_DIR)/,$(SRCS:.c=.o))
 
-INSTALL_DIR := $(DESTDIR)$(PREFIX)/bin
+#INSTALL_DIR := $(DESTDIR)$(PREFIX)/bin
+INSTALL_DIR := $(PREFIX)/bin
 
 # Prettify output
 PRINTF := @printf "%-8s %s\n"
@@ -59,7 +60,7 @@ clean:
 # Install the binary
 install: $(BUILD_DIR)/$(BIN)
 	$(PRINTF) "INSTALL" $(INSTALL_DIR)/$(BIN)
-	$Qinstall -D -m 755 $< $(INSTALL_DIR)/$(BIN)
+	$Qinstall -D -m 777 $< $(INSTALL_DIR)/dwmblocks
 
 # Uninstall the binary
 uninstall:

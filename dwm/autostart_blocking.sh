@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Carrega as configurações do Xresources
+xrdb ~/.Xresources
+
 # para a nvidia
-xrandr --setprovideroutputsource modesetting NVIDIA-0
-xrandr --auto
+#xrandr --setprovideroutputsource modesetting NVIDIA-0
+#xrandr --auto
 
 # JAVA Bug
 if which wmname; then

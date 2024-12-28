@@ -31,7 +31,7 @@ else
 fi
 
 # Display an icon if the microphone is muted.
-microfoneOn=$(cat /proc/asound/card0/$MICROFONE/sub0/status | grep "RUNNING")
+#microfoneOn=$(cat /proc/asound/card0/$MICROFONE/sub0/status | grep "RUNNING")
 microfone=$(pactl get-source-volume @DEFAULT_SOURCE@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
 muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
 

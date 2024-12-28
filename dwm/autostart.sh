@@ -1,10 +1,8 @@
 #!/bin/bash
 
 # Carrega configuracoes do tema
-source $HOME/.theme_selected
-
-# Carrega as configurações do Xresources
-xrdb ~/.Xresources
+source /home/anderson/.theme_selected
+source /home/anderson/.bashrc
 
 # Executa o script para verificar se o segundo monitor está ativo
 if [ ! -f ~/.monitor_config.sh ]
@@ -13,6 +11,8 @@ then
 else
     bash ~/.monitor_config.sh
 fi
+
+env > /home/anderson/autostart_env.log
 
 # Define o papel de parede usando feh
 feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
@@ -46,15 +46,11 @@ is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${CO
 # Inicia o copyq se não estiver rodando
 is_running "copyq" || copyq &
 
-# Inicia o dwmblocks se não estiver rodando
-is_running "dwmblocks" || dwmblocks &
-
 # Inicia o daemon do emacs se não estiver rodando
 is_running "emacs --daemon" || emacs --daemon &
 
 is_running "solaar" || /usr/bin/solaar -w hide
 
-# Desabilita o aplicativo de notificacao do xfce4
-#systemctl --user stop xfce4-notifyd
-
-exit
+# Inicia o dwmblocks se não estiver rodando
+#killall dwmblocks; export PATH=$PATH:$HOME/.config/suckless/scripts/dwmblocks/ && $HOME/.config/suckless/dwmblocks-async/build/dwmblocks &
+is_running "dwmblocks" || /usr/local/bin/dwmblocks
