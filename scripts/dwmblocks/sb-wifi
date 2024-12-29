@@ -13,7 +13,7 @@ case $BUTTON in
 esac
 
 # Identifica os devices de rede do sistema
-DEVICE_WIFI=$(ls /sys/class/net/ | grep "wlp" | awk '{print $1}')
+DEVICE_WIFI=$(ls /sys/class/net/ | grep "wl" | awk '{print $1}')
 DEVICE_ETHERNET=$(ls /sys/class/net/ | grep "enp" | awk '{print $1}')
 
 # Verifica se o wifi existe
