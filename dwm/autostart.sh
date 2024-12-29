@@ -12,7 +12,9 @@ else
     bash ~/.monitor_config.sh
 fi
 
-env > /home/anderson/autostart_env.log
+
+xdotool key control+alt+d
+#bash ~/.local/bin/roda_dwmblocks.sh
 
 # Define o papel de parede usando feh
 feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
@@ -52,5 +54,5 @@ is_running "emacs --daemon" || emacs --daemon &
 is_running "solaar" || /usr/bin/solaar -w hide
 
 # Inicia o dwmblocks se não estiver rodando
-#killall dwmblocks; export PATH=$PATH:$HOME/.config/suckless/scripts/dwmblocks/ && $HOME/.config/suckless/dwmblocks-async/build/dwmblocks &
-is_running "dwmblocks" || /usr/local/bin/dwmblocks
+#killall dwmblocks; export PATH=$PATH:$HOME/.config/suckless/scripts/dwmblocks && $HOME/.config/suckless/dwmblocks-async/build/dwmblocks &
+#is_running "dwmblocks" || /usr/local/bin/dwmblocks &

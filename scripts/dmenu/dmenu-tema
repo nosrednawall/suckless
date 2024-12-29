@@ -552,9 +552,9 @@ else
     # Restart dwm
     xdotool key Super_L+shift+r
 
-    /home/anderson/.dotfiles/.local/bin/wal -i "$( grep -o "'[^']*'" .fehbg | tail -n 1 | tr -d "'")"
-    xrdb ~/.Xresources
-    xdotool key Super_L+shift+F5
+    #/home/anderson/.dotfiles/.local/bin/wal -i "$( grep -o "'[^']*'" .fehbg | tail -n 1 | tr -d "'")"
+    #xrdb ~/.Xresources
+    #xdotool key Super_L+shift+F5
 
     dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
     exit 0

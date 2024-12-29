@@ -7,8 +7,8 @@ INC_DIR := include
 CONFIG_FILE := config.def.h
 CONFIG_HEADER := config.h
 
-DEBUG := 0
-VERBOSE := 0
+DEBUG := 1
+VERBOSE := 1
 LIBS := xcb-atom xcb
 
 PREFIX := /usr/local
@@ -60,7 +60,7 @@ clean:
 # Install the binary
 install: $(BUILD_DIR)/$(BIN)
 	$(PRINTF) "INSTALL" $(INSTALL_DIR)/$(BIN)
-	$Qinstall -D -m 777 $< $(INSTALL_DIR)/dwmblocks
+	$Qinstall -D -m 755 $< $(INSTALL_DIR)/dwmblocks
 
 # Uninstall the binary
 uninstall:

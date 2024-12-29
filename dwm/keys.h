@@ -229,7 +229,8 @@ static const Key keys[] = {
 	/*Lancamento Programas*/
 	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
-	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) }
+	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
+	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("dwmblocks" ) }
 };
 
 /* button definitions */

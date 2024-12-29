@@ -13,6 +13,9 @@
 #include "config.h"
 #include "util.h"
 
+#include <sys/stat.h>
+#include <pwd.h>
+
 block block_new(const char *const icon, const char *const command,
                 const unsigned int interval, const int signal) {
     block block = {
@@ -51,6 +54,8 @@ int block_deinit(block *const block) {
     return 0;
 }
 
+
+
 int block_execute(block *const block, const uint8_t button) {
     // Ensure only one child process exists per block at an instance.
     if (block->fork_pid != -1) {
@@ -73,6 +78,21 @@ int block_execute(block *const block, const uint8_t button) {
             char button_str[4];
             (void)snprintf(button_str, LEN(button_str), "%hhu", button);
             status |= setenv("BUTTON", button_str, 1);
+        }
+
+        // Get file owner information
+        struct stat file_stat;
+        if (stat(block->command, &file_stat) == 0) {
+            uid_t file_owner_uid = file_stat.st_uid;
+            gid_t file_owner_gid = file_stat.st_gid;
+
+            // Change effective UID and GID temporarily to match file owner
+            if (seteuid(file_owner_uid) != 0 || setegid(file_owner_gid) != 0) {
+                (void)fprintf(stderr, "error: could not change user/group to access \"%s\"\n", block->command);
+                const char null = '\0';
+                (void)write(write_fd, &null, sizeof(null));
+                exit(EXIT_FAILURE);
+            }
         }
 
         const char null = '\0';
@@ -106,11 +126,16 @@ int block_execute(block *const block, const uint8_t button) {
             truncate_utf8_string(buffer, LEN(buffer), MAX_BLOCK_OUTPUT_LENGTH);
         (void)write(write_fd, buffer, output_size);
 
+        // Restore original UID and GID
+        seteuid(getuid());
+        setegid(getgid());
+
         exit(EXIT_SUCCESS);
     }
 
     return 0;
 }
+
 
 int block_update(block *const block) {
     char buffer[LEN(block->output)];
