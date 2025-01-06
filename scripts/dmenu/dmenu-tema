@@ -98,7 +98,6 @@ case $chosen in
         SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo flatpak override --filesystem=$HOME/.themes
         SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=NumixSolarizedDarkCyan
 
-
     # Suckless
         sed -i 's|^#include "themes/.*|#include "themes/solarized_dark.h"|' ~/.config/suckless/dwm/config.def.h
         sed -i 's|^#include "themes/.*|#include "themes/solarized_dark.h"|' ~/.config/suckless/st/config.def.h
@@ -542,14 +541,14 @@ else
     SUDO_ASKPASS="$sudo_askpass" sudo make clean install
 
     dunstify "Aplicando tema" "Aguarde.." -h int:value:80 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
-
+    sleep 0.8
     # Faz sincronizacao do doom
-    $HOME/.config/emacs/bin/doom sync
+    #$HOME/.config/emacs/bin/doom sync
 
     dunstify "Aplicando tema" "Aguarde.." -h int:value:99 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
     # Restart dwm
-    /usr/bin/xdotool key Super_Lfr+shift+r/us
+    xdotool key Super_L+shift+r
 
     dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
 fi

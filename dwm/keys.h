@@ -4,7 +4,7 @@
 #include <X11/XF86keysym.h>
 
 // Atalho para chamar os scripts
-#define PATH(name) "/home/anderson/.config/suckless/scripts/"name
+#define PATH(name) "$HOME/.config/suckless/scripts/"name
 
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
