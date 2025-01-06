@@ -541,7 +541,6 @@ else
     make
     SUDO_ASKPASS="$sudo_askpass" sudo make clean install
 
-
     dunstify "Aplicando tema" "Aguarde.." -h int:value:80 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
     # Faz sincronizacao do doom
@@ -550,12 +549,7 @@ else
     dunstify "Aplicando tema" "Aguarde.." -h int:value:99 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
     # Restart dwm
-    xdotool key Super_L+shift+r
-
-    #/home/anderson/.dotfiles/.local/bin/wal -i "$( grep -o "'[^']*'" .fehbg | tail -n 1 | tr -d "'")"
-    #xrdb ~/.Xresources
-    #xdotool key Super_L+shift+F5
+    /usr/bin/xdotool key Super_Lfr+shift+r/us
 
     dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
-    exit 0
 fi

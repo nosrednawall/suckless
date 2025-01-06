@@ -19,8 +19,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_r,          rioresize,              {0} },
 
     /*Modimentacao das janelas*/
-	{ MODKEY,              XK_Right,     focusstack,              {.i = +1 } },
-	{ MODKEY,              XK_Left,      focusstack,              {.i = -1 } },
+	{ MODKEY,              			XK_Right,     focusstack,              {.i = +1 } },
+	{ MODKEY,              			XK_Left,      focusstack,              {.i = -1 } },
 
     /*Adiciona e remove janelas da mastes para a lateral*/
 	{ MODKEY|ShiftMask,             XK_equal,     incnmaster,              {.i = +1 } },
@@ -36,8 +36,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
 
 	/*Move a janela de posicao na stack*/ //new
-	{ MODKEY,             XK_Up,          movestack,              {.i = -1 } },
-	{ MODKEY,             XK_Down,        movestack,              {.i = +1 } },
+	{ MODKEY,             			XK_Up,          movestack,              {.i = -1 } },
+	{ MODKEY,             			XK_Down,        movestack,              {.i = +1 } },
 
 	/*Troca de tag*/
 	{ ControlMask|Mod1Mask,         XK_Right,      shiftview,              { .i = +1 } },  //new
@@ -58,7 +58,6 @@ static const Key keys[] = {
 
 	/*Reorganiza as Tags*/
 	{ MODKEY|ControlMask,           XK_r,          reorganizetags,         {0} },
-
 
 	/*Gaps*/
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
@@ -103,7 +102,7 @@ static const Key keys[] = {
 
     /*Scratpads*/
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } }, //nao uso
-	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } }, //nao uso																			 //
+	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } }, //nao uso
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
 	{ MODKEY,                       XK_b,      togglescratch,  {.ui = 2 } },
@@ -221,7 +220,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD(PATH("dmenu/dmenu-powertop")) },
 	{ MODKEY|ShiftMask,	            XK_n,                           spawn,          SHCMD(PATH("dmenu/dmenu-nvidia-switch")) },
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
-
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/roficmd")) },

@@ -12,9 +12,7 @@ else
     bash ~/.monitor_config.sh
 fi
 
-
 xdotool key control+alt+d
-#bash ~/.local/bin/roda_dwmblocks.sh
 
 # Define o papel de parede usando feh
 feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
@@ -37,7 +35,7 @@ is_running() {
 is_running "lxpolkit" || lxpolkit &
 
 # Inicia o xautolock com as configurações personalizadas se não estiver rodando
-is_running "xautolock" || xautolock -time 15 -locker ~/.local/bin/dwm/slock_personalizado -detectsleep &
+is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/dwm/slock_personalizado -detectsleep &
 
 # Inicia o picom em modo background
 is_running "picom" || picom -b
@@ -56,3 +54,6 @@ is_running "solaar" || /usr/bin/solaar -w hide
 # Inicia o dwmblocks se não estiver rodando
 #killall dwmblocks; export PATH=$PATH:$HOME/.config/suckless/scripts/dwmblocks && $HOME/.config/suckless/dwmblocks-async/build/dwmblocks &
 #is_running "dwmblocks" || /usr/local/bin/dwmblocks &
+
+
+#bash ~/.local/bin/roda_dwmblocks.sh

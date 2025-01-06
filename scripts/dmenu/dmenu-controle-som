@@ -8,18 +8,18 @@ update_devices() {
 
     # Extrai a descrição e o nome de cada sink (saída de áudio)
     while IFS= read -r line; do
-        if [[ $line =~ Nome:\ ([^\ ]+) ]]; then
+        if [[ $line =~ Name:\ ([^\ ]+) ]]; then
             current_sink_name="${BASH_REMATCH[1]}"
-        elif [[ $line =~ Descrição:\ (.+) ]]; then
+        elif [[ $line =~ Description:\ (.+) ]]; then
             sinks["$current_sink_name"]="${BASH_REMATCH[1]}"
         fi
     done < <(pactl list sinks)
 
     # Extrai a descrição e o nome de cada source (entrada de áudio)
     while IFS= read -r line; do
-        if [[ $line =~ Nome:\ ([^\ ]+) ]]; then
+        if [[ $line =~ Name:\ ([^\ ]+) ]]; then
             current_source_name="${BASH_REMATCH[1]}"
-        elif [[ $line =~ Descrição:\ (.+) ]]; then
+        elif [[ $line =~ Description:\ (.+) ]]; then
             sources["$current_source_name"]="${BASH_REMATCH[1]}"
         fi
     done < <(pactl list sources)
