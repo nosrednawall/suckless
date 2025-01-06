@@ -2,7 +2,7 @@
 static const char *user  = "nobody";
 static const char *group = "nobody"; // use "nobody" for arch
 
-#include "themes/gruvbox_dark.h"
+#include "themes/catppuccin_dark.h"
 
 /* insert grid pattern with scale 1:1, the size can be changed with logosize */
 static const int logosize = 75;
