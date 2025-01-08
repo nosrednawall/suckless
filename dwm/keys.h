@@ -225,7 +225,7 @@ static const Key keys[] = {
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/roficmd")) },
 
 	/*Lancamento Programas*/
-	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
+	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("dwmblocks" ) }
