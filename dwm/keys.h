@@ -51,7 +51,7 @@ static const Key keys[] = {
 //	{ Mod1Mask,                     XK_Tab,        alttabstart,            {0} },
 
 	/*Muda as tags*/
-	{ MODKEY,                       XK_t,          togglealttag,           {0} },
+	{ ControlMask|Mod1Mask,         XK_t,          togglealttag,           {0} },
 
 	/*Renomeia a tag*/
 //	{ MODKEY|ShiftMask,             XK_n,          nametag,                {0} },
@@ -113,6 +113,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
 	{ MODKEY,                       XK_y,      togglescratch,  {.ui = 8 } },
 	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
+	{ MODKEY,                       XK_t,      togglescratch,  {.ui = 10 } },
 
 	/*Floating*/
 	{ MODKEY,                       XK_space,  setlayout,              {0} },

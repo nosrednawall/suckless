@@ -38,7 +38,7 @@ fi
 if [ $status_wifi -eq 1 ]; then
     if [ $status_ethernet -eq 1 ]; then
         # nesse caso eu preferi pular o primeiro resultado, e separar dois, depois pego o ultimo
-        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo]" | head -2 | tail -1)
+        wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo|^docker0]" | head -2 | tail -1)
     else
         wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo]" | head -1)
     fi
