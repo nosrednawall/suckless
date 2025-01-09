@@ -1,7 +1,7 @@
 static const char *colorname[] = {
     /* Gruvbox Light */
     /* 8 cores normais */
-    "#fbf1c7", /* hard contrast: #f9f5d7 / soft contrast: #ebdbb2 */ // Cor de fundo
+    "#fbf1c7", /* bg (fundo padrão) */
     "#cc241d", /* red */
     "#98971a", /* green */
     "#d79921", /* yellow */
@@ -11,17 +11,17 @@ static const char *colorname[] = {
     "#7c6f64", /* white */
 
     /* 8 cores brilhantes */
-    "#928374", /* black */
-    "#fb4934", /* red */
-    "#b8bb26", /* green */
-    "#fabd2f", /* yellow */
-    "#83a598", /* blue */
-    "#d3869b", /* magenta */
-    "#8ec07c", /* cyan */
-    "#a89984", /* white */
+    "#928374", /* bright black */
+    "#fb4934", /* bright red */
+    "#b8bb26", /* bright green */
+    "#fabd2f", /* bright yellow */
+    "#83a598", /* bright blue */
+    "#d3869b", /* bright magenta */
+    "#8ec07c", /* bright cyan */
+    "#a89984", /* bright white */
 };
 
-unsigned int defaultfg = 15;
-unsigned int defaultbg = 0;
-unsigned int defaultcs = 15;
-unsigned int defaultrcs = 257;
+unsigned int defaultfg = 7;   // Cor do texto: "#7c6f64" (branco padrão)
+unsigned int defaultbg = 0;   // Cor de fundo: "#fbf1c7" (fundo claro)
+unsigned int defaultcs = 7;   // Cor do cursor: "#7c6f64" (mesma do texto)
+unsigned int defaultrcs = 0;  // Cor reversa do cursor: "#fbf1c7" (igual ao fundo)
