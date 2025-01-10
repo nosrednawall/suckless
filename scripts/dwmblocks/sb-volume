@@ -1,6 +1,9 @@
 #!/bin/bash
-# Display volume levels.
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
+# Display volume levels.
 case $BUTTON in
 	1) bash ~/.dotfiles/.local/bin/dwm/muta_volume ;;
     2) bash ~/.dotfiles/.local/bin/dmenu/dmenu-controle-som ;;
@@ -19,11 +22,11 @@ if [ "$muteVol" -eq 1 ]; then
     iconVolume="^c#4A5947^󰸈 $volume󰏰"
 else
     if [ "$volume" -le 30 ]; then
-	iconVolume="^c#859900^󰕿 ^d^$volume󰏰"
+	iconVolume="^c$COLOR_6^󰕿 ^d^$volume󰏰"
     elif [ "$volume" -le 60 ]; then
-	iconVolume="^c#859900^󰖀 ^d^$volume󰏰"
+	iconVolume="^c$COLOR_6^󰖀 ^d^$volume󰏰"
     elif [ "$volume" -ge 61 ]; then
-	iconVolume="^c#859900^󰕾 ^d^$volume󰏰"
+	iconVolume="^c$COLOR_6^󰕾 ^d^$volume󰏰"
     fi
 fi
 

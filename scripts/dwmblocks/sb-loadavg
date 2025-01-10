@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # funcoes cliclaveis
 case $BUTTON in
     1) xsetroot -name "fsignal:togglescratch ui 4" ;;
-    #3) st -g 150x50 -e htop ;;
     3) st -n "htop"  -e "htop"  &>/dev/null & ;;
     6) setsid -f st -e emacs -nw "$0" ;;
 esac
@@ -34,15 +36,15 @@ fi
 
 # Define o ícone baseado no uso do CPU
 if [ "$usageCpu" -le 10 ]; then
-    icon="^c#2aa198^ "
+    icon="^c$COLOR_7^ "
 elif [ "$usageCpu" -le 40 ]; then
-    icon="^c#b58900^ "
+    icon="^c$COLOR_1^ "
 elif [ "$usageCpu" -le 60 ]; then
-    icon="^c#cb4b16^ "
+    icon="^c$COLOR_2^ "
 elif [ "$usageCpu" -le 100 ]; then
-    icon="^c#dc322f^ "
+    icon="^c$COLOR_3^ "
 else
-    icon="^c#2aa198^ "
+    icon="^c$COLOR_7^ "
 fi
 
 # Exibe o resultado

@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # Display currently playing music.
 set --player=spotify,mpv,%any
-icon="^c#2aa198^󰝚"
-paused_icon="^c#b58900^"
+icon="^c$COLOR_8^󰝚"
+paused_icon="^c]$COLOR_1^"
 if status="$(playerctl "$@" status 2>&1)" && [ "$status" != "Stopped" ]; then
     [ "$status" = "Paused" ] && icon="$paused_icon"
 

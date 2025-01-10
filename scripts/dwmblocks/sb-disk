@@ -1,5 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # Display disk usage for `/`
 
 percent_used=$(df -h | grep -E '[/]$' | awk '{print$5}' | sed 's/%//')
-echo "^c#6c71c4^󰋊 ^d^$percent_used󰏰  "
+echo "^c$COLOR_5^󰋊 ^d^$percent_used󰏰  "

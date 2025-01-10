@@ -17,6 +17,7 @@ fi
 feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
 
 # Abre o dwmblocks
+killall dwmblocks
 xdotool key control+alt+d
 
 # Função para verificar se um processo está rodando

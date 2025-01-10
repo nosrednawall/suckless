@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # funcoes cliclaveis
 case $BUTTON in
-   # 1) bash ~/.dotfiles/.local/bin/dwm/toggle_wifi.sh ;;
     1) xsetroot -name "fsignal:togglescratch ui 5" ;;
     3) bash ~/.dotfiles/.local/bin/dmenu/dmenu-vpn ;;
 	6) setsid -f st -e emacs -nw "$0" ;;
@@ -44,7 +46,7 @@ if [ $status_wifi -eq 1 ]; then
     fi
 
     ip=$(ip addr show $DEVICE_WIFI  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
-    wifi="^c#b58900^ ^d^$wifiname  "
+    wifi="^c$COLOR_2^ ^d^$wifiname  "
 else
     wifi="^c#4A5947^󰖪  "
 fi

@@ -1,6 +1,9 @@
 #!/bin/bash
-# Display the current time in HH:MM:SS.
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
+# Display the current time in HH:MM:SS.
 day=$(date "+%d")
 image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
 
@@ -38,4 +41,4 @@ day=$(date "+%d")
 data=$(date +'%d/%m')
 image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
 
-echo "^c#d33682^ ^d^$data  "
+echo "^c$COLOR_5^ ^d^$data  "

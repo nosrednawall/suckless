@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source ~/.theme_selected
+
 # funcoes cliclaveis
 case $BUTTON in
     4) bash ~/.dotfiles/.local/bin/dwm/brilho_tela_aumenta ;;
@@ -8,6 +10,6 @@ case $BUTTON in
 esac
 
 brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
-brilhoIcone="^c#268bd2^󰃠 ^d^$brilho󰏰"
+brilhoIcone="^c$COLOR_2^󰃠 ^d^$brilho󰏰"
 
 echo "$brilhoIcone  "

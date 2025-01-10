@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 case "$BUTTON" in
     1) mpc -q toggle
        ~/.local/bin/mpd/songinfo
@@ -17,8 +20,8 @@ case "$BUTTON" in
 esac
 
 # Ícones para a música tocando e pausada
-icon="^c#2aa198^󰝚"
-paused_icon="^c#b58900^"
+icon="^c$COLOR_8^󰝚"
+paused_icon="^c$COLOR_1^"
 
 # Verifica o estado do MPD (tocando, pausado ou parado)
 status="$(mpc status | grep '\[playing\]')"

@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # Configuração do PATH
 export PATH=/usr/local/bin:/usr/bin:/bin
 
@@ -15,12 +19,12 @@ if [[ -z "$lay" ]]; then
     lay="unknown"
 fi
 
-layout_atual="^c#268bd2^󰌌 ^d^$lay"
+layout_atual="^c$COLOR_6^󰌌 ^d^$lay"
 
 # Verifique o estado atual do Caps Lock
 CAPS_STATE=$(xset q 2>/dev/null | grep "Caps Lock:" | awk '{print $4}')
 if [[ "$CAPS_STATE" == "on" ]]; then
-    caps="^c#dc322f^󰪛"
+    caps="^c$COLOR_3^󰪛"
 else
     caps=""
 fi
@@ -28,7 +32,7 @@ fi
 # Verificar o estado atual do Num Lock
 NUMLOCK_STATE=$(xset q 2>/dev/null | grep "Num Lock:" | awk '{print $8}')
 if [[ "$NUMLOCK_STATE" == "on" ]]; then
-    num="^c#b58900^󰎠"
+    num="^c$COLOR_5^󰎠"
 else
     num=""
 fi

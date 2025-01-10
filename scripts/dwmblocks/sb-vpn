@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 status=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
 
 if [ $status -eq 1 ]; then
-    vpn="^c#dc322f^󰢭 ^d^VPN  "
+    vpn="^c$COLOR_4^󰢭 ^d^VPN  "
 else
     vpn=""
 fi

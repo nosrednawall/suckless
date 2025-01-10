@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # funcoes cliclaveis
 case $BUTTON in
     1) st -n "updates" -e sh -c "sudo pacman -Syuv ; kill -36 $(pidof dwmblocks)" & ;;
@@ -26,7 +29,7 @@ else
     echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
 fi
 
-icon="^c#6c71c4^󱧕^d^"
+icon="^c$COLOR_5^󱧕^d^"
 
 if [ "$updates" -eq 0 ]; then
     echo "$icon 0  "

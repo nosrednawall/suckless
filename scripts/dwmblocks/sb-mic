@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# Carrega as cores do tema
+source ~/.theme_selected
+
 # funcoes cliclaveis
 case $BUTTON in
 	1) bash ~/.dotfiles/.local/bin/dwm/muta_microfone ;;
     2) bash ~/.dotfiles/.local/bin/dmenu/dmenu-controle-som ;;
-    #3) setsid -f st -e pulsemixer ;;
     3) xsetroot -name "fsignal:togglescratch ui 3" ;;
     4) bash ~/.dotfiles/.local/bin/dwm/aumenta_volume_microfone ;;
     5) bash ~/.dotfiles/.local/bin/dwm/diminui_volume_microfone ;;
@@ -38,7 +40,7 @@ muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
 if [ "$muteMic" -eq 1 ]; then
     iconMic="^c#4A5947^ $microfone󰏰"
 else
-    iconMic="^c#d33682^ ^d^$microfone󰏰"
+    iconMic="^c$COLOR_4^ ^d^$microfone󰏰"
 fi
 
 echo "$iconMic  "

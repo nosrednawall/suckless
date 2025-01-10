@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.theme_selected
+
 # Funções clicáveis
 case $BUTTON in
     1) bash ~/.dotfiles/.local/bin/dmenu/dmenu-powertop ;;
@@ -26,14 +28,14 @@ fi
 
 # Define o ícone e a cor com base no estado do carregador e nível de bateria
 if [[ "$is_plugged" -eq 1 ]]; then
-    icon="^c#2aa198^"
+    icon="^c$COLOR_7^"
 else
     case $battery_level in
-        [0-30])   icon="^c#dc322f^" ;; # Bateria crítica
-        [31-40])  icon="^c#cb4b16^" ;; # Bateria baixa
-        [41-60])  icon="^c#b58900^" ;; # Bateria moderada
-        [61-90])  icon="^c#2aa198^" ;; # Bateria boa
-        *)        icon="^c#859900^" ;; # Bateria cheia
+        [0-30])   icon="^c$COLOR_3^" ;; # Bateria crítica
+        [31-40])  icon="^c$COLOR_2^" ;; # Bateria baixa
+        [41-60])  icon="^c$COLOR_1^" ;; # Bateria moderada
+        [61-90])  icon="^c$COLOR_7^" ;; # Bateria boa
+        *)        icon="^c$COLOR_8^" ;; # Bateria cheia
     esac
 fi
 
