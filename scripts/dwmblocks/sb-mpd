@@ -20,7 +20,7 @@ case "$BUTTON" in
 esac
 
 # Ícones para a música tocando e pausada
-icon="^c$COLOR_8^󰝚"
+icon="^c$COLOR_6^󰝚"
 paused_icon="^c$COLOR_1^"
 
 # Verifica o estado do MPD (tocando, pausado ou parado)

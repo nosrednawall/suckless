@@ -220,6 +220,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_v,                           spawn,          SHCMD(PATH("dmenu/dmenu-vpn")) },
 	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD(PATH("dmenu/dmenu-powertop")) },
 	{ MODKEY|ShiftMask,	            XK_n,                           spawn,          SHCMD(PATH("dmenu/dmenu-nvidia-switch")) },
+	{ MODKEY|ShiftMask,	            XK_k,                           spawn,          SHCMD(PATH("dmenu/dmenu-close-programs")) },
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
 
 	/*Rofi menus*/

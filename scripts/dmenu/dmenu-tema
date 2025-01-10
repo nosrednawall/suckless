@@ -321,6 +321,7 @@ else
 #    sed -i "s|^export COLOR_MODE=.*|export COLOR_MODE=\"$COLOR_MODE\"|" ~/.theme_selected
     rm -rf ~/.theme_selected
     cat > ~/.theme_selected << EOF
+#!/bin/bash
 THEME_MODE="$THEME_MODE"
 COLOR_MODE="$COLOR_MODE"
 COLOR_BACKGROUND="$COLOR_BACKGROUND"
