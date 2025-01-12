@@ -21,7 +21,8 @@
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)             \
     X("", PATH("dwmblocks/sb-mpd"), 		1, 1)  \
-    X("", PATH("dwmblocks/sb-update"), 	600, 2)  \
+    X("", PATH("dwmblocks/sb-weather"), 	600, 17)        \
+    X("", PATH("dwmblocks/sb-update"), 	600, 2)        \
     X("", PATH("dwmblocks/sb-loadavg"), 	10, 3)     \
     X("", PATH("dwmblocks/sb-memory"), 	10, 4)    \
     X("", PATH("dwmblocks/sb-disk"), 	    10, 5)   \

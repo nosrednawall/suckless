@@ -162,9 +162,9 @@ static const Rule rules[] = {
 	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
 	RULE(.instance = "spncmpcpp",  .tags = SPTAG(6), .isfloating = 1)
 	RULE(.instance = "hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
-	RULE(.instance = "freetube",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
+	RULE(.instance = "spfreetube",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
 	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
-	RULE(.instance = "cifhbcnohmdccbgoicgdjpfamggdegmo",  .tags = SPTAG(10), .isfloating = 1)
+	RULE(.instance = "sp_cifhbcnohmdccbgoicgdjpfamggdegmo",  .tags = SPTAG(10), .isfloating = 1)
 	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 
