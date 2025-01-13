@@ -48,4 +48,5 @@ else
 fi
 
 # Exibe o resultado
-echo "$icon^d^$usageCpu󰏰 $tempCpu  "
+#echo "$icon^d^$usageCpu󰏰 $tempCpu  "
+echo "$icon^d^$usageCpu󰏰  "

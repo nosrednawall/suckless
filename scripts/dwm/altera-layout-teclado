@@ -42,7 +42,7 @@ fi
 setxkbmap -model pc105 -layout "$layout" -variant "$variante"
 
 # Notifica o usuário
-notify-send -t 3000 "󰌌 Keyboard $layout-$variante" \
+notify-send -t 3000 "󰌌  Keyboard $layout-$variante" \
     "Alterado o teclado para o layout $layout-$variante" \
     --icon="/usr/share/icons/ePapirus/16x16/devices/keyboard.svg"
 

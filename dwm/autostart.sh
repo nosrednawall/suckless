@@ -43,11 +43,18 @@ is_running "copyq" || copyq &
 # Inicia o daemon do emacs se não estiver rodando
 is_running "emacs --daemon" || emacs --daemon &
 
-is_running "solaar" || /usr/bin/solaar -w hide
+is_running "solaar" || /usr/bin/solaar -w hide &
+#TECLADO_USA_CONECTADO=$(solaar show 521B6154 | grep "unknown (device is offline)" -ic)
 
+#if [ $TECLADO_USA_CONECTADO = "0" ]; then
+#    setxkbmap -model pc105 -layout us -variant altgr-intl
+#else
+#    setxkbmap -model pc105 -layout br -variant abnt2
+#fi
 # Inicia o dwmblocks se não estiver rodando
 #killall dwmblocks; export PATH=$PATH:$HOME/.config/suckless/scripts/dwmblocks && $HOME/.config/suckless/dwmblocks-async/build/dwmblocks &
-#is_running "dwmblocks" || /usr/local/bin/dwmblocks &
+#is_running "dwmblocks" || /usr/local/bin/dwmblocks
+# &
 
 
 # Inicia o mate-power-manager se não estiver rodando

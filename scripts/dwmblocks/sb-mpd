@@ -39,7 +39,7 @@ fi
 [ -z "$song" ] && exit
 
 # Limita o título da música a 30 caracteres
-[[ ${song} -gt 20 ]] && song="${song:0:20}..."
+#[[ ${song} -gt 20 ]] && song="${song:0:20}..."
 
 # Exibe o ícone e a música
 echo "$icon ^d^$song  "

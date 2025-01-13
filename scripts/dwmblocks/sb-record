@@ -7,7 +7,7 @@ source ~/.theme_selected
 camera=$(lsmod | grep "uvcvideo" | awk '{print$3}' | head -1)
 
 if [ "$camera" = "1" ]; then
-	iconCam="^c$COLOR_3^   "
+	iconCam="^c$COLOR_3^  "
 else
     iconCam=""
 fi

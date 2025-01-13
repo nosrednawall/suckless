@@ -29,7 +29,7 @@ else
     echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
 fi
 
-icon="^c$COLOR_5^󱧕^d^"
+icon="^c$COLOR_5^📦^d^"
 
 if [ "$updates" -eq 0 ]; then
     echo "$icon 0  "

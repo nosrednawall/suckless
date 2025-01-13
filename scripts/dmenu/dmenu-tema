@@ -18,11 +18,6 @@ else
     echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
 fi
 
-
-dwm_pywal="  Mudar para Dwm com Pywal"
-dwm_normal="  Mudar para Dwm Normal"
-pywal_aleatorio="  Aleatório"
-pywal_wal_atual="  Wallpaper Atual"
 solarized_dark="  Solarized Dark"
 solarized_light="  Solarized Light"
 gruvbox_dark="  Gruvbox Dark"

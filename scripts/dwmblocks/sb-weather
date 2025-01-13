@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.theme_selected
+
 # Configurações do script
 API_KEY="8b05d62206f459e1d298cbe5844d7d87"
 CITY="São%20José%20dos%20Pinhais,%20BR"
@@ -21,83 +23,103 @@ WEATHER_TEMP=$(echo "$WEATHER" | jq ".main.temp" | cut -d "." -f 1)
 WEATHER_ICON_CODE=$(echo "$WEATHER" | jq -r ".weather[].icon" | head -1)
 WEATHER_FEELS_LIKE=$(echo "$WEATHER" | jq ".main.feels_like" | cut -d "." -f 1)
 WEATHER_ICON=""
+WEATHER_HEX=""
 
 case $WEATHER_ICON_CODE in
     "01d")
         WEATHER_ICON=""
-        WEATHER_HEX="#ffd86b"
+        #WEATHER_HEX="#ffd86b"
+        WEATHER_HEX="$COLOR_1"
         ;;
     "01n")
         WEATHER_ICON=""
-        WEATHER_HEX="#fcdcf6"
+        #WEATHER_HEX="#fcdcf6"
+        WEATHER_HEX="$COLOR_4"
         ;;
     "02d")
         WEATHER_ICON=""
-        WEATHER_HEX="#adadff"
+        #WEATHER_HEX="#adadff"
+        WEATHER_HEX="$COLOR_6"
         ;;
     "02n")
         WEATHER_ICON=""
-        WEATHER_HEX="#adadff"
+        #WEATHER_HEX="#adadff"
+        WEATHER_HEX="$COLOR_6"
         ;;
     "03d")
         WEATHER_ICON=""
-        WEATHER_HEX="#adadff"
+        #WEATHER_HEX="#adadff"
+        WEATHER_HEX="$COLOR_6"
         ;;
     "03n")
         WEATHER_ICON=""
-        WEATHER_HEX="#adadff"
+        #WEATHER_HEX="#adadff"
+        WEATHER_HEX="$COLOR_6"
         ;;
     "04d")
         WEATHER_ICON=""
-        WEATHER_HEX="#adadff"
+        #WEATHER_HEX="#adadff"
+        WEATHER_HEX="$COLOR_6"
         ;;
     "04n")
         WEATHER_ICON=""
-        WEATHER_HEX="#acb0d0"
+        #WEATHER_HEX="#acb0d0"
+        WEATHER_HEX="$COLOR_8"
         ;;
     "09d")
         WEATHER_ICON=""
-        WEATHER_HEX="#6b95ff"
+        #WEATHER_HEX="#6b95ff"
+        WEATHER_HEX="$COLOR_5"
         ;;
     "09n")
         WEATHER_ICON=""
-        WEATHER_HEX="#6b95ff"
+        #WEATHER_HEX="#6b95ff"
+        WEATHER_HEX="$COLOR_5"
         ;;
     "10d")
         WEATHER_ICON=""
-        WEATHER_HEX="#6b95ff"
+        #WEATHER_HEX="#6b95ff"
+        WEATHER_HEX="$COLOR_5"
         ;;
     "10n")
         WEATHER_ICON=""
-        WEATHER_HEX="#6b95ff"
+        #WEATHER_HEX="#6b95ff"
+        WEATHER_HEX="$COLOR_5"
         ;;
     "11d")
         WEATHER_ICON=""
-        WEATHER_HEX="#ffeb57"
+        #WEATHER_HEX="#ffeb57"
+        WEATHER_HEX="$COLOR_1"
         ;;
     "11n")
         WEATHER_ICON=""
-        WEATHER_HEX="#ffeb57"
+        #WEATHER_HEX="#ffeb57"
+        WEATHER_HEX="$COLOR_1"
         ;;
     "13d")
         WEATHER_ICON=""
-        WEATHER_HEX="#e3e6fc"
+        #WEATHER_HEX="#e3e6fc"
+        WEATHER_HEX="$COLOR_8"
         ;;
     "13n")
         WEATHER_ICON=""
-        WEATHER_HEX="#e3e6fc"
+        #WEATHER_HEX="#e3e6fc"
+        WEATHER_HEX="$COLOR_8"
         ;;
     "40d")
         WEATHER_ICON=""
-        WEATHER_HEX="#84afdb"
+        #WEATHER_HEX="#84afdb"
+        WEATHER_HEX="$COLOR_5"
         ;;
     "40n")
         WEATHER_ICON=""
-        WEATHER_HEX="#84afdb"
+        #WEATHER_HEX="#84afdb"
+        WEATHER_HEX="$COLOR_5"
         ;;
     *)
         WEATHER_ICON=""
-        WEATHER_HEX="#adadff"
+        #WEATHER_HEX="#adadff"
+        WEATHER_HEX="$COLOR_4"
         ;;
 esac
 
