@@ -1,0 +1,47 @@
+#!/bin/bash
+
+source ~/.theme_selected
+
+# Função para calcular a diferença de dias desde 2001-01-01 até hoje
+position() {
+    local now=$(date +%s)                    # Data atual em segundos desde 1970-01-01
+    local start=$(date -d "2001-01-01" +%s)  # Data de referência em segundos
+    local diff=$(( (now - start) / 86400 ))  # Diferença em dias
+    local seconds_diff=$(( (now - start) % 86400 ))
+    local fractional=$(awk "BEGIN { print $seconds_diff / 86400 }")
+
+    # Cálculo das lunações
+    local lunations=$(awk "BEGIN { print 0.20439731 + ($diff + $fractional) * 0.03386319269 }")
+
+    # Retorna a posição normalizada (módulo 1)
+    echo $(awk "BEGIN { print $lunations % 1 }")
+}
+
+# Função para determinar a fase lunar com base na posição
+phase() {
+    local pos=$1
+    local index=$(awk "BEGIN { print int(($pos * 8) + 0.5) % 8 }")
+
+    case $index in
+        0) echo "^c$COLOR_5^󰽤^d^ Lua Nova" ;;
+        1) echo "^c$COLOR_5^󰽧^d^ Lua Crescente" ;;
+        2) echo "^c$COLOR_5^󰽡^d^ 1/4 Minguante" ;;
+        3) echo "^c$COLOR_5^󰽨^d^ Lua Minguante" ;;
+        4) echo "^c$COLOR_5^󰽢^d^ Lua Cheia" ;;
+        5) echo "^c$COLOR_5^󰽦^d^ Lua Minguante" ;;
+        6) echo "^c$COLOR_5^󰽣^d^ 4/4 Minguante" ;;
+        7) echo "^c$COLOR_5^󰽥^d^ Lua Minguante" ;;
+    esac
+}
+
+# Função principal
+main() {
+    local pos=$(position)
+    local phasename=$(phase $pos)
+
+    # Força o uso do ponto como separador decimal
+    LC_NUMERIC=C printf "%s" "$phasename  "
+}
+
+# Executa o script
+main

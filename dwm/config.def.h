@@ -40,7 +40,12 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 //static const char *fonts[]          	 = {"Liberation Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=17"};
-static const char *fonts[]          	 = {"Fira Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=15"};
+static const char *fonts[]          	 = {
+	"Fira Mono:pixelsize=15:antialias=true:autohint=true",
+	"Symbols Nerd Font:style=Bold:antialias=true:pixelsize=15",
+	"FontAwesome:style=Bold:antialias=true:pixelsize=15",
+	"Weather Icons:style=Bold:antialias=true:pixelsize=15"
+};
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
 #include "themes/gruvbox_dark.h"
 
@@ -192,7 +197,7 @@ static const BarRule barrules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.6; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */

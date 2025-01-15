@@ -4,22 +4,19 @@
 source ~/.theme_selected
 
 # Display currently playing music.
-set --player=spotify,mpv,%any
+PLAYERS="--player=mpd,spotify,mpv,vlc,%any"
+
+# Icones
 icon="^c$COLOR_8^󰝚"
-paused_icon="^c]$COLOR_1^"
-if status="$(playerctl "$@" status 2>&1)" && [ "$status" != "Stopped" ]; then
+paused_icon="^c$COLOR_1^"
+
+# Verifica status
+if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; then
     [ "$status" = "Paused" ] && icon="$paused_icon"
 
-    #song="$(playerctl "$@" metadata --format="{{title}} - {{artist}}")"
-    song="$(playerctl "$@" metadata --format="{{title}}")"
-else
-   [ "$(mpc status "%state%")" = "paused" ] && icon="$paused_icon"
-   #song="$(mpc current --format="%title%[ - %artist%]")"
-   song="$(mpc current --format="%title%")"
+    #song="$(playerctl $PLAYERS metadata --format="{{title}} - {{artist}}")"
+    song="$(playerctl $PLAYERS metadata --format="{{title}}")"
 fi
 
 [ -z "$song" ] && exit
-
-song="${song:0:30}"
-
 echo "$icon ^d^$song  "

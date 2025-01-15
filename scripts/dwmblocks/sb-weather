@@ -37,7 +37,8 @@ case $WEATHER_ICON_CODE in
         WEATHER_HEX="$COLOR_4"
         ;;
     "02d")
-        WEATHER_ICON=""
+        #WEATHER_ICON=""
+        WEATHER_ICON="󰖕"
         #WEATHER_HEX="#adadff"
         WEATHER_HEX="$COLOR_6"
         ;;

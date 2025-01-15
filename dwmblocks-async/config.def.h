@@ -35,7 +35,8 @@
     X("", PATH("dwmblocks/sb-record"), 	10, 11)  \
     X("", PATH("dwmblocks/sb-keyboard"),    1, 12)  \
     X("", PATH("dwmblocks/sb-battery"), 	30, 13)  \
-    X("", PATH("dwmblocks/sb-date"), 	    600, 14)     \
+/*    X("", PATH("dwmblocks/sb-moon"), 	    60000, 18)     \
+*/    X("", PATH("dwmblocks/sb-date"), 	    600, 14)    \
     X("", PATH("dwmblocks/sb-hour"), 	    1, 15)
 
 #endif  // CONFIG_H
