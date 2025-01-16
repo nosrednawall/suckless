@@ -8,7 +8,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin
 
 # Funções clicáveis
 case $BUTTON in
-    1) bash ~/.config/suckless/scripts/dwm/altera-layout-teclado ;;
+    1) bash ~/.config/suckless/scripts/dwm/dwm-altera-layout-teclado ;;
     3) bash ~/.config/suckless/scripts/dmenu/dmenu-keyboard ;;
     6) setsid -f st -e emacs -nw "$0" ;;
 esac

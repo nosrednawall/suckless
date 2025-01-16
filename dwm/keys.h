@@ -172,42 +172,42 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                                  8)
 
 	/*Meus atalhos*/
-	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/slock_personalizado")) },
-	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/dwm_capslock_indicator")) },
-	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/dwm_numlock_indicator")) },
-	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD(PATH("dwm/som_capslock_numlock")) },
-	{ MODKEY,			            XK_k,                           spawn,          SHCMD(PATH("dwm/altera-layout-teclado")) },
-	{ MODKEY,			            XK_l,                           spawn,          SHCMD(PATH("dwm/conky_toggle")) },
+	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
+	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/dwm-capslock-indicator")) },
+	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/dwm-numlock-indicator")) },
+	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD(PATH("dwm/dwm-som-capslock-numlock")) },
+	{ MODKEY,			            XK_k,                           spawn,          SHCMD(PATH("dwm/dwm-altera-layout-teclado")) },
+	{ MODKEY,			            XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-conky-toggle")) },
 
 	/*volume pulseaudio*/
-	{ 0,                            XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/diminui_volume")) },
-	{ 0,                            XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/aumenta_volume")) },
-	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/muta_volume")) },
+	{ 0,                            XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume")) },
+	{ 0,                            XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume")) },
+	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-volume")) },
 
 	/*Volume Microfone Pulseaudio*/
-	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/aumenta_volume_microfone")) },
-	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/diminui_volume_microfone")) },
-	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/muta_microfone")) },
+	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
+	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
+	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
 
-	/*Player de musica*/
-	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/playerctl_play")) },
-	{ 0,                            XF86XK_AudioStop,               spawn,          SHCMD(PATH("dwm/playerctl_stop")) },
-	{ 0,                            XF86XK_AudioPrev,               spawn,          SHCMD(PATH("dwm/playerctl_prev")) },
-	{ 0,                            XF86XK_AudioNext,               spawn,          SHCMD(PATH("dwm/playerctl_next")) },
+	/*Player de musidwm-ca*/
+	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-play")) },
+	{ 0,                            XF86XK_AudioStop,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-stop")) },
+	{ 0,                            XF86XK_AudioPrev,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-prev")) },
+	{ 0,                            XF86XK_AudioNext,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-next")) },
 
-	/*Outros atalhos teclado*/
-	{ 0,                            XF86XK_HomePage,                spawn,          SHCMD(PATH("dwm/homepage_program")) },
-	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD(PATH("dwm/mail_program")) },
-	{ 0,                            XF86XK_Search,                  spawn,          SHCMD(PATH("dwm/search_program")) },
-	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD(PATH("dwm/calculator_program")) },
+	/*Outros atalhosdwm- teclado*/
+	{ 0,                            XF86XK_HomePage,                spawn,          SHCMD(PATH("dwm/dwm-homepage-program")) },
+	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD(PATH("dwm/dwm-mail-program")) },
+	{ 0,                            XF86XK_Search,                  spawn,          SHCMD(PATH("dwm/dwm-search-program")) },
+	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD(PATH("dwm/dwm-calculator-program")) },
 
 	/*Printscreen*/
-	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD(PATH("dwm/print_edita")) },
-	{ 0,                            XK_Print,                       spawn,          SHCMD(PATH("dwm/print_copia")) },
+	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD(PATH("dwm/dwm-print-edita")) },
+	{ 0,                            XK_Print,                       spawn,          SHCMD(PATH("dwm/dwm-print-copia")) },
 
 	/*Brilho tela notebook*/
-	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/brilho_tela_aumenta")) },
-	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/brilho_tela_diminui")) },
+	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
+	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
@@ -222,23 +222,24 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_n,                           spawn,          SHCMD(PATH("dmenu/dmenu-nvidia-switch")) },
 	{ MODKEY|ShiftMask,	            XK_k,                           spawn,          SHCMD(PATH("dmenu/dmenu-close-programs")) },
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
+	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
 
 	/*Rofi menus*/
-	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/roficmd")) },
+	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
 
 	/*Lancamento Programas*/
 	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
-	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("dwmblocks" ) }
+	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) }
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask           button          function        argument */
-	{ ClkButton,            0,                   Button1,        spawn,          SHCMD(PATH("dwm/roficmd")) },  //abre rofi
-	{ ClkButton,            0,                   Button3,        spawn,          SHCMD(PATH("dwm/timeshiftcmd")) },  //abre timeshift
+	{ ClkButton,            0,                   Button1,        spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },  //abre rofi
+	{ ClkButton,            0,                   Button3,        spawn,          SHCMD(PATH("dwm/dwm-timeshiftcmd")) },  //abre timeshift
 
 	{ ClkLtSymbol,          0,                   Button1,        spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },  //abre dmenu de layouts
 	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[0]} },  //retorna ao layout padrao
@@ -259,6 +260,8 @@ static const Button buttons[] = {
 	{ ClkStatusText,        ShiftMask,           Button1,        sigstatusbar,   {.i = 6 } },
 	{ ClkStatusText,        ShiftMask,           Button2,        sigstatusbar,   {.i = 7 } },
 	{ ClkStatusText,        ShiftMask,           Button3,        sigstatusbar,   {.i = 8 } },
+	{ ClkStatusText,        ShiftMask,           Button4,        sigstatusbar,   {.i = 9 } },
+	{ ClkStatusText,        ShiftMask,           Button5,        sigstatusbar,   {.i = 10 } },
 	/* placemouse options, choose which feels more natural:
 	 *    0 - tiled position is relative to mouse cursor
 	 *    1 - tiled postiion is relative to window center

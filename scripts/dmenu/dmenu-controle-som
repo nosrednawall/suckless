@@ -37,11 +37,11 @@ fi
 # Constrói as opções dinamicamente
 options="Dispositivos de Saída: \n"
 for sink in "${!sinks[@]}"; do
-    options+="  ${sinks[$sink]} (Saída)\n"
+    options+="  󰕾 ${sinks[$sink]} (Saída)\n"
 done
 options+="\nDispositivos de Entrada: \n"
 for source in "${!sources[@]}"; do
-    options+="  ${sources[$source]} (Entrada)\n"
+    options+="   ${sources[$source]} (Entrada)\n"
 done
 
 # Mostra as opções no dmenu

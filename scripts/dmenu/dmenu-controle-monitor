@@ -9,11 +9,11 @@ EDP_DEVICE=$(xrandr -q | grep "eDP" | awk '{print $1}')
 VIRTUAL_DEVICE=$(xrandr -q | grep "Virtual" | awk '{print $1}')
 
 # Opcoes
-casa="󰍹  Monitor Externo"
-notebook="  Notebook"
-modo_game="Modo Game"
-so_monitor_externo="So monitor externo"
-duplica="Duplica a mesma visualização"
+casa="󰍹 Monitor Externo"
+notebook=" Notebook"
+modo_game=" Modo Game"
+so_monitor_externo="󱧑 Só monitor externo"
+duplica="󰍺 Duplica a mesma visualização"
 noite="󱩍 Noite"
 dia="󰛨 Dia"
 tabletwaconhdmi="󰓶 Tablet Wacon HDMI"

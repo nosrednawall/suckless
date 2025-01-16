@@ -20,8 +20,9 @@
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)             \
-    X("", PATH("dwmblocks/sb-mpd"), 		1, 1)  \
-    X("", PATH("dwmblocks/sb-weather"), 	600, 17)        \
+/*    X("", PATH("dwmblocks/sb-mpd"), 		1, 1)  \
+*/    X("", PATH("dwmblocks/sb-music"), 		1, 19)  \
+	X("", PATH("dwmblocks/sb-weather"), 	600, 17)           \
     X("", PATH("dwmblocks/sb-update"), 	600, 2)        \
     X("", PATH("dwmblocks/sb-loadavg"), 	10, 3)     \
     X("", PATH("dwmblocks/sb-memory"), 	10, 4)    \
@@ -35,8 +36,8 @@
     X("", PATH("dwmblocks/sb-record"), 	10, 11)  \
     X("", PATH("dwmblocks/sb-keyboard"),    1, 12)  \
     X("", PATH("dwmblocks/sb-battery"), 	30, 13)  \
-/*    X("", PATH("dwmblocks/sb-moon"), 	    60000, 18)     \
-*/    X("", PATH("dwmblocks/sb-date"), 	    600, 14)    \
+    X("", PATH("dwmblocks/sb-moon"), 	    60000, 18)  \
+    X("", PATH("dwmblocks/sb-date"), 	    600, 14)    \
     X("", PATH("dwmblocks/sb-hour"), 	    1, 15)
 
 #endif  // CONFIG_H

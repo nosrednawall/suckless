@@ -6,11 +6,14 @@ static int min_width = 500;                 /* minimum width when centered */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] =
 {
-	"CaskaydiaMono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17"
+	"Fira Mono:pixelsize=15:antialias=true:autohint=true",
+	"Symbols Nerd Font:style=Bold:antialias=true:pixelsize=15",
+	"FontAwesome:style=Bold:antialias=true:pixelsize=15",
+	"Weather Icons:style=Bold:antialias=true:pixelsize=1"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 
-#include "themes/gruvbox_dark.h"
+#include "themes/solarized_dark.h"
 
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines      = 30;

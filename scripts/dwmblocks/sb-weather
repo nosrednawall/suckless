@@ -2,6 +2,12 @@
 
 source ~/.theme_selected
 
+# Funções clicáveis
+case $BUTTON in
+    1) kill -50 $(pidof dwmblocks) ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+esac
+
 # Configurações do script
 API_KEY="8b05d62206f459e1d298cbe5844d7d87"
 CITY="São%20José%20dos%20Pinhais,%20BR"

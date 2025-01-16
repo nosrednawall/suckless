@@ -9,7 +9,7 @@ DEVICE_WIFI=$(ls /sys/class/net/ | grep "wl" | awk '{print $1}')
 # funcoes cliclaveis
 case $BUTTON in
     1) xsetroot -name "fsignal:togglescratch ui 5" ;;
-    3) bash ~/.dotfiles/.local/bin/dmenu/dmenu-vpn ;;
+    3) bash ~/.config/suckless/scripts/dmenu/dmenu-vpn ;;
 	6) setsid -f st -e emacs -nw "$0" ;;
     8)
         myip=$(ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip')

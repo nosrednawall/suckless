@@ -5,14 +5,14 @@ source ~/.theme_selected
 
 case "$BUTTON" in
     1) mpc -q toggle
-       ~/.local/bin/mpd/songinfo
-       ;;
+       ~/.local/bin/songinfo
+    ;;
     2) mpc -q prev
-       ~/.local/bin/mpd/songinfo
+       ~/.local/bin/songinfo
     ;;
     3) mpc -q next
-       ~/.local/bin/mpd/songinfo
-       ;;
+       ~/.local/bin/songinfo
+    ;;
     4) mpc -q seek +5 ;;
     5) mpc -q seek -5 ;;
     6) setsid -f st -e emacs -nw "$0" ;;

@@ -4,8 +4,8 @@ source ~/.theme_selected
 
 # funcoes cliclaveis
 case $BUTTON in
-    4) bash ~/.dotfiles/.local/bin/dwm/brilho_tela_aumenta ;;
-    5) bash ~/.dotfiles/.local/bin/dwm/brilho_tela_diminui ;;
+    4) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-aumenta ;;
+    5) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-diminui ;;
 	6) setsid -f st -e emacs -nw "$0" ;;
 esac
 

@@ -2,21 +2,162 @@
 
 # Carrega as cores do tema
 source ~/.theme_selected
+source ~/.cache/playerctl_selecionado
+
+
+# Funcao para mostrar atualizacoes
+function fnotify(){
+    # Diretórios e configuraçõe
+    source ~/.cache/playerctl_selecionado
+    music_dir="$HOME/Músicas"
+    previewdir="$HOME/.cache/playerctl/previews"
+    mkdir -p "$previewdir"
+
+    # Obtém informações da música atual usando playerctl
+    title="$(playerctl --player=$PLAYER_SELECIONADO metadata --format '{{title}}')"
+    artist="$(playerctl --player=$PLAYER_SELECIONADO metadata --format '{{artist}}')"
+    album="$(playerctl --player=$PLAYER_SELECIONADO metadata --format '{{album}}')"
+    cover_url="$(playerctl  --player=$PLAYER_SELECIONADO metadata --format '{{mpris:artUrl}}')"
+
+    # Nome do arquivo da prévia baseado no nome do álbum (codificado em base64)
+    previewname="$previewdir/$(echo "$title$artist$album" | sed -e 's/[^a-z -]//ig' | base64).png"
+
+    # Faz o download da imagem do álbum, se ela ainda não existir
+    if [ ! -e "$previewname" ] && [ -n "$cover_url" ]; then
+        # Transforma URL do MPRIS para o formato acessível
+        if echo "$cover_url" | grep -q '^file://'; then
+            cover_path="${cover_url#file://}"
+            cp "$cover_path" "$previewname"
+        else
+            curl -sL "$cover_url" -o "$previewname"
+        fi
+
+        # Ajusta o tamanho da imagem
+        [ -e "$previewname" ] && magick "$previewname" -resize 512x512 "$previewname"
+    fi
+
+    # Envia notificação
+    notify-send -r 27072 "Now Playing" "$title\n$artist - $album" -i "$previewname"
+}
+
+
+# Funcao para mudar o player
+fchange_player() {
+    # Parâmetro indicando direção (+1 para próximo, -1 para anterior)
+    direction="$1"
+    if [[ "$direction" != "+1" && "$direction" != "-1" ]]; then
+        echo "Uso: fchange_player [+1 | -1]" >&2
+        return 1
+    fi
+
+    # Obtém a lista de players ativos
+    players=( $(playerctl -l) )
+    if [ ${#players[@]} -eq 0 ]; then
+        echo "Nenhum player ativo encontrado." >&2
+        return 1
+    fi
+
+    # Carrega o player atualmente selecionado
+    current_index=0
+    for i in "${!players[@]}"; do
+        if [[ "${players[i]}" == "$PLAYER_SELECIONADO" ]]; then
+            current_index=$i
+            break
+        fi
+    done
+
+    # Calcula o próximo índice com base na direção
+    if [[ "$direction" == "+1" ]]; then
+        next_index=$(( (current_index + 1) % ${#players[@]} ))
+    else
+        next_index=$(( (current_index - 1 + ${#players[@]}) % ${#players[@]} ))
+    fi
+
+    # Atualiza o player selecionado
+    PLAYER_SELECIONADO="${players[next_index]}"
+    echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+
+    # Notificação ou qualquer outra ação adicional
+    if command -v fnotify &> /dev/null; then
+        fnotify
+    fi
+}
+
+
+# Botões
+case "$BUTTON" in
+    1)
+        # Se o player estiver tocando, aplica o play-pause, caso contrario
+        # pausa todos os outros e toca o novo
+        STATUS_ATUAL=$(playerctl --player=$PLAYER_SELECIONADO status)
+        if [ $STATUS_ATUAL = "Playing" ]; then
+            playerctl --player=$PLAYER_SELECIONADO play-pause
+        else
+            playerctl --all-players pause
+            playerctl --player=$PLAYER_SELECIONADO play-pause
+        fi
+        fnotify
+    ;;
+    2)  playerctl --player=$PLAYER_SELECIONADO previous
+        fnotify
+    ;;
+    3)
+        playerctl --player=$PLAYER_SELECIONADO next
+        fnotify
+    ;;
+    4) playerctl --player=$PLAYER_SELECIONADO position 10+ ; sleep 1;;
+    5) playerctl --player=$PLAYER_SELECIONADO position 10- ; sleep 1;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+    8) xsetroot -name "fsignal:togglescratch ui 6" ;;
+    9) fchange_player +1 ;;
+    10) fchange_player +1 ;;
+esac
 
 # Display currently playing music.
-PLAYERS="--player=mpd,spotify,mpv,vlc,%any"
+PLAYERS="--player=$PLAYER_SELECIONADO"
 
-# Icones
-icon="^c$COLOR_8^󰝚"
-paused_icon="^c$COLOR_1^"
+# Ícones
+case "$PLAYER_SELECIONADO" in
+    "chromium.instance2")
+        icon="^c$COLOR_3^"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        ;;
+
+    "mpd")
+        icon="^c$COLOR_6^󰝚"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        ;;
+
+    "spotube.instance2")
+        icon="^c$COLOR_6^󰝚"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        ;;
+
+    *)
+        icon="^c$COLOR_6^󰝚"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        ;;
+esac
+
+
 
 # Verifica status
 if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; then
-    [ "$status" = "Paused" ] && icon="$paused_icon"
+    [ "$status" = "Paused" ] && icon="$icon_paused"
 
     #song="$(playerctl $PLAYERS metadata --format="{{title}} - {{artist}}")"
     song="$(playerctl $PLAYERS metadata --format="{{title}}")"
+    if [[ ${#song} -gt 25 ]]; then
+        song="${song:0:25}..."
+    fi
 fi
 
-[ -z "$song" ] && exit
-echo "$icon ^d^$song  "
+if [[ -z "$song" ]]; then
+    echo "$icon_close^d^  "
+else
+    echo "$icon ^d^$song  "
+fi
