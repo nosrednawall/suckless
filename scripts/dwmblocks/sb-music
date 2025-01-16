@@ -124,13 +124,19 @@ case "$PLAYER_SELECIONADO" in
         icon_close="^c#4A5947^󰝛"
         ;;
 
+    "mpv")
+        icon="^c$COLOR_3^"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        ;;
+
     "mpd")
         icon="^c$COLOR_6^󰝚"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
         ;;
 
-    "spotube.instance2")
+    "spotu]be.instance2")
         icon="^c$COLOR_6^󰝚"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"

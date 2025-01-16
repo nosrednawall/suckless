@@ -1,20 +1,16 @@
 #!/bin/bash
-mpc_status=$(mpc | grep "volume" | cut -c 9-11)
-playerctl_status=$(playerctl status | grep "No players found")
+source ~/.cache/playerctl_selecionado
 
-if [[ "" == $playerctl_status ]]
-then
-    if [[ "n/a" != $mpc_status ]]
-    then
-        mpc toggle
-		~/.local/bin/mpd/songinfo
-	else
-        mpc play
-		~/.local/bin/mpd/songinfo
-	fi        
+# Se o player estiver tocando, aplica o play-pause, caso contrario
+# pausa todos os outros e toca o novo
+STATUS_ATUAL=$(playerctl --player=$PLAYER_SELECIONADO status)
+if [ $STATUS_ATUAL = "Playing" ]; then
+    playerctl --player=$PLAYER_SELECIONADO play-pause
 else
-    playerctl play-pause
+    playerctl --all-players pause
+    playerctl --player=$PLAYER_SELECIONADO play-pause
 fi
+~/.local/bin/playerctl_songinfo
 
 # Atualiza dwmblocks
 kill -35 $(pidof dwmblocks)

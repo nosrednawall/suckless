@@ -1,15 +1,13 @@
 #!/bin/bash
 
-mpc_status=$(mpc | grep "volume" | cut -c 9-11)
-mpc_nao_funcionando="n/a"
+# Carrega o player atual
+source ~/.cache/playerctl_selecionado
 
-if [[ $mpc_nao_funcionando == $mpc_status ]]
-then
-    playerctl previous
-else
-    mpc prev
-	~/.local/bin/mpd/songinfo
-fi
+# Roda o comando
+playerctl --player=$PLAYER_SELECIONADO previous
+
+# Envia notificacao
+~/.local/bin/playerctl_songinfo
 
 # Atualiza dwmblocks
 kill -35 $(pidof dwmblocks)
