@@ -223,6 +223,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_k,                           spawn,          SHCMD(PATH("dmenu/dmenu-close-programs")) },
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
 	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
+	{ MODKEY|ShiftMask,	            XK_o,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },

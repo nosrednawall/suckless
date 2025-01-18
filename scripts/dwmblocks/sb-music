@@ -42,11 +42,8 @@ fchange_player() {
     PLAYER_SELECIONADO="${players[next_index]}"
     rm -rf ~/.cache/playerctl_selecionado
     echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
-
-    # Notificação ou qualquer outra ação adicional
-    if command -v fnotify &> /dev/null; then
-        fnotify
-    fi
+    ~/.config/suckless/scripts/others/playerctl_songinfo
+    exit 0
 }
 
 # Quando nao houver mais players, coloca no mpd
@@ -67,6 +64,11 @@ if [ "$status" != "Playing" ]; then
             echo "PLAYER_SELECIONADO=$item" > ~/.cache/playerctl_selecionado
         fi
     done
+fi
+
+# Verifica se o player principal esta na lista
+if [[ ! " ${array[@]} " =~ " $PLAYER_SELECIONADO " ]]; then
+    fchange_player +1
 fi
 
 

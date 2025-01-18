@@ -5,11 +5,35 @@ source ~/.theme_selected
 
 # Display an indicator during screen records.
 camera=$(lsmod | grep "uvcvideo" | awk '{print$3}' | head -1)
+PID_FILE="/tmp/rec_pid"
 
+# Inicia a variavel de retorno
+iconCam=""
+iconRec=""
+
+# Checa se a camera esta sendo usada
 if [ "$camera" = "1" ]; then
-	iconCam="^c$COLOR_3^  "
-else
-    iconCam=""
+	iconCam="^c$COLOR_3^^d^"
 fi
 
-echo "$iconCam"
+# Verificar se há gravação em andamento
+if [[ -f $PID_FILE && -s $PID_FILE ]]; then
+ 	iconRec="^c$COLOR_3^󰑊^d^"
+fi
+
+# Apresenta os resultados
+if [[ -n $iconCam ]] && [[ -n $iconRec ]]; then
+    echo "$iconCam $iconRec  "
+    exit 0
+else
+    if [[ -n $iconCam ]]; then
+        echo "$iconCam  "
+        exit 0
+    else
+        echo "$iconRec  "
+        exit 0
+    fi
+fi
+
+echo ""
+exit 0

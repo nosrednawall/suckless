@@ -55,17 +55,17 @@ fi
 
 # Altera o dispositivo padrão com base na seleção
 for sink in "${!sinks[@]}"; do
-    if [[ "  ${sinks[$sink]} (Saída)" == "$chosen" ]]; then
+    if [[ "  󰕾 ${sinks[$sink]} (Saída)" == "$chosen" ]]; then
         pactl set-default-sink "$sink"
-        notify-send "Áudio alterado" "Saída padrão: ${sinks[$sink]}"
+        notify-send " 󰕾  Áudio alterado" "Saída padrão: ${sinks[$sink]}" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-speakers.svg"
         exit 0
     fi
 done
 
 for source in "${!sources[@]}"; do
-    if [[ "  ${sources[$source]} (Entrada)" == "$chosen" ]]; then
+    if [[ "   ${sources[$source]} (Entrada)" == "$chosen" ]]; then
         pactl set-default-source "$source"
-        notify-send "Microfone alterado" "Entrada padrão: ${sources[$source]}"
+        notify-send "   Microfone alterado" "Entrada padrão: ${sources[$source]}"  --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
         exit 0
     fi
 done
