@@ -1,45 +1,10 @@
 #!/bin/bash
 
+PLAYER_SELECIONADO=""
+
 # Carrega as cores do tema
 source ~/.theme_selected
 source ~/.cache/playerctl_selecionado
-
-
-# Funcao para mostrar atualizacoes
-function fnotify(){
-    # Diretórios e configuraçõe
-    source ~/.cache/playerctl_selecionado
-    music_dir="$HOME/Músicas"
-    previewdir="$HOME/.cache/playerctl/previews"
-    mkdir -p "$previewdir"
-
-    # Obtém informações da música atual usando playerctl
-    title="$(playerctl --player=$PLAYER_SELECIONADO metadata --format '{{title}}')"
-    artist="$(playerctl --player=$PLAYER_SELECIONADO metadata --format '{{artist}}')"
-    album="$(playerctl --player=$PLAYER_SELECIONADO metadata --format '{{album}}')"
-    cover_url="$(playerctl  --player=$PLAYER_SELECIONADO metadata --format '{{mpris:artUrl}}')"
-
-    # Nome do arquivo da prévia baseado no nome do álbum (codificado em base64)
-    previewname="$previewdir/$(echo "$title$artist$album" | sed -e 's/[^a-z -]//ig' | base64).png"
-
-    # Faz o download da imagem do álbum, se ela ainda não existir
-    if [ ! -e "$previewname" ] && [ -n "$cover_url" ]; then
-        # Transforma URL do MPRIS para o formato acessível
-        if echo "$cover_url" | grep -q '^file://'; then
-            cover_path="${cover_url#file://}"
-            cp "$cover_path" "$previewname"
-        else
-            curl -sL "$cover_url" -o "$previewname"
-        fi
-
-        # Ajusta o tamanho da imagem
-        [ -e "$previewname" ] && magick "$previewname" -resize 512x512 "$previewname"
-    fi
-
-    # Envia notificação
-    notify-send -r 27072 "Now Playing" "$title\n$artist - $album" -i "$previewname"
-}
-
 
 # Funcao para mudar o player
 fchange_player() {
@@ -75,6 +40,7 @@ fchange_player() {
 
     # Atualiza o player selecionado
     PLAYER_SELECIONADO="${players[next_index]}"
+    rm -rf ~/.cache/playerctl_selecionado
     echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
 
     # Notificação ou qualquer outra ação adicional
@@ -82,6 +48,26 @@ fchange_player() {
         fnotify
     fi
 }
+
+# Quando nao houver mais players, coloca no mpd
+list=$(playerctl -l)
+array=($list)
+if [ "${#array[@]}" -le 1 ]; then
+    rm -rf ~/.cache/playerctl_selecionado
+    echo "PLAYER_SELECIONADO=mpd" > ~/.cache/playerctl_selecionado
+fi
+
+# Verifica se o player principal esta tocando, se nao estiver coloca como principal o que estiver tocando
+status="$(playerctl --player=$PLAYER_SELECIONADO status 2>&1)"
+if [ "$status" != "Playing" ]; then
+    for item in "${array[@]}"; do
+        status_item="$(playerctl --player=$item status 2>&1)"
+        if [ "$status_item" = "Playing" ]; then
+            rm -rf ~/.cache/playerctl_selecionado
+            echo "PLAYER_SELECIONADO=$item" > ~/.cache/playerctl_selecionado
+        fi
+    done
+fi
 
 
 # Botões
@@ -96,14 +82,14 @@ case "$BUTTON" in
             playerctl --all-players pause
             playerctl --player=$PLAYER_SELECIONADO play-pause
         fi
-        fnotify
+        ~/.config/suckless/scripts/others/playerctl_songinfo
     ;;
     2)  playerctl --player=$PLAYER_SELECIONADO previous
-        fnotify
+        ~/.config/suckless/scripts/others/playerctl_songinfo
     ;;
     3)
         playerctl --player=$PLAYER_SELECIONADO next
-        fnotify
+        ~/.config/suckless/scripts/others/playerctl_songinfo
     ;;
     4) playerctl --player=$PLAYER_SELECIONADO position 10+ ; sleep 1;;
     5) playerctl --player=$PLAYER_SELECIONADO position 10- ; sleep 1;;
@@ -149,13 +135,10 @@ case "$PLAYER_SELECIONADO" in
         ;;
 esac
 
-
-
 # Verifica status
 if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; then
     [ "$status" = "Paused" ] && icon="$icon_paused"
 
-    #song="$(playerctl $PLAYERS metadata --format="{{title}} - {{artist}}")"
     song="$(playerctl $PLAYERS metadata --format="{{title}}")"
     if [[ ${#song} -gt 25 ]]; then
         song="${song:0:25}..."
