@@ -1,6 +1,4 @@
 #!/bin/bash
-
-# Carrega as cores do tema
 source ~/.theme_selected
 
 # Display an indicator during screen records.
@@ -11,28 +9,33 @@ PID_FILE="/tmp/rec_pid"
 iconCam=""
 iconRec=""
 
-# Checa se a camera esta sendo usada
 if [ "$camera" = "1" ]; then
-	iconCam="^c$COLOR_3^^d^"
+	iconCam="^c#dc322f^^d^"
+else
+    iconCam=""
 fi
 
 # Verificar se há gravação em andamento
-if [[ -f $PID_FILE && -s $PID_FILE ]]; then
+if [ -f $PID_FILE ] && [ -s $PID_FILE ]; then
  	iconRec="^c$COLOR_3^󰑊^d^"
+else
+    iconRec=""
 fi
 
-# Apresenta os resultados
-if [[ -n $iconCam ]] && [[ -n $iconRec ]]; then
+# Mostra o icone conforme a necessidade
+if [ ! -z $iconCam ] && [ ! -z $iconRec ]; then
     echo "$iconCam $iconRec  "
     exit 0
-else
-    if [[ -n $iconCam ]]; then
-        echo "$iconCam  "
-        exit 0
-    else
-        echo "$iconRec  "
-        exit 0
-    fi
+fi
+
+if [ ! -z $iconCam ]; then
+    echo "$iconCam  "
+    exit 0
+fi
+
+if [ ! -z $iconRec ]; then
+    echo "$iconRec  "
+    exit 0
 fi
 
 echo ""

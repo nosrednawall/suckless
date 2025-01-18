@@ -27,7 +27,8 @@ if [[ -f $PID_FILE && -s $PID_FILE ]]; then
         choice=$(printf "Sim\nNão\n" | dmenu -p "Gravação em andamento. Deseja encerrar?")
         if [[ "$choice" == "Sim" ]]; then
             kill -SIGINT "$rec_pid" && rm -f "$PID_FILE"
-            notify-send -h string:fgcolor:$COLOR_3 "󱣪 Gravação encerrada." --icon="/usr/share/icons/ePapirus/24x24/panel/kazam-stopped.svg"
+            notify-send -h string:fgcolor:$COLOR_3 " Gravação encerrada." --icon="/usr/share/icons/ePapirus/24x24/panel/kazam-stopped.svg"
+            kill -45 $(pidof dwmblocks)
         fi
         exit 0
     else
@@ -48,7 +49,7 @@ fi
 # Selecionar tela com o dmenu
 selected_screen=$(printf "%b" "$screens" | dmenu -p "Selecione a tela para gravar:")
 if [[ -z "$selected_screen" ]]; then
-    notify-send -h string:fgcolor:$COLOR_3 "󰈆 Gravação cancelada." --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-error.svg"
+    notify-send -h string:fgcolor:$COLOR_3 " Gravação cancelada." --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-error.svg"
     exit 1
 fi
 
@@ -57,7 +58,7 @@ resolution=$(echo "$selected_screen" | awk -F ' - ' '{print $2}' | awk -F '+' '{
 offset=$(echo "$selected_screen" | awk -F ' - ' '{print $2}' | awk -F '+' '{print $2"+"$3}')
 
 if [[ -z "$resolution" || -z "$offset" ]]; then
-    notify-send -h string:fgcolor:$COLOR_3 "󰶐 Tela inválida selecionada." --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-error.svg"
+    notify-send -h string:fgcolor:$COLOR_3 " Tela inválida selecionada." --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-error.svg"
     exit 1
 fi
 
@@ -65,7 +66,7 @@ fi
 video_file="$OUTPUT_DIR/video_$(date '+%Y-%m-%d_%H-%M-%S').mp4"
 
 # Popup para indicar inicio da gravacao de tela
-notify-send -h string:fgcolor:$COLOR_3 "󰑊  Gravação tela iniciada em $selected_screen" --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-recording.svg"
+notify-send -h string:fgcolor:$COLOR_3 " Gravação tela iniciada em $selected_screen" --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-recording.svg"
 
 # Inicia a gravacao
 ffmpeg -video_size "$resolution" -framerate 30 -f x11grab -i ":0.0+$offset" -f pulse -i default \
@@ -73,4 +74,8 @@ ffmpeg -video_size "$resolution" -framerate 30 -f x11grab -i ":0.0+$offset" -f p
 
 # Salvar PID e monitorar processo
 echo $! > "$PID_FILE"
+
+# Atualiza dwmblocks
+kill -45 $(pidof dwmblocks)
+
 exit 0

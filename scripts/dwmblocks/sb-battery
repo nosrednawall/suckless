@@ -40,4 +40,8 @@ else
 fi
 
 # Saída formatada
-echo "$icon ^d^$battery_level󰏰  "
+if [ $battery_level -gt 97 ]; then
+   echo ""
+else
+    echo "$icon ^d^$battery_level󰏰  "
+fi
