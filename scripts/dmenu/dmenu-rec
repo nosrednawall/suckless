@@ -69,8 +69,19 @@ video_file="$OUTPUT_DIR/video_$(date '+%Y-%m-%d_%H-%M-%S').mp4"
 notify-send -h string:fgcolor:$COLOR_3 " Gravação tela iniciada em $selected_screen" --icon="/usr/share/icons/ePapirus/24x24/panel/simplescreenrecorder-recording.svg"
 
 # Inicia a gravacao
-ffmpeg -video_size "$resolution" -framerate 30 -f x11grab -i ":0.0+$offset" -f pulse -i default \
+#
+# Grava apenas o audio do microfone
+#ffmpeg -video_size "$resolution" -framerate 30 -f x11grab -i ":0.0+$offset" -f pulse -i default \
+#    -c:v h264 -qp 0 -c:a aac "$video_file" &
+
+# Grava audio do microfone e do computador
+ffmpeg -video_size "$resolution" -framerate 30 -f x11grab -i ":0.0+$offset" \
+    -f pulse -i $(pactl get-default-source) \
+    -f pulse -i $(pactl list sources short | grep monitor | awk '{print $2}' | grep $(pactl get-default-sink)) \
+    -filter_complex "[1:a][2:a]amix=inputs=2:duration=longest[aout]" \
+    -map 0:v -map "[aout]" \
     -c:v h264 -qp 0 -c:a aac "$video_file" &
+
 
 # Salvar PID e monitorar processo
 echo $! > "$PID_FILE"
