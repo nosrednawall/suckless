@@ -16,7 +16,7 @@ static const Key keys[] = {
 	/*Modifica o tamanho da tela dos programas*/
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_Return,     riospawn,               {.v = termcmd } },
-	{ MODKEY,                       XK_r,          rioresize,              {0} },
+	{ MODKEY|ControlMask,           XK_r,          rioresize,              {0} },
 
     /*Modimentacao das janelas*/
 	{ MODKEY,              			XK_Right,     focusstack,              {.i = +1 } },
@@ -224,6 +224,9 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
 	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
 	{ MODKEY|ShiftMask,	            XK_o,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
+
+	/* Grava area selecionada */
+	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },

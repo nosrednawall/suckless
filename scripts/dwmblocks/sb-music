@@ -49,9 +49,11 @@ fchange_player() {
 # Quando nao houver mais players, coloca no mpd
 list=$(playerctl -l)
 array=($list)
-if [ "${#array[@]}" -le 1 ]; then
+if [ "${#array[@]}" -le 1 ] && [ "$PLAYER_SELECIONADO" != "mpd" ]; then
     rm -rf ~/.cache/playerctl_selecionado
     echo "PLAYER_SELECIONADO=mpd" > ~/.cache/playerctl_selecionado
+    source ~/.cache/playerctl_selecionado
+
 fi
 
 # Verifica se o player principal esta tocando, se nao estiver coloca como principal o que estiver tocando
@@ -62,6 +64,7 @@ if [ "$status" != "Playing" ]; then
         if [ "$status_item" = "Playing" ]; then
             rm -rf ~/.cache/playerctl_selecionado
             echo "PLAYER_SELECIONADO=$item" > ~/.cache/playerctl_selecionado
+            source ~/.cache/playerctl_selecionado
         fi
     done
 fi
