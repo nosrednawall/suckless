@@ -52,7 +52,7 @@ esac
 
 if [ $status_wifi -eq 1 ]; then
     # nesse caso eu preferi pular o primeiro resultado, e separar dois, depois pego o ultimo
-    wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo|^docker0]" | head -2 | tail -1)
+    wifiname=$(nmcli -t -f NAME connection show --active | grep -E "[^Conexão cabeada 1|^lo|^docker0|^nordlynx]" | head -2 | tail -1)
     ip=$(ip addr show $DEVICE_WIFI  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
     wifi="^c$COLOR_2^$icon ^d^$wifiname  "
 else

@@ -47,7 +47,7 @@ static const char *fonts[]          	 = {
 	"Weather Icons:style=Bold:antialias=true:pixelsize=15"
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/solarized_dark.h"
+#include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

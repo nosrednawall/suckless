@@ -4,6 +4,7 @@
 source ~/.theme_selected
 
 status=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
+status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
 
 if [ $status -eq 1 ]; then
     vpn="^c$COLOR_4^󰢭 ^d^VPN  "
@@ -11,4 +12,11 @@ else
     vpn=""
 fi
 
-echo "$vpn"
+if [ $status_nordvpn -eq 1 ]; then
+    vpn2="^c$COLOR_4^󰢭 ^d^NORDVPN  "
+else
+    vpn2=""
+fi
+
+
+echo "$vpn$vpn2"
