@@ -107,7 +107,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
 	{ MODKEY,                       XK_b,      togglescratch,  {.ui = 2 } },
 	{ MODKEY,                       XK_a,      togglescratch,  {.ui = 3 } },
-	{ MODKEY|ShiftMask,             XK_h,      togglescratch,  {.ui = 4 } },
+	{ MODKEY,                       XK_h,      togglescratch,  {.ui = 4 } },
 	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 5 } },
 	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 6 } },
 	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
@@ -224,6 +224,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
 	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
 	{ MODKEY|ShiftMask,	            XK_o,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
+	{ MODKEY|ShiftMask,	            XK_h,                           spawn,          SHCMD(PATH("dmenu/dmenu-homelab")) },
 
 	/* Grava area selecionada */
 	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+ligar_home_lab="HomeLab Ligar"
+montar_samba="Montar Samba"
+desmontar_samba="Desmontar Samba"
+
+# Variable passed to dmenu
+options="$montar_samba\n$desmontar_samba\n$ligar_home_lab"
+
+chosen="$(echo -e "$options" | dmenu -p "Ações HomeLab " )"
+case $chosen in
+    $montar_samba)
+         SUDO_ASKPASS=/usr/lib/ssh/gnome-ssh-askpass3 sudo ~/.config/suckless/scripts/others/gerenciar_storage.sh montar
+         notify-send -t 3000 "Rede Interna" "Storage montado em /mnt/storage" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
+    ;;
+    $desmontar_samba)
+         SUDO_ASKPASS=/usr/lib/ssh/gnome-ssh-askpass3 sudo ~/.config/suckless/scripts/others/gerenciar_storage.sh desmontar
+         notify-send -t 3000 "Rede Interna" "Storage desmontado" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
+    ;;
+    $ligar_home_lab)
+       #  ssh umbrel@192.168.42.152 "/usr/local/bin/wake.sh"
+         wakeonlan 40:8d:5c:4b:61:7a
+         notify-send -t 3000 "Wake-on-Lan Home Lab" "Enviado sinal para ligar servidor"
+    ;;
+esac
