@@ -77,11 +77,11 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask,              XK_0,          togglegaps,             {0} },
 	{ ControlMask|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
 
-    //{ MODKEY|ControlMask,           XK_z,          showhideclient,         {0} },
-	{ MODKEY|ShiftMask,             XK_c,          killclient,             {0} },
-	{ MODKEY|ShiftMask,             XK_q,          quit,                   {0} }, //exit dwm
-	{ MODKEY|ShiftMask,             XK_r,          quit,                   {1} }, //restart dwm
-    { MODKEY,                       XK_o,          winview,                {0} },
+    { ControlMask|Mod1Mask,             XK_z,          showhideclient,         {0} },
+	{ ControlMask|Mod1Mask,             XK_c,          killclient,             {0} },
+	{ ControlMask|Mod1Mask,             XK_q,          quit,                   {0} }, //exit dwm
+	{ ControlMask|Mod1Mask,             XK_r,          quit,                   {1} }, //restart dwm
+    { ControlMask|Mod1Mask,             XK_o,          winview,                {0} },
 
     //Layouts
 	{ MODKEY,                       XK_F1,      setlayout,      {.v = &layouts[0]} },
@@ -223,7 +223,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_k,                           spawn,          SHCMD(PATH("dmenu/dmenu-close-programs")) },
 	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
 	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
-	{ MODKEY|ShiftMask,	            XK_o,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
+	{ MODKEY|ShiftMask,	            XK_r,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
 	{ MODKEY|ShiftMask,	            XK_h,                           spawn,          SHCMD(PATH("dmenu/dmenu-homelab")) },
 
 	/* Grava area selecionada */
