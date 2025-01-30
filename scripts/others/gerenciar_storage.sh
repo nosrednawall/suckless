@@ -9,7 +9,7 @@ MOUNT_POINT="/mnt/storage"
 #USERNAME="umbrel"
 #PASSWORD="$(pass show samba-local)"
 
-OPTIONS="iocharset=utf8,vers=3.1.1"
+OPTIONS="workgroup=workgroup,iocharset=utf8,uid=1000,gid=1000"
 
 # Função para montar o compartilhamento
 montar() {
