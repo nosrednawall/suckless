@@ -423,7 +423,7 @@ EOF"
     dunstify "Aplicando tema" "Aguarde.." -h int:value:99 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
     # Restart dwm
-    xdotool key Super_L+shift+r
+    xdotool key Control+alt+r
 
     dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
 fi

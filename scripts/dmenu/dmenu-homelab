@@ -20,6 +20,7 @@ case $chosen in
     $ligar_home_lab)
        #  ssh umbrel@192.168.42.152 "/usr/local/bin/wake.sh"
          wakeonlan 40:8d:5c:4b:61:7a
+         40:8d:5c:4b:61:7a
          notify-send -t 3000 "Wake-on-Lan Home Lab" "Enviado sinal para ligar servidor"
     ;;
 esac
