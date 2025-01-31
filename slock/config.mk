@@ -17,8 +17,8 @@ X11LIB = /usr/X11R6/lib
 #NETBSD=-D_NETBSD_SOURCE
 
 # Uncomment for message patch / MESSAGE_PATCH / COLORMESSAGE_PATCH / DWM_LOGO_PATCH
-#XINERAMA=-lXinerama
-#XINERAMAFLAGS = -DXINERAMA
+XINERAMA=-lXinerama
+XINERAMAFLAGS = -DXINERAMA
 
 # Uncomment for pam auth patch / PAMAUTH_PATCH
 #PAM=-lpam

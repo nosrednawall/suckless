@@ -3,4 +3,5 @@ static const char *colorname[NUMCOLS] = {
 	[INPUT] =  "#6272a4",   /* during input */
 	[FAILED] = "#ff5555",   /* wrong password */
 	[CAPS] =   "#bd93f9",   /* CapsLock on */
+	[BLOCKS] = "#50FA7B",   /* key feedback block */
 };

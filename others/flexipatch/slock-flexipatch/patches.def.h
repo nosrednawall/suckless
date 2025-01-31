@@ -27,7 +27,7 @@
  * This patch is a variant of the blur pixelated screen patch and takes precedence over that.
  * https://tools.suckless.org/slock/patches/background-image/
  */
-#define BACKGROUND_IMAGE_PATCH 0
+#define BACKGROUND_IMAGE_PATCH 1
 
 /* This patch sets the lockscreen picture to a blured or pixelated screenshot.
  * This patch depends on the Imlib2 library, uncomment the relevant line in
@@ -72,7 +72,7 @@
  * and the password can be entered then.
  * https://tools.suckless.org/slock/patches/dpms/
  */
-#define DPMS_PATCH 0
+#define DPMS_PATCH 1
 
 /* This patch draws the dwm logo which changes color based on the state.
  * https://tools.suckless.org/slock/patches/dwmlogo/
@@ -82,13 +82,13 @@
 /* This patch allows for a command to be run after a specified number of incorrect attempts.
  * https://tools.suckless.org/slock/patches/failure-command/
  */
-#define FAILURE_COMMAND_PATCH 0
+#define FAILURE_COMMAND_PATCH 1
 
 /* Draws random blocks on the screen to display keypress feedback.
  * https://tools.suckless.org/slock/patches/keypress-feedback/
  * https://patch-diff.githubusercontent.com/raw/phenax/bslock/pull/2.diff
  */
-#define KEYPRESS_FEEDBACK_PATCH 0
+#define KEYPRESS_FEEDBACK_PATCH 1
 
 /* This patch allows media keys to be used while the screen is locked. Allows for volume
  * to be adjusted or to skip to the next song without having to unlock the screen first.

@@ -376,6 +376,10 @@ default-user-image=/var/lib/AccountsService/icons/default.png
 indicators=~a11y;~language;~spacer;~host;~clock;~spacer;~session;~power;
 EOF"
 
+    # Slock
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo rm -rf /usr/share/images/desktop-base/wallpaper-slock
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo ln -s /usr/share/images/desktop-base/$WALLPAPER_LIGHTDM /usr/share/images/desktop-base/wallpaper-slock
+
    # Abre o dunst com o tema certo
     source $HOME/.theme_selected
     killall dunst

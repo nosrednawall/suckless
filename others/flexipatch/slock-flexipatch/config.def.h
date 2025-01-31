@@ -1,6 +1,6 @@
 /* user and group to drop privileges to */
 static const char *user  = "nobody";
-static const char *group = "nogroup"; // use "nobody" for arch
+static const char *group = "nobody"; // use "nobody" for arch
 
 static const char *colorname[NUMCOLS] = {
 	#if DWM_LOGO_PATCH && !BLUR_PIXELATED_SCREEN_PATCH
@@ -28,12 +28,12 @@ static const char * message = "Suckless: Software that sucks less.";
 static const char * text_color = "#ffffff";
 
 /* text size (must be a valid size) */
-static const char * font_name = "6x10";
+static const char * font_name = "6x13";
 #endif // MESSAGE_PATCH | COLOR_MESSAGE_PATCH
 
 #if BACKGROUND_IMAGE_PATCH
 /* Background image path, should be available to the user above */
-static const char * background_image = "";
+static const char * background_image = "/usr/share/images/desktop-base/wallpaper-slock";
 #endif // BACKGROUND_IMAGE_PATCH
 
 #if DWM_LOGO_PATCH
@@ -106,10 +106,10 @@ static const char *command = "doas poweroff";
 #if FAILURE_COMMAND_PATCH
 /* number of failed password attempts until failcommand is executed.
    Set to 0 to disable */
-static const int failcount = 0;
+static const int failcount = 20;
 
 /* command to be executed after [failcount] failed password attempts */
-static const char *failcommand = "shutdown";
+static const char *failcommand = "systemctl poweroff";
 #endif // FAILURE_COMMAND_PATCH
 
 #if SECRET_PASSWORD_PATCH

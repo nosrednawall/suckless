@@ -20,8 +20,10 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
+#include <time.h>
 #include <X11/XKBlib.h>
 #include <X11/XF86keysym.h>
+#include <X11/extensions/dpms.h>
 #ifdef XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif
@@ -30,12 +32,14 @@
 #include "util.h"
 
 char *argv0;
+int failtrack = 0;
 
 enum {
 	INIT,
 	INPUT,
 	FAILED,
 	CAPS,
+	BLOCKS,
 	NUMCOLS
 };
 
@@ -193,6 +197,11 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 				if (running) {
 					XBell(dpy, 100);
 					failure = 1;
+					failtrack++;
+
+					if (failtrack >= failcount && failcount != 0) {
+						system(failcommand);
+					}
 				}
 				explicit_bzero(&passwd, sizeof(passwd));
 				len = 0;
@@ -224,6 +233,9 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 					memcpy(passwd + len, buf, num);
 					len += num;
 				}
+				if (blocks_enabled)
+					for (screen = 0; screen < nscreens; screen++)
+						draw_key_feedback(dpy, locks, screen);
 				break;
 			}
 			color = len ? (caps ? CAPS : INPUT) : (failure || failonclear ? FAILED : INIT);
@@ -382,6 +394,7 @@ main(int argc, char **argv) {
 	const char *hash;
 	Display *dpy;
 	int s, nlocks, nscreens;
+	CARD16 standby, suspend, off;
 	ARGBEGIN {
 	case 'v':
 		puts("slock-"VERSION);
@@ -424,6 +437,9 @@ main(int argc, char **argv) {
 
 	create_lock_image(dpy);
 
+	time_t t;
+	srand((unsigned) time(&t));
+
 	/* check for Xrandr support */
 	rr.active = XRRQueryExtension(dpy, &rr.evbase, &rr.errbase);
 
@@ -444,6 +460,20 @@ main(int argc, char **argv) {
 	if (nlocks != nscreens)
 		return 1;
 
+	/* DPMS magic to disable the monitor */
+	if (!DPMSCapable(dpy))
+		die("slock: DPMSCapable failed\n");
+	if (!DPMSEnable(dpy))
+		die("slock: DPMSEnable failed\n");
+	if (!DPMSGetTimeouts(dpy, &standby, &suspend, &off))
+		die("slock: DPMSGetTimeouts failed\n");
+	if (!standby || !suspend || !off)
+		die("slock: at least one DPMS variable is zero\n");
+	if (!DPMSSetTimeouts(dpy, monitortime, monitortime, monitortime))
+		die("slock: DPMSSetTimeouts failed\n");
+
+	XSync(dpy, 0);
+
 	/* run post-lock command */
 	if (argc > 0) {
 		switch (fork()) {
@@ -460,6 +490,9 @@ main(int argc, char **argv) {
 
 	/* everything is now blank. Wait for the correct password */
 	readpw(dpy, &rr, locks, nscreens, hash);
+	/* reset DPMS values to inital ones */
+	DPMSSetTimeouts(dpy, standby, suspend, off);
+	XSync(dpy, 0);
 
 	for (nlocks = 0, s = 0; s < nscreens; s++) {
 		XFreePixmap(dpy, locks[s]->drawable);
