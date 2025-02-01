@@ -113,7 +113,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
 	{ MODKEY,                       XK_y,      togglescratch,  {.ui = 8 } },
 	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
-//	{ MODKEY,                       XK_t,      togglescratch,  {.ui = 10 } },
 
 	/*Floating*/
 	{ MODKEY,                       XK_space,  setlayout,              {0} },
@@ -233,7 +232,8 @@ static const Key keys[] = {
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
 
 	/*Lancamento Programas*/
-	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
+//	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
+	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) }

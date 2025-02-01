@@ -69,10 +69,11 @@ const char *spcmd4[] = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer
 const char *spcmd5[] = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
 const char *spcmd6[] = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
 const char *spcmd7[] = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
-const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
+//const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
+const char *spcmd8[] = {"/usr/bin/firefoxpwa", "site", "launch", "01JK1V64QDCVRVVYTEWQH2N5BA",  NULL };
 const char *spcmd9[] = {"st", "-n", "spytfzf", "-g", "100x34", "-e", "ytfzf", "--max-threads=4", "--thumbnail-quality=maxres", "--features=hd", "-tl", "--ii=https://yt.securityops.co", NULL };
 const char *spcmd10[] = {"qalculate-gtk", NULL };
-const char *spcmd11[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=cifhbcnohmdccbgoicgdjpfamggdegmo", NULL };
+
 static Sp scratchpads[] = {
    /* name          cmd  */
 	{"spterm",      		spcmd1},
@@ -82,10 +83,9 @@ static Sp scratchpads[] = {
 	{"sptop",       		spcmd5},
 	{"spnmtui",     		spcmd6},
 	{"spncmpcpp",   		spcmd7},
-	{"whatsapp-chrome",   	spcmd8},
+	{"whatsapp-firefox",	spcmd8},
 	{"spytfzf" ,		   	spcmd9},
 	{"qalculate-gtk",		spcmd10},
-	{"ms-teams",     		spcmd11},
 };
 
 /* Tags
@@ -167,10 +167,9 @@ static const Rule rules[] = {
 	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
 	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
 	RULE(.instance = "spncmpcpp",  .tags = SPTAG(6), .isfloating = 1)
-	RULE(.instance = "hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
+	RULE(.instance = "FFPWA-01JK1V64QDCVRVVYTEWQH2N5BA",  .tags = SPTAG(7), .isfloating = 1)
 	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
 	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
-	RULE(.instance = "sp_cifhbcnohmdccbgoicgdjpfamggdegmo",  .tags = SPTAG(10), .isfloating = 1)
 	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 
