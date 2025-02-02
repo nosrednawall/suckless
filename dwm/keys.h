@@ -105,7 +105,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } }, //nao uso
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
-	{ MODKEY,                       XK_b,      togglescratch,  {.ui = 2 } },
+	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 2 } },
 	{ MODKEY,                       XK_a,      togglescratch,  {.ui = 3 } },
 	{ MODKEY,                       XK_h,      togglescratch,  {.ui = 4 } },
 	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 5 } },
@@ -230,6 +230,7 @@ static const Key keys[] = {
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
+	{ MODKEY,						XK_b,	  						spawn,          SHCMD(PATH("dwm/dwm-bitwarden-rofi")) },
 
 	/*Lancamento Programas*/
 //	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
