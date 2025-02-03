@@ -3,7 +3,7 @@
 # Opcoes
 start="Iniciar"
 skip="Pular etapa"
-pause="Pausar Timer"
+pause="Pausar/Retomar Timer"
 reset="Reseta o timer"
 finish="Finalizar"
 
