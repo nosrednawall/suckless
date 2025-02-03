@@ -10,6 +10,7 @@ case $BUTTON in
     4) potctl -i ;;
     5) potctl -d ;;
 	6) setsid -f st -e emacs -nw "$0" ;;
+    8) potctl -s ;;
     9) potctl -I ;;
     10) potctl -D ;;
 esac
