@@ -224,6 +224,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
 	{ MODKEY|ShiftMask,	            XK_r,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
 	{ MODKEY|ShiftMask,	            XK_h,                           spawn,          SHCMD(PATH("dmenu/dmenu-homelab")) },
+	{ MODKEY|ShiftMask,	            XK_g,                           spawn,          SHCMD(PATH("dmenu/dmenu-pomodoro")) },
 
 	/* Grava area selecionada */
 	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },
