@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
 # Carrega as cores do tema
 source ~/.theme_selected
 
@@ -42,8 +51,19 @@ output="$layout_atual"
 [[ ! -z "$caps" ]] && output="$output $caps"
 [[ ! -z "$num" ]] && output="$output $num"
 
-# Exibe o resultado
-echo "$output  "
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        echo "$output  "
+    ;;
+esac
 
 # Garante que o script finalize com sucesso
 exit 0

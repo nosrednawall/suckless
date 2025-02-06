@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega tema
 source ~/.theme_selected
 
 # Funções clicáveis
@@ -130,8 +140,20 @@ case $WEATHER_ICON_CODE in
         ;;
 esac
 
-if [ "$WEATHER" != "" ]; then
-    echo "^c$WEATHER_HEX^$WEATHER_ICON^d^ $WEATHER_TEMP°C $WEATHER_DESC  "
-else
-    echo "Erro ao obter clima"
-fi
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        if [ "$WEATHER" != "" ]; then
+            echo "^c$WEATHER_HEX^$WEATHER_ICON^d^ $WEATHER_TEMP°C $WEATHER_DESC  "
+        else
+            echo "Erro ao obter clima"
+        fi
+    ;;
+esac

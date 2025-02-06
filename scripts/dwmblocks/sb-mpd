@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
 # Carrega as cores do tema
 source ~/.theme_selected
 
@@ -41,5 +50,17 @@ fi
 # Limita o título da música a 30 caracteres
 #[[ ${song} -gt 20 ]] && song="${song:0:20}..."
 
-# Exibe o ícone e a música
-echo "$icon ^d^$song  "
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        # Exibe o ícone e a música
+        echo "$icon ^d^$song  "
+    ;;
+    *)
+        # Exibe o ícone e a música
+        echo "$icon ^d^$song  "
+    ;;
+esac

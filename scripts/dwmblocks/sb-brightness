@@ -1,5 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega o tema
 source ~/.theme_selected
 
 # funcoes cliclaveis
@@ -12,4 +22,14 @@ esac
 brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
 brilhoIcone="^c$COLOR_2^󰃠 ^d^$brilho󰏰"
 
-echo "$brilhoIcone  "
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    *)
+        echo "$brilhoIcone  "
+    ;;
+esac
+
+exit 0

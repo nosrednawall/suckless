@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
 # Carrega as cores do tema
 source ~/.theme_selected
 
@@ -31,9 +40,20 @@ fi
 
 icon="^c$COLOR_5^📦^d^"
 
-if [ "$updates" -eq 0 ]; then
-    echo "$icon 0  "
-else
-    echo "$icon $updates  "
-    notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis."
-fi
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        if [ "$updates" -eq 0 ]; then
+            echo "$icon 0  "
+        else
+            echo "$icon $updates  "
+            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis."
+        fi
+    ;;
+esac

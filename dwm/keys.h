@@ -211,7 +211,7 @@ static const Key keys[] = {
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
 	{ ControlMask|Mod1Mask,         XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-pass" )) },
-	{ MODKEY|ShiftMask,             XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker" )) },
+//	{ MODKEY|ShiftMask,             XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker" )) },
 	{ MODKEY|ShiftMask,			    XK_w,	     					spawn,			SHCMD(PATH("dmenu/dmenu-controle-monitor" )) },
 	{ MODKEY|ShiftMask,             XK_a,                           spawn,          SHCMD(PATH("dmenu/dmenu-controle-som")) },
 	{ MODKEY|ShiftMask,             XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },
@@ -225,6 +225,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_r,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
 	{ MODKEY|ShiftMask,	            XK_h,                           spawn,          SHCMD(PATH("dmenu/dmenu-homelab")) },
 	{ MODKEY|ShiftMask,	            XK_g,                           spawn,          SHCMD(PATH("dmenu/dmenu-pomodoro")) },
+	{ MODKEY|ShiftMask,	            XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-dwmblocks-operation")) },
 
 	/* Grava area selecionada */
 	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },

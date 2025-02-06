@@ -2,6 +2,15 @@
 
 PLAYER_SELECIONADO=""
 
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
 # Carrega as cores do tema
 source ~/.theme_selected
 source ~/.cache/playerctl_selecionado
@@ -113,30 +122,34 @@ case "$PLAYER_SELECIONADO" in
         icon="^c$COLOR_3^"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
+        format_player="{{title}}"
         ;;
 
     "mpv")
         icon="^c$COLOR_3^"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
+        format_player="{{title}}"
         ;;
 
     "mpd")
         icon="^c$COLOR_6^󰝚"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
+        format_player="{{title}} - {{artist}}"
         ;;
 
-    "spotu]be.instance2")
+    "spotube.instance2")
         icon="^c$COLOR_6^󰝚"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
+        format_player="{{title}} - {{artist}}"
         ;;
-
     *)
-        icon="^c$COLOR_6^󰝚"
+        icon="^c$COLOR_3^"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
+        format_player="{{title}} - {{artist}}"
         ;;
 esac
 
@@ -144,14 +157,26 @@ esac
 if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; then
     [ "$status" = "Paused" ] && icon="$icon_paused"
 
-    song="$(playerctl $PLAYERS metadata --format="{{title}} - {{artist}}")"
+    song="$(playerctl $PLAYERS metadata --format=$format_player)"
     if [[ ${#song} -gt 25 ]]; then
         song="${song:0:25}..."
     fi
 fi
 
-if [[ -z "$song" ]]; then
-    echo "$icon_close^d^  "
-else
-    echo "$icon ^d^$song  "
-fi
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        if [[ -z "$song" ]]; then
+            echo "$icon_close^d^  "
+        else
+            echo "$icon ^d^$song  "
+        fi
+    ;;
+esac

@@ -36,12 +36,33 @@ phase() {
 
 # Função principal
 main() {
+
+    # Carrega informacoes do modo de operacao
+    arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+    if [ -f $arquivo_modo ]; then
+        source $arquivo_modo
+    else
+        OPERATION_MODE="COMPLETO"
+    fi
+
     local pos=$(position)
     local phasename=$(phase $pos)
 
-    # Força o uso do ponto como separador decimal
-    LC_NUMERIC=C printf "%s" "$phasename  "
+    # Apresentacao condicionada
+    case "$OPERATION_MODE" in
+        "MINIMO")
+            echo ""
+            ;;
+        "MEDIO")
+            echo ""
+            ;;
+        *)
+            # Força o uso do ponto como separador decimal
+            # LC_NUMERIC=C printf "%s" "$phasename  "
+            echo ""
+            ;;
+    esac
 }
 
-# Executa o script
 main
