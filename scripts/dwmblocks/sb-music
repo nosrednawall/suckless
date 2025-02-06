@@ -144,7 +144,7 @@ esac
 if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; then
     [ "$status" = "Paused" ] && icon="$icon_paused"
 
-    song="$(playerctl $PLAYERS metadata --format="{{title}}")"
+    song="$(playerctl $PLAYERS metadata --format="{{title}} - {{artist}}")"
     if [[ ${#song} -gt 25 ]]; then
         song="${song:0:25}..."
     fi

@@ -1,7 +1,9 @@
 #include "include/utils.h"
 #include "include/timer.h"
 
-static const char * notification_format = "herbe '%t' '%d' &> /dev/null & disown";
+//static const char * notification_format = "herbe '%t' '%d' &> /dev/null & disown";
+static const char * notification_format = "notify-send '%t' '%d' &> /dev/null & disown";
+
 
 // Set to {NULL, NULL} If you want program to have no notifications on event
 static const notif_t pomodoro_notif     = {.title = "Pomodoro",     .body = "Time to focus!"};
