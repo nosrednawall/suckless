@@ -170,7 +170,11 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     "MEDIO")
-        echo ""
+        if [[ -z "$song" ]]; then
+            echo "$icon_close^d^  "
+        else
+            echo "$icon ^d^$song  "
+        fi
     ;;
     *)
         if [[ -z "$song" ]]; then

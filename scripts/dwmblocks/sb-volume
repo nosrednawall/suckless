@@ -44,6 +44,9 @@ case "$OPERATION_MODE" in
     "MINIMO")
         echo ""
     ;;
+    "MEDIO")
+        echo ""
+    ;;
     *)
         echo "$iconVolume  "
     ;;
