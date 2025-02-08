@@ -73,6 +73,8 @@ const char *spcmd7[] = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp"
 const char *spcmd8[] = {"/usr/bin/firefoxpwa", "site", "launch", "01JK1V64QDCVRVVYTEWQH2N5BA",  NULL };
 const char *spcmd9[] = {"st", "-n", "spytfzf", "-g", "100x34", "-e", "ytfzf", "--max-threads=4", "--thumbnail-quality=maxres", "--features=hd", "-tl", "--ii=https://yt.securityops.co", NULL };
 const char *spcmd10[] = {"qalculate-gtk", NULL };
+const char *spcmd11[] = {"st", "-n", "spcalcurse", "-g", "150x50", "-e", "calcurse", NULL };
+const char *spcmd12[] = {"st", "-n", "spc3", "-g", "150x50", "-e", "c3", NULL };
 
 static Sp scratchpads[] = {
    /* name          cmd  */
@@ -86,6 +88,8 @@ static Sp scratchpads[] = {
 	{"whatsapp-firefox",	spcmd8},
 	{"spytfzf" ,		   	spcmd9},
 	{"qalculate-gtk",		spcmd10},
+	{"spcalcurse",     		spcmd11},
+	{"spc3",        		spcmd12},
 };
 
 /* Tags
@@ -170,6 +174,8 @@ static const Rule rules[] = {
 	RULE(.instance = "FFPWA-01JK1V64QDCVRVVYTEWQH2N5BA",  .tags = SPTAG(7), .isfloating = 1)
 	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
 	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
+	RULE(.instance = "spcalcurse",  .tags = SPTAG(10), .isfloating = 1)
+	RULE(.instance = "spc3",  .tags = SPTAG(11), .isfloating = 1)
 	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 

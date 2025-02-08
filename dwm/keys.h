@@ -113,6 +113,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
 	{ MODKEY,                       XK_y,      togglescratch,  {.ui = 8 } },
 	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
+	{ MODKEY,                       XK_t,      togglescratch,  {.ui = 10 } },
+	{ MODKEY,                       XK_g,      togglescratch,  {.ui = 11 } },
 
 	/*Floating*/
 	{ MODKEY,                       XK_space,  setlayout,      {.v = &layouts[5]} },
