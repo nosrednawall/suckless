@@ -61,6 +61,6 @@ case "$OPERATION_MODE" in
 		echo "^c$COLOR_5^ ^d^$(date +'%d/%m/%y')  "
 	;;
 	*)
-		echo "^c$COLOR_5^ ^d^$(date +'%d/%m/%Y')  "
+		echo "^c$COLOR_5^ ^d^$(date +'%d/%m/%y')  "
     ;;
 esac

@@ -56,7 +56,12 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$icon ^d^$battery_level󰏰  "
+        # Saída formatada
+        if [ $battery_level -gt 97 ]; then
+            echo ""
+        else
+            echo "$icon ^d^$battery_level󰏰  "
+        fi
     ;;
 esac
 

@@ -14,17 +14,25 @@ source ~/.theme_selected
 
 status=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
 status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
+status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
 
 if [ $status -eq 1 ]; then
-    vpn="^c$COLOR_4^󰢭 ^d^VPN  "
+    vpn="^c$COLOR_4^󰢭 ^d^WVPN  "
 else
     vpn=""
 fi
 
 if [ $status_nordvpn -eq 1 ]; then
-    vpn2="^c$COLOR_4^󰢭 ^d^NORDVPN  "
+    vpn2="^c$COLOR_4^󰢭 ^d^NVPN  "
 else
     vpn2=""
+fi
+
+
+if [ $status_tailscale -eq 1 ]; then
+    vpn3=""
+else
+    vpn3="^c$COLOR_4^󰢭 ^d^TVPN  "
 fi
 
 
@@ -34,6 +42,6 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$vpn$vpn2"
+        echo "$vpn$vpn2$vpn3"
     ;;
 esac

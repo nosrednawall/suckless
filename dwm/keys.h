@@ -115,7 +115,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
 
 	/*Floating*/
-	{ MODKEY,                       XK_space,  setlayout,              {0} },
+	{ MODKEY,                       XK_space,  setlayout,      {.v = &layouts[5]} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating,         {0} },
 
 	/*Da zoom nas janelas*/
