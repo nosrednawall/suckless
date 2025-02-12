@@ -153,7 +153,7 @@ case "$OPERATION_MODE" in
         if [ "$WEATHER" != "" ]; then
             echo "^c$WEATHER_HEX^$WEATHER_ICON^d^ $WEATHER_TEMP°C $WEATHER_DESC  "
         else
-            echo "Erro ao obter clima"
+            echo ""
         fi
     ;;
 esac

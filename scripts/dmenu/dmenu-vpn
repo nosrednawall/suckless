@@ -32,7 +32,8 @@ case $chosen in
          SUDO_ASKPASS=/usr/lib/ssh/gnome-ssh-askpass3 sudo tailscale up
          notify-send -t 3000 "VPN Tailscale" "VPN Tailscale Ligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
          kill -46 $(pidof dwmblocks)
-    ;;
+         x-www-browser "umbrel.tail65e7c9.ts.net"
+         ;;
     $tailscale_down)
          SUDO_ASKPASS=/usr/lib/ssh/gnome-ssh-askpass3 sudo tailscale down
          notify-send -t 3000 "VPN Tailscale" "VPN Tailscale Desligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"

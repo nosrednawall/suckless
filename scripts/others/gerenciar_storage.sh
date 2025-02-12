@@ -1,7 +1,19 @@
 #!/bin/bash
 
+# Verifica se o tailscale esta aberto
+status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
+if [ $status_tailscale -eq 1 ]; then
+
+    # Se estiver utiliza o endereco IPV4 do servidor dentro do tailsscale
+    SERVER="100.71.160.87"
+else
+
+    # Se nao usa o endereco local
+    SERVER="192.168.42.198"
+fi
+
+
 # Configurações
-SERVER="192.168.42.198"
 SHARE="storage"
 MOUNT_POINT="/mnt/storage"
 
@@ -9,7 +21,11 @@ MOUNT_POINT="/mnt/storage"
 #USERNAME="umbrel"
 #PASSWORD="$(pass show samba-local)"
 
+# Porta padrao, lembre-se que no umbrel a porta padrao é 446, altere no umbrel ou no seu sistema o que lhe for mais coveniente
+# 445
+
 OPTIONS="workgroup=workgroup,iocharset=utf8,uid=1000,gid=1000"
+
 
 # Função para montar o compartilhamento
 montar() {
@@ -25,6 +41,7 @@ montar() {
     else
         echo "Montando o compartilhamento..."
         #sudo mount -t cifs "//$SERVER/$SHARE" "$MOUNT_POINT" -o username=$USERNAME,password=$PASSWORD,$OPTIONS
+
         sudo mount -t cifs "//$SERVER/$SHARE" "$MOUNT_POINT" -o credentials=/etc/samba/credentials/share,$OPTIONS
 
         # Verificar se a montagem foi bem-sucedida
