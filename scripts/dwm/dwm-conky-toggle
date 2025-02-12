@@ -11,7 +11,8 @@ else
     # Se não estiver rodando, inicia o Conky
     if [ $COLOR_MODE == "Dark" ]; then
         conky -c ~/.dotfiles/.config/conky/conky_atalhos_dark.conf &> /dev/null &
-        conky -c ~/.dotfiles/.config/conky/Kurhah/Kurhah.conf &> /dev/null &
+        #conky -c ~/.dotfiles/.config/conky/Kurhah/Kurhah.conf &> /dev/null &
+        conky -c ~/.dotfiles/.config/conky/conky_emacs.conf &> /dev/null &
     else
         conky -c ~/.dotfiles/.config/conky/conky_atalhos_light.conf &> /dev/null &
         conky -c ~/.dotfiles/.config/conky/Kurhah/Kurhah-light.conf &> /dev/null &
