@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Configurações (ajuste conforme necessário)
+WALLPAPER_DIR="$HOME/.wallpapers/"      # Pasta base para wallpapers
+
+# Selecionar pasta usando dmenu
+selected_dir=$(find "$WALLPAPER_DIR" -type d 2>/dev/null | dmenu -l 15 -p "󰉓 Selecione a pasta:")
+
+# Verificar se foi selecionada uma pasta
+[ -z "$selected_dir" ] && exit
+
+# Define o papel de parede usando feh
+feh --recursive --bg-fill --randomize $selected_dir &

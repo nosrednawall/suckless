@@ -47,7 +47,6 @@ dist: clean
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
-	rm -f ${DESTDIR}${PREFIX}/bin/dwm
 	cp -f dwm ${DESTDIR}${PREFIX}/bin
 ifdef YAJLLIBS
 	cp -f dwm-msg ${DESTDIR}${PREFIX}/bin

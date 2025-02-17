@@ -51,13 +51,13 @@ static const Key keys[] = {
 //	{ Mod1Mask,                     XK_Tab,        alttabstart,            {0} },
 
 	/*Muda as tags*/
-	{ ControlMask|Mod1Mask,         XK_t,          togglealttag,           {0} },
+//	{ ControlMask|Mod1Mask,         XK_t,          togglealttag,           {0} },
 
 	/*Renomeia a tag*/
 //	{ MODKEY|ShiftMask,             XK_n,          nametag,                {0} },
 
 	/*Reorganiza as Tags*/
-	{ MODKEY|ControlMask,           XK_r,          reorganizetags,         {0} },
+//	{ MODKEY|ControlMask,           XK_r,          reorganizetags,         {0} },
 
 	/*Gaps*/
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
@@ -133,8 +133,6 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask|Mod1Mask,  XK_Left,        togglehorizontalmax,  {0} },
 	{ MODKEY|ControlMask|Mod1Mask,  XK_space,       togglemax,            {0} },
 
-
-
     /*Mudar de monitor*/
 	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
 	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
@@ -160,7 +158,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_equal,      cyclelayout,            {.i = +1 } }, //new
 
 	/*Full screen falso*/
-//	{ MODKEY,                       XK_y,          togglefullscreen,       {0} },
+	//{ MODKEY|ShiftMask,                       XK_y,          togglefullscreen,       {0} },
+	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
 
 	TAGKEYS(                        XK_1,                                  0)
 	TAGKEYS(                        XK_2,                                  1)
@@ -213,7 +212,7 @@ static const Key keys[] = {
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
 	{ ControlMask|Mod1Mask,         XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-pass" )) },
-//	{ MODKEY|ShiftMask,             XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker" )) },
+	{ MODKEY|ShiftMask,             XK_i,                           spawn,          SHCMD(PATH("dmenu/dmenu-wallpaper" )) },
 	{ MODKEY|ShiftMask,			    XK_w,	     					spawn,			SHCMD(PATH("dmenu/dmenu-controle-monitor" )) },
 	{ MODKEY|ShiftMask,             XK_a,                           spawn,          SHCMD(PATH("dmenu/dmenu-controle-som")) },
 	{ MODKEY|ShiftMask,             XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },

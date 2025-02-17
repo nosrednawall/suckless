@@ -198,9 +198,9 @@ setclientfields(Client *c)
 		(c->mon->num & 0x7)
 		| (c->idx & 0xFF) << 3
 		| (c->isfloating & 0x1) << 11
-		| (c->ispermanent & 0x1) << 12
 		| (c->isterminal & 0x1) << 13
 		| (c->noswallow & 0x1) << 14
+		| (c->issticky & 0x1) << 16
 	};
 	XChangeProperty(dpy, c->win, clientatom[ClientFields], XA_CARDINAL, 32, PropModeReplace, (unsigned char *)data, 1);
 }
@@ -221,9 +221,9 @@ getclientfields(Client *c)
 		}
 	c->idx = (fields >> 3) & 0xFF;
 	c->isfloating = (fields >> 11) & 0x1;
-	c->ispermanent = (fields >> 12) & 0x1;
 	c->isterminal = (fields >> 13) & 0x1;
 	c->noswallow = (fields >> 14) & 0x1;
+	c->issticky = (fields >> 16) & 0x1;
 	return 1;
 }
 

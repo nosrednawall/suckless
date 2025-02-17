@@ -47,7 +47,7 @@ static const char *fonts[]          	 = {
 	"Weather Icons:style=Bold:antialias=true:pixelsize=15"
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/gruvbox_dark.h"
+#include "themes/pywal_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -179,6 +179,12 @@ static const Rule rules[] = {
 	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 
+static const MonitorRule monrules[] = {
+	/* monitor  tag   layout  mfact  nmaster  showbar  topbar */
+	{  1,       -1,   2,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
+	{  -1,      -1,   0,      -1,    -1,      -1,      -1     }, // default
+};
+
 /* Bar rules allow you to configure what is shown where on the bar, as well as
  * introducing your own bar modules.
  *
@@ -198,11 +204,11 @@ static const BarRule barrules[] = {
 	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
 	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_statuscmd,         NULL,                    "status2d" },
-	{  1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
+	{ -1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
 };
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -222,12 +228,12 @@ static const int scrollargs[][2] = {
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-    { "[]=",      tile },    /* first entry is default */
+	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 	{ "TTT",      bstack },
 	{ "===",      bstackhoriz },
-    { "|M|",      centeredmaster },
+	{ "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
 	{ "|||",      col },
 	{ "[D]",      deck },
@@ -246,6 +252,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      combotag,       {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
+	{ MODKEY|Mod1Mask|ShiftMask,    KEY,      swaptags,       {.ui = 1 << TAG} }, \
 	{ MODKEY|Mod1Mask,              KEY,      tagnextmon,     {.ui = 1 << TAG} }, \
 	{ MODKEY|Mod1Mask|ControlMask,  KEY,      tagprevmon,     {.ui = 1 << TAG} },
 
@@ -297,7 +304,9 @@ static const Signal signals[] = {
 	{ "viewex",                  viewex },
 	{ "toggleview",              toggleview },
 	{ "showhideclient",          showhideclient },
+	{ "shifttag",                shifttag },
 	{ "shiftview",               shiftview },
+	{ "togglesticky",            togglesticky },
 	{ "cyclelayout",             cyclelayout },
 	{ "toggleviewex",            toggleviewex },
 	{ "tag",                     tag },
@@ -307,17 +316,16 @@ static const Signal signals[] = {
 	{ "toggletagex",             toggletagex },
 	{ "tagallmon",               tagallmon },
 	{ "tagswapmon",              tagswapmon},
-	{ "togglealttag",            togglealttag },
 	{ "togglehorizontalmax",     togglehorizontalmax },
 	{ "toggleverticalmax",       toggleverticalmax },
 	{ "togglemax",               togglemax },
 	{ "togglescratch",           togglescratch },
 	{ "killclient",              killclient },
 	{ "winview",                 winview },
+	{ "xrdb",                    xrdb },
 	{ "tagnextmonex",            tagnextmonex },
 	{ "tagprevmonex",            tagprevmonex },
 	{ "quit",                    quit },
 	{ "setlayout",               setlayout },
 	{ "setlayoutex",             setlayoutex },
 };
-

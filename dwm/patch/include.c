@@ -3,7 +3,6 @@
 #include "bar_tagicons.c"
 #include "bar.c"
 
-#include "bar_alternativetags.c"
 #include "bar_dwmblocks.c"
 #include "combo.c"
 #include "bar_ltsymbol.c"
@@ -24,6 +23,7 @@
 #include "attachx.c"
 #include "autostart.c"
 #include "cfacts.c"
+#include "cmdcustomize.c"
 #include "cyclelayouts.c"
 #include "dragcfact.c"
 #include "dwmc.c"
@@ -31,16 +31,18 @@
 #include "movestack.c"
 #include "pertag.c"
 #include "placemouse.c"
-#include "reorganizetags.c"
 #include "restartsig.c"
 #include "riodraw.c"
 #include "scratchpad.c"
 #include "shift.c"
+#include "shifttag.c"
 #include "shiftview.c"
 #ifdef XINERAMA
 #include "sortscreens.c"
 #endif // XINERAMA
+#include "sticky.c"
 #include "swallow.c"
+#include "swaptags.c"
 #include "tagallmon.c"
 #include "tagothermonitor.c"
 #include "tagswapmon.c"
@@ -48,6 +50,7 @@
 #include "toggletopbar.c"
 #include "vanitygaps.c"
 #include "winview.c"
+#include "xrdb.c"
 #include "dragmfact.c"
 #include "seamless_restart.c"
 /* Layouts */
