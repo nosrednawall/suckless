@@ -15,6 +15,11 @@ fi
 
 # Define o papel de parede usando feh
 # feh --recursive --bg-fill --randomize ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ &
+if [ "${THEME_MODE}" = "Pywal"  ]; then
+    feh --recursive --bg-fill $(grep -oP "'\K[^']+(?=')" ~/.fehbg) &
+else
+    feh --recursive --bg-fill --randomize $(find ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | shuf -n 1) &
+fi
 
 # Abre o dwmblocks
 killall dwmblocks
