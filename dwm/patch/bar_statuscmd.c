@@ -5,6 +5,12 @@ click_statuscmd(Bar *bar, Arg *arg, BarArg *a)
 }
 
 int
+click_statuscmd_es(Bar *bar, Arg *arg, BarArg *a)
+{
+	return click_statuscmd_text(arg, a->x, rawestext);
+}
+
+int
 click_statuscmd_text(Arg *arg, int rel_x, char *text)
 {
 	int i = -1;

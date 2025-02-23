@@ -16,13 +16,24 @@ createpreview(Monitor *m)
 
 	XSetWindowAttributes wa = {
 		.override_redirect = True,
+		#if BAR_ALPHA_PATCH
+		.background_pixel = 0,
+		.border_pixel = 0,
+		.colormap = cmap,
+		#else
 		.background_pixmap = ParentRelative,
+		#endif // BAR_ALPHA_PATCH
 		.event_mask = ButtonPressMask|ExposureMask
 	};
 
 	m->tagwin = XCreateWindow(dpy, root, m->wx, m->bar->by + bh, m->mw / scalepreview, m->mh / scalepreview, 0,
+		#if BAR_ALPHA_PATCH
+		depth, CopyFromParent, visual,
+		CWOverrideRedirect|CWBackPixel|CWBorderPixel|CWColormap|CWEventMask, &wa
+		#else
 		DefaultDepth(dpy, screen), CopyFromParent, DefaultVisual(dpy, screen),
 		CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa
+		#endif // BAR_ALPHA_PATCH
 	);
 	XDefineCursor(dpy, m->tagwin, cursor[CurNormal]->cursor);
 	XMapRaised(dpy, m->tagwin);
@@ -78,10 +89,20 @@ tagpreviewswitchtag(void)
 				image = imlib_create_image(sw, sh);
 				imlib_context_set_image(image);
 				imlib_context_set_display(dpy);
+				#if BAR_ALPHA_PATCH
+				imlib_image_set_has_alpha(1);
+				imlib_context_set_blend(0);
+				imlib_context_set_visual(visual);
+				#else
 				imlib_context_set_visual(DefaultVisual(dpy, screen));
+				#endif // BAR_ALPHA_PATCH
 				imlib_context_set_drawable(root);
 				imlib_copy_drawable_to_image(0, m->mx, m->my, m->mw ,m->mh, 0, 0, 1);
+				#if BAR_ALPHA_PATCH
+				m->tagmap[i] = XCreatePixmap(dpy, m->tagwin, m->mw / scalepreview, m->mh / scalepreview, depth);
+				#else
 				m->tagmap[i] = XCreatePixmap(dpy, m->tagwin, m->mw / scalepreview, m->mh / scalepreview, DefaultDepth(dpy, screen));
+				#endif // BAR_ALPHA_PATCH
 				imlib_context_set_drawable(m->tagmap[i]);
 				imlib_render_image_part_on_drawable_at_size(0, 0, m->mw, m->mh, 0, 0, m->mw / scalepreview, m->mh / scalepreview);
 				imlib_free_image();

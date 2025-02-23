@@ -266,9 +266,6 @@ struct Monitor {
 	Bar *bar;
 	const Layout *lt[2];
 	Pertag *pertag;
-	Window tagwin;
-	int previewshow;
-	Pixmap tagmap[NUMTAGS];
 };
 
 typedef struct {
@@ -406,6 +403,8 @@ static void zoom(const Arg *arg);
 static const char broken[] = "broken";
 static char stext[1024];
 static char rawstext[1024];
+static char estext[1024];
+static char rawestext[1024];
 
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
@@ -774,11 +773,6 @@ cleanupmon(Monitor *mon)
 		free(bar);
 	}
 	free(mon->pertag);
-	for (size_t i = 0; i < NUMTAGS; i++)
-		if (mon->tagmap[i])
-			XFreePixmap(dpy, mon->tagmap[i]);
-	XUnmapWindow(dpy, mon->tagwin);
-	XDestroyWindow(dpy, mon->tagwin);
 	free(mon);
 }
 
@@ -887,7 +881,6 @@ configurenotify(XEvent *e)
 						resizeclient(c, m->mx, m->my, m->mw, m->mh);
 				for (bar = m->bar; bar; bar = bar->next)
 					XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
-				createpreview(m);
 			}
 			arrange(NULL);
 			focus(NULL);
@@ -1694,9 +1687,6 @@ motionnotify(XEvent *e)
 		return;
 	}
 
-	if (selmon->previewshow != 0)
-		hidetagpreview(selmon);
-
 	if (ev->window != root)
 		return;
 	if ((m = recttomon(ev->x_root, ev->y_root, 1, 1)) != mon && mon) {
@@ -2499,7 +2489,6 @@ toggleview(const Arg *arg)
 	int i;
 
 	if (newtagset) {
-		tagpreviewswitchtag();
 		selmon->tagset[selmon->seltags] = newtagset;
 
 		if (newtagset == ~SPTAGMASK)
@@ -2616,7 +2605,7 @@ updatebars(void)
 	XSetWindowAttributes wa = {
 		.override_redirect = True,
 		.background_pixmap = ParentRelative,
-		.event_mask = ButtonPressMask|ExposureMask|PointerMotionMask
+		.event_mask = ButtonPressMask|ExposureMask
 	};
 	XClassHint ch = {"dwm", "dwm"};
 	for (m = mons; m; m = m->next) {
@@ -2836,10 +2825,20 @@ void
 updatestatus(void)
 {
 	Monitor *m;
-	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext)))
+	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext))) {
 		strcpy(stext, "dwm-"VERSION);
-	else
+		estext[0] = '\0';
+	} else {
+		char *e = strchr(rawstext, statussep);
+		if (e) {
+			*e = '\0'; e++;
+			strncpy(rawestext, e, sizeof(estext) - 1);
+			copyvalidchars(estext, rawestext);
+		} else {
+			estext[0] = '\0';
+		}
 		copyvalidchars(stext, rawstext);
+	}
 	for (m = mons; m; m = m->next)
 		drawbar(m);
 }
@@ -2888,7 +2887,6 @@ view(const Arg *arg)
 		view(&((Arg) { .ui = 0 }));
 		return;
 	}
-	tagpreviewswitchtag();
 	if (!arg->ui) {
 		selmon->seltags += 1;
 		if (selmon->seltags == LENGTH(selmon->tagset))

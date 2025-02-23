@@ -117,7 +117,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_g,      togglescratch,  {.ui = 11 } },
 
 	/*Floating*/
-	{ MODKEY,                       XK_space,  setlayout,      {.v = &layouts[5]} },
+	{ MODKEY,                       XK_space,  setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating,         {0} },
 
 	/*Da zoom nas janelas*/
@@ -227,6 +227,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_h,                           spawn,          SHCMD(PATH("dmenu/dmenu-homelab")) },
 	{ MODKEY|ShiftMask,	            XK_g,                           spawn,          SHCMD(PATH("dmenu/dmenu-pomodoro")) },
 	{ MODKEY|ShiftMask,	            XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-dwmblocks-operation")) },
+	{ MODKEY|ShiftMask,	            XK_c,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker")) },
 
 	/* Grava area selecionada */
 	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },

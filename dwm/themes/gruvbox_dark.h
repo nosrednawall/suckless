@@ -49,4 +49,5 @@ static char urgbordercolor[]             = "#cc241d";  // Border color (bordas)
 static char urgfloatcolor[]              = "#458588";  // Float color (janelas flutuantes)
 
 static char c000000[]                    = "#000000"; // Placeholder value
+
 #endif // GRUVBOX_DARK_H_

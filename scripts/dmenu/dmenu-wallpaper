@@ -10,4 +10,5 @@ selected_dir=$(find "$WALLPAPER_DIR" -type d 2>/dev/null | dmenu -l 15 -p "󰉓 
 [ -z "$selected_dir" ] && exit
 
 # Define o papel de parede usando feh
-feh --recursive --bg-fill --randomize $selected_dir &
+#feh --recursive --bg-fill --randomize $selected_dir &
+feh --recursive --bg-fill --randomize $(find $selected_dir -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | shuf -n 1) &

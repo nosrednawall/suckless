@@ -7,9 +7,23 @@ width_status2d(Bar *bar, BarArg *a)
 }
 
 int
+width_status2d_es(Bar *bar, BarArg *a)
+{
+	int width;
+	width = status2dtextlength(rawestext);
+	return width ? width + lrpad : 0;
+}
+
+int
 draw_status2d(Bar *bar, BarArg *a)
 {
 	return drawstatusbar(a, rawstext);
+}
+
+int
+draw_status2d_es(Bar *bar, BarArg *a)
+{
+	return drawstatusbar(a, rawestext);
 }
 
 int

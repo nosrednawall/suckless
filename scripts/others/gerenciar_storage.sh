@@ -3,13 +3,11 @@
 # Verifica se o tailscale esta aberto
 status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
 if [ $status_tailscale -eq 1 ]; then
-
-    # Se estiver utiliza o endereco IPV4 do servidor dentro do tailsscale
-    SERVER="100.71.160.87"
-else
-
     # Se nao usa o endereco local
     SERVER="192.168.42.198"
+else
+# Se estiver utiliza o endereco IPV4 do servidor dentro do tailsscale
+    SERVER="100.71.160.87"
 fi
 
 
@@ -41,7 +39,6 @@ montar() {
     else
         echo "Montando o compartilhamento..."
         #sudo mount -t cifs "//$SERVER/$SHARE" "$MOUNT_POINT" -o username=$USERNAME,password=$PASSWORD,$OPTIONS
-
         sudo mount -t cifs "//$SERVER/$SHARE" "$MOUNT_POINT" -o credentials=/etc/samba/credentials/share,$OPTIONS
 
         # Verificar se a montagem foi bem-sucedida
