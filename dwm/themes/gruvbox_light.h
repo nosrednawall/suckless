@@ -6,7 +6,7 @@ static char normfloatcolor[]     = "#d3869b";  // Float color (janelas flutuante
 // Cores selecionadas (selecionado)
 static char selfgcolor[]         = "#282828";  // Foreground color (texto)
 static char selbgcolor[]         = "#fabd2f";  // Background color (fundo)
-static char selbordercolor[]     = "#fabd2f";  // Border color (bordas)
+static char selbordercolor[]     = "#cc241d";  // Border color (bordas)
 static char selfloatcolor[]      = "#fabd2f";  // Float color (janelas flutuantes)
 
 // Cores do título normal
@@ -44,5 +44,10 @@ static char urgfgcolor[]         = "#fbf1c7";  // Foreground color (texto)
 static char urgbgcolor[]         = "#cc241d";  // Background color (fundo)
 static char urgbordercolor[]     = "#cc241d";  // Border color (bordas)
 static char urgfloatcolor[]      = "#d3869b";  // Float color (janelas flutuantes)
+
+static char tagsunusedfgcolor[]          = "#928374"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#fbf1c7"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#d5c4a1"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#d3869b"; // Cor de flutuação para tags não utilizadas
 
 static char c000000[]                    = "#000000"; // Placeholder value

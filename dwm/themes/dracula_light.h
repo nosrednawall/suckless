@@ -43,4 +43,9 @@ static char urgfloatcolor[]              = "#FF79C6"; // cor da borda de janelas
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
+static char tagsunusedfgcolor[]          = "#BBBFC5"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#F8F8F2"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#BBBFC5"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#FF79C6"; // Cor de flutuação para tags não utilizadas
+
 #endif // DRACULA_LIGHT_H_

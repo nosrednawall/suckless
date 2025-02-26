@@ -24,6 +24,7 @@
 #include "cfacts.c"
 #include "cmdcustomize.c"
 #include "cyclelayouts.c"
+#include "decorationhints.c"
 #include "dragcfact.c"
 #include "dwmc.c"
 #include "maximize.c"

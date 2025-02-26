@@ -41,4 +41,10 @@ static char urgbordercolor[]             = "#D20F39"; // Borda urgente
 static char urgfloatcolor[]              = "#7287FD"; // Float urgente
 
 static char c000000[]                    = "#000000"; // Placeholder value
+
+static char tagsunusedfgcolor[]          = "#6C6F93"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#EFF1F5"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#B4BE82"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#7287FD"; // Cor de flutuação para tags não utilizadas
+
 #endif // CATPPUCIN_LATTE_H_

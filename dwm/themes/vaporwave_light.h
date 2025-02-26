@@ -43,4 +43,9 @@ static char urgfloatcolor[]              = "#ff66cc"; // cor da borda de janelas
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
+static char tagsunusedfgcolor[]          = "#b3b3cc"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#f2f2f2"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#b3b3cc"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#ff66cc"; // Cor de flutuação para tags não utilizadas
+
 #endif // VAPORWAVE_LIGHT_H_

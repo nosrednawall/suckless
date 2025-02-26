@@ -1,9 +1,9 @@
 static const char *colors[SchemeLast][2] = {
 /*                            fg         bg       */
-[SchemeNorm]          = { "#2C323E", "#f1f1f3" }, // Fonte normal, fundo normal
-[SchemeSel]           = { "#2C323E", "#566F90" }, // Fonte selecionada, fundo selecionado
-[SchemeBorder]        = { "#f1f1f3", "#2C323E" }, // Borda normal, borda selecionada
-[SchemeSelHighlight]  = { "#f1f1f3", "#566F90" }, // Destaque de seleção
-[SchemeNormHighlight] = { "#2C323E", "#f1f1f3" }, // Destaque normal
-[SchemeOut]           = { "#2C323E", "#688AB0" }, // Destaque de saída
+[SchemeNorm]          = { "#d3d6d6", "#1a1a0d" }, // Fonte normal, fundo normal
+[SchemeSel]           = { "#d3d6d6", "#7B8369" }, // Fonte selecionada, fundo selecionado
+[SchemeBorder]        = { "#1a1a0d", "#d3d6d6" }, // Borda normal, borda selecionada
+[SchemeSelHighlight]  = { "#1a1a0d", "#7B8369" }, // Destaque de seleção
+[SchemeNormHighlight] = { "#d3d6d6", "#1a1a0d" }, // Destaque normal
+[SchemeOut]           = { "#d3d6d6", "#A6AA9D" }, // Destaque de saída
 };

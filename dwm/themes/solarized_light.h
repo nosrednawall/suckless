@@ -41,3 +41,8 @@ static char urgbordercolor[]             = "#dc322f";  // red
 static char urgfloatcolor[]              = "#268bd2";  // blue
 
 static char c000000[]                    = "#000000"; // Placeholder value
+
+static char tagsunusedfgcolor[]          = "#93a1a1"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#eee8d5"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#eee8d5"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#268bd2"; // Cor de flutuação para tags não utilizadas

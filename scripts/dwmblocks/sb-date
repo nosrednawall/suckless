@@ -47,7 +47,8 @@ esac
 
 day=$(date "+%d")
 #data=$(date +'%d/%m/%Y')
-data=$(date +"%a %d %b de %Y" | sed 's/  / /g')
+#data=$(date +"%a %d %b de %Y" | sed 's/  / /g')
+data=$(date +"%a %d %b" | sed 's/  / /g')
 #data=$(date +'%d/%m')
 image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
 

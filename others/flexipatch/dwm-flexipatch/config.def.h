@@ -212,6 +212,11 @@ static char urgbgcolor[]                 = "#222222";
 static char urgbordercolor[]             = "#ff0000";
 static char urgfloatcolor[]              = "#db8fd9";
 
+static char tagsunusedfgcolor[]        = "#666666"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]        = "#222222"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]    = "#444444"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]     = "#db8fd9"; // Cor de flutuação para tags não utilizadas
+
 #if RENAMED_SCRATCHPADS_PATCH
 static char scratchselfgcolor[]          = "#FFF7D4";
 static char scratchselbgcolor[]          = "#77547E";
@@ -340,6 +345,7 @@ static char *colors[][ColCount] = {
 	[SchemeTitleSel]     = { titleselfgcolor,  titleselbgcolor,  titleselbordercolor,  titleselfloatcolor },
 	[SchemeTagsNorm]     = { tagsnormfgcolor,  tagsnormbgcolor,  tagsnormbordercolor,  tagsnormfloatcolor },
 	[SchemeTagsSel]      = { tagsselfgcolor,   tagsselbgcolor,   tagsselbordercolor,   tagsselfloatcolor },
+    [SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
 	[SchemeHidNorm]      = { hidnormfgcolor,   hidnormbgcolor,   c000000,              c000000 },
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },

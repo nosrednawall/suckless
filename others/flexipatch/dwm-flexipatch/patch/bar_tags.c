@@ -22,49 +22,41 @@ width_tags(Bar *bar, BarArg *a)
 int
 draw_tags(Bar *bar, BarArg *a)
 {
-	int invert;
-	int w, x = a->x;
-	unsigned int i, occ = 0, urg = 0;
-	char *icon;
-	Client *c;
-	Monitor *m = bar->mon;
+    int invert;
+    int w, x = a->x;
+    unsigned int i, occ = 0, urg = 0;
+    char *icon;
+    Client *c;
+    Monitor *m = bar->mon;
 
-	for (c = m->clients; c; c = c->next) {
-		#if BAR_HIDEVACANTTAGS_PATCH
-		occ |= c->tags == 255 ? 0 : c->tags;
-		#else
-		occ |= c->tags;
-		#endif // BAR_HIDEVACANTTAGS_PATCH
-		if (c->isurgent)
-			urg |= c->tags;
-	}
-	for (i = 0; i < NUMTAGS; i++) {
-		#if BAR_HIDEVACANTTAGS_PATCH
-		/* do not draw vacant tags */
-		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
-			continue;
-		#endif // BAR_HIDEVACANTTAGS_PATCH
+    for (c = m->clients; c; c = c->next) {
+        occ |= c->tags;
+        if (c->isurgent)
+            urg |= c->tags;
+    }
+    for (i = 0; i < NUMTAGS; i++) {
+        icon = tagicon(bar->mon, i);
+        invert = 0;
+        w = TEXTW(icon);
+        if (!(occ & 1 << i) && !(m->tagset[m->seltags] & 1 << i)) {
+            drw_setscheme(drw, scheme[SchemeTagsUnused]); // Aplica o esquema para tags não usadas
+        } else {
+            drw_setscheme(drw, scheme[
+                m->tagset[m->seltags] & 1 << i
+                ? SchemeTagsSel
+                : urg & 1 << i
+                ? SchemeUrg
+                : SchemeTagsNorm
+            ]);
+        }
+        drw_text(drw, x, a->y, w, a->h, lrpad / 2, icon, invert, False);
+        drawindicator(m, NULL, occ, x, a->y, w, a->h, i, -1, invert, tagindicatortype);
+        if (ulineall || m->tagset[m->seltags] & 1 << i)
+            drw_rect(drw, x + ulinepad, bh - ulinestroke - ulinevoffset, w - (ulinepad * 2), ulinestroke, 1, 0);
+        x += w;
+    }
 
-		icon = tagicon(bar->mon, i);
-		invert = 0;
-		w = TEXTW(icon);
-		drw_setscheme(drw, scheme[
-			m->tagset[m->seltags] & 1 << i
-			? SchemeTagsSel
-			: urg & 1 << i
-			? SchemeUrg
-			: SchemeTagsNorm
-		]);
-		drw_text(drw, x, a->y, w, a->h, lrpad / 2, icon, invert, False);
-		drawindicator(m, NULL, occ, x, a->y, w, a->h, i, -1, invert, tagindicatortype);
-		#if BAR_UNDERLINETAGS_PATCH
-		if (ulineall || m->tagset[m->seltags] & 1 << i)
-			drw_rect(drw, x + ulinepad, bh - ulinestroke - ulinevoffset, w - (ulinepad * 2), ulinestroke, 1, 0);
-		#endif // BAR_UNDERLINETAGS_PATCH
-		x += w;
-	}
-
-	return 1;
+    return 1;
 }
 
 int

@@ -12,12 +12,33 @@ fi
 # Carrega as cores do tema
 source ~/.theme_selected
 
-# funcoes cliclaveis
-case $BUTTON in
-    1) xsetroot -name "fsignal:togglescratch ui 4" ;;
-    3) st -n "htop"  -e "htop"  &>/dev/null & ;;
-    6) setsid -f st -e emacs -nw "$0" ;;
-esac
+
+# Try different fan sensors
+FAN_SPEED=$(sensors | awk '/^fan|^cpu_fan/ {print $2" "$3}')
+[ -z "$FAN_SPEED" ] && FAN_SPEED="N/A"
+
+# Pega Temperatura wifi
+WIFI_TEMP=$(sensors | grep 'iwlwifi_1-virtual-0' -A 2 | grep 'temp1' | awk '{print $2}')
+[ -z "$WIFI_TEMP" ] && WIFI_TEMP="N/A"
+
+NVME_PCI_0200_TEMP=$(sensors | grep 'nvme-pci-0200' -A 2 | grep 'Composite' | awk '{print $2}')
+[ -z "$NVME_PCI_0200_TEMP" ] && NVME_PCI_0200_TEMP="N/A"
+
+NVME_PCI_0300_TEMP=$(sensors | grep 'nvme-pci-0300' -A 2 | grep 'Composite' | awk '{print $2}')
+[ -z "$NVME_PCI_0300_TEMP" ] && NVME_PCI_0300_TEMP="N/A"
+
+
+# Try different GPU temperature sensors (AMD and NVIDIA), if not found, return N/A
+if command -v nvidia-smi >/dev/null 2>&1; then
+    # NVIDIA GPU
+    GPU_TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader)
+else
+    # AMD GPU
+    GPU_TEMP=$(sensors | awk '/^edge|^junction/ {gsub(/\+/,""); gsub(/\..*/,"",$2); print $2}')
+fi
+
+[ -z "$GPU_TEMP" ] && GPU_TEMP="N/A"
+
 
 # Captura a temperatura do CPU (verifica se "sensors" retorna resultado)
 tempCpu=$(sensors 2>/dev/null | awk '/edge/ {print $2}' | sed 's/+//')
@@ -66,8 +87,18 @@ case "$OPERATION_MODE" in
         echo "$icon^d^$usageCpu󰏰  "
     ;;
     *)
-        echo "$icon^d^$usageCpu󰏰 $tempCpu  "
+        echo "$icon^d^$usageCpu󰏰  "
     ;;
 esac
+
+
+# funcoes cliclaveis
+case $BUTTON in
+    1) xsetroot -name "fsignal:togglescratch ui 4" ;;
+    #3) st -n "htop"  -e "htop"  &>/dev/null & ;;
+    3) notify-send -t 10000 -h string:bgcolor:$COLOR Stats "CPU:$usageCpu󰏰 $tempCpu\n\nGPU: $GPU_TEMP°C\n\nWIFI: $WIFI_TEMP\n\nSSD1: $NVME_PCI_0200_TEMP\n\nSSD2: $NVME_PCI_0300_TEMP" ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+esac
+
 
 exit 0

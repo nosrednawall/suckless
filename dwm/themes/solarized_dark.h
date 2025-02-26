@@ -41,4 +41,10 @@ static char urgbordercolor[]             = "#dc322f";
 static char urgfloatcolor[]              = "#268bd2";
 
 static char c000000[]                    = "#000000"; // Placeholder value
+
+static char tagsunusedfgcolor[]          = "#586e75"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#002b36"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#073642"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#268bd2"; // Cor de flutuação para tags não utilizadas
+
 #endif // SOLARIZED_DARK_H_

@@ -148,6 +148,7 @@ enum {
 	SchemeHidNorm,
 	SchemeHidSel,
 	SchemeUrg,
+	SchemeTagsUnused,
 	#if RENAMED_SCRATCHPADS_PATCH
 	SchemeScratchSel,
 	SchemeScratchNorm,

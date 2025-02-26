@@ -1,14 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Configurações (ajuste conforme necessário)
-WALLPAPER_DIR="$HOME/.wallpapers/"      # Pasta base para wallpapers
+# Diretório de wallpapers
+DIR="$HOME/.wallpapers"
 
-# Selecionar pasta usando dmenu
-selected_dir=$(find "$WALLPAPER_DIR" -type d 2>/dev/null | dmenu -l 15 -p "󰉓 Selecione a pasta:")
+# Verifica se o diretório existe
+if [ ! -d "$DIR" ]; then
+    echo "Diretório de wallpapers não encontrado: $DIR"
+    exit 1
+fi
 
-# Verificar se foi selecionada uma pasta
-[ -z "$selected_dir" ] && exit
+# Usa o sxiv para selecionar wallpapers e salva a seleção no arquivo temporário
+walls=$(sxiv -t -o -r -g 1800x650 "$DIR" | xargs)
 
-# Define o papel de parede usando feh
-#feh --recursive --bg-fill --randomize $selected_dir &
-feh --recursive --bg-fill --randomize $(find $selected_dir -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | shuf -n 1) &
+# Verifica se alguma imagem foi selecionada
+if [ -z "$walls" ]; then
+    echo "Nenhuma imagem selecionada."
+    exit 0
+fi
+
+echo "$walls"
+
+# Aplica o(s) wallpaper(s) selecionado(s) com o feh
+$HOME/.config/suckless/scripts/others/tema-aplicar "pywal" $walls

@@ -42,4 +42,10 @@ static char urgbordercolor[]             = "#E78284"; // Borda urgente
 static char urgfloatcolor[]              = "#F2D5CF"; // Float urgente
 static char c000000[]                    = "#000000"; // Placeholder value
 
+static char tagsunusedfgcolor[]          = "#51576D"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#303446"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#51576D"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#F2D5CF"; // Cor de flutuação para tags não utilizadas
+
+
 #endif // CATPPUCIN_FRAPPE_H_
