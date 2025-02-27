@@ -12,13 +12,6 @@ fi
 # Carrega o tema
 source ~/.theme_selected
 
-
-# Funções clicáveis
-case $BUTTON in
-    1) bash ~/.dotfiles/.local/bin/dmenu/dmenu-powertop ;;
-    6) setsid -f st -e emacs -nw "$0" ;;
-esac
-
 # Identifica os dispositivos de bateria e carregador
 DEVICE_CARREGADOR=$(ls /sys/class/power_supply/ | grep -m1 "ACAD")
 DEVICE_BATERIA=$(ls /sys/class/power_supply/ | grep -m1 "BAT")
@@ -33,6 +26,24 @@ fi
 # Verifica se a bateria existe e obtém o nível de carga
 if [[ -n "$DEVICE_BATERIA" ]] && [[ -e "/sys/class/power_supply/$DEVICE_BATERIA/capacity" ]]; then
     battery_level=$(cat "/sys/class/power_supply/$DEVICE_BATERIA/capacity")
+    BATTERY_PATH="/sys/class/power_supply/$DEVICE_BATERIA"
+
+    # Lê as informações da bateria
+    CHARGE_FULL_DESIGN=$(cat "$BATTERY_PATH/charge_full_design")  # Capacidade total da bateria nova (µAh)
+    CHARGE_FULL=$(cat "$BATTERY_PATH/charge_full")                # Capacidade total atual da bateria (µAh)
+    VOLTAGE_NOW=$(cat "$BATTERY_PATH/voltage_now")               # Tensão atual (µV)
+    CAPACITY=$(cat "$BATTERY_PATH/capacity")                     # Capacidade atual (em porcentagem)
+    STATUS=$(cat "$BATTERY_PATH/status")                         # Status da bateria (Carregando, Descarregando, etc.)
+
+    # Converte µAh para mAh e µV para V
+    CHARGE_FULL_DESIGN_mAh=$(echo "scale=2; $CHARGE_FULL_DESIGN / 1000" | bc)  # Capacidade total nova (mAh)
+    CHARGE_FULL_mAh=$(echo "scale=2; $CHARGE_FULL / 1000" | bc)                # Capacidade total atual (mAh)
+    VOLTAGE=$(echo "scale=2; $VOLTAGE_NOW / 1000000" | bc)                    # Tensão atual (V)
+
+    # Calcula a perda da bateria
+    CHARGE_LOST_mAh=$(echo "scale=2; ($CHARGE_FULL_DESIGN - $CHARGE_FULL) / 1000" | bc)  # Perda em mAh
+    CHARGE_LOST_PERCENT=$(echo "scale=2; ($CHARGE_LOST_mAh / $CHARGE_FULL_DESIGN_mAh) * 100" | bc)  # Perda em porcentagem
+
 else
     battery_level=0 # Assume 0% se a bateria não for detectada
 fi
@@ -58,11 +69,32 @@ case "$OPERATION_MODE" in
     *)
         # Saída formatada
         if [ $battery_level -gt 97 ]; then
-            echo ""
+            echo "$icon ^d^$battery_level󰏰  "
         else
             echo "$icon ^d^$battery_level󰏰  "
         fi
     ;;
+esac
+
+# Funções clicáveis
+case $BUTTON in
+    1)
+
+# Formata a mensagem
+MESSAGE="Status da Bateria:
+- Capacidade Atual: $CAPACITY%
+- Status: $STATUS
+
+Informações da Bateria:
+- Tensão Atual: $VOLTAGE V
+- Capacidade Total Nova: $CHARGE_FULL_DESIGN_mAh mAh
+- Capacidade Total Atual: $CHARGE_FULL_mAh mAh
+- Capacidade Perdida: $CHARGE_LOST_mAh mAh ($CHARGE_LOST_PERCENT%)"
+
+        notify-send -i "$ICON" "Informações da Bateria" "$MESSAGE"
+    ;;
+    3) bash ~/.dotfiles/.local/bin/dmenu/dmenu-powertop ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
 exit 0

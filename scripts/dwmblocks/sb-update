@@ -12,13 +12,6 @@ fi
 # Carrega as cores do tema
 source ~/.theme_selected
 
-# funcoes cliclaveis
-case $BUTTON in
-    1) st -n "updates" -e sh -c "sudo pacman -Syuv ; kill -36 $(pidof dwmblocks)" & ;;
-    3) x-www-browser "https://flathub.org/" ;;
-    6) setsid -f st -e emacs -nw "$0" ;;
-esac
-
 # Lê o nome da distribuição a partir do arquivo /etc/os-release
 if [ -f /etc/os-release ]; then
     . /etc/os-release
@@ -45,15 +38,19 @@ case "$OPERATION_MODE" in
     "MINIMO")
         echo ""
     ;;
-    "MEDIO")
-        echo ""
-    ;;
     *)
         if [ "$updates" -eq 0 ]; then
             echo "$icon 0  "
         else
             echo "$icon $updates  "
-            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis."
+            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis.\n$(checkupdates)"
         fi
     ;;
+esac
+
+# funcoes cliclaveis
+case $BUTTON in
+    1) st -n "updates" -e sh -c "sudo pacman -Syuv ; kill -36 $(pidof dwmblocks)" & ;;
+    3) x-www-browser "https://flathub.org/" ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
 esac

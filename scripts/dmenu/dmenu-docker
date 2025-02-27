@@ -16,12 +16,13 @@ list_docker_folders() {
 check_container_status() {
     local folder="$1"
     local status=$(docker-compose -f "$folder/docker-compose.yml" ps --status running | wc -l)
+    local port=$(docker-compose -f "$folder/docker-compose.yml" ps --status running | awk '{print $11}' | grep -oP '\d+->\d+' | awk -F'->' '{print "http://localhost:" $1}' | tr '\n' ' ')
 
     # O 1 é referente à primeira linha do retorno do comando, que é o cabeçalho, logo se tiver apenas 1 o serviço não está funcionando
     if [[ $status -eq 1 ]]; then
-        echo "DOWN $folder"
+        echo "DOWN $(basename $folder)"
     else
-        echo "UP $folder"
+        echo "UP $(basename $folder) $port"
     fi
 }
 
@@ -37,6 +38,7 @@ selected=$(generate_menu | dmenu -l 10 -p "Docker Compose:" | awk '{print $2}')
 
 # Verifica se uma seleção foi feita
 if [[ -n "$selected" ]]; then
+    selected="$BASE_DIR/$selected"
     # Verifica o status do contêiner selecionado
     status=$(docker-compose -f "$selected/docker-compose.yml" ps --status running | wc -l)
 

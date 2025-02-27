@@ -32,7 +32,7 @@ URL="http://api.openweathermap.org/data/2.5/weather?q=${CITY_ENCODED}&appid=${AP
 
 # Requisição e processamento
 WEATHER=$(curl -sf "$URL")
-
+#echo $WEATHER
 # Separa a informacao recebida em variaveis
 WEATHER_DESC=$(echo "$WEATHER" | jq -r ".weather[0].description")
 WEATHER_TEMP=$(echo "$WEATHER" | jq ".main.temp" | cut -d "." -f 1)
@@ -140,6 +140,35 @@ case $WEATHER_ICON_CODE in
         ;;
 esac
 
+# Extrair informações do JSON usando jq
+CITY=$(echo "$WEATHER" | jq -r '.name')
+DESCRIPTION=$(echo "$WEATHER" | jq -r '.weather[0].description')
+TEMP=$(echo "$WEATHER" | jq -r '.main.temp')
+FEELS_LIKE=$(echo "$WEATHER" | jq -r '.main.feels_like')
+HUMIDITY=$(echo "$WEATHER" | jq -r '.main.humidity')
+WIND_SPEED=$(echo "$WEATHER" | jq -r '.wind.speed')
+PRESSURE=$(echo "$WEATHER" | jq -r '.main.pressure')
+
+# Lógica para identificar se a pressão é alta ou baixa
+if (( $(echo "$PRESSURE > 1013.25" | bc -l) )); then
+    PRESSURE_STATUS="alta"
+else
+    PRESSURE_STATUS="baixa"
+fi
+
+# Formatar a mensagem
+MESSAGE="Previsão do tempo para $CITY:
+- Condição: $DESCRIPTION
+- Temperatura: $TEMP°C (Sensação: $FEELS_LIKE°C)
+- Umidade: $HUMIDITY%
+- Vento: $WIND_SPEED m/s
+- Pressão Atmosférica: $PRESSURE hPa ($PRESSURE_STATUS)"
+
+# funcoes cliclaveis
+case $BUTTON in
+    1) notify-send "Previsão do Tempo" "$MESSAGE" ;;
+	6) setsid -f st -e emacs -nw "$0" ;;
+esac
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
