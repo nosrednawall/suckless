@@ -48,11 +48,10 @@ static const char statussep              = ';'; /* separator between status bars
 static const char *fonts[]          	 = {
 	"Fira Mono:pixelsize=15:antialias=true:autohint=true",
 	"Symbols Nerd Font:style=Bold:antialias=true:pixelsize=15",
-	"FontAwesome:style=Bold:antialias=true:pixelsize=15",
-	"Weather Icons:style=Bold:antialias=true:pixelsize=15"
+	"Font Awesome 6 Free Solid:style=Bold:pixelsize=15",
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/pywal_dark.h"
+#include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
     /*                       fg                bg                border                float */

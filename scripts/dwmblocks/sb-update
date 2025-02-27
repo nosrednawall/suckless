@@ -43,7 +43,7 @@ case "$OPERATION_MODE" in
             echo "$icon 0  "
         else
             echo "$icon $updates  "
-            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis.\n$(checkupdates)"
+            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis, que são: \n$(checkupdates | sed 's/^/\t/')"
         fi
     ;;
 esac

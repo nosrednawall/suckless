@@ -2,7 +2,6 @@
 
 # Carrega informacoes do modo de operacao
 arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
 if [ -f $arquivo_modo ]; then
     source $arquivo_modo
 else
@@ -12,17 +11,37 @@ fi
 # Carrega tema
 source ~/.theme_selected
 
-# Funções clicáveis
-case $BUTTON in
-    1) kill -50 $(pidof dwmblocks) ;;
-    6) setsid -f st -e emacs -nw "$0" ;;
-esac
-
 # Configurações do script
 API_KEY="8b05d62206f459e1d298cbe5844d7d87"
-CITY="São%20José%20dos%20Pinhais,%20BR"
 UNITS="metric"  # Use 'imperial' para Fahrenheit
 LANG="pt_br"    # Idioma da descrição do tempo
+
+# Função para obter a localização atual (latitude e longitude)
+get_location() {
+    LOCATION=$(curl -sf "http://ip-api.com/json/")
+    if [ -z "$LOCATION" ]; then
+        echo "Erro: Não foi possível obter a localização."
+        exit 1
+    fi
+    LAT=$(echo "$LOCATION" | jq -r '.lat')
+    LON=$(echo "$LOCATION" | jq -r '.lon')
+}
+
+# Função para obter o nome da cidade com base nas coordenadas
+get_city_name() {
+    CITY_DATA=$(curl -sf "http://api.openweathermap.org/geo/1.0/reverse?lat=${LAT}&lon=${LON}&limit=1&appid=${API_KEY}")
+    if [ -z "$CITY_DATA" ]; then
+        echo "Erro: Não foi possível obter o nome da cidade."
+        exit 1
+    fi
+    CITY=$(echo "$CITY_DATA" | jq -r '.[0].name')
+    COUNTRY=$(echo "$CITY_DATA" | jq -r '.[0].country')
+    CITY="${CITY},${COUNTRY}"
+}
+
+# Obtém a localização e o nome da cidade
+get_location
+get_city_name
 
 # Substitui espaços por %20 na cidade
 CITY_ENCODED=$(echo "$CITY" | sed 's/ /%20/g')
@@ -32,7 +51,7 @@ URL="http://api.openweathermap.org/data/2.5/weather?q=${CITY_ENCODED}&appid=${AP
 
 # Requisição e processamento
 WEATHER=$(curl -sf "$URL")
-#echo $WEATHER
+
 # Separa a informacao recebida em variaveis
 WEATHER_DESC=$(echo "$WEATHER" | jq -r ".weather[0].description")
 WEATHER_TEMP=$(echo "$WEATHER" | jq ".main.temp" | cut -d "." -f 1)
@@ -54,7 +73,7 @@ case $WEATHER_ICON_CODE in
         ;;
     "02d")
         #WEATHER_ICON=""
-        WEATHER_ICON="󰖕"
+        WEATHER_ICON=""
         #WEATHER_HEX="#adadff"
         WEATHER_HEX="$COLOR_6"
         ;;
@@ -94,7 +113,7 @@ case $WEATHER_ICON_CODE in
         WEATHER_HEX="$COLOR_5"
         ;;
     "10d")
-        WEATHER_ICON=""
+        WEATHER_ICON=""
         #WEATHER_HEX="#6b95ff"
         WEATHER_HEX="$COLOR_5"
         ;;
@@ -130,6 +149,16 @@ case $WEATHER_ICON_CODE in
         ;;
     "40n")
         WEATHER_ICON=""
+        #WEATHER_HEX="#84afdb"
+        WEATHER_HEX="$COLOR_5"
+        ;;
+    "50d")
+        WEATHER_ICON=""
+        #WEATHER_HEX="#84afdb"
+        WEATHER_HEX="$COLOR_5"
+        ;;
+    "50n")
+        WEATHER_ICON=""
         #WEATHER_HEX="#84afdb"
         WEATHER_HEX="$COLOR_5"
         ;;
