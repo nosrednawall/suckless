@@ -2,6 +2,7 @@
 
 # Configuration options
 wallpaper_dir="$HOME/.wallpapers"
+json_dir="~/.cache/wal/colors.json" #pywal
 
 if [ $# -eq 0 ]; then
     echo "Uso: $0 {dark|light}"
@@ -24,11 +25,17 @@ dunstify "Aplicando tema" "Gerando schema de cores com Pywal.." -h int:value:10 
 # Gera o scheme das cores
 if [ "${COLOR_MODE}" = "dark" ];then
 
-    wal -i "$filename"
+    #wal -i "$filename"
+    wpg -a "$filename" ; wpg -s  "$filename" 2>/dev/null
+    sleep 2
+    feh --bg-fill $filename 2>/dev/null
 else
-    wal -l -i "$filename"
+    #wal -l -i "$filename"
+    wpg -a -L "$filename" ; wpg -s -L "$filename" 2>/dev/null
+    sleep 2
+    feh --bg-fill $filename 2>/dev/null
 fi
-
+dunstify "Aplicando tema" "Gerando arquivos de temas com o schema gerado..." -h int:value:10  -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 # Carrega os valores das cores
 pywal_color0="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
 pywal_color1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"
