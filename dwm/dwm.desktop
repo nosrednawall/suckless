@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Name=Dwm
 Comment=Dynamic window manager
-Exec=dwm
-Icon=dwm
+Exec=/usr/local/bin/dwm
+Icon=/usr/local/share/pixmaps/dwm.png
 Type=XSession
