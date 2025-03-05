@@ -166,11 +166,11 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_3,                                  2)
 	TAGKEYS(                        XK_4,                                  3)
 	TAGKEYS(                        XK_5,                                  4)
-	TAGKEYS(                        XK_6,                                  5)
+/*	TAGKEYS(                        XK_6,                                  5)
 	TAGKEYS(                        XK_7,                                  6)
 	TAGKEYS(                        XK_8,                                  7)
 	TAGKEYS(                        XK_9,                                  8)
-
+*/
 	/*Meus atalhos*/
 	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
 	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/dwm-capslock-indicator")) },

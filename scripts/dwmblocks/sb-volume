@@ -28,14 +28,14 @@ muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -E 'sim|yes' -ic)
 volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
 
 if [ "$muteVol" -eq 1 ]; then
-    iconVolume="^c#4A5947^󰸈 $volume󰏰"
+    iconVolume="^c#4A5947^󰸈 $volume"
 else
     if [ "$volume" -le 30 ]; then
-	iconVolume="^c$COLOR_6^󰕿 ^d^$volume󰏰"
+	iconVolume="^c$COLOR_6^󰕿 ^d^$volume"
     elif [ "$volume" -le 60 ]; then
-	iconVolume="^c$COLOR_6^󰖀 ^d^$volume󰏰"
+	iconVolume="^c$COLOR_6^󰖀 ^d^$volume"
     elif [ "$volume" -ge 61 ]; then
-	iconVolume="^c$COLOR_6^󰕾 ^d^$volume󰏰"
+	iconVolume="^c$COLOR_6^󰕾 ^d^$volume"
     fi
 fi
 

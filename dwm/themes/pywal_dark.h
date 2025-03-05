@@ -1,46 +1,46 @@
-static char normfgcolor[]                = "#dedddd";
-static char normbgcolor[]                = "#191c10";
-static char normbordercolor[]            = "#191c10";
-static char normfloatcolor[]             = "#191c10";
+static char normfgcolor[]                = "#d2d9c4";
+static char normbgcolor[]                = "#121212";
+static char normbordercolor[]            = "#121212";
+static char normfloatcolor[]             = "#121212";
 
-static char selfgcolor[]                 = "#dedddd";
-static char selbgcolor[]                 = "#98999E";
-static char selbordercolor[]             = "#dedddd";
-static char selfloatcolor[]              = "#98999E";
+static char selfgcolor[]                 = "#d2d9c4";
+static char selbgcolor[]                 = "#7D836D";
+static char selbordercolor[]             = "#d2d9c4";
+static char selfloatcolor[]              = "#7D836D";
 
-static char titlenormfgcolor[]           = "#dedddd";
-static char titlenormbgcolor[]           = "#191c10";
-static char titlenormbordercolor[]       = "#191c10";
-static char titlenormfloatcolor[]        = "#98999E";
+static char titlenormfgcolor[]           = "#d2d9c4";
+static char titlenormbgcolor[]           = "#121212";
+static char titlenormbordercolor[]       = "#121212";
+static char titlenormfloatcolor[]        = "#7D836D";
 
-static char titleselfgcolor[]            = "#191c10";
-static char titleselbgcolor[]            = "#98999E";
-static char titleselbordercolor[]        = "#98999E";
-static char titleselfloatcolor[]         = "#98999E";
+static char titleselfgcolor[]            = "#121212";
+static char titleselbgcolor[]            = "#7D836D";
+static char titleselbordercolor[]        = "#7D836D";
+static char titleselfloatcolor[]         = "#7D836D";
 
-static char tagsnormfgcolor[]            = "#dedddd";
-static char tagsnormbgcolor[]            = "#191c10";
-static char tagsnormbordercolor[]        = "#191c10";
-static char tagsnormfloatcolor[]         = "#98999E";
+static char tagsnormfgcolor[]            = "#d2d9c4";
+static char tagsnormbgcolor[]            = "#121212";
+static char tagsnormbordercolor[]        = "#121212";
+static char tagsnormfloatcolor[]         = "#7D836D";
 
-static char tagsselfgcolor[]             = "#191c10";
-static char tagsselbgcolor[]             = "#98999E";
-static char tagsselbordercolor[]         = "#98999E";
-static char tagsselfloatcolor[]          = "#98999E";
+static char tagsselfgcolor[]             = "#121212";
+static char tagsselbgcolor[]             = "#7D836D";
+static char tagsselbordercolor[]         = "#7D836D";
+static char tagsselfloatcolor[]          = "#7D836D";
 
-static char hidnormfgcolor[]             = "#9DAEC1";
-static char hidselfgcolor[]              = "#B2B9C3";
-static char hidnormbgcolor[]             = "#191c10";
-static char hidselbgcolor[]              = "#191c10";
+static char hidnormfgcolor[]             = "#A59E82";
+static char hidselfgcolor[]              = "#B0B38E";
+static char hidnormbgcolor[]             = "#121212";
+static char hidselbgcolor[]              = "#121212";
 
-static char urgfgcolor[]                 = "#191c10";
-static char urgbgcolor[]                 = "#dedddd";
-static char urgbordercolor[]             = "#AFB1B6";
-static char urgfloatcolor[]              = "#98999E";
+static char urgfgcolor[]                 = "#121212";
+static char urgbgcolor[]                 = "#d2d9c4";
+static char urgbordercolor[]             = "#A38F73";
+static char urgfloatcolor[]              = "#7D836D";
 
 static char c000000[]                    = "";
 
-static char tagsunusedfgcolor[]        = "#9b9a9a"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]        = "#191c10"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]    = "#988B6B"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]     = "#98999E"; // Cor de flutuação para tags não utilizadas
+static char tagsunusedfgcolor[]        = "#939789"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]        = "#121212"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]    = "#A37C67"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]     = "#7D836D"; // Cor de flutuação para tags não utilizadas

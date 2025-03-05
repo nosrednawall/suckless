@@ -20,7 +20,7 @@ static const char dwmdir[]               = "dwm";
 static const char localshare[]           = ".config/suckless";
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
-static const int bar_height              = 25;   /* 0 means derive from font, >= 1 explicit height */
+static const int bar_height              = 28;   /* 0 means derive from font, >= 1 explicit height */
 static const int vertpad                 = 10;  /* vertical padding of bar */
 static const int sidepad                 = 10;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
@@ -46,12 +46,13 @@ static int floatindicatortype            = INDICATOR_NONE;
 static const char statussep              = ';'; /* separator between status bars */
 //static const char *fonts[]          	 = {"Liberation Mono:pixelsize=15:antialias=true:autohint=true","Symbols Nerd Font:style=Bold:antialias=true:pixelsize=17"};
 static const char *fonts[]          	 = {
-	"Fira Mono:pixelsize=15:antialias=true:autohint=true",
-	"Symbols Nerd Font:style=Bold:antialias=true:pixelsize=15",
-	"Font Awesome 6 Free Solid:style=Bold:pixelsize=15",
+//	"Fira Mono:pixelsize=14:antialias=true:autohint=true",
+	"Iosevka:pixelsize=15",
+    "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
+	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/gruvbox_dark.h"
+#include "themes/pywal_dark.h"
 
 static char *colors[][ColCount] = {
     /*                       fg                bg                border                float */
@@ -98,8 +99,13 @@ static Sp scratchpads[] = {
 
 static char *tagicons[][NUMTAGS] =
 {
-	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
-	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
+	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5" },
+//	[DEFAULT_TAGS]        = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" },
+//	[DEFAULT_TAGS]        = { "MISC", "TERM", "CODE", "FILES", "DOCS", "VIDEO", "7", "8", "9" },
+//  [DEFAULT_TAGS]        = { "󱪼", "󱂉", "󱂊", "󱂋", "󰬾", "󱂍", "󱂎", "󱂏", "󱂐" },
+//  [DEFAULT_TAGS]        = { "󰬺", "󰬻", "󰬼", "󰬽", "󰬾", "󰬿", "󰭀", "󰭁", "󰭂" },
+//	[DEFAULT_TAGS]        = { "", "2", "3", "4", "5", "6", "7", "8", "9" },
+    [ALTERNATIVE_TAGS]    = { "一", "二", "三", "四", "五", "六", "七", "八", "九" },
 	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
 };
 
