@@ -39,10 +39,14 @@
     X("", PATH("dwmblocks/sb-battery"),     30,  13)    \
     X("", PATH("dwmblocks/sb-moon"),        6000,18)    \
     X("", PATH("dwmblocks/sb-date"),        600, 14)    \
-    X("", PATH("dwmblocks/sb-hour"),        0,   15)
+    X("", PATH("dwmblocks/sb-hour"),        1,   15)
 
 #endif  // CONFIG_H
+/*
+kill -43 $(pidof dwmblocks) //atualiza o block numero 15
+kill -52 $(pidof dwmblocks) //atualiza o block numero 18
 
+*/
 /*
 **
 **#define BLOCKS(X)             \
