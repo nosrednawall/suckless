@@ -8,25 +8,27 @@ width_tags(Bar *bar, BarArg *a)
 	}
 	return w;
 }
+
 int
 draw_tags(Bar *bar, BarArg *a)
 {
-    int invert;
-    int w, x = a->x;
-    unsigned int i, occ = 0, urg = 0;
-    char *icon;
-    Client *c;
-    Monitor *m = bar->mon;
+	int invert;
+	int w, x = a->x;
+	unsigned int i, occ = 0, urg = 0;
+	char *icon;
+	Client *c;
+	Monitor *m = bar->mon;
 
-    for (c = m->clients; c; c = c->next) {
-        occ |= c->tags;
-        if (c->isurgent)
-            urg |= c->tags;
-    }
-    for (i = 0; i < NUMTAGS; i++) {
-        icon = tagicon(bar->mon, i);
-        invert = 0;
-        w = TEXTW(icon);
+	for (c = m->clients; c; c = c->next) {
+		occ |= c->tags;
+		if (c->isurgent)
+			urg |= c->tags;
+	}
+	for (i = 0; i < NUMTAGS; i++) {
+
+		icon = tagicon(bar->mon, i);
+		invert = 0;
+		w = TEXTW(icon);
         if (!(occ & 1 << i) && !(m->tagset[m->seltags] & 1 << i)) {
             drw_setscheme(drw, scheme[SchemeTagsUnused]); // Aplica o esquema para tags não usadas
         } else {
@@ -38,14 +40,12 @@ draw_tags(Bar *bar, BarArg *a)
                 : SchemeTagsNorm
             ]);
         }
-        drw_text(drw, x, a->y, w, a->h, lrpad / 2, icon, invert, False);
-        drawindicator(m, NULL, occ, x, a->y, w, a->h, i, -1, invert, tagindicatortype);
-        if (ulineall || m->tagset[m->seltags] & 1 << i)
-            drw_rect(drw, x + ulinepad, bh - ulinestroke - ulinevoffset, w - (ulinepad * 2), ulinestroke, 1, 0);
-        x += w;
-    }
+		drw_text(drw, x, a->y, w, a->h, lrpad / 2, icon, invert, False);
+		drawindicator(m, NULL, occ, x, a->y, w, a->h, i, -1, invert, tagindicatortype);
+		x += w;
+	}
 
-    return 1;
+	return 1;
 }
 
 int

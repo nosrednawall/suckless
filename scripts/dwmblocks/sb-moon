@@ -86,7 +86,7 @@ main() {
         "MEDIO")
             echo ""
             ;;
-        *)
+        "MOSTRAR_LUA")
             # Força o uso do ponto como separador decimal
             LC_NUMERIC=C printf "%s" "$lua_string  "
             #echo ""
@@ -96,7 +96,6 @@ main() {
 # funcoes cliclaveis
 case $BUTTON in
 	1) generate_notification ;;
-
 	6) setsid -f st -e emacs -nw "$0" ;;
 esac
 

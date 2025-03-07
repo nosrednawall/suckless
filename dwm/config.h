@@ -99,12 +99,14 @@ static Sp scratchpads[] = {
 
 static char *tagicons[][NUMTAGS] =
 {
-	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5" },
+//	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5" },
+//    [ALTERNATIVE_TAGS]    = { "一", "二", "三", "四", "五" },
+//	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>"},
 //	[DEFAULT_TAGS]        = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" },
 //	[DEFAULT_TAGS]        = { "MISC", "TERM", "CODE", "FILES", "DOCS", "VIDEO", "7", "8", "9" },
 //  [DEFAULT_TAGS]        = { "󱪼", "󱂉", "󱂊", "󱂋", "󰬾", "󱂍", "󱂎", "󱂏", "󱂐" },
 //  [DEFAULT_TAGS]        = { "󰬺", "󰬻", "󰬼", "󰬽", "󰬾", "󰬿", "󰭀", "󰭁", "󰭂" },
-//	[DEFAULT_TAGS]        = { "", "2", "3", "4", "5", "6", "7", "8", "9" },
+	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
     [ALTERNATIVE_TAGS]    = { "一", "二", "三", "四", "五", "六", "七", "八", "九" },
 	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
 };

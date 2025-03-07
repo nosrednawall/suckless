@@ -185,7 +185,7 @@
 /* This patch underlines the selected tag, or optionally all tags.
  * https://dwm.suckless.org/patches/underlinetags/
  */
-#define BAR_UNDERLINETAGS_PATCH 1
+#define BAR_UNDERLINETAGS_PATCH 0
 
 /* This patch adds the window icon next to the window title in the bar.
  *

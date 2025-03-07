@@ -195,7 +195,7 @@ MESSAGE="Previsão do tempo para $CITY:
 
 # funcoes cliclaveis
 case $BUTTON in
-    1) notify-send "Previsão do Tempo" "$MESSAGE" ;;
+    1) notify-send "Informação da previsão do tempo" "$MESSAGE" ;;
 	6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
