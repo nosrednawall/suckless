@@ -10,8 +10,8 @@ static const Key keys[] = {
 	/* modifier                     key            function                argument */
     { MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_b,          togglebar,              {0} },
-	{ MODKEY|ControlMask,           XK_b,          toggletopbar,           {0} },
+	{ MODKEY|ShiftMask,             XK_x,          togglebar,              {0} },
+	{ MODKEY|ControlMask,           XK_x,          toggletopbar,           {0} },
 
 	/*Modifica o tamanho da tela dos programas*/
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
@@ -228,6 +228,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_g,                           spawn,          SHCMD(PATH("dmenu/dmenu-pomodoro")) },
 	{ MODKEY|ShiftMask,	            XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-dwmblocks-operation")) },
 	{ MODKEY|ShiftMask,	            XK_c,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker")) },
+	{ MODKEY|ShiftMask,	            XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark")) },
+	{ MODKEY|ControlMask,	        XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark add")) },
+	{ MODKEY|ControlMask|ShiftMask,	XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark del")) },
 
 	/* Grava area selecionada */
 	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },
