@@ -36,6 +36,7 @@
     X("", PATH("dwmblocks/sb-mic"),         0,   10)    \
     X("", PATH("dwmblocks/sb-record"),      10,  11)    \
     X("", PATH("dwmblocks/sb-keyboard"),    1,   12)    \
+    X("", PATH("dwmblocks/sb-bluetooth"),   1,   21)    \
     X("", PATH("dwmblocks/sb-battery"),     30,  13)    \
     X("", PATH("dwmblocks/sb-moon"),        6000,18)    \
     X("", PATH("dwmblocks/sb-date"),        600, 14)    \
