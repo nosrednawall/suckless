@@ -25,7 +25,7 @@ BASE_DIR="/mnt/samba_share"
 # Função para listar os compartilhamentos de um servidor
 listar_compartilhamentos() {
     local server=$1
-    #echo "Servidor $server:"
+
     # Lista os compartilhamentos do tipo Disk
     shares=($(smbclient -L $server -U% | awk '/Disk/ {print $1}'))
 
@@ -40,9 +40,17 @@ listar_compartilhamentos() {
     done
 }
 
+# Verifica o status do tailscale
+status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
 
-# Lista os servidores disponíveis
-servers=$(ls -1 $BASE_DIR)
+# se tailsscale nao estiver ativo
+if [ $status_tailscale -eq 1 ]; then
+    # coloca os ips da rede local
+    servers=$(ls -1 $BASE_DIR | grep '^192')
+else
+    # coloca os ips do tailscale
+    servers=$(ls -1 $BASE_DIR | grep '^100')
+fi
 
 # Gera a lista de opções para o dmenu
 opcoes(){
