@@ -36,6 +36,11 @@ montar() {
         # Verificar se a montagem foi bem-sucedida
         if mount | grep -q "$MOUNT_POINT"; then
             echo "Montagem concluída com sucesso!"
+            # Defina o nome do usuário
+            USUARIO="anderson"
+
+            # Abre a pasta para o usuario, pois o script esta executando como root
+            sudo -u $USUARIO thunar "$MOUNT_POINT"
         else
             echo "Erro ao montar o compartilhamento."
         fi
