@@ -62,6 +62,10 @@ function select_player_with_dmenu() {
         artist="$(playerctl --player=$player metadata --format '{{artist}}' 2>/dev/null || echo "Desconhecido")"
         status="$(playerctl --player=$player status 2>/dev/null || echo "Desconhecido")"
 
+    if [ "$title" = "" ]; then
+        title=$(playerctl $PLAYERS metadata xesam:url | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" | xargs -I {} basename "{}")
+    fi
+
         case "$player" in
             "chromium.instance2")
                 icon_player=""

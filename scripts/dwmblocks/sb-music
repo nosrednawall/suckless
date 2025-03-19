@@ -132,6 +132,13 @@ case "$PLAYER_SELECIONADO" in
         format_player="{{title}}"
         ;;
 
+    "vlc")
+        icon="^c$COLOR_3^"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        format_player="{{title}}"
+        ;;
+
     "mpd")
         icon="^c$COLOR_6^󰝚"
         icon_paused="^c$COLOR_1^"
@@ -158,11 +165,14 @@ if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; the
     [ "$status" = "Paused" ] && icon="$icon_paused"
 
     song="$(playerctl $PLAYERS metadata --format=$format_player)"
+    if [ "$song" = "" ]; then
+        song=$(playerctl $PLAYERS metadata xesam:url | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" | xargs -I {} basename "{}")
+    fi
+
     if [[ ${#song} -gt 25 ]]; then
         song="${song:0:25}..."
     fi
 fi
-
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
