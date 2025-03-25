@@ -51,6 +51,9 @@ is_running "emacs --daemon" || emacs --daemon &
 is_running "solaar" || /usr/bin/solaar -w hide &
 #TECLADO_USA_CONECTADO=$(solaar show 521B6154 | grep "unknown (device is offline)" -ic)
 
+# Bluetooth
+is_running "blueman-applet" || blueman-applet &
+
 #if [ $TECLADO_USA_CONECTADO = "0" ]; then
 #    setxkbmap -model pc105 -layout us -variant altgr-intl
 #else
