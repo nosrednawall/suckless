@@ -229,6 +229,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,	            XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-dwmblocks-operation")) },
 	{ MODKEY|ShiftMask,	            XK_c,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker")) },
 	{ MODKEY|ShiftMask,	            XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark")) },
+	{ Mod1Mask|ShiftMask,	        XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark private")) },
 	{ MODKEY|ControlMask,	        XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark add")) },
 	{ MODKEY|ControlMask|ShiftMask,	XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark del")) },
 

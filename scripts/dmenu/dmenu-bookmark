@@ -64,7 +64,7 @@ bmks_del() {
 bmks_display() {
 	bmks_check
 	case $PREFERED_LAUNCHER in
-		dmenu) cat $URL_FILE_PATH/$URL_FILE_NAME | sort | dmenu -l $(cat $URL_FILE_PATH/$URL_FILE_NAME | wc -l) | awk '{print $(NF)}' | xargs -I '{}' x-www-browser {} ;;
+		dmenu) cat $URL_FILE_PATH/$URL_FILE_NAME | sort | dmenu -l $(cat $URL_FILE_PATH/$URL_FILE_NAME | wc -l) | awk '{print $(NF)}' | xargs -I '{}' x-www-browser $private {} ;;
 	esac
 }
 
@@ -75,6 +75,7 @@ bmks_check() {
 [ ! -d $URL_FILE_PATH ] && mkdir $URL_FILE_PATH
 [ ! -f $URL_FILE_PATH/$URL_FILE_NAME ] && touch $URL_FILE_PATH/$URL_FILE_NAME
 
+private=""
 case "$1" in
 	"help") show_usage ;;
 	"add") bmks_add ;;
@@ -82,5 +83,9 @@ case "$1" in
 	"ls") bmks_ls ;;
 	"dmenu") PREFERED_LAUNCHER=$1; bmks_display ;;
 	"fzf") PREFERED_LAUNCHER=$1; bmks_display ;;
+	"private")
+		private="--private-window"
+		bmks_display
+	;;
 	*) bmks_display ;;
 esac

@@ -126,14 +126,14 @@ case "$PLAYER_SELECIONADO" in
         ;;
 
     "mpv")
-        icon="^c$COLOR_3^"
+        icon="^c$COLOR_4^"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
         format_player="{{title}}"
         ;;
 
     "vlc")
-        icon="^c$COLOR_3^"
+        icon="^c$COLOR_4^"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
         format_player="{{title}}"

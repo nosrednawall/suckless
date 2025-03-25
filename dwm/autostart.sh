@@ -34,7 +34,7 @@ is_running() {
 is_running "lxpolkit" || lxpolkit &
 
 # Inicia o xautolock com as configurações personalizadas se não estiver rodando
-is_running "xautolock" || xautolock -time 5 -locker ~/.config/suckless/scripts/dwm/dwm-slock-personalizado -detectsleep &
+is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/dwm/dwm-slock-personalizado -detectsleep &
 
 # Inicia o picom em modo background
 is_running "picom" || picom -b

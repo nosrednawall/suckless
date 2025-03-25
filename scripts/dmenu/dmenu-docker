@@ -3,7 +3,6 @@
 # Define o PATH manualmente
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$HOME/.local/bin"
 
-
 # Diretório base onde estão as pastas com docker-compose.yml
 BASE_DIR="$HOME/git/Biblioteca_Scripts/Docker"
 
@@ -44,8 +43,38 @@ if [[ -n "$selected" ]]; then
 
     if [[ $status -eq 1 ]]; then
         # Se estiver parado, inicia o contêiner
-        docker-compose -f "$selected/docker-compose.yml" up -d
+        opcao=$(echo -e "Executar\nBuild" | dmenu -l 10 -p "Opção:")
+        parametro=""
+        if [ "$opcao" = "Build"  ]; then
+            parametro="--build"
+        fi
+
+        #notify-send "Docker Compose" "Contêiner em $selected está sendo iniciado."
+        #docker-compose -f "$selected/docker-compose.yml" up -d $parametro
+        #notify-send "Docker Compose" "Contêiner em $selected foi iniciado."
+
+        # Exibe a notificação inicial
+        notify-send -t 0 "Docker Compose" "Contêiner em $selected está sendo iniciado..."
+
+        # Executa o Docker Compose em segundo plano
+        docker-compose -f "$selected/docker-compose.yml" up -d $parametro
+
+        # Captura o ID da notificação inicial
+        notification_id=$(notify-send -p -t 0 "Docker Compose" "Contêiner em $selected está sendo iniciado..." | awk '{print $1}')
+
+        # Aguarda o término do Docker Compose
+        docker-compose -f "$selected/docker-compose.yml" up -d $parametro &
+        docker_pid=$!
+
+        # Espera o processo do Docker Compose terminar
+        wait $docker_pid
+
+        # Fecha a notificação inicial
+        notify-send --close=$notification_id
+
+        # Exibe a notificação de conclusão
         notify-send "Docker Compose" "Contêiner em $selected foi iniciado."
+
 
         # Abre no navegador o docker se ele possuir portas
         sleep 1
