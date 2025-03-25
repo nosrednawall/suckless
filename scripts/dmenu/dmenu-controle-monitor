@@ -12,6 +12,7 @@ VIRTUAL_DEVICE=$(xrandr -q | grep "Virtual" | awk '{print $1}')
 casa="󰍹 Monitor Externo"
 notebook=" Notebook"
 modo_game=" Modo Game"
+apresentacao="󰐯 Modo Apresentação"
 so_monitor_externo="󱧑 Só monitor externo"
 duplica="󰍺 Duplica a mesma visualização"
 noite="󱩍 Noite"
@@ -20,7 +21,7 @@ tabletwaconhdmi="󰓶 Tablet Wacon HDMI"
 tabletwaconnotebook="󰓶 Tablet Wacon Notebook"
 
 # Variable passed to dmenu
-options="$casa\n$notebook\n$modo_game\n$so_monitor_externo\n$duplica\n$dia\n$noite\n$tabletwaconhdmi\n$tabletwaconnotebook"
+options="$casa\n$notebook\n$modo_game\n$apresentacao\n$so_monitor_externo\n$duplica\n$dia\n$noite\n$tabletwaconhdmi\n$tabletwaconnotebook"
 
 # Escolha do usuario
 chosen="$(echo -e "$options" | dmenu -p "Scripts de monitor " )"
@@ -74,6 +75,10 @@ xrandr --output $HDMI_DEVICE --primary --auto --rotate normal --dpi 96 --output 
 EOF
     ;;
 
+    $apresentacao)
+        killall xautolock;
+        notify-send -t 3000 "Encerrado Xautolock" "" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+    ;;
     $duplica)
 
         xrandr --output $HDMI_DEVICE --primary --auto --rotate normal --output $EDP_DEVICE --same-as $HDMI_DEVICE
