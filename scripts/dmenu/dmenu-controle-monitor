@@ -30,7 +30,6 @@ case $chosen in
     $casa)
 	    xrandr --output $HDMI_DEVICE --auto --rotate normal --dpi 96 --output $EDP_DEVICE --primary --auto --rotate normal --dpi 96 --left-of $HDMI_DEVICE
 	    notify-send -t 3000 "󰡁 HDMI Inserido" "Adicionado tela via HDMI" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
-        #feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
         bash ~/.fehbg
 
         rm -f ~/.monitor_config.sh # Remove arquivo temporario
@@ -39,7 +38,6 @@ case $chosen in
     $notebook)
 	    xrandr --output $HDMI_DEVICE --off --output $EDP_DEVICE --primary --auto --rotate normal --dpi 96
 	    notify-send -t 3000 "  Modo Laptop" "Alterado tela para modo Laptop" --icon="/usr/share/icons/ePapirus/16x16/devices/computer-laptop.svg"
-        #feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
         bash ~/.fehbg
 
         rm -f ~/.monitor_config.sh # Remove arquivo temporario
@@ -55,7 +53,6 @@ EOF
         killall redshift
         redshift -P -O 6500
         notify-send -t 3000 "󰡁 HDMI Inserido" "Adicionado tela via HDMI" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
-        #feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
         bash ~/.fehbg
 
         rm -f ~/.monitor_config.sh # Remove arquivo temporario
@@ -68,7 +65,6 @@ EOF
     $so_monitor_externo)
 	    xrandr --output $HDMI_DEVICE --primary --auto --rotate normal --dpi 96 --output $EDP_DEVICE --off
 	    notify-send -t 3000 "󰡁 Só monitor externo" "Só monitor Externo" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
-        #feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
         bash ~/.fehbg
 
         rm -f ~/.monitor_config.sh # Remove arquivo temporario
@@ -79,24 +75,9 @@ EOF
     ;;
 
     $duplica)
-#        RES_EDP=$(xrandr | grep "$EDP_DEVICE" | awk '{print $3}')
-#        RES_HDMI=$(xrandr | grep "$HDMI_DEVICE" | grep "connected" | awk '{print $3}')
-
-        # Monitor Conectado mas sem video
-#        if [ "$RES_HDMI" = "(normal"  ]; then
-#            exit 0
-#        fi
-
-#        case $RES_HDMI in
-#            "1600x900")
-#                RESOLUCAO="1280x800"
-#            ;;
-#        esac
 
         xrandr --output $HDMI_DEVICE --primary --auto --rotate normal --output $EDP_DEVICE --same-as $HDMI_DEVICE
-        #xrandr --output $HDMI_DEVICE --primary 1280x800 --rotate normal --output $EDP_DEVICE 1280x800
         notify-send -t 3000 "󰡁 Duplica visualização" "Ambos monitores estão com a mesma visualização" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
-        #feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
         bash ~/.fehbg
 
         rm -f ~/.monitor_config.sh # Remove arquivo temporario

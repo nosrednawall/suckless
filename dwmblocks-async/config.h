@@ -22,7 +22,7 @@
 #define BLOCKS(X)             \
     /* X("", PATH("dwmblocks/sb-mpd"),       1, 1)  */  \
     X("", PATH("dwmblocks/sb-potato-c"),    1,   20)    \
-    X("", PATH("dwmblocks/sb-music"),       1,   19)    \
+    X("", PATH("dwmblocks/sb-players"),       1,   19)    \
     X("", PATH("dwmblocks/sb-weather"),     600, 17)    \
     X("", PATH("dwmblocks/sb-update"),      6000,2)     \
     X("", PATH("dwmblocks/sb-loadavg"),     10,  3)     \
