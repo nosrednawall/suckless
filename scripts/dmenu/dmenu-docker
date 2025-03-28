@@ -46,7 +46,7 @@ if [[ -n "$selected" ]]; then
         opcao=$(echo -e "Executar\nBuild" | dmenu -l 10 -p "Opção:")
         parametro=""
         if [ "$opcao" = "Build"  ]; then
-            parametro="--build"
+            parametro="--build --no-cache"
         fi
 
         #notify-send "Docker Compose" "Contêiner em $selected está sendo iniciado."

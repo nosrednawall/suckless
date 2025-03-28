@@ -106,9 +106,12 @@ static char *tagicons[][NUMTAGS] =
 //	[DEFAULT_TAGS]        = { "MISC", "TERM", "CODE", "FILES", "DOCS", "VIDEO", "7", "8", "9" },
 //  [DEFAULT_TAGS]        = { "󱪼", "󱂉", "󱂊", "󱂋", "󰬾", "󱂍", "󱂎", "󱂏", "󱂐" },
 //  [DEFAULT_TAGS]        = { "󰬺", "󰬻", "󰬼", "󰬽", "󰬾", "󰬿", "󰭀", "󰭁", "󰭂" },
-	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
-    [ALTERNATIVE_TAGS]    = { "一", "二", "三", "四", "五", "六", "七", "八", "九" },
-	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
+//	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
+//   [ALTERNATIVE_TAGS]    = { "一", "二", "三", "四", "五", "六", "七", "八", "九" },
+//	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
+    [DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6" },
+    [ALTERNATIVE_TAGS]    = { "一", "二", "三", "四", "五", "六" },
+	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>"},
 };
 
 /* There are two options when it comes to per-client rules:
@@ -190,7 +193,8 @@ static const BarRule barrules[] = {
 	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
 	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_statuscmd,         NULL,                    "status2d" },
-	{ -1,        1,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
+//	{ 0,         1,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
+	{ -1,         0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
 //	{ statusmon, 1,     BAR_ALIGN_CENTER, width_status2d_es,        draw_status2d_es,       click_statuscmd_es,      NULL,                    "status2d_es" },
 };
 
