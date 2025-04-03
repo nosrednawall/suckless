@@ -147,7 +147,14 @@ case "$PLAYER_SELECIONADO" in
         ;;
 
     "spotube.instance2")
-        icon="^c$COLOR_6^󰝚"
+        icon="^c$COLOR_6^"
+        icon_paused="^c$COLOR_1^"
+        icon_close="^c#4A5947^󰝛"
+        format_player="{{title}} - {{artist}}"
+        ;;
+
+    "spotify")
+        icon="^c$COLOR_7^"
         icon_paused="^c$COLOR_1^"
         icon_close="^c#4A5947^󰝛"
         format_player="{{title}} - {{artist}}"
@@ -169,8 +176,8 @@ if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; the
         song=$(playerctl $PLAYERS metadata xesam:url | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" | xargs -I {} basename "{}")
     fi
 
-    if [[ ${#song} -gt 20 ]]; then
-        song="${song:0:20}..."
+    if [[ ${#song} -gt 25 ]]; then
+        song="${song:0:25}..."
     fi
 fi
 
