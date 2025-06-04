@@ -8,13 +8,17 @@ HDMI_DEVICE=$(xrandr -q | grep "HDMI" | awk '{print $1}')
 EDP_DEVICE=$(xrandr -q | grep "eDP" | awk '{print $1}')
 VIRTUAL_DEVICE=$(xrandr -q | grep "Virtual" | awk '{print $1}')
 
+RES_HDMI=$( xrandr -q | grep "$HDMI_DEVICE" | awk '{print$3}')
+RES_EDP=$( xrandr -q | grep "$EDP_DEVICE" | awk '{print$4}')
+RES_VIRT=$( xrandr -q | grep "$VIRTUAL_DEVICE" | awk '{print$4}')
+
 # Opcoes
-casa="󰍹 Monitor Externo"
-notebook=" Notebook"
+casa="󰍹 Monitor Externo ($RES_HDMI)"
+notebook=" Notebook ($RES_EDP)"
 modo_game=" Modo Game"
 apresentacao="󰐯 Modo Apresentação"
-so_monitor_externo="󱧑 Só monitor externo"
-duplica="󰍺 Duplica a mesma visualização"
+so_monitor_externo="󱧑 Só monitor externo ($RES_HDMI)"
+duplica="󰍺 Duplica a mesma visualização ($RES_EDP = $RES_HDMI)"
 noite="󱩍 Noite"
 dia="󰛨 Dia"
 tabletwaconhdmi="󰓶 Tablet Wacon HDMI"

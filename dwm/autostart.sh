@@ -43,7 +43,8 @@ is_running "picom" || picom -b
 is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
 
 # Inicia o copyq se não estiver rodando
-is_running "copyq" || copyq &
+#is_running "copyq" || copyq &
+is_running "copyq" || flatpak run com.github.hluk.copyq &
 
 # Inicia o daemon do emacs se não estiver rodando
 is_running "emacs --daemon" || emacs --daemon &

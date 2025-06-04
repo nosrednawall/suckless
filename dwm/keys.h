@@ -166,8 +166,8 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_3,                                  2)
 	TAGKEYS(                        XK_4,                                  3)
 	TAGKEYS(                        XK_5,                                  4)
-/*	TAGKEYS(                        XK_6,                                  5)
-	TAGKEYS(                        XK_7,                                  6)
+	TAGKEYS(                        XK_6,                                  5)
+/*	TAGKEYS(                        XK_7,                                  6)
 	TAGKEYS(                        XK_8,                                  7)
 	TAGKEYS(                        XK_9,                                  8)
 */
@@ -241,8 +241,8 @@ static const Key keys[] = {
 	{ MODKEY,						XK_b,	  						spawn,          SHCMD(PATH("dwm/dwm-bitwarden-rofi")) },
 
 	/*Lancamento Programas*/
-//	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
-	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
+	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
+//	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) }

@@ -179,6 +179,8 @@ if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; the
     if [[ ${#song} -gt 25 ]]; then
         song="${song:0:25}..."
     fi
+    # Remove ; da musica se tiver
+    song=$(echo $song | tr -d ';')
 fi
 
 # Apresentacao condicionada

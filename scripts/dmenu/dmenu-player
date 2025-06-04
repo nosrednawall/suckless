@@ -76,11 +76,21 @@ function select_player_with_dmenu() {
                 icon_player=""
             ;;
 
-            "spotube.instance2")
-                icon_player=""
-                player="Spotube"
-            ;;
+            "mpv")
+                icon_player=""
+                ;;
 
+            "vlc")
+                icon_player="󰕼"
+                ;;
+
+            "spotube.instance2")
+                icon_player=""
+                ;;
+
+            "spotify")
+                icon_player=""
+                ;;
             *)
                 icon_player=""
             ;;
@@ -106,8 +116,9 @@ function select_player_with_dmenu() {
         fi
 
         echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > "$PLAYER_CACHE"
-
+        status_playing=$(playerctl --player=$PLAYER_SELECIONADO status)
         # pausa os outros players
+
         playerctl --all-players pause
         playerctl --player=$PLAYER_SELECIONADO play-pause
 

@@ -40,7 +40,7 @@ montar() {
             USUARIO="anderson"
 
             # Abre a pasta para o usuario, pois o script esta executando como root
-            sudo -u $USUARIO thunar "$MOUNT_POINT"
+            sudo -u $USUARIO thunar "$MOUNT_POINT" &
         else
             echo "Erro ao montar o compartilhamento."
         fi

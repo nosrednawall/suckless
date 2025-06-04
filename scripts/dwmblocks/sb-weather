@@ -49,6 +49,7 @@ CITY_ENCODED=$(echo "$CITY" | sed 's/ /%20/g')
 # Monta a URL da API
 URL="http://api.openweathermap.org/data/2.5/weather?q=${CITY_ENCODED}&appid=${API_KEY}&units=${UNITS}&lang=${LANG}"
 URL_FORECAST="api.openweathermap.org/data/2.5/forecast?lat=${LAT}&lon=${LON}&appid=${API_KEY}&units=${UNITS}&lang=${LANG}"
+
 # Requisição e processamento
 WEATHER=$(curl -sf "$URL")
 FORECAST=$(curl -sf "$URL_FORECAST")
