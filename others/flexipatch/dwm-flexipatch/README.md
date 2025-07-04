@@ -19,6 +19,12 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
 
 ### Changelog:
 
+2025-06-27 - Added the banish patch
+
+2025-06-15 - Added the always on top patch
+
+2025-02-25 - Added the xresources patch
+
 2024-10-30 - Added the border rule patch
 
 2024-07-11 - Added variant of the launcher patch
@@ -266,6 +272,9 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
    - [~alwaysfullscreen~](https://dwm.suckless.org/patches/alwaysfullscreen/)
       - ~prevents the focus to drift from the active fullscreen client when using focusstack\(\)~
 
+   - [alwaysontop](https://dwm.suckless.org/patches/alwaysontop/)
+      - allows for floating windows to be toggled to be always on top of other windows
+
    - [anybar](https://dwm.suckless.org/patches/anybar/)
       - enables dwm to manage external status bars such as lemonbar and polybar
       - dwm treats the external bar as it would its own, so all regular dwm commands such as
@@ -296,6 +305,9 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
    - [awesomebar](https://dwm.suckless.org/patches/awesomebar/)
       - enhanced taskbar that allows focus / hiding / unhiding of windows by clicking on the status
         bar
+
+   - [banish](https://github.com/bakkeby/patches/wiki/banish/)
+      - hides cursor when using the keyboard, akin to xbanish
 
    - [bar_border](https://codemadness.org/paste/dwm-border-bar.patch)
       - adds a border around the bar similarly to how client windows have borders
@@ -713,7 +725,7 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
    - [status2d](https://dwm.suckless.org/patches/status2d/)
       - allows colors and rectangle drawing in the dwm status bar
 
-   - [statusallmons](https://dwm.suckless.org/patches/statuspadding/)
+   - [statusallmons](https://dwm.suckless.org/patches/statusallmons/)
       - this patch draws and updates the statusbar on all monitors
 
    - [statusbutton](https://dwm.suckless.org/patches/statusbutton/)
@@ -886,6 +898,9 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
 
    - [xrdb](http://dwm.suckless.org/patches/xrdb/)
       - allows dwm to read colors from xrdb (.Xresources) during runtime
+
+   - [xresources](https://dwm.suckless.org/patches/xresources/)
+      - allows dwm to read strings, integers and float values from xrdb (.Xresources) during runtime
 
    - [zoomfloating](https://www.reddit.com/r/suckless/comments/ie5fe3/zoomfloating_my_own_simple_original_patch/)
       - a simple patch that allows floating windows to be zoomed into the master stack position

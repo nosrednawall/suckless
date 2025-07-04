@@ -148,7 +148,9 @@ enum {
 	SchemeHidNorm,
 	SchemeHidSel,
 	SchemeUrg,
-	SchemeTagsUnused,
+	#if BAR_LTSYMBOL_SCHEME_PATCH
+	SchemeLtSymbol,
+	#endif // BAR_LTSYMBOL_SCHEME_PATCH
 	#if RENAMED_SCRATCHPADS_PATCH
 	SchemeScratchSel,
 	SchemeScratchNorm,
@@ -364,6 +366,9 @@ struct Client {
 	unsigned int switchtag;
 	#endif // SWITCHTAG_PATCH
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
+	#if ALWAYSONTOP_PATCH
+	int alwaysontop;
+	#endif // ALWAYSONTOP_PATCH
 	#if !FAKEFULLSCREEN_PATCH && FAKEFULLSCREEN_CLIENT_PATCH
 	int fakefullscreen;
 	#endif // FAKEFULLSCREEN_CLIENT_PATCH
@@ -824,6 +829,9 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[EnterNotify] = enternotify,
 	#endif // FOCUSONCLICK_PATCH
 	[Expose] = expose,
+	#if BANISH_PATCH
+	[GenericEvent] = genericevent,
+	#endif // BANISH_PATCH
 	[FocusIn] = focusin,
 	[KeyPress] = keypress,
 	#if COMBO_PATCH || BAR_HOLDBAR_PATCH
@@ -1182,6 +1190,27 @@ buttonpress(XEvent *e)
 		focus(NULL);
 	}
 
+	#if BANISH_PATCH
+	c = wintoclient(ev->window);
+
+	if (!c && cursor_hidden) {
+		c = recttoclient(mouse_x, mouse_y, 1, 1, 1);
+		showcursor(NULL);
+	}
+
+	if (c) {
+		#if FOCUSONCLICK_PATCH
+		if (focusonwheel || (ev->button != Button4 && ev->button != Button5))
+			focus(c);
+		#else
+		focus(c);
+		restack(selmon);
+		#endif // FOCUSONCLICK_PATCH
+		XAllowEvents(dpy, ReplayPointer, CurrentTime);
+		click = ClkClientWin;
+	}
+	#endif // BANISH_PATCH
+
 	for (bar = selmon->bar; bar; bar = bar->next) {
 		if (ev->window == bar->win) {
 			for (r = 0; r < LENGTH(barrules); r++) {
@@ -1225,6 +1254,7 @@ buttonpress(XEvent *e)
 	}
 	#endif // TAB_PATCH
 
+	#if !BANISH_PATCH
 	if (click == ClkRootWin && (c = wintoclient(ev->window))) {
 		#if FOCUSONCLICK_PATCH
 		if (focusonwheel || (ev->button != Button4 && ev->button != Button5))
@@ -1236,6 +1266,7 @@ buttonpress(XEvent *e)
 		XAllowEvents(dpy, ReplayPointer, CurrentTime);
 		click = ClkClientWin;
 	}
+	#endif // BANISH_PATCH
 
 	for (i = 0; i < LENGTH(buttons); i++) {
 		if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
@@ -1253,6 +1284,10 @@ buttonpress(XEvent *e)
 			);
 		}
 	}
+
+	#if BANISH_PATCH
+	last_button_press = now();
+	#endif // BANISH_PATCH
 }
 
 void
@@ -1928,7 +1963,11 @@ drawbarwin(Bar *bar)
 	const BarRule *br;
 
 	if (bar->borderpx) {
+		#if BAR_BORDER_COLBG_PATCH
+		XSetForeground(drw->dpy, drw->gc, scheme[bar->borderscheme][ColBg].pixel);
+		#else
 		XSetForeground(drw->dpy, drw->gc, scheme[bar->borderscheme][ColBorder].pixel);
+		#endif // BAR_BORDER_COLBG_PATCH
 		XFillRectangle(drw->dpy, drw->drawable, drw->gc, 0, 0, bar->bw, bar->bh);
 	}
 
@@ -2049,6 +2088,11 @@ enternotify(XEvent *e)
 	#endif // LOSEFULLSCREEN_PATCH
 	Monitor *m;
 	XCrossingEvent *ev = &e->xcrossing;
+
+	#if BANISH_PATCH
+	if (cursor_hidden)
+		return;
+	#endif // BANISH_PATCH
 
 	if ((ev->mode != NotifyNormal || ev->detail == NotifyInferior) && ev->window != root)
 		return;
@@ -2264,6 +2308,14 @@ getrootptr(int *x, int *y)
 	int di;
 	unsigned int dui;
 	Window dummy;
+
+	#if BANISH_PATCH
+	if (cursor_hidden) {
+		*x = mouse_x;
+		*y = mouse_y;
+		return 1;
+	}
+	#endif // BANISH_PATCH
 
 	return XQueryPointer(dpy, root, &dummy, &dummy, x, y, &di, &di, &dui);
 }
@@ -3245,6 +3297,9 @@ restack(Monitor *m)
 	#if WARP_PATCH && FLEXTILE_DELUXE_LAYOUT
 	int n;
 	#endif // WARP_PATCH
+	#if ALWAYSONTOP_PATCH
+	Monitor *mon;
+	#endif // ALWAYSONTOP_PATCH
 
 	drawbar(m);
 	#if TAB_PATCH
@@ -3254,6 +3309,18 @@ restack(Monitor *m)
 		return;
 	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
+
+	#if ALWAYSONTOP_PATCH
+	/* raise the aot windows */
+	for (mon = mons; mon; mon = mon->next) {
+		for (c = mon->clients; c; c = c->next) {
+			if (c->alwaysontop) {
+				XRaiseWindow(dpy, c->win);
+			}
+		}
+	}
+	#endif // ALWAYSONTOP_PATCH
+
 	if (m->lt[m->sellt]->arrange) {
 		wc.stack_mode = Below;
 		if (m->bar) {
@@ -3958,7 +4025,7 @@ setup(void)
 	wa.cursor = cursor[CurNormal]->cursor;
 	wa.event_mask = SubstructureRedirectMask|SubstructureNotifyMask
 		|ButtonPressMask|PointerMotionMask|EnterWindowMask
-		|LeaveWindowMask|StructureNotifyMask|PropertyChangeMask|KeyPressMask;
+		|LeaveWindowMask|StructureNotifyMask|PropertyChangeMask;
 	XChangeWindowAttributes(dpy, root, CWEventMask|CWCursor, &wa);
 	XSelectInput(dpy, root, wa.event_mask);
 
@@ -3971,6 +4038,26 @@ setup(void)
 	XkbGetState(dpy, XkbUseCoreKbd, &xkbstate);
 	xkbGlobal.group = xkbstate.locked_group;
 	#endif // XKB_PATCH
+
+	#if BANISH_PATCH
+	if (!XQueryExtension(dpy, "XInputExtension", &xi_opcode, &i, &i)) {
+		fprintf(stderr, "Warning: XInput is not available.");
+	}
+	/* Tell XInput to send us all RawMotion events. */
+	unsigned char mask_bytes[XIMaskLen(XI_LASTEVENT)];
+	memset(mask_bytes, 0, sizeof(mask_bytes));
+	XISetMask(mask_bytes, XI_RawMotion);
+	XISetMask(mask_bytes, XI_RawKeyRelease);
+	XISetMask(mask_bytes, XI_RawTouchBegin);
+	XISetMask(mask_bytes, XI_RawTouchEnd);
+	XISetMask(mask_bytes, XI_RawTouchUpdate);
+
+	XIEventMask mask;
+	mask.deviceid = XIAllMasterDevices;
+	mask.mask_len = sizeof(mask_bytes);
+	mask.mask = mask_bytes;
+	XISelectEvents(dpy, root, &mask, 1);
+	#endif // BANISH_PATCH
 
 	grabkeys();
 	focus(NULL);
@@ -4325,7 +4412,13 @@ togglefloating(const Arg *arg)
 		c->sfy = c->y;
 		c->sfw = c->w;
 		c->sfh = c->h;
-	#endif // SAVEFLOATS_PATCH / EXRESIZE_PATCH
+		#if ALWAYSONTOP_PATCH
+		c->alwaysontop = 0;
+		#endif // ALWAYSONTOP_PATCH
+	#elif ALWAYSONTOP_PATCH
+	} else {
+		c->alwaysontop = 0;
+	#endif // SAVEFLOATS_PATCH | EXRESIZE_PATCH | ALWAYSONTOP_PATCH
 	}
 	arrange(c->mon);
 
@@ -4573,7 +4666,8 @@ unmanage(Client *c, int destroyed)
 		XSelectInput(dpy, c->win, NoEventMask);
 		XConfigureWindow(dpy, c->win, CWBorderWidth, &wc); /* restore border */
 		XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
-		setclientstate(c, WithdrawnState);
+		if (!HIDDEN(c))
+			setclientstate(c, WithdrawnState);
 		XSync(dpy, False);
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
@@ -5355,10 +5449,10 @@ main(int argc, char *argv[])
 		die("dwm: cannot get xcb connection\n");
 	#endif // SWALLOW_PATCH
 	checkotherwm();
-	#if XRDB_PATCH && !BAR_VTCOLORS_PATCH
+	#if XRESOURCES_PATCH || XRDB_PATCH
 	XrmInitialize();
-	loadxrdb();
-	#endif // XRDB_PATCH && !BAR_VTCOLORS_PATCH
+	load_xresources();
+	#endif // XRESOURCES_PATCH | XRDB_PATCH
 	#if COOL_AUTOSTART_PATCH
 	autostart_exec();
 	#endif // COOL_AUTOSTART_PATCH

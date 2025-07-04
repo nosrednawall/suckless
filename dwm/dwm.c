@@ -46,24 +46,19 @@
 
 #include <poll.h>
 
-#include <assert.h>
-#include <libgen.h>
-#include <sys/stat.h>
-#define SPAWN_CWD_DELIM " []{}()<>\"':"
-
 /* macros */
 #define Button6                 6
 #define Button7                 7
 #define Button8                 8
 #define Button9                 9
-#define NUMTAGS                 6
+#define NUMTAGS                 9
 #define NUMVIEWHIST             NUMTAGS
 #define BARRULES                20
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
 #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
                                * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
-#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]) || C->issticky)
+#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
 #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
@@ -78,10 +73,6 @@
 
 /* enums */
 enum {
-	CurResizeBR,
-	CurResizeBL,
-	CurResizeTR,
-	CurResizeTL,
 	CurResizeHorzArrow,
 	CurResizeVertArrow,
 	CurIronCross,
@@ -101,7 +92,6 @@ enum {
 	SchemeHidNorm,
 	SchemeHidSel,
 	SchemeUrg,
-	SchemeTagsUnused,
 }; /* color schemes */
 
 enum {
@@ -111,7 +101,6 @@ enum {
 	NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation,
 	NetSystemTrayVisual, NetWMWindowTypeDock, NetSystemTrayOrientationHorz,
 	NetClientList,
-	NetClientListStacking,
 	NetLast
 }; /* EWMH atoms */
 
@@ -216,13 +205,10 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-	unsigned int switchtag;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
-	int ismax, wasfloating;
 	int beingmoved;
 	int isterminal, noswallow;
 	pid_t pid;
-	int issticky;
 	Client *next;
 	Client *snext;
 	Client *swallowing;
@@ -258,7 +244,7 @@ struct Monitor {
 	int gappov;           /* vertical outer gaps */
 	unsigned int seltags;
 	unsigned int sellt;
-	unsigned int tagset[NUMVIEWHIST];
+	unsigned int tagset[2];
 	int showbar;
 	Client *clients;
 	Client *sel;
@@ -275,12 +261,10 @@ typedef struct {
 	const char *title;
 	const char *wintype;
 	unsigned int tags;
-	int switchtag;
 	int isfloating;
 	int isterminal;
 	int noswallow;
 	int monitor;
-	int unmanaged;
 } Rule;
 
 #define RULE(...) { .monitor = -1, __VA_ARGS__ },
@@ -292,7 +276,7 @@ typedef struct {
 #define FAKEFULLSCREEN
 #define NOSWALLOW , .noswallow = 1
 #define TERMINAL , .isterminal = 1
-#define SWITCHTAG , .switchtag = 1
+#define SWITCHTAG
 
 typedef struct {
 	int monitor;
@@ -369,7 +353,6 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void spawn(const Arg *arg);
-static pid_t spawncmd(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
@@ -404,13 +387,10 @@ static void zoom(const Arg *arg);
 static const char broken[] = "broken";
 static char stext[1024];
 static char rawstext[1024];
-static char estext[1024];
-static char rawestext[1024];
 
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh;               /* bar geometry */
-static int unmanaged = 0;    /* whether the window manager should manage the new window or not */
 static int lrpad;            /* sum of left and right padding for text */
 /* Some clients (e.g. alacritty) helpfully send configure requests with a new size or position
  * when they detect that they have been moved to another monitor. This can cause visual glitches
@@ -419,8 +399,6 @@ static int lrpad;            /* sum of left and right padding for text */
 static int ignoreconfigurerequests = 0;
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
-static int riodimensions[4] = { -1, -1, -1, -1 };
-static pid_t riopid = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
 	[ButtonPress] = buttonpress,
 	[ButtonRelease] = keyrelease,
@@ -466,7 +444,6 @@ applyrules(Client *c)
 	const char *class, *instance;
 	Atom wintype;
 	unsigned int i;
-	unsigned int newtagset;
 	const Rule *r;
 	Monitor *m;
 	XClassHint ch = { NULL, NULL };
@@ -495,35 +472,10 @@ applyrules(Client *c)
 				c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);
 				c->y = c->mon->wy + (c->mon->wh / 2 - HEIGHT(c) / 2);
 			}
-			unmanaged = r->unmanaged;
 			for (m = mons; m && m->num != r->monitor; m = m->next);
 			if (m)
 				c->mon = m;
 
-			if (r->switchtag && (
-				c->noswallow > 0 ||
-				!termforwin(c) ||
-				!(c->isfloating && swallowfloating && c->noswallow < 0)))
-			{
-				unfocus(selmon->sel, 1, NULL);
-				selmon = c->mon;
-				if (r->switchtag == 2 || r->switchtag == 4)
-					newtagset = c->mon->tagset[c->mon->seltags] ^ c->tags;
-				else
-					newtagset = c->tags;
-
-				/* Switch to the client's tag, but only if that tag is not already shown */
-				if (newtagset && !(c->tags & c->mon->tagset[c->mon->seltags])) {
-					if (r->switchtag == 3 || r->switchtag == 4)
-						c->switchtag = c->mon->tagset[c->mon->seltags];
-					if (r->switchtag == 1 || r->switchtag == 3) {
-						view(&((Arg) { .ui = newtagset }));
-					} else {
-						c->mon->tagset[c->mon->seltags] = newtagset;
-						arrange(c->mon);
-					}
-				}
-			}
 		}
 	}
 	if (ch.res_class)
@@ -699,6 +651,7 @@ buttonpress(XEvent *e)
 			);
 		}
 	}
+
 }
 
 void
@@ -957,8 +910,7 @@ createmon(void)
 	const MonitorRule *mr;
 
 	m = ecalloc(1, sizeof(Monitor));
-	for (i = 0; i < LENGTH(m->tagset); i++)
-		m->tagset[i] = 1;
+	m->tagset[0] = m->tagset[1] = 1;
 	m->mfact = mfact;
 	m->nmaster = nmaster;
 	m->showbar = showbar;
@@ -1271,8 +1223,6 @@ void
 focus(Client *c)
 {
 	if (!c || !ISVISIBLE(c))
-		for (c = selmon->stack; c && (!ISVISIBLE(c) || c->issticky); c = c->snext);
-	if (!c || !ISVISIBLE(c))
 		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
 	if (selmon->sel && selmon->sel != c)
 		unfocus(selmon->sel, 0, c);
@@ -1566,23 +1516,6 @@ manage(Window w, XWindowAttributes *wa)
 			c->mon = term->mon;
 	}
 
-	if (unmanaged) {
-		XMapWindow(dpy, c->win);
-		if (unmanaged == 1)
-			XRaiseWindow(dpy, c->win);
-		else if (unmanaged == 2)
-			XLowerWindow(dpy, c->win);
-
-		updatewmhints(c);
-		if (!c->neverfocus)
-			XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
-		sendevent(c->win, wmatom[WMTakeFocus], NoEventMask, wmatom[WMTakeFocus], CurrentTime, 0, 0, 0);
-
-		free(c);
-		unmanaged = 0;
-		return;
-	}
-
 	if (c->x + WIDTH(c) > c->mon->wx + c->mon->ww)
 		c->x = c->mon->wx + c->mon->ww - WIDTH(c);
 	if (c->y + HEIGHT(c) > c->mon->wy + c->mon->wh)
@@ -1599,18 +1532,12 @@ manage(Window w, XWindowAttributes *wa)
 	configure(c); /* propagates border_width, if size doesn't change */
 	updatesizehints(c);
 	updatewmhints(c);
-	updatemotifhints(c);
-
-	c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
-	c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
 
 	if (getatomprop(c, netatom[NetWMState], XA_ATOM) == netatom[NetWMFullscreen])
 		setfullscreen(c, 1);
 
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
-	c->wasfloating = 0;
-	c->ismax = 0;
 
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
@@ -1622,8 +1549,6 @@ manage(Window w, XWindowAttributes *wa)
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
 		(unsigned char *) &(c->win), 1);
-	XChangeProperty(dpy, root, netatom[NetClientListStacking], XA_WINDOW, 32, PropModePrepend,
-		(unsigned char *) &(c->win), 1);
 	XMoveResizeWindow(dpy, c->win, c->x + 2 * sw, c->y, c->w, c->h); /* some windows require this */
 
 	if (!HIDDEN(c))
@@ -1632,14 +1557,6 @@ manage(Window w, XWindowAttributes *wa)
 		unfocus(selmon->sel, 0, c);
 	c->mon->sel = c;
 	if (!(term && swallow(term, c))) {
-		if (riopid && (!riodraw_matchpid || isdescprocess(riopid, c->pid))) {
-			if (riodimensions[3] != -1)
-				rioposition(c, riodimensions[0], riodimensions[1], riodimensions[2], riodimensions[3]);
-			else {
-				killclient(&((Arg) { .v = c }));
-				return;
-			}
-		}
 		arrange(c->mon);
 		if (!HIDDEN(c))
 			XMapWindow(dpy, c->win);
@@ -1828,8 +1745,6 @@ propertynotify(XEvent *e)
 			if (c == c->mon->sel)
 				drawbar(c->mon);
 		}
-		if (ev->atom == motifatom)
-			updatemotifhints(c);
 		else if (ev->atom == netatom[NetWMIcon]) {
 			updateicon(c);
 			if (c == c->mon->sel)
@@ -1885,10 +1800,6 @@ void
 resizemouse(const Arg *arg)
 {
 	int ocx, ocy, nw, nh, nx, ny;
-	int opx, opy, och, ocw;
-	int horizcorner, vertcorner;
-	unsigned int dui;
-	Window dummy;
 	Client *c;
 	Monitor *m;
 	XEvent ev;
@@ -1903,18 +1814,10 @@ resizemouse(const Arg *arg)
 	ny = ocy = c->y;
 	nh = c->h;
 	nw = c->w;
-	och = c->y + c->h;
-	ocw = c->x + c->w;
-	if (!XQueryPointer(dpy, c->win, &dummy, &dummy, &opx, &opy, &nx, &ny, &dui))
-		return;
-	horizcorner = nx < c->w / 2;
-	vertcorner  = ny < c->h / 2;
 	if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
-		None, cursor[horizcorner | (vertcorner << 1)]->cursor, CurrentTime) != GrabSuccess)
+		None, cursor[CurResize]->cursor, CurrentTime) != GrabSuccess)
 		return;
-	XWarpPointer (dpy, None, c->win, 0, 0, 0, 0,
-			horizcorner ? (-c->bw) : (c->w + c->bw - 1),
-			vertcorner ? (-c->bw) : (c->h + c->bw - 1));
+	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w + c->bw - 1, c->h + c->bw - 1);
 	ignoreconfigurerequests = 1;
 	do {
 		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
@@ -1929,10 +1832,8 @@ resizemouse(const Arg *arg)
 				continue;
 			lasttime = ev.xmotion.time;
 
-			nx = horizcorner ? ev.xmotion.x : c->x;
-			ny = vertcorner ? ev.xmotion.y : c->y;
-			nw = MAX(horizcorner ? (ocw - nx) : (ev.xmotion.x - ocx - 2 * c->bw + 1), 1);
-			nh = MAX(vertcorner ? (och - ny) : (ev.xmotion.y - ocy - 2 * c->bw + 1), 1);
+			nw = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
+			nh = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);
 			if (c->mon->wx + nw >= selmon->wx && c->mon->wx + nw <= selmon->wx + selmon->ww
 			&& c->mon->wy + nh >= selmon->wy && c->mon->wy + nh <= selmon->wy + selmon->wh)
 			{
@@ -1948,9 +1849,7 @@ resizemouse(const Arg *arg)
 		}
 	} while (ev.type != ButtonRelease);
 
-	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0,
-			horizcorner ? (-c->bw) : (c->w + c->bw - 1),
-			vertcorner ? (-c->bw) : (c->h + c->bw - 1));
+	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w + c->bw - 1, c->h + c->bw - 1);
 	XUngrabPointer(dpy, CurrentTime);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
@@ -1977,6 +1876,7 @@ restack(Monitor *m)
 		return;
 	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
+
 	if (m->lt[m->sellt]->arrange) {
 		wc.stack_mode = Below;
 		if (m->bar) {
@@ -2056,27 +1956,16 @@ sendmon(Client *c, Monitor *m)
 {
 	if (c->mon == m)
 		return;
-	int hadfocus = (c == selmon->sel);
 	unfocus(c, 1, NULL);
 	detach(c);
 	detachstack(c);
-	arrange(c->mon);
 	c->mon = m;
 	if (!(c->tags & SPTAGMASK))
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
-	c->x = m->mx + (m->mw - WIDTH(c)) / 2;
-	c->y = m->my + (m->mh - HEIGHT(c)) / 2;
 	attachx(c);
 	attachstack(c);
-	arrange(m);
-	if (hadfocus) {
-		focus(c);
-		restack(m);
-	} else {
-		focus(NULL);
-	}
-	if (c->switchtag)
-		c->switchtag = 0;
+	arrange(NULL);
+	focus(NULL);
 }
 
 void
@@ -2167,9 +2056,11 @@ setfullscreen(Client *c, int fullscreen)
 void
 setlayout(const Arg *arg)
 {
+	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt]) {
 		selmon->pertag->sellts[selmon->pertag->curtag] ^= 1;
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
-	if (arg && arg->v && arg->v != selmon->lt[selmon->sellt ^ 1])
+	}
+	if (arg && arg->v)
 		selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] = (Layout *)arg->v;
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 
@@ -2223,7 +2114,8 @@ setup(void)
 	sw = DisplayWidth(dpy, screen);
 	sh = DisplayHeight(dpy, screen);
 	root = RootWindow(dpy, screen);
-	drw = drw_create(dpy, screen, root, sw, sh);
+	xinitvisual();
+	drw = drw_create(dpy, screen, root, sw, sh, visual, depth, cmap);
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
@@ -2255,24 +2147,18 @@ setup(void)
 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
-	netatom[NetClientListStacking] = XInternAtom(dpy, "_NET_CLIENT_LIST_STACKING", False);
-	motifatom = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
 	/* init cursors */
 	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
-	cursor[CurResizeBR] = drw_cur_create(drw, XC_bottom_right_corner);
-	cursor[CurResizeBL] = drw_cur_create(drw, XC_bottom_left_corner);
-	cursor[CurResizeTR] = drw_cur_create(drw, XC_top_right_corner);
-	cursor[CurResizeTL] = drw_cur_create(drw, XC_top_left_corner);
 	cursor[CurResizeHorzArrow] = drw_cur_create(drw, XC_sb_h_double_arrow);
 	cursor[CurResizeVertArrow] = drw_cur_create(drw, XC_sb_v_double_arrow);
 	cursor[CurIronCross] = drw_cur_create(drw, XC_iron_cross);
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
 	/* init appearance */
 	scheme = ecalloc(LENGTH(colors) + 1, sizeof(Clr *));
-	scheme[LENGTH(colors)] = drw_scm_create(drw, colors[0], ColCount);
+	scheme[LENGTH(colors)] = drw_scm_create(drw, colors[0], alphas[0], ColCount);
 	for (i = 0; i < LENGTH(colors); i++)
-		scheme[i] = drw_scm_create(drw, colors[i], ColCount);
+		scheme[i] = drw_scm_create(drw, colors[i], alphas[i], ColCount);
 
 	updatebars();
 	updatestatus();
@@ -2282,19 +2168,18 @@ setup(void)
 	XChangeProperty(dpy, wmcheckwin, netatom[NetWMCheck], XA_WINDOW, 32,
 		PropModeReplace, (unsigned char *) &wmcheckwin, 1);
 	XChangeProperty(dpy, wmcheckwin, netatom[NetWMName], utf8string, 8,
-		PropModeReplace, (unsigned char *) "dwm", 3);
+		PropModeReplace, (unsigned char *) "LG3D", 4);
 	XChangeProperty(dpy, root, netatom[NetWMCheck], XA_WINDOW, 32,
 		PropModeReplace, (unsigned char *) &wmcheckwin, 1);
 	/* EWMH support per view */
 	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
 		PropModeReplace, (unsigned char *) netatom, NetLast);
 	XDeleteProperty(dpy, root, netatom[NetClientList]);
-	XDeleteProperty(dpy, root, netatom[NetClientListStacking]);
 	/* select events */
 	wa.cursor = cursor[CurNormal]->cursor;
 	wa.event_mask = SubstructureRedirectMask|SubstructureNotifyMask
 		|ButtonPressMask|PointerMotionMask|EnterWindowMask
-		|LeaveWindowMask|StructureNotifyMask|PropertyChangeMask|KeyPressMask;
+		|LeaveWindowMask|StructureNotifyMask|PropertyChangeMask;
 	XChangeWindowAttributes(dpy, root, CWEventMask|CWCursor, &wa);
 	XSelectInput(dpy, root, wa.event_mask);
 
@@ -2342,55 +2227,16 @@ showhide(Client *c)
 void
 spawn(const Arg *arg)
 {
-	spawncmd(arg);
-}
-
-pid_t
-spawncmd(const Arg *arg)
-{
 	struct sigaction sa;
 
-	pid_t pid;
 	if (arg->v == dmenucmd)
 		dmenumon[0] = '0' + selmon->num;
 
-	if ((pid = fork()) == 0)
+	if (fork() == 0)
 	{
 		if (dpy)
 			close(ConnectionNumber(dpy));
 
-		if (selmon->sel) {
-			const char* const home = getenv("HOME");
-			assert(home && strchr(home, '/'));
-			const size_t homelen = strlen(home);
-			char *cwd, *pathbuf = NULL;
-			struct stat statbuf;
-
-			cwd = strtok(selmon->sel->name, SPAWN_CWD_DELIM);
-			/* NOTE: strtok() alters selmon->sel->name in-place,
-			 * but that does not matter because we are going to
-			 * exec() below anyway; nothing else will use it */
-			while (cwd) {
-				if (*cwd == '~') { /* replace ~ with $HOME */
-					if (!(pathbuf = malloc(homelen + strlen(cwd)))) /* ~ counts for NULL term */
-						die("fatal: could not malloc() %u bytes\n", homelen + strlen(cwd));
-					strcpy(strcpy(pathbuf, home) + homelen, cwd + 1);
-					cwd = pathbuf;
-				}
-
-				if (strchr(cwd, '/') && !stat(cwd, &statbuf)) {
-					if (!S_ISDIR(statbuf.st_mode))
-						cwd = dirname(cwd);
-
-					if (!chdir(cwd))
-						break;
-				}
-
-				cwd = strtok(NULL, SPAWN_CWD_DELIM);
-			}
-
-			free(pathbuf);
-		}
 		setsid();
 
 		sigemptyset(&sa.sa_mask);
@@ -2401,7 +2247,6 @@ spawncmd(const Arg *arg)
 		execvp(((char **)arg->v)[0], (char **)arg->v);
 		die("dwm: execvp '%s' failed:", ((char **)arg->v)[0]);
 	}
-	return pid;
 }
 
 void
@@ -2410,12 +2255,8 @@ tag(const Arg *arg)
 
 	if (selmon->sel && arg->ui & TAGMASK) {
 		selmon->sel->tags = arg->ui & TAGMASK;
-		if (selmon->sel->switchtag)
-			selmon->sel->switchtag = 0;
 		arrange(selmon);
 		focus(NULL);
-		if ((arg->ui & TAGMASK) != selmon->tagset[selmon->seltags])
-			view(arg);
 	}
 }
 
@@ -2427,14 +2268,7 @@ tagmon(const Arg *arg)
 	if (!c || !mons->next)
 		return;
 	dest = dirtomon(arg->i);
-	if (c->isfullscreen) {
-		c->isfullscreen = 0;
-		sendmon(c, dest);
-		c->isfullscreen = 1;
-		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
-		XRaiseWindow(dpy, c->win);
-	} else
-		sendmon(c, dest);
+	sendmon(c, dest);
 }
 
 void
@@ -2537,7 +2371,6 @@ void
 unmanage(Client *c, int destroyed)
 {
 	Monitor *m;
-	unsigned int switchtag = c->switchtag;
 	XWindowChanges wc;
 
 	m = c->mon;
@@ -2566,7 +2399,8 @@ unmanage(Client *c, int destroyed)
 		XSelectInput(dpy, c->win, NoEventMask);
 		XConfigureWindow(dpy, c->win, CWBorderWidth, &wc); /* restore border */
 		XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
-		setclientstate(c, WithdrawnState);
+		if (!HIDDEN(c))
+			setclientstate(c, WithdrawnState);
 		XSync(dpy, False);
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
@@ -2578,8 +2412,6 @@ unmanage(Client *c, int destroyed)
 	arrange(m);
 	focus(NULL);
 	updateclientlist();
-	if (switchtag && ((switchtag & TAGMASK) != selmon->tagset[selmon->seltags]))
-		view(&((Arg) { .ui = switchtag }));
 }
 
 void
@@ -2609,7 +2441,9 @@ updatebars(void)
 	Monitor *m;
 	XSetWindowAttributes wa = {
 		.override_redirect = True,
-		.background_pixmap = ParentRelative,
+		.background_pixel = 0,
+		.border_pixel = 0,
+		.colormap = cmap,
 		.event_mask = ButtonPressMask|ExposureMask
 	};
 	XClassHint ch = {"dwm", "dwm"};
@@ -2618,9 +2452,9 @@ updatebars(void)
 			if (bar->external)
 				continue;
 			if (!bar->win) {
-				bar->win = XCreateWindow(dpy, root, bar->bx, bar->by, bar->bw, bar->bh, 0, DefaultDepth(dpy, screen),
-						CopyFromParent, DefaultVisual(dpy, screen),
-						CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
+				bar->win = XCreateWindow(dpy, root, bar->bx, bar->by, bar->bw, bar->bh, 0, depth,
+				                          InputOutput, visual,
+				                          CWOverrideRedirect|CWBackPixel|CWBorderPixel|CWColormap|CWEventMask, &wa);
 				XDefineCursor(dpy, bar->win, cursor[CurNormal]->cursor);
 				XMapRaised(dpy, bar->win);
 				XSetClassHint(dpy, bar->win, &ch);
@@ -2680,12 +2514,6 @@ updateclientlist(void)
 				XA_WINDOW, 32, PropModeAppend,
 				(unsigned char *) &(c->win), 1);
 
-	XDeleteProperty(dpy, root, netatom[NetClientListStacking]);
-	for (m = mons; m; m = m->next)
-		for (c = m->stack; c; c = c->snext)
-			XChangeProperty(dpy, root, netatom[NetClientListStacking],
-				XA_WINDOW, 32, PropModeAppend,
-				(unsigned char *) &(c->win), 1);
 }
 
 int
@@ -2709,7 +2537,6 @@ updategeom(void)
 				memcpy(&unique[j++], &info[i], sizeof(XineramaScreenInfo));
 		XFree(info);
 		nn = j;
-		sortscreens(unique, nn);
 		/* new monitors if nn > n */
 		for (i = n; i < nn; i++) {
 			for (m = mons; m && m->next; m = m->next);
@@ -2830,20 +2657,10 @@ void
 updatestatus(void)
 {
 	Monitor *m;
-	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext))) {
+	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext)))
 		strcpy(stext, "dwm-"VERSION);
-		estext[0] = '\0';
-	} else {
-		char *e = strchr(rawstext, statussep);
-		if (e) {
-			*e = '\0'; e++;
-			strncpy(rawestext, e, sizeof(estext) - 1);
-			copyvalidchars(estext, rawestext);
-		} else {
-			estext[0] = '\0';
-		}
+	else
 		copyvalidchars(stext, rawstext);
-	}
 	for (m = mons; m; m = m->next)
 		drawbar(m);
 }
@@ -2889,19 +2706,9 @@ view(const Arg *arg)
 {
 	if ((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
 	{
-		view(&((Arg) { .ui = 0 }));
 		return;
 	}
-	if (!arg->ui) {
-		selmon->seltags += 1;
-		if (selmon->seltags == LENGTH(selmon->tagset))
-			selmon->seltags = 0;
-	} else {
-		if (selmon->seltags == 0)
-			selmon->seltags = LENGTH(selmon->tagset) - 1;
-		else
-			selmon->seltags -= 1;
-	}
+	selmon->seltags ^= 1; /* toggle sel tagset */
 	if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
 	pertagview(arg);
@@ -3031,7 +2838,7 @@ main(int argc, char *argv[])
 		die("dwm: cannot get xcb connection\n");
 	checkotherwm();
 	XrmInitialize();
-	loadxrdb();
+	load_xresources();
 	setup();
 #ifdef __OpenBSD__
 	if (pledge("stdio rpath proc exec ps", NULL) == -1)

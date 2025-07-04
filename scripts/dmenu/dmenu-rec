@@ -3,7 +3,7 @@
 ### Softwares necessarios
 ### dmenu, ffmpeg, notify-send, dunst, slop, xrandr
 
-### Pulseaudio e pactl para pegar o microfone e audio padrao
+### Pul
 
 # Tema
 source ~/.theme_selected

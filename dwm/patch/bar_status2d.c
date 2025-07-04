@@ -7,23 +7,9 @@ width_status2d(Bar *bar, BarArg *a)
 }
 
 int
-width_status2d_es(Bar *bar, BarArg *a)
-{
-	int width;
-	width = status2dtextlength(rawestext);
-	return width ? width + lrpad : 0;
-}
-
-int
 draw_status2d(Bar *bar, BarArg *a)
 {
 	return drawstatusbar(a, rawstext);
-}
-
-int
-draw_status2d_es(Bar *bar, BarArg *a)
-{
-	return drawstatusbar(a, rawestext);
 }
 
 int
@@ -71,7 +57,7 @@ drawstatusbar(BarArg *a, char* stext)
 					}
 					memcpy(buf, (char*)text+i+1, 7);
 					buf[7] = '\0';
-					drw_clr_create(drw, &drw->scheme[ColFg], buf);
+					drw_clr_create(drw, &drw->scheme[ColFg], buf, alphas[SchemeNorm][ColFg]);
 					i += 7;
 				} else if (text[i] == 'b') {
 					char buf[8];
@@ -82,7 +68,7 @@ drawstatusbar(BarArg *a, char* stext)
 					}
 					memcpy(buf, (char*)text+i+1, 7);
 					buf[7] = '\0';
-					drw_clr_create(drw, &drw->scheme[ColBg], buf);
+					drw_clr_create(drw, &drw->scheme[ColBg], buf, alphas[SchemeNorm][ColBg]);
 					i += 7;
 				} else if (text[i] == 'd') {
 					drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];

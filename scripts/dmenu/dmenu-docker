@@ -45,6 +45,7 @@ if [[ -n "$selected" ]]; then
         # Se estiver parado, inicia o contêiner
         opcao=$(echo -e "Executar\nBuild" | dmenu -l 10 -p "Opção:")
         parametro=""
+
         if [ "$opcao" = "Build"  ]; then
             parametro="--build --no-cache"
         fi
@@ -84,14 +85,31 @@ if [[ -n "$selected" ]]; then
 #            | awk -F'->' '{print "http://localhost:" $1}' \
 #            | xargs -I {} xdg-open {}
 
-        docker-compose -f "$selected/docker-compose.yml" ps --status running \
+#        docker-compose -f "$selected/docker-compose.yml" ps --status running \
+#            | awk '/0.0.0.0:/ {for(i=1;i<=NF;i++) if($i ~ /0.0.0.0:/) {split($i,a,":"); split(a[2],b,"->"); print "http://localhost:"b[1]}}' \
+#            | xargs -I {} xdg-open {}
+
+        url=$(docker-compose -f "$selected/docker-compose.yml" ps --status running \
             | awk '/0.0.0.0:/ {for(i=1;i<=NF;i++) if($i ~ /0.0.0.0:/) {split($i,a,":"); split(a[2],b,"->"); print "http://localhost:"b[1]}}' \
-            | xargs -I {} xdg-open {}
+            | dmenu -l 10 -p "Abrir URL no navegador: ")
+
+        xdg-open $url
 
     else
-        # Se estiver em execução, para o contêiner
-        docker-compose -f "$selected/docker-compose.yml" down
-        notify-send "Docker Compose" "Contêiner em $selected foi parado."
+        # Mostro a Opcao de parar ou abrir os links no navegador
+        opcao=$(echo -e "Parar\nLink" | dmenu -l 10 -p "Opção:")
+
+        if [ "$opcao" = "Parar"  ]; then
+            # Se estiver em execução, para o contêiner
+            docker-compose -f "$selected/docker-compose.yml" down
+            notify-send -r 27072 "Docker Compose" "Contêiner em $selected foi parado."
+        else
+            # Carrega uma lista dos links, e apresenta, o link selecionado será aberto
+            url=$(docker-compose -f "$selected/docker-compose.yml" ps --status running \
+                | awk '/0.0.0.0:/ {for(i=1;i<=NF;i++) if($i ~ /0.0.0.0:/) {split($i,a,":"); split(a[2],b,"->"); print "http://localhost:"b[1]}}' \
+                | dmenu -l 10 -p "Abrir URL no navegador: ")
+            xdg-open $url
+        fi
     fi
 fi
 exit 0

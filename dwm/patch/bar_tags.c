@@ -29,19 +29,17 @@ draw_tags(Bar *bar, BarArg *a)
 		icon = tagicon(bar->mon, i);
 		invert = 0;
 		w = TEXTW(icon);
-        if (!(occ & 1 << i) && !(m->tagset[m->seltags] & 1 << i)) {
-            drw_setscheme(drw, scheme[SchemeTagsUnused]); // Aplica o esquema para tags não usadas
-        } else {
-            drw_setscheme(drw, scheme[
-                m->tagset[m->seltags] & 1 << i
-                ? SchemeTagsSel
-                : urg & 1 << i
-                ? SchemeUrg
-                : SchemeTagsNorm
-            ]);
-        }
+		drw_setscheme(drw, scheme[
+			m->tagset[m->seltags] & 1 << i
+			? SchemeTagsSel
+			: urg & 1 << i
+			? SchemeUrg
+			: SchemeTagsNorm
+		]);
 		drw_text(drw, x, a->y, w, a->h, lrpad / 2, icon, invert, False);
 		drawindicator(m, NULL, occ, x, a->y, w, a->h, i, -1, invert, tagindicatortype);
+		if (ulineall || m->tagset[m->seltags] & 1 << i)
+			drw_rect(drw, x + ulinepad, a->y + bh - ulinestroke - ulinevoffset, w - (ulinepad * 2), ulinestroke, 1, 0);
 		x += w;
 	}
 

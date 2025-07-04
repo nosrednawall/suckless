@@ -63,7 +63,8 @@ else
 
     # Gera som quando finaliza o modo
     if [ "00:01" = "$pomodoro_minutos" ]; then
-        ffplay -nodisp -autoexit -t 3 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
+        # ffplay -nodisp -autoexit -t 3 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
+        $HOME/.config/suckless/scripts/others/som
     fi
 
     # retorno no dwmblocks

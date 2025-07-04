@@ -84,6 +84,9 @@
 /* Show layout symbol in bar */
 #define BAR_LTSYMBOL_PATCH 1
 
+/* Adds a colour schme for the layout symbol */
+#define BAR_LTSYMBOL_SCHEME_PATCH 0
+
 /* Adds powerline arrows for the status.
  * This uses statuscolors logic for choosing colors for the powerline. As these markers
  * are also control characters there is no explicit statuscmd support for this patch.
@@ -185,7 +188,7 @@
 /* This patch underlines the selected tag, or optionally all tags.
  * https://dwm.suckless.org/patches/underlinetags/
  */
-#define BAR_UNDERLINETAGS_PATCH 0
+#define BAR_UNDERLINETAGS_PATCH 1
 
 /* This patch adds the window icon next to the window title in the bar.
  *
@@ -254,7 +257,7 @@
  * when including this patch.
  * https://dwm.suckless.org/patches/alpha/
  */
-#define BAR_ALPHA_PATCH 0
+#define BAR_ALPHA_PATCH 1
 
 /* This patch introduces alternative tags which can be switched on the fly for the
  * sole purpose of providing visual aid.
@@ -290,6 +293,12 @@
  */
 #define BAR_BORDER_PATCH 0
 
+/* Optional addon for the border patch. This makes it so that the bar border is drawn using
+ * the background colour of the bar as opposed to the border colour. This allows for the
+ * border to have the same transparency as the background thus giving a more uniform look.
+ */
+#define BAR_BORDER_COLBG_PATCH 0
+
 /* This patch centers the WM_NAME of the currently selected window on the status bar.
  * This is compatible with the wintitle, bartabgroups, flexwintitle and awesomebar bar
  * modules.
@@ -315,7 +324,7 @@
  * renamed to more accurately reflect what it does - creating an extra status.
  * https://dwm.suckless.org/patches/extrabar/
  */
-#define BAR_EXTRASTATUS_PATCH 1
+#define BAR_EXTRASTATUS_PATCH 0
 
 /* Adds EWMH support for _NET_NUMBER_OF_DESKTOPS, _NET_CURRENT_DESKTOP, _NET_DESKTOP_NAMES
  * and _NET_DESKTOP_VIEWPORT, which allows for compatibility with other bars and programs
@@ -459,12 +468,21 @@
  * This patch interferes with the center transient windows patches.
  * https://dwm.suckless.org/patches/alwayscenter/
  */
-#define ALWAYSCENTER_PATCH 1
+#define ALWAYSCENTER_PATCH 0
+
+/* Allows for floating windows to be toggled to be always on top (aot).
+ *
+ * Disclaimer: Some flickering may be expected with this patch when floating and aot
+ * windows overlap.
+ *
+ * https://dwm.suckless.org/patches/alwaysontop/
+ */
+#define ALWAYSONTOP_PATCH 0
 
 /* This patch allows windows to be resized with its aspect ratio remaining constant.
  * https://dwm.suckless.org/patches/aspectresize/
  */
-#define ASPECTRESIZE_PATCH 1
+#define ASPECTRESIZE_PATCH 0
 
 /* This patch adds new clients above the selected client, instead of always
  * becoming the new master. This behaviour is known from Xmonad.
@@ -503,6 +521,19 @@
  * https://dwm.suckless.org/patches/autoresize/
  */
 #define AUTORESIZE_PATCH 0
+
+/* This patch allows for the mouse cursor to automatically hide when the user uses the keyboard.
+ *
+ * You need to uncomment the corresponding lines in config.mk to use additional libraries
+ * when including this patch.
+ *
+ * This patch depends on the following libraries:
+ *    - libxfixes
+ *    - libxi
+ *
+ * https://github.com/bakkeby/patches/wiki/banish
+ */
+#define BANISH_PATCH 0
 
 /* This patch adds proper support for Right-To-Left languages. (such as Farsi, Arabic or Hebrew).
  *
@@ -547,7 +578,7 @@
 /* As above, except that the transient window is centered within the position of the parent
  * window, rather than at the center of the screen. This takes precedence over the above patch.
  */
-#define CENTER_TRANSIENT_WINDOWS_BY_PARENT_PATCH 0
+#define CENTER_TRANSIENT_WINDOWS_BY_PARENT_PATCH 1
 
 /* This patch provides the ability to assign different weights to clients in their
  * respective stack in tiled layout.
@@ -585,7 +616,7 @@
  * like chromium (with "Use system title bar and borders" turned off) or vlc in fullscreen mode.
  * https://dwm.suckless.org/patches/decoration_hints/
  */
-#define DECORATION_HINTS_PATCH 1
+#define DECORATION_HINTS_PATCH 0
 
 /* This feature distributes all clients on the current monitor evenly across all tags.
  * It is a variant of the reorganizetags patch.
@@ -773,7 +804,7 @@
  * applications that assume that the window manager is using window reparenting.
  * Refer to the ISSUES secton of the dwm man page for more details.
  */
-#define LG3D_PATCH 0
+#define LG3D_PATCH 1
 
 /* By default in dwm it is possible to make an application fullscreen, then use
  * the focusstack keybindings to focus on other windows beneath the current window.
@@ -788,7 +819,7 @@
  * windows using keybindings.
  * https://dwm.suckless.org/patches/maximize/
  */
-#define MAXIMIZE_PATCH 1
+#define MAXIMIZE_PATCH 0
 
 /* Control Music Player Daemon via keybinds.
  * You need to uncomment the corresponding line in config.mk to use the -lmpdclient library
@@ -828,7 +859,7 @@
 /* This patch allows you to move clients around in the stack and swap them with the master.
  * https://dwm.suckless.org/patches/movestack/
  */
-#define MOVESTACK_PATCH 1
+#define MOVESTACK_PATCH 0
 
 /* This patch allows you to change the names of tags during runtime.
  *
@@ -860,7 +891,7 @@
  * Zoom video conferencing application.
  * https://github.com/bakkeby/patches/wiki/netclientliststacking/
  */
-#define NET_CLIENT_LIST_STACKING_PATCH 1
+#define NET_CLIENT_LIST_STACKING_PATCH 0
 
 /* Removes the border when there is only one window visible.
  * https://dwm.suckless.org/patches/noborder/
@@ -986,7 +1017,7 @@
  * patch the mouse is warped to the nearest corner and you resize from there.
  * https://dwm.suckless.org/patches/resizecorners/
  */
-#define RESIZECORNERS_PATCH 1
+#define RESIZECORNERS_PATCH 0
 
 /* Practically the same as resizecorners, but the cursor does not warp to corners.
  * This takes precedence over the resizecorners patch.
@@ -1005,7 +1036,7 @@
  * This patch was backported from instantWM.
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-riodraw-6.2.diff
  */
-#define RIODRAW_PATCH 1
+#define RIODRAW_PATCH 0
 
 /* This patch let's you rotate through the stack using keyboard shortcuts.
  * https://dwm.suckless.org/patches/rotatestack/
@@ -1034,8 +1065,8 @@
  * represent all tags should use ~SPTAGMASK instead.
  *
  * Upgraded to Christian Tenllado's multiple scratchpad version.
- * https://lists.suckless.org/hackers/2004/17205.patches
- * html://https.dwm.suckless/org/scratchpads/
+ * https://lists.suckless.org/hackers/2004/17205.html
+ * https://dwm.suckless.org/patches/scratchpads/
  */
 #define SCRATCHPADS_PATCH 1
 
@@ -1075,12 +1106,12 @@
 /* Floating windows being sent to another monitor will be centered.
  * https://dwm.suckless.org/patches/sendmoncenter/
  */
-#define SENDMON_CENTER_PATCH 1
+#define SENDMON_CENTER_PATCH 0
 
 /* This patch allow clients to keep focus when being sent to another monitor.
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-sendmon_keepfocus-6.2.diff
  */
-#define SENDMON_KEEPFOCUS_PATCH 1
+#define SENDMON_KEEPFOCUS_PATCH 0
 
 /* This patch allows border pixels to be changed during runtime.
  * https://dwm.suckless.org/patches/setborderpx/
@@ -1103,7 +1134,7 @@
  * Also see the focusadjacenttag patch.
  * https://dwm.suckless.org/patches/shift-tools/
  */
-#define SHIFTTAG_PATCH 1
+#define SHIFTTAG_PATCH 0
 
 /* Moves the current selected client to the adjacent tag that has at least one client, if none
  * then it acts as shifttag.
@@ -1119,7 +1150,7 @@
 /* This variant of the shiftview patch adds left and right circular shift through tags,
  * but skips tags where there are no clients.
  */
-#define SHIFTVIEW_CLIENTS_PATCH 0
+#define SHIFTVIEW_CLIENTS_PATCH 1
 
 /* This patch makes dwm obey even "soft" sizehints for new clients. Any window
  * that requests a specific initial size will be floated and set to that size.
@@ -1157,12 +1188,12 @@
  * comes to focusmon, tagmon and similar functionality.
  * https://www.mail-archive.com/hackers@suckless.org/msg09400.html
  */
-#define SORTSCREENS_PATCH 1
+#define SORTSCREENS_PATCH 0
 
 /* Spawns programs from currently focused client's working directory.
  * https://dwm.suckless.org/patches/spawn_cwd/
  */
-#define SPAWNCMD_PATCH 1
+#define SPAWNCMD_PATCH 0
 
 /* This patch provides comprehensive utilities for managing the client stack, providing
  * keyboard shortcuts for focusing or placing a client at specific positions in the stack.
@@ -1188,7 +1219,7 @@
 /* Adds toggleable keyboard shortcut to make a client 'sticky', i.e. visible on all tags.
  * https://dwm.suckless.org/patches/sticky/
  */
-#define STICKY_PATCH 1
+#define STICKY_PATCH 0
 
 /* This patch adds "window swallowing" to dwm as known from Plan 9's windowing system rio.
  * Clients marked with isterminal in config.h swallow a window opened by any child process,
@@ -1218,7 +1249,7 @@
  * keyboard shortcuts.
  * https://dwm.suckless.org/patches/swaptags/
  */
-#define SWAPTAGS_PATCH 1
+#define SWAPTAGS_PATCH 0
 
 /* Switch focus between the master and stack columns using a single keybinding.
  * https://dwm.suckless.org/patches/switchcol/
@@ -1241,7 +1272,7 @@
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-switchtag-6.2.diff
  * Also see https://dwm.suckless.org/patches/switchtotag
  */
-#define SWITCHTAG_PATCH 1
+#define SWITCHTAG_PATCH 0
 
 /* This patch transforms the monocle layout into a "tabbed" layout if more than one window is
  * present on the monocle view. This patch has been added for demonstration purposes only and has
@@ -1259,7 +1290,7 @@
 /* This patch allows you to move all visible windows on a monitor to an adjacent monitor.
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-tagallmon-6.2.diff
  */
-#define TAGALLMON_PATCH 1
+#define TAGALLMON_PATCH 0
 
 /* This patch makes new clients attach into the stack area when you toggle a new tag into
  * view. This means your master area will remain unchanged when toggling views.
@@ -1283,19 +1314,19 @@
  * while remaining in fullscreen.
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-tagmonfixfs-6.2.diff
  */
-#define TAGMONFIXFS_PATCH 1
+#define TAGMONFIXFS_PATCH 0
 
 /* Add functions and keybindings to tag a window to a desired tag on the next (right)
  * or previous (left) monitor from the currently selected monitor.
  * https://dwm.suckless.org/patches/tagothermonitor/
  */
-#define TAGOTHERMONITOR_PATCH 1
+#define TAGOTHERMONITOR_PATCH 0
 
 /* This patch allows you to swap all visible windows on one monitor with those of an
  * adjacent monitor.
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-tagswapmon-6.2.diff
  */
-#define TAGSWAPMON_PATCH 1
+#define TAGSWAPMON_PATCH 0
 
 /* Sync tag actions across all monitors.
  * This is comparable to a sort of pseudo-desktop environment.
@@ -1319,7 +1350,7 @@
 /* This patch allows for the bar position (top or bottom) to be toggled during runtime.
  * https://dwm.suckless.org/patches/toggletopbar/
  */
-#define TOGGLETOPBAR_PATCH 1
+#define TOGGLETOPBAR_PATCH 0
 
 /* Minor patch that lets you use the same keyboard shortcut to toggle to the previous layout if the
  * designated layout is already active.
@@ -1331,7 +1362,7 @@
  * https://github.com/bakkeby/patches/wiki/togglelayout
  */
 
-#define TOGGLELAYOUT_PATCH 1
+#define TOGGLELAYOUT_PATCH 0
 
 /* Minor patch that lets you use the same keyboard shortcut to toggle to the previous tag if the
  * designated tag is already active.
@@ -1344,7 +1375,7 @@
  * https://www.reddit.com/r/suckless/comments/ik27vd/key_toggle_between_next_and_previous_tag_dwm/
  * https://github.com/bakkeby/patches/wiki/toggletag
  */
-#define TOGGLETAG_PATCH 1
+#define TOGGLETAG_PATCH 0
 
 /* Lets you transfer the currently focused client between the master and stack area
  * while increasing or decreasing the master area (nmaster) accordingly.
@@ -1369,7 +1400,7 @@
  * launchers, docks, desktop icons and more.
  * https://github.com/bakkeby/patches/wiki/unmanaged
  */
-#define UNMANAGED_PATCH 1
+#define UNMANAGED_PATCH 0
 
 /* This patch adds configurable gaps between windows differentiating between outer, inner,
  * horizontal and vertical gaps.
@@ -1392,12 +1423,12 @@
  * The number of history elements is defined by the NUMVIEWHIST macro in dwm.c and defaults to
  * the number of tags in the system.
  */
-#define VIEW_HISTORY_PATCH 1
+#define VIEW_HISTORY_PATCH 0
 
 /* Follow a window to the tag it is being moved to.
  * https://dwm.suckless.org/patches/viewontag/
  */
-#define VIEWONTAG_PATCH 1
+#define VIEWONTAG_PATCH 0
 
 /* This patch warps the mouse cursor to the center of the currently focused window or screen
  * when the mouse cursor is (a) on a different screen or (b) on top of a different window.
@@ -1418,7 +1449,7 @@
  * view (Mod-0) using a keyboard shortcut.
  * http://dwm.suckless.org/patches/winview/
  */
-#define WINVIEW_PATCH 1
+#define WINVIEW_PATCH 0
 
 /* Remember keyboard layout per client.
  * It is recommended that you configure xkb before using this patch as described in
@@ -1432,6 +1463,12 @@
  * https://dwm.suckless.org/patches/xrdb/
  */
 #define XRDB_PATCH 1
+
+/* This patch allows for integer, float and string settings to be loaded from Xresources.
+ * Xresources takes precedence over xrdb.
+ * https://dwm.suckless.org/patches/xresources/
+ */
+#define XRESOURCES_PATCH 1
 
 /* Simple patch that allows floating windows to be zoomed into the master stack position.
  * https://www.reddit.com/r/suckless/comments/ie5fe3/zoomfloating_my_own_simple_original_patch/
@@ -1451,43 +1488,43 @@
 /* Bottomstack layout.
  * https://dwm.suckless.org/patches/bottomstack/
  */
-#define BSTACK_LAYOUT 1
+#define BSTACK_LAYOUT 0
 
 /* Bottomstack horizontal layout.
  * https://dwm.suckless.org/patches/bottomstack/
  */
-#define BSTACKHORIZ_LAYOUT 1
+#define BSTACKHORIZ_LAYOUT 0
 
 /* Centered master layout.
  * https://dwm.suckless.org/patches/centeredmaster/
  */
-#define CENTEREDMASTER_LAYOUT 1
+#define CENTEREDMASTER_LAYOUT 0
 
 /* Centered floating master layout.
  * https://dwm.suckless.org/patches/centeredmaster/
  */
-#define CENTEREDFLOATINGMASTER_LAYOUT 1
+#define CENTEREDFLOATINGMASTER_LAYOUT 0
 
 /* Same as the default tile layout except clients in the master area are arranged in
  * columns (i.e. left to right).
  * https://dwm.suckless.org/patches/columns/
  */
-#define COLUMNS_LAYOUT 1
+#define COLUMNS_LAYOUT 0
 
 /* Deck layout.
  * https://dwm.suckless.org/patches/deck/
  */
-#define DECK_LAYOUT 1
+#define DECK_LAYOUT 0
 
 /* Fibonacci dwindle layout.
  * https://dwm.suckless.org/patches/fibonacci/
  */
-#define FIBONACCI_DWINDLE_LAYOUT 1
+#define FIBONACCI_DWINDLE_LAYOUT 0
 
 /* Fibonacci spiral layout.
  * https://dwm.suckless.org/patches/fibonacci/
  */
-#define FIBONACCI_SPIRAL_LAYOUT 1
+#define FIBONACCI_SPIRAL_LAYOUT 0
 
 /* Flextile deluxe layout.
  * A revamped, more flexible, and over-the-top version of the original flextile layout.
@@ -1498,22 +1535,22 @@
 /* Gappless grid layout.
  * https://dwm.suckless.org/patches/gaplessgrid/
  */
-#define GAPPLESSGRID_LAYOUT 1
+#define GAPPLESSGRID_LAYOUT 0
 
 /* Gridmode (grid) layout.
  * https://dwm.suckless.org/patches/gridmode/
  */
-#define GRIDMODE_LAYOUT 1
+#define GRIDMODE_LAYOUT 0
 
 /* Horizontal grid (horizgrid) layout.
  * https://dwm.suckless.org/patches/horizgrid/
  */
-#define HORIZGRID_LAYOUT 1
+#define HORIZGRID_LAYOUT 0
 
 /* Grid layout where nmaster controls the number of rows.
  * https://dwm.suckless.org/patches/nrowgrid/
  */
-#define NROWGRID_LAYOUT 1
+#define NROWGRID_LAYOUT 0
 
 /* The default tile layout.
  * This can be optionally disabled in favour of other layouts.
