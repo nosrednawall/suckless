@@ -7,8 +7,8 @@ static char normbordercolor[]            = "#44475A"; // cor da borda normal
 static char normfloatcolor[]             = "#44475A"; // cor da borda de janelas flutuantes normal
 
 static char selfgcolor[]                 = "#F8F8F2"; // cor do texto da janela selecionada
-static char selbgcolor[]                 = "#6272A4"; // cor de fundo da janela selecionada
-static char selbordercolor[]             = "#6272A4"; // cor da borda da janela selecionada
+static char selbgcolor[]                 = "#282A36"; // cor de fundo da janela selecionada
+static char selbordercolor[]             = "#8BE9FD"; // cor da borda da janela selecionada
 static char selfloatcolor[]              = "#6272A4"; // cor da borda de janelas flutuantes selecionadas
 
 static char titlenormfgcolor[]           = "#F8F8F2"; // cor do texto do título normal
@@ -17,7 +17,7 @@ static char titlenormbordercolor[]       = "#44475A"; // cor da borda do título
 static char titlenormfloatcolor[]        = "#6272A4"; // cor da borda de janelas flutuantes do título normal
 
 static char titleselfgcolor[]            = "#F8F8F2"; // cor do texto do título selecionado
-static char titleselbgcolor[]            = "#6272A4"; // cor de fundo do título selecionado
+static char titleselbgcolor[]            = "#282A36"; // cor de fundo do título selecionado
 static char titleselbordercolor[]        = "#6272A4"; // cor da borda do título selecionado
 static char titleselfloatcolor[]         = "#6272A4"; // cor da borda de janelas flutuantes do título selecionado
 
@@ -27,7 +27,7 @@ static char tagsnormbordercolor[]        = "#44475A"; // cor da borda das tags n
 static char tagsnormfloatcolor[]         = "#6272A4"; // cor da borda de janelas flutuantes das tags normais
 
 static char tagsselfgcolor[]             = "#F8F8F2"; // cor do texto das tags selecionadas
-static char tagsselbgcolor[]             = "#6272A4"; // cor de fundo das tags selecionadas
+static char tagsselbgcolor[]             = "#44475A"; // cor de fundo das tags selecionadas
 static char tagsselbordercolor[]         = "#6272A4"; // cor da borda das tags selecionadas
 static char tagsselfloatcolor[]          = "#6272A4"; // cor da borda de janelas flutuantes das tags selecionadas
 
@@ -43,9 +43,7 @@ static char urgfloatcolor[]              = "#6272A4"; // cor da borda de janelas
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#51576D"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#282A36"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#44475A"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#6272A4"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#282A36";
+static char ltsymbolfgcolor[]            = "#F8F8F2";
 
 #endif // DRACULA_DARK_H_

@@ -192,14 +192,14 @@ case "$OPERATION_MODE" in
         if [[ -z "$song" ]]; then
             echo "$icon_close^d^  "
         else
-            echo "$icon ^d^$song  "
+            echo "$icon $song  "
         fi
     ;;
     *)
         if [[ -z "$song" ]]; then
-            echo "$icon_close^d^  "
+            echo "$icon_close  "
         else
-            echo "$icon ^d^$song  "
+            echo "$icon $song  "
         fi
     ;;
 esac
