@@ -66,15 +66,15 @@ fi
 
 # Define o ícone baseado no uso do CPU
 if [ "$usageCpu" -le 10 ]; then
-    icon="^c$COLOR_7^ "
+    icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_7^ "
 elif [ "$usageCpu" -le 40 ]; then
-    icon="^c$COLOR_1^ "
+    icon="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^ "
 elif [ "$usageCpu" -le 60 ]; then
-    icon="^c$COLOR_2^ "
+    icon="^b$COLOR_2^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_2^ "
 elif [ "$usageCpu" -le 100 ]; then
-    icon="^c$COLOR_3^ "
+    icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_3^ "
 else
-    icon="^c$COLOR_7^ "
+    icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_7^ "
 fi
 
 
@@ -84,10 +84,10 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     "MEDIO")
-        echo "$icon^d^$usageCpu%  "
+        echo "$icon$usageCpu%^d^  "
     ;;
     *)
-        echo "$icon^d^$usageCpu%  "
+        echo "$icon$usageCpu%^d^  "
     ;;
 esac
 

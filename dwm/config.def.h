@@ -5,13 +5,18 @@
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
 
 /* appearance */
-static const unsigned int borderpx       = 4;   /* border pixel of windows */
+static const unsigned int borderpx       = 6;   /* border pixel of windows */
+
+/* This allows the bar border size to be explicitly set separately from borderpx.
+ * If left as 0 then it will default to the borderpx value of the monitor and will
+ * automatically update with setborderpx. */
+static const unsigned int barborderpx    = 10;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
 static const unsigned int gappih         = 20;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 20;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappov         = 30;  /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
@@ -19,75 +24,34 @@ static const char dwmdir[]               = "dwm";
 static const char localshare[]           = ".config/suckless";
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
-static const int bar_height              = 28;   /* 0 means derive from font, >= 1 explicit height */
+static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
 static const int vertpad                 = 10;  /* vertical padding of bar */
 static const int sidepad                 = 10;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
+
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = -1;
 static const char buttonbar[]            = "  ";
-static const unsigned int systrayspacing = 1;   /* systray spacing */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
-static const unsigned int ulinepad = 5;         /* horizontal padding between the underline and tag */
+static const unsigned int ulinepad = 1;         /* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
-static const unsigned int ulinevoffset = 0;     /* how far above the bottom of the bar the line should appear */
+static const unsigned int ulinevoffset = 22;     /* how far above the bottom of the bar the line should appear */
 static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
 
 /* Indicators: see patch/bar_indicators.h for options */
-static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
+static int tagindicatortype              = INDICATOR_BOTTOM_BAR;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
-
+// static const char *fonts[]               = { "monospace:size=10" };
 static const char *fonts[]          	 = {
-//	"Fira Mono:pixelsize=14:antialias=true:autohint=true",
 	"Iosevka:pixelsize=15",
     "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-
-static char c000000[]                    = "#000000"; // placeholder value
-
-static char normfgcolor[]                = "#bbbbbb";
-static char normbgcolor[]                = "#222222";
-static char normbordercolor[]            = "#444444";
-static char normfloatcolor[]             = "#db8fd9";
-
-static char selfgcolor[]                 = "#eeeeee";
-static char selbgcolor[]                 = "#005577";
-static char selbordercolor[]             = "#005577";
-static char selfloatcolor[]              = "#005577";
-
-static char titlenormfgcolor[]           = "#bbbbbb";
-static char titlenormbgcolor[]           = "#222222";
-static char titlenormbordercolor[]       = "#444444";
-static char titlenormfloatcolor[]        = "#db8fd9";
-
-static char titleselfgcolor[]            = "#eeeeee";
-static char titleselbgcolor[]            = "#005577";
-static char titleselbordercolor[]        = "#005577";
-static char titleselfloatcolor[]         = "#005577";
-
-static char tagsnormfgcolor[]            = "#bbbbbb";
-static char tagsnormbgcolor[]            = "#222222";
-static char tagsnormbordercolor[]        = "#444444";
-static char tagsnormfloatcolor[]         = "#db8fd9";
-
-static char tagsselfgcolor[]             = "#eeeeee";
-static char tagsselbgcolor[]             = "#005577";
-static char tagsselbordercolor[]         = "#005577";
-static char tagsselfloatcolor[]          = "#005577";
-
-static char hidnormfgcolor[]             = "#005577";
-static char hidselfgcolor[]              = "#227799";
-static char hidnormbgcolor[]             = "#222222";
-static char hidselbgcolor[]              = "#222222";
-
-static char urgfgcolor[]                 = "#bbbbbb";
-static char urgbgcolor[]                 = "#222222";
-static char urgbordercolor[]             = "#ff0000";
-static char urgfloatcolor[]              = "#db8fd9";
+#include "themes/nord_dark.h"
 
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
@@ -102,6 +66,7 @@ static const unsigned int alphas[][3] = {
 	[SchemeHidNorm]      = { OPAQUE, baralpha, borderalpha },
 	[SchemeHidSel]       = { OPAQUE, baralpha, borderalpha },
 	[SchemeUrg]          = { OPAQUE, baralpha, borderalpha },
+	[SchemeLtSymbol]     = { OPAQUE, baralpha, borderalpha },
 };
 
 static char *colors[][ColCount] = {
@@ -115,6 +80,7 @@ static char *colors[][ColCount] = {
 	[SchemeHidNorm]      = { hidnormfgcolor,   hidnormbgcolor,   c000000,              c000000 },
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },
+	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 };
 
 const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "120x34", NULL };
@@ -123,7 +89,6 @@ const char *spcmd3[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
 const char *spcmd4[]  = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
 const char *spcmd5[]  = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
 const char *spcmd6[]  = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
-//const char *spcmd7[]  = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
 const char *spcmd7[]  = {"st", "-n", "sprmpc", "-g", "100x34", "-e", "rmpc", NULL };
 //const char *spcmd8[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01JK1V64QDCVRVVYTEWQH2N5BA",  NULL };
 const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
@@ -140,7 +105,7 @@ static Sp scratchpads[] = {
 	{"sppulse",     		spcmd4},
 	{"sptop",       		spcmd5},
 	{"spnmtui",     		spcmd6},
-	{"sprmpc",   		spcmd7},
+	{"sprmpc",   		    spcmd7},
 	{"whatsapp-firefox",	spcmd8},
 	{"spytfzf" ,		   	spcmd9},
 	{"qalculate-gtk",		spcmd10},
@@ -223,7 +188,6 @@ static const Rule rules[] = {
 	RULE(.instance = "sppulse",  .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
 	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
-//	RULE(.instance = "spncmpcpp",  .tags = SPTAG(6), .isfloating = 1)
 	RULE(.instance = "sprmpc",  .tags = SPTAG(6), .isfloating = 1)
 //	RULE(.instance = "FFPWA-01JK1V64QDCVRVVYTEWQH2N5BA",  .tags = SPTAG(7), .isfloating = 1)
 	RULE(.instance = "hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
@@ -236,7 +200,7 @@ static const Rule rules[] = {
 
 static const MonitorRule monrules[] = {
 	/* monitor  tag   layout  mfact  nmaster  showbar  topbar */
-	{  1,       -1,   2,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
+	{  1,       -1,   5,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
 	{  -1,      -1,   0,      -1,    -1,      -1,      -1     }, // default
 };
 
@@ -259,14 +223,16 @@ static const BarRule barrules[] = {
 	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
 	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_statuscmd,         NULL,                    "status2d" },
-	{ -1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
+	{ -1,        0,     BAR_ALIGN_NONE,   width_wintitle,           draw_wintitle,          click_wintitle,          NULL,                    "wintitle" },
 };
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+
+#define FORCE_VSPLIT 1
 
 /* mouse scroll resize */
 static const int scrollsensetivity = 30; /* 1 means resize window by 1 pixel for each scroll event */
@@ -279,11 +245,24 @@ static const int scrollargs[][2] = {
 	{ 0, 					-scrollsensetivity },
 };
 
+
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "TTT",      bstack },
+	{ "===",      bstackhoriz },
+	{ "|M|",      centeredmaster },
+	{ ">M>",      centeredfloatingmaster },
+	{ "|||",      col },
+	{ "[D]",      deck },
+	{ "(@)",      spiral },
+	{ "[\\]",     dwindle },
+	{ "HHH",      grid },
+	{ "---",      horizgrid },
+	{ ":::",      gaplessgrid },
+	{ "###",      nrowgrid },
 };
 
 /* key definitions */
@@ -310,62 +289,6 @@ static const char *termcmd[]  = { "st", NULL };
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */
 #define STATUSBAR "dwmblocks"
-
-/*
-* Xresources preferences to load at startup.
-*
-*     Name                      Type       Address
-*    ------------------------------------------------
-*     "nmaster"                 INTEGER    &nmaster
-*     "mfact"                   FLOAT      &mfact
-*     "color1"                  STRING     &color1
-*
-* In the Xresources file setting resources shoud be prefixed with "dwm.", e.g.
-*
-*    dwm.nmaster: 1
-*    dwm.mfact: 0.50
-*    dwm.color1: #FA6EFA
-*
-* Note that the const qualifier must be removed from the variables if you plan on
-* overriding them with values from Xresources. While resources can be reloaded
-* using the xrdb function some changes may only take effect following a restart.
-*/
-ResourcePref resources[] = {
-	/* Resource name            Type       Address                */
-	{ "normfgcolor",            STRING,    &normfgcolor },
-	{ "normbgcolor",            STRING,    &normbgcolor },
-	{ "normbordercolor",        STRING,    &normbordercolor },
-	{ "normfloatcolor",         STRING,    &normfloatcolor },
-	{ "selfgcolor",             STRING,    &selfgcolor },
-	{ "selbgcolor",             STRING,    &selbgcolor },
-	{ "selbordercolor",         STRING,    &selbordercolor },
-	{ "selfloatcolor",          STRING,    &selfloatcolor },
-	{ "titlenormfgcolor",       STRING,    &titlenormfgcolor },
-	{ "titlenormbgcolor",       STRING,    &titlenormbgcolor },
-	{ "titlenormbordercolor",   STRING,    &titlenormbordercolor },
-	{ "titlenormfloatcolor",    STRING,    &titlenormfloatcolor },
-	{ "titleselfgcolor",        STRING,    &titleselfgcolor },
-	{ "titleselbgcolor",        STRING,    &titleselbgcolor },
-	{ "titleselbordercolor",    STRING,    &titleselbordercolor },
-	{ "titleselfloatcolor",     STRING,    &titleselfloatcolor },
-	{ "tagsnormfgcolor",        STRING,    &tagsnormfgcolor },
-	{ "tagsnormbgcolor",        STRING,    &tagsnormbgcolor },
-	{ "tagsnormbordercolor",    STRING,    &tagsnormbordercolor },
-	{ "tagsnormfloatcolor",     STRING,    &tagsnormfloatcolor },
-	{ "tagsselfgcolor",         STRING,    &tagsselfgcolor },
-	{ "tagsselbgcolor",         STRING,    &tagsselbgcolor },
-	{ "tagsselbordercolor",     STRING,    &tagsselbordercolor },
-	{ "tagsselfloatcolor",      STRING,    &tagsselfloatcolor },
-	{ "hidnormfgcolor",         STRING,    &hidnormfgcolor },
-	{ "hidnormbgcolor",         STRING,    &hidnormbgcolor },
-	{ "hidselfgcolor",          STRING,    &hidselfgcolor },
-	{ "hidselbgcolor",          STRING,    &hidselbgcolor },
-	{ "urgfgcolor",             STRING,    &urgfgcolor },
-	{ "urgbgcolor",             STRING,    &urgbgcolor },
-	{ "urgbordercolor",         STRING,    &urgbordercolor },
-	{ "urgfloatcolor",          STRING,    &urgfloatcolor },
-};
-
 #include <X11/XF86keysym.h>
 // Atalho para chamar os scripts
 #define PATH(name) "$HOME/.config/suckless/scripts/"name
@@ -414,15 +337,30 @@ static const Key keys[] = {
 
 
 	{ MODKEY,                       XK_Tab,        view,                   {0} },
-    { ControlMask|Mod1Mask,         XK_z,          showhideclient,         {0} },
 	{ ControlMask|Mod1Mask,         XK_c,          killclient,             {0} },
 	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
 	{ ControlMask|Mod1Mask,         XK_r,          quit,                   {1} }, //restart
 
 	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
-	{ MODKEY,                       XK_t,          setlayout,              {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,          setlayout,              {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,          setlayout,              {.v = &layouts[2]} },
+
+    //Layouts
+	{ MODKEY,                       XK_F1,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_F2,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_F3,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_F4,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_F5,      setlayout,      {.v = &layouts[4]} },
+	{ MODKEY,                       XK_F6,      setlayout,      {.v = &layouts[5]} },
+	{ MODKEY,                       XK_F7,      setlayout,      {.v = &layouts[6]} },
+	{ MODKEY,                       XK_F8,      setlayout,      {.v = &layouts[7]} },
+	{ MODKEY,                       XK_F9,      setlayout,      {.v = &layouts[8]} },
+	{ MODKEY,                       XK_F10,     setlayout,      {.v = &layouts[9]} },
+	{ MODKEY,                       XK_F11,     setlayout,      {.v = &layouts[10]} },
+	{ MODKEY,                       XK_F12,     setlayout,      {.v = &layouts[11]} },
+	{ MODKEY|ShiftMask,             XK_F1,      setlayout,      {.v = &layouts[12]} },
+	{ MODKEY|ShiftMask,             XK_F2,      setlayout,      {.v = &layouts[13]} },
+    { MODKEY|ShiftMask,             XK_F3,      setlayout,      {.v = &layouts[14]} },
+
+
 	{ MODKEY,                       XK_space,      setlayout,              {0} },
 	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
 
@@ -555,8 +493,6 @@ static const Button buttons[] = {
 	{ ClkWinTitle,          0,                   Button4,        focusstack,     {.i = +1 } },  //avanca o foco para a proxima janela
 	{ ClkWinTitle,          0,                   Button5,        focusstack,     {.i = -1 } },  //o foco retona para a janela anterior
 
-	{ ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
-	{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
 	{ ClkWinTitle,          0,                   Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,                   Button1,        sigstatusbar,   {.i = 1 } },
 	{ ClkStatusText,        0,                   Button2,        sigstatusbar,   {.i = 2 } },
@@ -624,7 +560,8 @@ static const Signal signals[] = {
 	{ "viewall",                 viewallex },
 	{ "viewex",                  viewex },
 	{ "toggleview",              toggleview },
-	{ "showhideclient",          showhideclient },
+	{ "shiftview",               shiftview },
+	{ "shiftviewclients",        shiftviewclients },
 	{ "cyclelayout",             cyclelayout },
 	{ "toggleviewex",            toggleviewex },
 	{ "tag",                     tag },
@@ -639,4 +576,3 @@ static const Signal signals[] = {
 	{ "setlayout",               setlayout },
 	{ "setlayoutex",             setlayoutex },
 };
-

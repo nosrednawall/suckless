@@ -14,9 +14,7 @@
 #include "bar_winicon.c"
 #include "bar_tags.c"
 #include "bar_wintitle.c"
-#include "bar_awesomebar.c"
 #include "bar_systray.c"
-#include "bar_wintitleactions.c"
 
 /* Other patches */
 #include "attachx.c"
@@ -37,11 +35,22 @@
 #include "swallow.c"
 #include "tapresize.c"
 #include "vanitygaps.c"
-#include "xresources.c"
+#include "xrdb.c"
 #include "dragmfact.c"
 #include "seamless_restart.c"
 /* Layouts */
 #include "layout_facts.c"
+#include "layout_bstack.c"
+#include "layout_bstackhoriz.c"
+#include "layout_centeredmaster.c"
+#include "layout_centeredfloatingmaster.c"
+#include "layout_columns.c"
+#include "layout_deck.c"
+#include "layout_fibonacci.c"
+#include "layout_gapplessgrid.c"
+#include "layout_grid.c"
+#include "layout_horizgrid.c"
 #include "layout_monocle.c"
+#include "layout_nrowgrid.c"
 #include "layout_tile.c"
 

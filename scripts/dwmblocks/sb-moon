@@ -76,7 +76,11 @@ main() {
 
     local pos=$(position)
     local phasename=$(phase $pos)
-    local lua_string=$(echo $phasename | awk -v color="^c$COLOR_5^" -v d="^d^" '{print color $1 d " " $2 " " $3}')
+    #local lua_string=$(echo $phasename | awk -v color="^b$COLOR_5^^c$COLOR_BACKGROUND ^" -v d="^d^" -v color2="^c$COLOR_5^" '{print color $1 d color2" " $2 " " $3 " " d}')
+    local icon=$(echo $phasename | awk '{print $1}')
+    local fase=$(echo $phasename | awk '{print $2}')
+    local nome=$(echo $phasename | awk '{print $3}')
+
 
     # Apresentacao condicionada
     case "$OPERATION_MODE" in
@@ -88,7 +92,7 @@ main() {
             ;;
         "MOSTRAR_LUA")
             # Força o uso do ponto como separador decimal
-            LC_NUMERIC=C printf "%s" "$lua_string  "
+            LC_NUMERIC=C printf "%s" "^b$COLOR_8^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_8^ $fase $nome^d^  "
             #echo ""
             ;;
     esac

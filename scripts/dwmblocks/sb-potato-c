@@ -29,23 +29,23 @@ else
     # Verifica o modo em que o pomodoro esta, e classifica o icone e a cor com base nisso
     case $pomodoro_modo in
         "PM")
-            icone="󱎫 "
-            color="^c$COLOR_3^"
+            icone="󱎫"
+            color="$COLOR_3"
         ;;
         "SB")
-            icone=" "
-            color="^c$COLOR_5^"
+            icone=""
+            color="$COLOR_5"
         ;;
         "LB")
-            icone=" "
-            color="^c$COLOR_6^"
+            icone=""
+            color="$COLOR_6"
         ;;
     esac
 
     # Altera o icone quando o pomodoro esta pausado
     if [ "$pomodoro_pause" = "Yes" ]; then
-        icone="󱫞 "
-        color="^c$COLOR_1^"
+        icone="󱫞"
+        color="$COLOR_1"
     fi
 
     # Gera notificacao quando muda de modo
@@ -68,7 +68,7 @@ else
     fi
 
     # retorno no dwmblocks
-    echo "$color$icone^d^$pomodoro_minutos $color ^d^$pomodoro_cont  "
+    echo "^b$color^^c$COLOR_BACKGROUND ^ $icone ^d^^c$color^ $pomodoro_minutos  $pomodoro_cont^d^  "
 fi
 
 exit 0

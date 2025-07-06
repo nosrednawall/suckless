@@ -119,50 +119,50 @@ PLAYERS="--player=$PLAYER_SELECIONADO"
 # Ícones
 case "$PLAYER_SELECIONADO" in
     "chromium.instance2")
-        icon="^c$COLOR_3^"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_3^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}}"
         ;;
 
     "mpv")
-        icon="^c$COLOR_4^"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_4^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_4^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}}"
         ;;
 
     "vlc")
-        icon="^c$COLOR_1^󰕼"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰕼 ^d^^c$COLOR_1^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}}"
         ;;
 
     "mpd")
-        icon="^c$COLOR_6^󰝚"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰝚 ^d^^c$COLOR_6^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}} - {{artist}}"
         ;;
 
     "spotube.instance2")
-        icon="^c$COLOR_6^"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_6^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_6^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}} - {{artist}}"
         ;;
 
     "spotify")
-        icon="^c$COLOR_7^"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_6^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_6^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}} - {{artist}}"
         ;;
     *)
-        icon="^c$COLOR_3^"
-        icon_paused="^c$COLOR_1^"
-        icon_close="^c#4A5947^󰝛"
+        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_3^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_1^"
+        icon_close="^b$#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c$#4A5947^"
         format_player="{{title}} - {{artist}}"
         ;;
 esac

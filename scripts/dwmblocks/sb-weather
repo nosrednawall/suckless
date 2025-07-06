@@ -2,10 +2,13 @@
 
 # Carrega informacoes do modo de operacao
 arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+weather_modo="$HOME/.cache/dwmblocks_weather_mode"
 if [ -f $arquivo_modo ]; then
     source $arquivo_modo
+    source $weather_modo
 else
     OPERATION_MODE="COMPLETO"
+    WEATHER_MODE="SHOW"
 fi
 
 # Carrega tema
@@ -174,7 +177,19 @@ esac
 # funcoes cliclaveis
 case $BUTTON in
     1)
+        if [ "$WEATHER_MODE" != "SHOW" ]; then
+            WEATHER_MODE="SHOW"
+        else
+            WEATHER_MODE="HIDE"
+        fi
 
+        rm -rf $HOME/.cache/dwmblocks_weather_mode
+        cat > $HOME/.cache/dwmblocks_weather_mode << EOF
+#!/bin/bash
+WEATHER_MODE="$WEATHER_MODE"
+EOF
+    ;;
+    4)
         # Extrair informações do JSON usando jq
         CITY=$(echo "$WEATHER" | jq -r '.name')
         DESCRIPTION=$(echo "$WEATHER" | jq -r '.weather[0].description')
@@ -226,10 +241,16 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        if [ "$WEATHER" != "" ]; then
-            echo "^c$WEATHER_HEX^$WEATHER_ICON^d^ $WEATHER_TEMP°C $WEATHER_DESC  "
-        else
-            echo ""
-        fi
+        case  "$WEATHER_MODE" in
+            "SHOW")
+                echo "^b$WEATHER_HEX^^c$COLOR_BACKGROUND^ $WEATHER_ICON ^d^^c$WEATHER_HEX^ $WEATHER_TEMP°C $WEATHER_DESC^d^  "
+            ;;
+            "HIDE")
+                echo "^b$WEATHER_HEX^^c$COLOR_BACKGROUND^ $WEATHER_ICON ^d^^c$WEATHER_HEX^ $WEATHER_TEMP°C^d^  "
+            ;;
+            "*")
+                echo ""
+            ;;
+        esac
     ;;
 esac

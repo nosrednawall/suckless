@@ -13,7 +13,7 @@ fi
 source ~/.theme_selected
 
 brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
-brilhoIcone="^c$COLOR_2^󰃠 ^d^$brilho"
+brilhoIcone="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^ ^c$COLOR_1^$brilho^d^"
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in

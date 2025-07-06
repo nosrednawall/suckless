@@ -28,7 +28,7 @@ if [[ -z "$lay" ]]; then
     lay="unknown"
 fi
 
-layout_atual="^c$COLOR_6^󰌌 ^d^$lay"
+layout_atual="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰌌 ^d^^c$COLOR_6^ $lay^d^"
 
 # Verifique o estado atual do Caps Lock
 CAPS_STATE=$(xset q 2>/dev/null | grep "Caps Lock:" | awk '{print $4}')

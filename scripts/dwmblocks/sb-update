@@ -18,32 +18,48 @@ if [ -f /etc/os-release ]; then
     case "$ID" in
         arch)
             updates=$(checkupdates | wc -l)
-            ;;
+        ;;
 
         debian)
             updates=$(apt list --upgradable 2>/dev/null | grep -c 'upgradable')
-            ;;
+        ;;
         *)
             echo "Sistema desconhecido ou não suportado: $ID"
-            ;;
+        ;;
     esac
 else
     echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
 fi
 
-icon="^c$COLOR_5^📦^d^"
-
+icon="📦"
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")
         echo ""
     ;;
     *)
-        if [ "$updates" -eq 0 ]; then
-            echo "$icon 0  "
-        else
-            echo "$icon $updates  "
-            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis, que são: \n$(checkupdates | sed 's/^/\t/')"
+        case "$updates" in
+            0)
+                echo ""
+                ;;
+            [1-9]|10)
+                echo "^b$COLOR_7^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_7^ $updates  "
+                ;;
+            [1-4][0-9]|50)
+                echo "^b$COLOR_1^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_1^ $updates  "
+                ;;
+            [5-9][0-9]|100)
+                echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_2^ $updates  "
+                ;;
+            *)
+                echo "^b$COLOR_3^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_3^ $updates  "
+                ;;
+        esac
+
+        if [ -n "$updates" ] && [ "$updates" -gt 0 ]; then
+            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" \
+                "󱧕 Atualização Disponível" \
+                "Existem <b>$updates</b> atualizações disponíveis, que são: \n$(checkupdates | sed 's/^/\t/')"
         fi
     ;;
 esac

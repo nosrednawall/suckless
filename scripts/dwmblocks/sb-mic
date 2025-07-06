@@ -46,9 +46,9 @@ microfone=$(pactl get-source-volume @DEFAULT_SOURCE@ | grep "Volume" | awk '{pri
 muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
 
 if [ "$muteMic" -eq 1 ]; then
-    iconMic="^c#4A5947^ $microfone"
+    iconMic="^b#4A5947^^c$COLOR_BACKGROUND^  ^d^ ^c#4A5947^$microfone^d^"
 else
-    iconMic="^c$COLOR_4^ ^d^$microfone"
+    iconMic="^b$COLOR_4^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_4^ $microfone^d^"
 fi
 
 # Apresentacao condicionada

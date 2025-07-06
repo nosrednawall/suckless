@@ -26,6 +26,6 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-    echo "^c$COLOR_5^󰋊 ^d^$percent_used%  "
+    echo "^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰋊 ^d^ ^c$COLOR_5^$percent_used%^d^  "
     ;;
 esac

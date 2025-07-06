@@ -2,11 +2,12 @@
 
 MINIMO="Minimo - Apenas data, Hora e Pomodoro"
 COMPLETO="Completo - Todos os Blocks possíveis"
+ICONES="Icones - Completo porém apenas icones"
 MEDIO="Médio - Apenas data, hora, volumes, players e pomodoro"
 MOSTRAR_LUA="Mostra o block com as fases da lua"
 
 # Variable passed to dmenu
-options="$COMPLETO\n$MEDIO\n$MINIMO\n$MOSTRAR_LUA"
+options="$COMPLETO\n$ICONES\n$MEDIO\n$MINIMO\n$MOSTRAR_LUA"
 
 chosen="$(echo -e "$options" | dmenu -p "Modos DWMBLOCKS " )"
 case $chosen in
@@ -18,6 +19,9 @@ case $chosen in
     ;;
     $COMPLETO)
         MODO_SELECIONADO="COMPLETO"
+    ;;
+    $ICONES)
+        MODO_SELECIONADO="ICONES"
     ;;
     $MOSTRAR_LUA)
         MODO_SELECIONADO="MOSTRAR_LUA"

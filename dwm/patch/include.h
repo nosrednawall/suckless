@@ -14,9 +14,7 @@
 #include "bar_winicon.h"
 #include "bar_tags.h"
 #include "bar_wintitle.h"
-#include "bar_awesomebar.h"
 #include "bar_systray.h"
-#include "bar_wintitleactions.h"
 
 /* Other patches */
 #include "attachx.h"
@@ -39,8 +37,19 @@
 #include "swallow.h"
 #include "tapresize.h"
 #include "vanitygaps.h"
-#include "xresources.h"
+#include "xrdb.h"
 /* Layouts */
+#include "layout_bstack.h"
+#include "layout_bstackhoriz.h"
+#include "layout_centeredmaster.h"
+#include "layout_centeredfloatingmaster.h"
+#include "layout_columns.h"
+#include "layout_deck.h"
+#include "layout_fibonacci.h"
+#include "layout_gapplessgrid.h"
+#include "layout_grid.h"
+#include "layout_horizgrid.h"
 #include "layout_monocle.h"
+#include "layout_nrowgrid.h"
 #include "layout_tile.h"
 
