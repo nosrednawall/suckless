@@ -84,9 +84,34 @@ static char *colors[][ColCount] = {
 };
 
 const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[]  = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
+const char *spcmd3[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
+const char *spcmd4[]  = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
+const char *spcmd5[]  = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
+const char *spcmd6[]  = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
+//const char *spcmd7[]  = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
+const char *spcmd7[]  = {"st", "-n", "sprmpc", "-g", "100x34", "-e", "rmpc", NULL };
+//const char *spcmd8[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01JK1V64QDCVRVVYTEWQH2N5BA",  NULL };
+const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
+const char *spcmd9[]  = {"st", "-n", "spytfzf", "-g", "100x34", "-e", "ytfzf", "--max-threads=4", "--thumbnail-quality=maxres", "--features=hd", "-tl", "--ii=https://yt.securityops.co", NULL };
+const char *spcmd10[] = {"qalculate-gtk", NULL };
+const char *spcmd11[] = {"st", "-n", "spcalcurse", "-g", "150x50", "-e", "calcurse", NULL };
+const char *spcmd12[] = {"st", "-n", "spc3", "-g", "150x50", "-e", "c3", NULL };
+
 static Sp scratchpads[] = {
    /* name          cmd  */
-	{"spterm",      		spcmd1}
+	{"spterm",      		spcmd1},
+	{"spranger",    		spcmd2},
+	{"bitwarden",   		spcmd3},
+	{"sppulse",     		spcmd4},
+	{"sptop",       		spcmd5},
+	{"spnmtui",     		spcmd6},
+	{"sprmpc",   		    spcmd7},
+	{"whatsapp-firefox",	spcmd8},
+	{"spytfzf" ,		   	spcmd9},
+	{"qalculate-gtk",		spcmd10},
+	{"spcalcurse",     		spcmd11},
+	{"spc3",        		spcmd12},
 };
 
 /* Tags
@@ -158,7 +183,19 @@ static const Rule rules[] = {
 	RULE(.class = "Soffice", .instance = "soffice", .title = "Apresentando", .monitor = 1, .tags = 0, .isfloating = 0)
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
-	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1 TERMINAL)
+	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
+	RULE(.instance = "spfm", .tags = SPTAG(1), .isfloating = 1)
+	RULE(.instance = "bitwarden",  .tags = SPTAG(2), .isfloating = 1)
+	RULE(.instance = "sppulse",  .tags = SPTAG(3), .isfloating = 1)
+	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
+	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
+	RULE(.instance = "sprmpc",  .tags = SPTAG(6), .isfloating = 1)
+	RULE(.instance = "hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
+	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
+	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
+	RULE(.instance = "spcalcurse",  .tags = SPTAG(10), .isfloating = 1)
+	RULE(.instance = "spc3",  .tags = SPTAG(11), .isfloating = 1)
+	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 
 static const MonitorRule monrules[] = {
@@ -207,7 +244,6 @@ static const int scrollargs[][2] = {
 	{ 0, 				  	+scrollsensetivity },
 	{ 0, 					-scrollsensetivity },
 };
-
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -341,6 +377,17 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } },
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
+	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 2 } },
+	{ MODKEY,                       XK_a,      togglescratch,  {.ui = 3 } },
+	{ MODKEY,                       XK_h,      togglescratch,  {.ui = 4 } },
+	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 5 } },
+	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 6 } },
+	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
+	{ MODKEY,                       XK_y,      togglescratch,  {.ui = 8 } },
+	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
+	{ MODKEY,                       XK_t,      togglescratch,  {.ui = 10 } },
+	{ MODKEY,                       XK_g,      togglescratch,  {.ui = 11 } },
 
 	/*Meus atalhos*/
 	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
