@@ -17,7 +17,7 @@ static char titlenormbordercolor[]       = "#51576D"; // Borda do título normal
 static char titlenormfloatcolor[]        = "#F2D5CF"; // Float do título normal
 
 static char titleselfgcolor[]            = "#F2D5CF"; // Fonte do título selecionado
-static char titleselbgcolor[]            = "#51576D"; // Fundo do título selecionado
+static char titleselbgcolor[]            = "#303446"; // Fundo do título selecionado
 static char titleselbordercolor[]        = "#303446"; // Borda do título selecionado
 static char titleselfloatcolor[]         = "#303446"; // Float do título selecionado
 
@@ -42,9 +42,7 @@ static char urgbordercolor[]             = "#E78284"; // Borda urgente
 static char urgfloatcolor[]              = "#F2D5CF"; // Float urgente
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#51576D"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#303446"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#51576D"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#F2D5CF"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#303446";
+static char ltsymbolfgcolor[]            = "#F2D5CF";
 
 #endif // CATPPUCIN_FRAPPE_H_

@@ -6,6 +6,7 @@
 
 /* appearance */
 static const unsigned int borderpx       = 6;   /* border pixel of windows */
+
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
@@ -28,6 +29,7 @@ static const int vertpad                 = 10;  /* vertical padding of bar */
 static const int sidepad                 = 10;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
+
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = -1;
 static const char buttonbar[]            = "  ";
@@ -35,11 +37,11 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
 static const unsigned int ulinepad = 1;         /* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
-static const unsigned int ulinevoffset = 22;     /* how far above the bottom of the bar the line should appear */
+static const unsigned int ulinevoffset = -3;     /* how far above the bottom of the bar the line should appear */
 static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
 
 /* Indicators: see patch/bar_indicators.h for options */
-static int tagindicatortype              = INDICATOR_BOTTOM_BAR;
+static int tagindicatortype              = INDICATOR_NONE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 // static const char *fonts[]               = { "monospace:size=10" };
@@ -49,7 +51,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/nord_dark.h"
+#include "themes/catppuccin_dark.h"
 
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
@@ -82,35 +84,9 @@ static char *colors[][ColCount] = {
 };
 
 const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[]  = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
-const char *spcmd4[]  = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
-const char *spcmd5[]  = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
-const char *spcmd6[]  = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
-//const char *spcmd7[]  = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
-const char *spcmd7[]  = {"st", "-n", "sprmpc", "-g", "100x34", "-e", "rmpc", NULL };
-//const char *spcmd8[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01JK1V64QDCVRVVYTEWQH2N5BA",  NULL };
-const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
-const char *spcmd9[]  = {"st", "-n", "spytfzf", "-g", "100x34", "-e", "ytfzf", "--max-threads=4", "--thumbnail-quality=maxres", "--features=hd", "-tl", "--ii=https://yt.securityops.co", NULL };
-const char *spcmd10[] = {"qalculate-gtk", NULL };
-const char *spcmd11[] = {"st", "-n", "spcalcurse", "-g", "150x50", "-e", "calcurse", NULL };
-const char *spcmd12[] = {"st", "-n", "spc3", "-g", "150x50", "-e", "c3", NULL };
-
 static Sp scratchpads[] = {
    /* name          cmd  */
-	{"spterm",      		spcmd1},
-	{"spranger",    		spcmd2},
-	{"bitwarden",   		spcmd3},
-	{"sppulse",     		spcmd4},
-	{"sptop",       		spcmd5},
-	{"spnmtui",     		spcmd6},
-//	{"spncmpcpp",   		spcmd7},
-	{"sprmpc",   		spcmd7},
-	{"whatsapp-firefox",	spcmd8},
-	{"spytfzf" ,		   	spcmd9},
-	{"qalculate-gtk",		spcmd10},
-	{"spcalcurse",     		spcmd11},
-	{"spc3",        		spcmd12},
+	{"spterm",      		spcmd1}
 };
 
 /* Tags
@@ -183,20 +159,6 @@ static const Rule rules[] = {
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1 TERMINAL)
-	RULE(.instance = "spfm", .tags = SPTAG(1), .isfloating = 1)
-	RULE(.instance = "bitwarden",  .tags = SPTAG(2), .isfloating = 1)
-	RULE(.instance = "sppulse",  .tags = SPTAG(3), .isfloating = 1)
-	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
-	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
-//	RULE(.instance = "spncmpcpp",  .tags = SPTAG(6), .isfloating = 1)
-	RULE(.instance = "sprmpc",  .tags = SPTAG(6), .isfloating = 1)
-//	RULE(.instance = "FFPWA-01JK1V64QDCVRVVYTEWQH2N5BA",  .tags = SPTAG(7), .isfloating = 1)
-	RULE(.instance = "hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
-	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
-	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
-	RULE(.instance = "spcalcurse",  .tags = SPTAG(10), .isfloating = 1)
-	RULE(.instance = "spc3",  .tags = SPTAG(11), .isfloating = 1)
-	RULE(.class = "updates", .isfloating = 1  TERMINAL)
 };
 
 static const MonitorRule monrules[] = {
@@ -379,18 +341,6 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } },
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
-	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
-	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 2 } },
-	{ MODKEY,                       XK_a,      togglescratch,  {.ui = 3 } },
-	{ MODKEY,                       XK_h,      togglescratch,  {.ui = 4 } },
-	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 5 } },
-	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 6 } },
-	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
-	{ MODKEY,                       XK_y,      togglescratch,  {.ui = 8 } },
-	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
-	{ MODKEY,                       XK_t,      togglescratch,  {.ui = 10 } },
-	{ MODKEY,                       XK_g,      togglescratch,  {.ui = 11 } },
-
 
 	/*Meus atalhos*/
 	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
@@ -459,11 +409,9 @@ static const Key keys[] = {
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
-//	{ MODKEY,						XK_b,	  						spawn,          SHCMD(PATH("dwm/dwm-bitwarden-rofi")) },
 
 	/*Lancamento Programas*/
 	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
-//	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) },
@@ -485,15 +433,12 @@ static const Button buttons[] = {
 	/* click                event mask           button          function        argument */
 	{ ClkButton,            0,                   Button1,        spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },  //abre rofi
 	{ ClkButton,            0,                   Button3,        spawn,          SHCMD(PATH("dwm/dwm-timeshiftcmd")) },  //abre timeshift
-
 	{ ClkLtSymbol,          0,                   Button1,        spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },  //abre dmenu de layouts
 	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[0]} },  //retorna ao layout padrao
 	{ ClkLtSymbol,          0,                   Button4,        cyclelayout,    {.i = +1 } },  //avanca para o proximo layout
 	{ ClkLtSymbol,          0,                   Button5,        cyclelayout,    {.i = -1 } },  //retorna para o layout anterior
-
 	{ ClkWinTitle,          0,                   Button4,        focusstack,     {.i = +1 } },  //avanca o foco para a proxima janela
 	{ ClkWinTitle,          0,                   Button5,        focusstack,     {.i = -1 } },  //o foco retona para a janela anterior
-
 	{ ClkWinTitle,          0,                   Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,                   Button1,        sigstatusbar,   {.i = 1 } },
 	{ ClkStatusText,        0,                   Button2,        sigstatusbar,   {.i = 2 } },
@@ -528,7 +473,6 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,                   Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,              Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,              Button3,        toggletag,      {0} },
-
 	{ ClkTagBar,            0,   		         Button4,        shiftview,     {.i = +1 } },  //avanca para a proxima tag
 	{ ClkTagBar,            0,                   Button5,        shiftview,     {.i = -1 } },  //retorna para a tag anterior
 };

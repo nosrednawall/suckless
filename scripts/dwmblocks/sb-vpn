@@ -17,13 +17,13 @@ status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
 status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
 
 if [ $status -eq 1 ]; then
-    vpn="^c$COLOR_4^󰢭 ^d^WVPN  "
+    vpn="^b$COLOR_4^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_4^ WVPN  "
 else
     vpn=""
 fi
 
 if [ $status_nordvpn -eq 1 ]; then
-    vpn2="^c$COLOR_4^󰢭 ^d^NVPN  "
+    vpn2="^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_5^ NVPN  "
 else
     vpn2=""
 fi
@@ -31,7 +31,7 @@ fi
 if [ $status_tailscale -eq 1 ]; then
     vpn3=""
 else
-    vpn3="^c$COLOR_4^󰢭 ^d^TVPN  "
+    vpn3="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_6^ TVPN  "
 fi
 
 # Apresentacao condicionada
