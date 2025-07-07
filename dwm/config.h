@@ -51,23 +51,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/dracula_dark.h"
-
-static const unsigned int baralpha = 0xd0;
-static const unsigned int borderalpha = OPAQUE;
-static const unsigned int alphas[][3] = {
-	/*                       fg      bg        border     */
-	[SchemeNorm]         = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]          = { OPAQUE, baralpha, borderalpha },
-	[SchemeTitleNorm]    = { OPAQUE, baralpha, borderalpha },
-	[SchemeTitleSel]     = { OPAQUE, baralpha, borderalpha },
-	[SchemeTagsNorm]     = { OPAQUE, baralpha, borderalpha },
-	[SchemeTagsSel]      = { OPAQUE, baralpha, borderalpha },
-	[SchemeHidNorm]      = { OPAQUE, baralpha, borderalpha },
-	[SchemeHidSel]       = { OPAQUE, baralpha, borderalpha },
-	[SchemeUrg]          = { OPAQUE, baralpha, borderalpha },
-	[SchemeLtSymbol]     = { OPAQUE, baralpha, borderalpha },
-};
+#include "themes/nord_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

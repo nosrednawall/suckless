@@ -3,7 +3,6 @@
 #include "bar_tagicons.c"
 #include "bar.c"
 
-#include "bar_alpha.c"
 #include "bar_dwmblocks.c"
 #include "combo.c"
 #include "bar_ltsymbol.c"

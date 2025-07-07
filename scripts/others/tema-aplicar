@@ -320,6 +320,7 @@ case $1 in
         WALLPAPER_LIGHTDM="ign_unsplash15.png"
 
         COLOR_BACKGROUND="#2e3440"
+        COLOR_BACKGROUND2="#3b4252"
         COLOR_TEXT="#d8dee9"
         COLOR_1="#ebcb8b"   # Yellow
         COLOR_2="#d08770"   # Orange
@@ -459,6 +460,7 @@ else
 THEME_MODE="$THEME_MODE"
 COLOR_MODE="$COLOR_MODE"
 COLOR_BACKGROUND="$COLOR_BACKGROUND"
+COLOR_BACKGROUND2="$COLOR_BACKGROUND2"
 COLOR_TEXT="$COLOR_TEXT"
 COLOR_1="$COLOR_1"   # Pink
 COLOR_2="$COLOR_2"   # Purple

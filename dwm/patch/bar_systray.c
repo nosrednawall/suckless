@@ -36,17 +36,13 @@ draw_systray(Bar *bar, BarArg *a)
 		wa.event_mask = ButtonPressMask|ExposureMask;
 		wa.border_pixel = 0;
 		systray->h = MIN(a->h, drw->fonts->h);
-		wa.background_pixel = 0;
-		wa.colormap = cmap;
-		systray->win = XCreateWindow(dpy, root, bar->bx + a->x + lrpad / 2, -systray->h, MAX(a->w + 40, 1), systray->h, 0, depth,
-						InputOutput, visual,
-						CWOverrideRedirect|CWBorderPixel|CWBackPixel|CWColormap|CWEventMask, &wa); // CWBackPixmap
+		wa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
+		systray->win = XCreateSimpleWindow(dpy, root, bar->bx + a->x + lrpad / 2, -systray->h, MIN(a->w, 1), systray->h, 0, 0, scheme[SchemeNorm][ColBg].pixel);
+		XChangeWindowAttributes(dpy, systray->win, CWOverrideRedirect|CWBackPixel|CWBorderPixel|CWEventMask, &wa);
 
 		XSelectInput(dpy, systray->win, SubstructureNotifyMask);
 		XChangeProperty(dpy, systray->win, netatom[NetSystemTrayOrientation], XA_CARDINAL, 32,
 				PropModeReplace, (unsigned char *)&systrayorientation, 1);
-		XChangeProperty(dpy, systray->win, netatom[NetSystemTrayVisual], XA_VISUALID, 32,
-				PropModeReplace, (unsigned char *)&visual->visualid, 1);
 		XChangeProperty(dpy, systray->win, netatom[NetWMWindowType], XA_ATOM, 32,
 				PropModeReplace, (unsigned char *)&netatom[NetWMWindowTypeDock], 1);
 		XMapRaised(dpy, systray->win);
@@ -70,7 +66,7 @@ draw_systray(Bar *bar, BarArg *a)
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	for (w = 0, i = systray->icons; i; i = i->next) {
-		wa.background_pixel = 0;
+		wa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
 		XChangeWindowAttributes(dpy, i->win, CWBackPixel, &wa);
 		XMapRaised(dpy, i->win);
 		i->x = w;
@@ -81,6 +77,10 @@ draw_systray(Bar *bar, BarArg *a)
 		if (i->mon != bar->mon)
 			i->mon = bar->mon;
 	}
+
+	wa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
+	XChangeWindowAttributes(dpy, systray->win, CWBackPixel, &wa);
+	XClearWindow(dpy, systray->win);
 
 	XMoveResizeWindow(dpy, systray->win, bar->bx + a->x + lrpad / 2, (w ? bar->by + a->y + (a->h - systray->h) / 2: -systray->h), MAX(w, 1), systray->h);
 	return w;
