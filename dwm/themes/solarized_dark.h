@@ -15,8 +15,8 @@ static char titlenormbgcolor[]           = "#002b36";
 static char titlenormbordercolor[]       = "#073642";
 static char titlenormfloatcolor[]        = "#268bd2";
 
-static char titleselfgcolor[]            = "#002b36";
-static char titleselbgcolor[]            = "#2aa198";
+static char titleselfgcolor[]            = "#eee8d5";
+static char titleselbgcolor[]            = "#002b36";
 static char titleselbordercolor[]        = "#2aa198";
 static char titleselfloatcolor[]         = "#2aa198";
 
@@ -25,8 +25,8 @@ static char tagsnormbgcolor[]            = "#002b36";
 static char tagsnormbordercolor[]        = "#073642";
 static char tagsnormfloatcolor[]         = "#268bd2";
 
-static char tagsselfgcolor[]             = "#002b36";
-static char tagsselbgcolor[]             = "#2aa198";
+static char tagsselfgcolor[]             = "#eee8d5";
+static char tagsselbgcolor[]             = "#073642";
 static char tagsselbordercolor[]         = "#2aa198";
 static char tagsselfloatcolor[]          = "#2aa198";
 
@@ -42,9 +42,7 @@ static char urgfloatcolor[]              = "#268bd2";
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#586e75"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#002b36"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#073642"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#268bd2"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#002b36";
+static char ltsymbolfgcolor[]            = "#2aa198";
 
 #endif // SOLARIZED_DARK_H_

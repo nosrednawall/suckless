@@ -20,7 +20,7 @@ static char titlenormfloatcolor[]        = "#458588";  // Float color (janelas f
 
 // Cores do título selecionado
 static char titleselfgcolor[]            = "#fbf1c7";  // Foreground color (texto)
-static char titleselbgcolor[]            = "#689d6a";  // Background color (fundo)
+static char titleselbgcolor[]            = "#282828";  // Background color (fundo)
 static char titleselbordercolor[]        = "#689d6a";  // Border color (bordas)
 static char titleselfloatcolor[]         = "#689d6a";  // Float color (janelas flutuantes)
 
@@ -32,7 +32,7 @@ static char tagsnormfloatcolor[]         = "#458588";  // Float color (janelas f
 
 // Cores das tags selecionadas
 static char tagsselfgcolor[]             = "#fbf1c7";  // Foreground color (texto)
-static char tagsselbgcolor[]             = "#689d6a";  // Background color (fundo)
+static char tagsselbgcolor[]             = "#282828";  // Background color (fundo)
 static char tagsselbordercolor[]         = "#689d6a";  // Border color (bordas)
 static char tagsselfloatcolor[]          = "#689d6a";  // Float color (janelas flutuantes)
 
@@ -50,9 +50,7 @@ static char urgfloatcolor[]              = "#458588";  // Float color (janelas f
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#928374"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#282828"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#3c3836"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#458588"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#282828";
+static char ltsymbolfgcolor[]            = "#689d6a";
 
 #endif // GRUVBOX_DARK_H_

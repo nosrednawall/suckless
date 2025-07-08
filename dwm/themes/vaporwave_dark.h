@@ -17,7 +17,7 @@ static char titlenormbordercolor[]       = "#4a4a6a"; // cor da borda do título
 static char titlenormfloatcolor[]        = "#ff66cc"; // cor da borda de janelas flutuantes do título normal
 
 static char titleselfgcolor[]            = "#e0e0e0"; // cor do texto do título selecionado
-static char titleselbgcolor[]            = "#ff66cc"; // cor de fundo do título selecionado
+static char titleselbgcolor[]            = "#1a1a2e"; // cor de fundo do título selecionado
 static char titleselbordercolor[]        = "#ff66cc"; // cor da borda do título selecionado
 static char titleselfloatcolor[]         = "#ff66cc"; // cor da borda de janelas flutuantes do título selecionado
 
@@ -26,8 +26,8 @@ static char tagsnormbgcolor[]            = "#1a1a2e"; // cor de fundo das tags n
 static char tagsnormbordercolor[]        = "#4a4a6a"; // cor da borda das tags normais
 static char tagsnormfloatcolor[]         = "#ff66cc"; // cor da borda de janelas flutuantes das tags normais
 
-static char tagsselfgcolor[]             = "#e0e0e0"; // cor do texto das tags selecionadas
-static char tagsselbgcolor[]             = "#ff66cc"; // cor de fundo das tags selecionadas
+static char tagsselfgcolor[]             = "#ff66cc"; // cor do texto das tags selecionadas
+static char tagsselbgcolor[]             = "#1a1a2e"; // cor de fundo das tags selecionadas
 static char tagsselbordercolor[]         = "#ff66cc"; // cor da borda das tags selecionadas
 static char tagsselfloatcolor[]          = "#ff66cc"; // cor da borda de janelas flutuantes das tags selecionadas
 
@@ -43,9 +43,7 @@ static char urgfloatcolor[]              = "#ff66cc"; // cor da borda de janelas
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#51576D"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#1a1a2e"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#4a4a6a"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#ff66cc"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#1a1a2e";
+static char ltsymbolfgcolor[]            = "#ff66cc";
 
 #endif // VAPORWAVE_DARK_H_
