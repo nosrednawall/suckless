@@ -410,7 +410,9 @@ static const Key keys[] = {
 	/*Brilho tela notebook*/
 	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
 	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
-	{ MODKEY|ShiftMask,             XK_o,                           spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" )) },
+	{ MODKEY|ShiftMask,             XK_F9,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta.sh" ))},
+	{ MODKEY|ShiftMask,             XK_F8,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui.sh" ))},
+	{ MODKEY|ShiftMask,             XK_F7,                          spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" ))},
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },

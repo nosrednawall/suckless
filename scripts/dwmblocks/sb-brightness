@@ -30,9 +30,7 @@ esac
 
 # funcoes cliclaveis
 case $BUTTON in
-    1)
-        xdotool key Super_L+Shift+o
-    ;;
+    1) xdotool key Super_L+Shift+F7 ;;
     4) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-aumenta ;;
     5) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-diminui ;;
     6) setsid -f st -e emacs -nw "$0" ;;
