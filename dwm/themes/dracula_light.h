@@ -1,51 +1,57 @@
 #ifndef DRACULA_LIGHT_H_
 #define DRACULA_LIGHT_H_
 
-static char normfgcolor[]                = "#282A36"; // cor do texto normal
-static char normbgcolor[]                = "#F8F8F2"; // cor de fundo normal
-static char normbordercolor[]            = "#BBBFC5"; // cor da borda normal
-static char normfloatcolor[]             = "#BBBFC5"; // cor da borda de janelas flutuantes normal
+/* Elementos da janela */
+static char normfgcolor[]     = "#F8F8F2";  /* Texto normal */
+static char normbgcolor[]     = "#44475A";  /* Fundo normal */
+static char normbordercolor[] = "#E1E1E6";  /* Borda normal (mais suave) */
+static char normfloatcolor[]  = "#BD93F9";  /* Borda flutuante normal */
 
-static char selfgcolor[]                 = "#282A36"; // cor do texto da janela selecionada
-static char selbgcolor[]                 = "#FF79C6"; // cor de fundo da janela selecionada
-static char selbordercolor[]             = "#FF79C6"; // cor da borda da janela selecionada
-static char selfloatcolor[]              = "#FF79C6"; // cor da borda de janelas flutuantes selecionadas
+/* Janela selecionada */
+static char selfgcolor[]      = "#F8F8F2";  /* Texto selecionado */
+static char selbgcolor[]      = "#44475A";  /* Fundo selecionado */
+static char selbordercolor[]  = "#FF79C6";  /* Borda selecionada */
+static char selfloatcolor[]   = "#FF79C6";  /* Borda flutuante selecionada */
 
-static char titlenormfgcolor[]           = "#282A36"; // cor do texto do título normal
-static char titlenormbgcolor[]           = "#F8F8F2"; // cor de fundo do título normal
-static char titlenormbordercolor[]       = "#BBBFC5"; // cor da borda do título normal
-static char titlenormfloatcolor[]        = "#FF79C6"; // cor da borda de janelas flutuantes do título normal
+/* Barra de título - normal */
+static char titlenormfgcolor[]    = "#F8F8F2";  /* Texto do título */
+static char titlenormbgcolor[]    = "#44475A";  /* Fundo do título */
+static char titlenormbordercolor[]= "#E1E1E6";  /* Borda do título */
+static char titlenormfloatcolor[] = "#BD93F9";  /* Borda flutuante do título */
 
-static char titleselfgcolor[]            = "#282A36"; // cor do texto do título selecionado
-static char titleselbgcolor[]            = "#FF79C6"; // cor de fundo do título selecionado
-static char titleselbordercolor[]        = "#FF79C6"; // cor da borda do título selecionado
-static char titleselfloatcolor[]         = "#FF79C6"; // cor da borda de janelas flutuantes do título selecionado
+/* Barra de título - selecionado */
+static char titleselfgcolor[]     = "#F8F8F2";  /* Texto do título selecionado */
+static char titleselbgcolor[]     = "#44475A";  /* Fundo do título selecionado */
+static char titleselbordercolor[] = "#FF79C6";  /* Borda do título selecionado */
+static char titleselfloatcolor[]  = "#FF79C6";  /* Borda flutuante do título selecionado */
 
-static char tagsnormfgcolor[]            = "#282A36"; // cor do texto das tags normais
-static char tagsnormbgcolor[]            = "#F8F8F2"; // cor de fundo das tags normais
-static char tagsnormbordercolor[]        = "#BBBFC5"; // cor da borda das tags normais
-static char tagsnormfloatcolor[]         = "#FF79C6"; // cor da borda de janelas flutuantes das tags normais
+/* Tags - normal */
+static char tagsnormfgcolor[]     = "#F8F8F2";  /* Texto das tags */
+static char tagsnormbgcolor[]     = "#44475A";  /* Fundo das tags */
+static char tagsnormbordercolor[] = "#E1E1E6";  /* Borda das tags */
+static char tagsnormfloatcolor[]  = "#BD93F9";  /* Borda flutuante das tags */
 
-static char tagsselfgcolor[]             = "#282A36"; // cor do texto das tags selecionadas
-static char tagsselbgcolor[]             = "#FF79C6"; // cor de fundo das tags selecionadas
-static char tagsselbordercolor[]         = "#FF79C6"; // cor da borda das tags selecionadas
-static char tagsselfloatcolor[]          = "#FF79C6"; // cor da borda de janelas flutuantes das tags selecionadas
+/* Tags - selecionado */
+static char tagsselfgcolor[]      = "#FF79C6";  /* Texto das tags selecionadas */
+static char tagsselbgcolor[]      = "#44475A";  /* Fundo das tags selecionadas */
+static char tagsselbordercolor[]  = "#FF79C6";  /* Borda das tags selecionadas */
+static char tagsselfloatcolor[]   = "#FF79C6";  /* Borda flutuante das tags selecionadas */
 
-static char hidnormfgcolor[]             = "#FF79C6"; // cor do texto das tags ocultas normais
-static char hidselfgcolor[]              = "#282A36"; // cor do texto das tags ocultas selecionadas
-static char hidnormbgcolor[]             = "#F8F8F2"; // cor de fundo das tags ocultas normais
-static char hidselbgcolor[]              = "#F8F8F2"; // cor de fundo das tags ocultas selecionadas
+/* Tags ocultas */
+static char hidnormfgcolor[]      = "#6272A4";  /* Texto tags ocultas (cor mais suave) */
+static char hidselfgcolor[]       = "#44475A";  /* Texto tags ocultas selecionadas */
+static char hidnormbgcolor[]      = "#F8F8F2";  /* Fundo tags ocultas */
+static char hidselbgcolor[]       = "#F8F8F2";  /* Fundo tags ocultas selecionadas */
 
-static char urgfgcolor[]                 = "#282A36"; // cor do texto de urgência
-static char urgbgcolor[]                 = "#FF79C6"; // cor de fundo de urgência
-static char urgbordercolor[]             = "#FF5555"; // cor da borda de urgência
-static char urgfloatcolor[]              = "#FF79C6"; // cor da borda de janelas flutuantes de urgência
+/* Urgente */
+static char urgfgcolor[]          = "#282A36";  /* Texto urgente */
+static char urgbgcolor[]          = "#FF5555";  /* Fundo urgente */
+static char urgbordercolor[]      = "#FF5555";  /* Borda urgente */
+static char urgfloatcolor[]       = "#FF5555";  /* Borda flutuante urgente */
 
-static char c000000[]                    = "#000000"; // Placeholder value
-
-static char tagsunusedfgcolor[]          = "#BBBFC5"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#F8F8F2"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#BBBFC5"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#FF79C6"; // Cor de flutuação para tags não utilizadas
+/* Placeholder e símbolos */
+static char c000000[]             = "#000000";  /* Preto puro (placeholder) */
+static char ltsymbolbgcolor[]     = "#44475A";  /* Fundo símbolo (mais escuro para contraste) */
+static char ltsymbolfgcolor[]     = "#BD93F9";  /* Texto símbolo */
 
 #endif // DRACULA_LIGHT_H_

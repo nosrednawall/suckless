@@ -51,7 +51,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/vaporwave_dark.h"
+#include "themes/vaporwave_light.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

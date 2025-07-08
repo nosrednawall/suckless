@@ -15,8 +15,8 @@ static char titlenormbgcolor[]           = "#eee8d5";  // base2
 static char titlenormbordercolor[]       = "#eee8d5";  // base2
 static char titlenormfloatcolor[]        = "#eee8d5";  // blue
 
-static char titleselfgcolor[]            = "#eee8d5";  // base02
-static char titleselbgcolor[]            = "#2aa198";  // base1
+static char titleselfgcolor[]            = "#657b83";  // base02
+static char titleselbgcolor[]            = "#eee8d5";  // base1
 static char titleselbordercolor[]        = "#eee8d5";  // base1
 static char titleselfloatcolor[]         = "#eee8d5";  // base1
 
@@ -25,8 +25,8 @@ static char tagsnormbgcolor[]            = "#eee8d5";  // base2
 static char tagsnormbordercolor[]        = "#eee8d5";  // base2
 static char tagsnormfloatcolor[]         = "#268bd2";  // blue
 
-static char tagsselfgcolor[]             = "#eee8d5";  // base02
-static char tagsselbgcolor[]             = "#2aa198";  // base1
+static char tagsselfgcolor[]             = "#2aa198";  // base02
+static char tagsselbgcolor[]             = "#eee8d5";  // base1
 static char tagsselbordercolor[]         = "#2aa198";  // base1
 static char tagsselfloatcolor[]          = "#2aa198";  // base1
 
@@ -42,7 +42,5 @@ static char urgfloatcolor[]              = "#268bd2";  // blue
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#93a1a1"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#eee8d5"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#eee8d5"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#268bd2"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#eee8d5";
+static char ltsymbolfgcolor[]            = "#2aa198";

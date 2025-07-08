@@ -387,8 +387,8 @@ case $1 in
         EMACS_THEME="doom-one-light"
         WALLPAPER_LIGHTDM="dracula-galaxy-6272a4.png"
 
-        COLOR_BACKGROUND="#f8f8f2"
-        COLOR_TEXT="#282a36"
+        COLOR_BACKGROUND="#44475A"
+        COLOR_TEXT="#F8F8F2"
         COLOR_1="#f1fa8c"   # Yellow
         COLOR_2="#ffb86c"   # Orange
         COLOR_3="#ff5555"   # Red

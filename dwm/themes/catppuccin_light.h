@@ -2,21 +2,21 @@
 #define CATPPUCIN_LATTE_H_
 static char normfgcolor[]                = "#4C4F69"; // Fonte normal
 static char normbgcolor[]                = "#EFF1F5"; // Fundo normal
-static char normbordercolor[]            = "#B4BE82"; // Borda normal
+static char normbordercolor[]            = "#EFF1F5"; // Borda normal
 static char normfloatcolor[]             = "#B4BE82"; // Float normal
 
-static char selfgcolor[]                 = "#EFF1F5"; // Fonte selecionada
-static char selbgcolor[]                 = "#4C4F69"; // Fundo selecionado
+static char selfgcolor[]                 = "#4C4F69"; // Fonte selecionada
+static char selbgcolor[]                 = "#EFF1F5"; // Fundo selecionado
 static char selbordercolor[]             = "#7287FD"; // Borda selecionada
 static char selfloatcolor[]              = "#7287FD"; // Float selecionado
 
 static char titlenormfgcolor[]           = "#4C4F69"; // Fonte do título normal
 static char titlenormbgcolor[]           = "#EFF1F5"; // Fundo do título normal
-static char titlenormbordercolor[]       = "#B4BE82"; // Borda do título normal
+static char titlenormbordercolor[]       = "#EFF1F5"; // Borda do título normal
 static char titlenormfloatcolor[]        = "#7287FD"; // Float do título normal
 
-static char titleselfgcolor[]            = "#EFF1F5"; // Fonte do título selecionado
-static char titleselbgcolor[]            = "#4C4F69"; // Fundo do título selecionado
+static char titleselfgcolor[]            = "#4C4F69"; // Fonte do título selecionado
+static char titleselbgcolor[]            = "#EFF1F5"; // Fundo do título selecionado
 static char titleselbordercolor[]        = "#4C4F69"; // Borda do título selecionado
 static char titleselfloatcolor[]         = "#4C4F69"; // Float do título selecionado
 
@@ -25,8 +25,8 @@ static char tagsnormbgcolor[]            = "#EFF1F5"; // Fundo das tags normal
 static char tagsnormbordercolor[]        = "#B4BE82"; // Borda das tags normal
 static char tagsnormfloatcolor[]         = "#7287FD"; // Float das tags normal
 
-static char tagsselfgcolor[]             = "#EFF1F5"; // Fonte das tags selecionadas
-static char tagsselbgcolor[]             = "#4C4F69"; // Fundo das tags selecionadas
+static char tagsselfgcolor[]             = "#7287FD"; // Fonte das tags selecionadas
+static char tagsselbgcolor[]             = "#EFF1F5"; // Fundo das tags selecionadas
 static char tagsselbordercolor[]         = "#4C4F69"; // Borda das tags selecionadas
 static char tagsselfloatcolor[]          = "#4C4F69"; // Float das tags selecionadas
 
@@ -42,9 +42,7 @@ static char urgfloatcolor[]              = "#7287FD"; // Float urgente
 
 static char c000000[]                    = "#000000"; // Placeholder value
 
-static char tagsunusedfgcolor[]          = "#6C6F93"; // Cor do texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#EFF1F5"; // Cor de fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#B4BE82"; // Cor da borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#7287FD"; // Cor de flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#EFF1F5";
+static char ltsymbolfgcolor[]            = "#7287FD";
 
 #endif // CATPPUCIN_LATTE_H_

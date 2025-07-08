@@ -18,8 +18,8 @@ static char titlenormbgcolor[]           = "#ECEFF4"; // Fundo do título normal
 static char titlenormbordercolor[]       = "#D8DEE9"; // Borda do título normal
 static char titlenormfloatcolor[]        = "#88C0D0"; // Flutuação do título normal
 
-static char titleselfgcolor[]            = "#ECEFF4"; // Texto do título selecionado
-static char titleselbgcolor[]            = "#5E81AC"; // Fundo do título selecionado
+static char titleselfgcolor[]            = "#4C566A"; // Texto do título selecionado
+static char titleselbgcolor[]            = "#ECEFF4"; // Fundo do título selecionado
 static char titleselbordercolor[]        = "#81A1C1"; // Borda do título selecionado
 static char titleselfloatcolor[]         = "#81A1C1"; // Flutuação do título selecionado
 
@@ -29,8 +29,8 @@ static char tagsnormbgcolor[]            = "#ECEFF4"; // Fundo das tags normais
 static char tagsnormbordercolor[]        = "#D8DEE9"; // Borda das tags normais
 static char tagsnormfloatcolor[]         = "#88C0D0"; // Flutuação das tags normais
 
-static char tagsselfgcolor[]             = "#ECEFF4"; // Texto das tags selecionadas
-static char tagsselbgcolor[]             = "#5E81AC"; // Fundo das tags selecionadas
+static char tagsselfgcolor[]             = "#4C566A"; // Texto das tags selecionadas
+static char tagsselbgcolor[]             = "#ECEFF4"; // Fundo das tags selecionadas
 static char tagsselbordercolor[]         = "#81A1C1"; // Borda das tags selecionadas
 static char tagsselfloatcolor[]          = "#81A1C1"; // Flutuação das tags selecionadas
 
@@ -48,10 +48,6 @@ static char urgfloatcolor[]              = "#BF616A"; // Flutuação urgente
 
 /* Placeholder */
 static char c000000[]                    = "#000000"; // Valor de placeholder
-
-/* Cores de tags não utilizadas */
-static char tagsunusedfgcolor[]          = "#D8DEE9"; // Texto para tags não utilizadas
-static char tagsunusedbgcolor[]          = "#ECEFF4"; // Fundo para tags não utilizadas
-static char tagsunusedbordercolor[]      = "#D8DEE9"; // Borda para tags não utilizadas
-static char tagsunusedfloatcolor[]       = "#88C0D0"; // Flutuação para tags não utilizadas
+static char ltsymbolbgcolor[]            = "#ECEFF4";
+static char ltsymbolfgcolor[]            = "#4C566A";
 #endif // NORDIC_LIGHT_H_
