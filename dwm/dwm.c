@@ -1533,6 +1533,9 @@ manage(Window w, XWindowAttributes *wa)
 	updatesizehints(c);
 	updatewmhints(c);
 
+	c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
+	c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
+
 	if (getatomprop(c, netatom[NetWMState], XA_ATOM) == netatom[NetWMFullscreen])
 		setfullscreen(c, 1);
 
@@ -1960,7 +1963,7 @@ sendmon(Client *c, Monitor *m)
 	c->mon = m;
 	if (!(c->tags & SPTAGMASK))
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
-	attachx(c);
+	attach(c);
 	attachstack(c);
 	arrange(NULL);
 	focus(NULL);

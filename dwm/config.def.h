@@ -43,15 +43,14 @@ static const int ulineall = 0;                  /* 1 to show underline on all ta
 /* Indicators: see patch/bar_indicators.h for options */
 static int tagindicatortype              = INDICATOR_NONE;
 static int tiledindicatortype            = INDICATOR_NONE;
-static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
-// static const char *fonts[]               = { "monospace:size=10" };
+static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
 	"Iosevka:pixelsize=15",
     "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
-static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-#include "themes/vaporwave_light.h"
+static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
+#include "themes/vaporwave_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -68,34 +67,18 @@ static char *colors[][ColCount] = {
 };
 
 const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[]  = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
-const char *spcmd4[]  = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
-const char *spcmd5[]  = {"st", "-n", "sptop", "-g", "150x50", "-e", "htop", NULL };
-const char *spcmd6[]  = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
-//const char *spcmd7[]  = {"st", "-n", "spncmpcpp", "-g", "100x34", "-e", "ncmpcpp", NULL };
-const char *spcmd7[]  = {"st", "-n", "sprmpc", "-g", "100x34", "-e", "rmpc", NULL };
-//const char *spcmd8[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01JK1V64QDCVRVVYTEWQH2N5BA",  NULL };
-const char *spcmd8[] = {"/opt/google/chrome/google-chrome", "--profile-directory=Default", "--app-id=hnpfjngllnobngcgfapefoaidbinmjnm", NULL };
-const char *spcmd9[]  = {"st", "-n", "spytfzf", "-g", "100x34", "-e", "ytfzf", "--max-threads=4", "--thumbnail-quality=maxres", "--features=hd", "-tl", "--ii=https://yt.securityops.co", NULL };
-const char *spcmd10[] = {"qalculate-gtk", NULL };
-const char *spcmd11[] = {"st", "-n", "spcalcurse", "-g", "150x50", "-e", "calcurse", NULL };
-const char *spcmd12[] = {"st", "-n", "spc3", "-g", "150x50", "-e", "c3", NULL };
+const char *spcmd2[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
+const char *spcmd3[]  = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
+const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x34", "-e", "rmpc", NULL };
+const char *spcmd5[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
 
 static Sp scratchpads[] = {
    /* name          cmd  */
 	{"spterm",      		spcmd1},
-	{"spranger",    		spcmd2},
-	{"bitwarden",   		spcmd3},
-	{"sppulse",     		spcmd4},
-	{"sptop",       		spcmd5},
-	{"spnmtui",     		spcmd6},
-	{"sprmpc",   		    spcmd7},
-	{"whatsapp-firefox",	spcmd8},
-	{"spytfzf" ,		   	spcmd9},
-	{"qalculate-gtk",		spcmd10},
-	{"spcalcurse",     		spcmd11},
-	{"spc3",        		spcmd12},
+	{"bitwarden",   		spcmd2},
+	{"spnmtui",     		spcmd3},
+	{"sprmpc",   		    spcmd4},
+	{"whatsapp-firefox",	spcmd5}
 };
 
 /* Tags
@@ -161,31 +144,33 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
+
+	// Swallow windows terminal
 	RULE(.class = "st-256color" TERMINAL)
+
+	// Apresentation office
 	RULE(.class = "Soffice", .instance = "soffice", .title = NULL, .monitor = 0, .tags = 0, .isfloating = 0)
 	RULE(.class = "Soffice", .instance = "soffice", .title = "Presenting:", .monitor = 1, .tags = 0, .isfloating = 0)
 	RULE(.class = "Soffice", .instance = "soffice", .title = "Apresentando", .monitor = 1, .tags = 0, .isfloating = 0)
+
+	// Floating windows
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
+	RULE(.class = "qalculate-gtk", .tags = 0, .isfloating = 1)
+
+	// Scratchpads
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
-	RULE(.instance = "spfm", .tags = SPTAG(1), .isfloating = 1)
-	RULE(.instance = "bitwarden",  .tags = SPTAG(2), .isfloating = 1)
-	RULE(.instance = "sppulse",  .tags = SPTAG(3), .isfloating = 1)
-	RULE(.instance = "sptop",  .tags = SPTAG(4), .isfloating = 1)
-	RULE(.instance = "spnmtui" ,  .tags = SPTAG(5), .isfloating = 1)
-	RULE(.instance = "sprmpc",  .tags = SPTAG(6), .isfloating = 1)
-	RULE(.instance = "hnpfjngllnobngcgfapefoaidbinmjnm",  .tags = SPTAG(7), .isfloating = 1)
-	RULE(.instance = "spytfzf",	 .tags = SPTAG(8), .isfloating = 1 TERMINAL)
-	RULE(.instance = "qalculate-gtk",  .tags = SPTAG(9), .isfloating = 1)
-	RULE(.instance = "spcalcurse",  .tags = SPTAG(10), .isfloating = 1)
-	RULE(.instance = "spc3",  .tags = SPTAG(11), .isfloating = 1)
-	RULE(.class = "updates", .isfloating = 1  TERMINAL)
+	RULE(.instance = "bitwarden",  .tags = SPTAG(1), .isfloating = 1)
+	RULE(.instance = "spnmtui" ,  .tags = SPTAG(2), .isfloating = 1)
+	RULE(.instance = "sprmpc",  .tags = SPTAG(3), .isfloating = 1)
+	RULE(.instance = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",  .tags = SPTAG(4), .isfloating = 1)
+
 };
 
 static const MonitorRule monrules[] = {
 	/* monitor  tag   layout  mfact  nmaster  showbar  topbar */
 	{  1,       -1,   5,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
-	{  -1,      -1,   0,      -1,    -1,      -1,      -1     }, // default
+	{  -1,      -1,   6,      -1,    -1,      -1,      -1     }, // default
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -211,7 +196,7 @@ static const BarRule barrules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -297,7 +282,6 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
 	{ MODKEY|ShiftMask,             XK_Down,       setcfact,               {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
-
 	{ MODKEY,                       XK_Return,     zoom,                   {0} },
 
 	/*Gaps*/
@@ -323,7 +307,6 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask,         XK_c,          killclient,             {0} },
 	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
 	{ ControlMask|Mod1Mask,         XK_r,          quit,                   {1} }, //restart
-
 	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
 
     //Layouts
@@ -361,17 +344,11 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } },
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
-	{ MODKEY|ShiftMask,             XK_f,      togglescratch,  {.ui = 1 } },
-	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 2 } },
-	{ MODKEY,                       XK_a,      togglescratch,  {.ui = 3 } },
-	{ MODKEY,                       XK_h,      togglescratch,  {.ui = 4 } },
-	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 5 } },
-	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 6 } },
-	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 7 } },
-	{ MODKEY,                       XK_y,      togglescratch,  {.ui = 8 } },
-	{ MODKEY,                       XK_q,      togglescratch,  {.ui = 9 } },
-	{ MODKEY,                       XK_t,      togglescratch,  {.ui = 10 } },
-	{ MODKEY,                       XK_g,      togglescratch,  {.ui = 11 } },
+	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 1 } },
+	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 2 } },
+	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 3 } },
+	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 4 } },
+
 
 	/*Meus atalhos*/
 	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
@@ -445,7 +422,7 @@ static const Key keys[] = {
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
 
 	/*Lancamento Programas*/
-	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
+	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox-beta") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) },

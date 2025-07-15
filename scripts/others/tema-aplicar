@@ -94,6 +94,7 @@ case $1 in
         WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
 
         COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_BACKGROUND2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
         COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
         COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
         COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
@@ -119,6 +120,7 @@ case $1 in
         WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
 
         COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_BACKGROUND2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
         COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
         COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
         COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
@@ -143,6 +145,7 @@ case $1 in
         WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
 
         COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_BACKGROUND2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
         COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
         COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
         COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
@@ -168,6 +171,7 @@ case $1 in
         WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
 
         COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_BACKGROUND2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
         COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
         COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
         COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
@@ -189,6 +193,7 @@ case $1 in
         WALLPAPER_LIGHTDM="LbI3B9z.jpeg";
 
         COLOR_BACKGROUND="#002b36";
+        COLOR_BACKGROUND2="#eff1f5"
         COLOR_TEXT="#839496";
         COLOR_1="#b58900";
         COLOR_2="#cb4b16";
@@ -210,6 +215,7 @@ case $1 in
         WALLPAPER_LIGHTDM="burst-light.png"
 
         COLOR_BACKGROUND="#fdf6e3"
+        COLOR_BACKGROUND2="#eff1f5"
         COLOR_TEXT="#657b83"
         COLOR_1="#b58900"   # Yellow
         COLOR_2="#cb4b16"   # Orange
@@ -232,6 +238,7 @@ case $1 in
         WALLPAPER_LIGHTDM="wallhaven-jxl8mw.jpg"
 
         COLOR_BACKGROUND="#282828"
+        COLOR_BACKGROUND2="#eff1f5"
         COLOR_TEXT="#ebdbb2"
         COLOR_1="#d79921"   # Yellow
         COLOR_2="#fe8019"   # Orange
@@ -254,6 +261,7 @@ case $1 in
         WALLPAPER_LIGHTDM="gruv-takumi-drift.png"
 
         COLOR_BACKGROUND="#fbf1c7"
+        COLOR_BACKGROUND2="#eff1f5"
         COLOR_TEXT="#3c3836"
         COLOR_1="#b57614"   # Yellow
         COLOR_2="#af3a03"   # Orange
@@ -276,6 +284,7 @@ case $1 in
         WALLPAPER_LIGHTDM="CatppuccinMocha-Planets.png"
 
         COLOR_BACKGROUND="#303446"
+        COLOR_BACKGROUND2="#eff1f5"
         COLOR_TEXT="#c6d0f5"
         COLOR_1="#e5c890"   # Yellow
         COLOR_2="#ef9f76"   # Orange
@@ -298,6 +307,7 @@ case $1 in
         WALLPAPER_LIGHTDM="wp11912478-catppuccin-wallpapers.png"
 
         COLOR_BACKGROUND="#eff1f5"
+        COLOR_BACKGROUND2="#eff1f5"
         COLOR_TEXT="#4c4f69"
         COLOR_1="#df8e1d"   # Yellow
         COLOR_2="#ea76cb"   # Pink
@@ -343,6 +353,7 @@ case $1 in
         WALLPAPER_LIGHTDM="ign_sunAndClouds.png"
 
         COLOR_BACKGROUND="#eceff4"
+        COLOR_BACKGROUND2="#eceff4"
         COLOR_TEXT="#2e3440"
         COLOR_1="#b48ead"   # Yellow
         COLOR_2="#d08770"   # Orange
@@ -366,6 +377,7 @@ case $1 in
         WALLPAPER_LIGHTDM="base.png"
 
         COLOR_BACKGROUND="#282a36"
+        COLOR_BACKGROUND2="#282a36"
         COLOR_TEXT="#f8f8f2"
         COLOR_1="#f1fa8c"   # Yellow
         COLOR_2="#ffb86c"   # Orange
@@ -388,6 +400,7 @@ case $1 in
         WALLPAPER_LIGHTDM="dracula-galaxy-6272a4.png"
 
         COLOR_BACKGROUND="#44475A"
+        COLOR_BACKGROUND2="#44475A"
         COLOR_TEXT="#F8F8F2"
         COLOR_1="#f1fa8c"   # Yellow
         COLOR_2="#ffb86c"   # Orange
@@ -410,6 +423,7 @@ case $1 in
         WALLPAPER_LIGHTDM="vaporwave005.jpg"
 
         COLOR_BACKGROUND="#2e1a47"
+        COLOR_BACKGROUND2="#2e1a47"
         COLOR_TEXT="#d8d8d8"
         COLOR_1="#ff77ff"   # Pink
         COLOR_2="#9c64e8"   # Purple
@@ -432,16 +446,17 @@ case $1 in
         EMACS_THEME="rebecca"
         WALLPAPER_LIGHTDM="vaporwave009.jpg"
 
-        COLOR_BACKGROUND="#f9f1fa"
+        COLOR_BACKGROUND="#DDA0DD"
+        COLOR_BACKGROUND2="#DDA0DD"
         COLOR_TEXT="#2e1a47"
-        COLOR_1="#ff77ff"   # Pink
-        COLOR_2="#9c64e8"   # Purple
-        COLOR_3="#ff6c6c"   # Light Red
-        COLOR_4="#ff5a8f"   # Magenta
-        COLOR_5="#7ec8ff"   # Light Blue
-        COLOR_6="#84e1f2"   # Cyan
-        COLOR_7="#76ff7f"   # Light Green
-        COLOR_8="#b8a4c9"   # Light Gray
+        COLOR_1="#FF77FF"   # Pink
+        COLOR_2="#8A2BE2"   # Purple
+        COLOR_3="#FFD700"   # Light Red
+        COLOR_4="#FF6F61"   # Magenta
+        COLOR_5="#153CB4"   # Light Blue
+        COLOR_6="#00BFFF"   # Cyan
+        COLOR_7="#00FA9A"   # Light Green
+        COLOR_8="#F0E68C"   # Light Gray
 
 	;;
 

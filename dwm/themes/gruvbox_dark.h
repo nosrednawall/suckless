@@ -32,7 +32,7 @@ static char tagsnormfloatcolor[]         = "#458588";  // Float color (janelas f
 
 // Cores das tags selecionadas
 static char tagsselfgcolor[]             = "#fbf1c7";  // Foreground color (texto)
-static char tagsselbgcolor[]             = "#282828";  // Background color (fundo)
+static char tagsselbgcolor[]             = "#3c3836";  // Background color (fundo)
 static char tagsselbordercolor[]         = "#689d6a";  // Border color (bordas)
 static char tagsselfloatcolor[]          = "#689d6a";  // Float color (janelas flutuantes)
 
