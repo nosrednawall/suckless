@@ -45,12 +45,12 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Bold Oblique:pixelsize=14",
+	"Iosevka:pixelsize=15",
     "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
-#include "themes/catppuccin_dark.h"
+#include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -63,6 +63,7 @@ static char *colors[][ColCount] = {
 	[SchemeHidNorm]      = { hidnormfgcolor,   hidnormbgcolor,   c000000,              c000000 },
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },
+	[SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
 	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 };
 
@@ -112,7 +113,7 @@ static char *tagicons[][NUMTAGS] =
 {
 	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
 	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
-	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
+	[ALT_TAGS_DECORATION] = { "1", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
 };
 
 /* There are two options when it comes to per-client rules:
@@ -169,7 +170,7 @@ static const Rule rules[] = {
 
 static const MonitorRule monrules[] = {
 	/* monitor  tag   layout  mfact  nmaster  showbar  topbar */
-	{  1,       -1,   5,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
+	{  1,       -1,   8,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
 	{  -1,      -1,   6,      -1,    -1,      -1,      -1     }, // default
 };
 

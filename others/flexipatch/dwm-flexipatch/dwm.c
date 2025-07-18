@@ -148,7 +148,8 @@ enum {
 	SchemeHidNorm,
 	SchemeHidSel,
 	SchemeUrg,
-	#if BAR_LTSYMBOL_SCHEME_PATCH
+	SchemeTagsUnused,
+    #if BAR_LTSYMBOL_SCHEME_PATCH
 	SchemeLtSymbol,
 	#endif // BAR_LTSYMBOL_SCHEME_PATCH
 	#if RENAMED_SCRATCHPADS_PATCH
@@ -4025,7 +4026,7 @@ setup(void)
 	wa.cursor = cursor[CurNormal]->cursor;
 	wa.event_mask = SubstructureRedirectMask|SubstructureNotifyMask
 		|ButtonPressMask|PointerMotionMask|EnterWindowMask
-		|LeaveWindowMask|StructureNotifyMask|PropertyChangeMask;
+		|LeaveWindowMask|StructureNotifyMask|PropertyChangeMask|KeyPressMask;
 	XChangeWindowAttributes(dpy, root, CWEventMask|CWCursor, &wa);
 	XSelectInput(dpy, root, wa.event_mask);
 

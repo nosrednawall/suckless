@@ -220,6 +220,12 @@ static char urgbgcolor[]                 = "#222222";
 static char urgbordercolor[]             = "#ff0000";
 static char urgfloatcolor[]              = "#db8fd9";
 
+/* Cores de tags não utilizadas */
+static char tagsunusedfgcolor[]          = "#D8DEE9"; // Texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#ECEFF4"; // Fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#D8DEE9"; // Borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#88C0D0"; // Flutuação para tags não utilizadas
+
 #if BAR_LTSYMBOL_SCHEME_PATCH
 static char ltsymbolfgcolor[]            = "#222222";
 static char ltsymbolbgcolor[]            = "#fe9877";
@@ -362,7 +368,8 @@ static char *colors[][ColCount] = {
 	[SchemeHidNorm]      = { hidnormfgcolor,   hidnormbgcolor,   c000000,              c000000 },
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },
-	#if BAR_LTSYMBOL_SCHEME_PATCH
+    [SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
+    #if BAR_LTSYMBOL_SCHEME_PATCH
 	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 	#endif // BAR_LTSYMBOL_SCHEME_PATCH
 	#if RENAMED_SCRATCHPADS_PATCH

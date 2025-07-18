@@ -46,4 +46,10 @@ static char c000000[]                    = "#000000"; // Placeholder value
 
 static char ltsymbolbgcolor[]            = "#2E3440";
 static char ltsymbolfgcolor[]            = "#a3be8c";
+
+static char tagsunusedfgcolor[]          = "#4C566A"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#2E3440"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#3B4252"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#81A1C1"; // Cor de flutuação para tags não utilizadas
+
 #endif // NORDIC_DARK_H_

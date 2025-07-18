@@ -46,4 +46,10 @@ static char c000000[]                    = "#000000"; // Placeholder value
 static char ltsymbolbgcolor[]            = "#282A36";
 static char ltsymbolfgcolor[]            = "#F8F8F2";
 
+static char tagsunusedfgcolor[]          = "#51576D"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#282A36"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#44475A"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#6272A4"; // Cor de flutuação para tags não utilizadas
+
+
 #endif // DRACULA_DARK_H_
