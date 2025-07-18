@@ -1,7 +1,7 @@
 #ifndef CATPPUCIN_FRAPPE_H_
 #define CATPPUCIN_FRAPPE_H_
 
-static char normfgcolor[]                = "#CDD6F4"; // Fonte normal
+static char normfgcolor[]                = "#81c8be"; // Fonte normal
 static char normbgcolor[]                = "#303446"; // Fundo normal
 static char normbordercolor[]            = "#51576D"; // Borda normal
 static char normfloatcolor[]             = "#51576D"; // Float normal

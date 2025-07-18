@@ -1,7 +1,7 @@
 #ifndef VAPORWAVE_DARK_H_
 #define VAPORWAVE_DARK_H_
 
-static char normfgcolor[]                = "#e0e0e0"; // cor do texto normal
+static char normfgcolor[]                = "#84e1f2"; // cor do texto normal
 static char normbgcolor[]                = "#1a1a2e"; // cor de fundo normal
 static char normbordercolor[]            = "#4a4a6a"; // cor da borda normal
 static char normfloatcolor[]             = "#4a4a6a"; // cor da borda de janelas flutuantes normal

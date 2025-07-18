@@ -18,16 +18,16 @@ image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")
-	    echo "^b$COLOR_5^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_5^$(date +'%d/%m')^d^  "
+	    echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_7^$(date +'%d/%m')^d^  "
     ;;
 	"MEDIO")
-		echo "^b$COLOR_5^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_5^$(date +'%d/%m')^d^  "
+		echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_7^$(date +'%d/%m')^d^  "
 	;;
     "ICONES")
-        echo "^b$COLOR_5^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_5^$(date +"%d/%m" | sed 's/  / /g')^d^  "
+        echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_7^$(date +"%d/%m" | sed 's/  / /g')^d^  "
     ;;
 	*)
-		echo "^b$COLOR_5^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_5^$(date +"%a %d %b" | sed 's/  / /g')^d^  "
+		echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_7^$(date +"%a %d %b" | sed 's/  / /g')^d^  "
     ;;
 esac
 

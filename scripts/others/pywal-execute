@@ -99,6 +99,9 @@ static char urgfloatcolor[]              = "${pywal_color2}";
 
 static char c000000[]                    = "${c000000}";
 
+static char ltsymbolbgcolor[]            = "#303446";
+static char ltsymbolfgcolor[]            = "#F2D5CF";
+
 static char tagsunusedfgcolor[]        = "${pywal_color8}"; // Cor do texto para tags não utilizadas
 static char tagsunusedbgcolor[]        = "${pywal_color0}"; // Cor de fundo para tags não utilizadas
 static char tagsunusedbordercolor[]    = "${pywal_color9}"; // Cor da borda para tags não utilizadas

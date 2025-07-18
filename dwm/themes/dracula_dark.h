@@ -1,7 +1,7 @@
 #ifndef DRACULA_DARK_H_
 #define DRACULA_DARK_H_
 
-static char normfgcolor[]                = "#F8F8F2"; // cor do texto normal
+static char normfgcolor[]                = "#8BE9FD"; // cor do texto normal
 static char normbgcolor[]                = "#282A36"; // cor de fundo normal
 static char normbordercolor[]            = "#44475A"; // cor da borda normal
 static char normfloatcolor[]             = "#44475A"; // cor da borda de janelas flutuantes normal

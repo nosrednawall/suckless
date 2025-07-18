@@ -1,7 +1,7 @@
 #ifndef GRUVBOX_DARK_H_
 #define GRUVBOX_DARK_H_
 // Cores padrão (normal)
-static char normfgcolor[]                = "#ebdbb2";  // Foreground color (texto)
+static char normfgcolor[]                = "#458588";  // Foreground color (texto)
 static char normbgcolor[]                = "#282828";  // Background color (fundo)
 static char normbordercolor[]            = "#3c3836";  // Border color (bordas)
 static char normfloatcolor[]             = "#458588";  // Float color (janelas flutuantes)

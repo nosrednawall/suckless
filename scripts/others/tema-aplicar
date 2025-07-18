@@ -70,6 +70,7 @@ case $1 in
 
         # carrega as cores geradas pelo pywal
         COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_BACKGROUND2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
         COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
         COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
         COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
@@ -192,8 +193,8 @@ case $1 in
         EMACS_THEME="doom-solarized-dark";
         WALLPAPER_LIGHTDM="LbI3B9z.jpeg";
 
-        COLOR_BACKGROUND="#002b36";
-        COLOR_BACKGROUND2="#eff1f5"
+        COLOR_BACKGROUND="#073642";
+        COLOR_BACKGROUND2="#073642"
         COLOR_TEXT="#839496";
         COLOR_1="#b58900";
         COLOR_2="#cb4b16";

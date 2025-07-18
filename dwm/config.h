@@ -41,16 +41,16 @@ static const unsigned int ulinevoffset = -3;     /* how far above the bottom of 
 static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
 
 /* Indicators: see patch/bar_indicators.h for options */
-static int tagindicatortype              = INDICATOR_NONE;
+static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka:pixelsize=15",
+	"Iosevka Oblique:pixelsize=14",
     "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
-#include "themes/vaporwave_dark.h"
+#include "themes/catppuccin_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
