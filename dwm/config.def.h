@@ -45,7 +45,7 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Oblique:pixelsize=14",
+	"Iosevka Bold Oblique:pixelsize=14",
     "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
