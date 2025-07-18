@@ -176,8 +176,8 @@ if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; the
         song=$(playerctl $PLAYERS metadata xesam:url | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" | xargs -I {} basename "{}")
     fi
 
-    if [[ ${#song} -gt 25 ]]; then
-        song="${song:0:25}..."
+    if [[ ${#song} -gt 17 ]]; then
+        song="${song:0:17}..."
     fi
     # Remove ; da musica se tiver
     song=$(echo $song | tr -d ';')
