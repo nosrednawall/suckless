@@ -31,14 +31,17 @@ else
         "PM")
             icone="󱎫"
             color="$COLOR_3"
+            color2="$COLOR_11"
         ;;
         "SB")
             icone=""
             color="$COLOR_5"
+            color2="$COLOR_13"
         ;;
         "LB")
             icone=""
             color="$COLOR_6"
+            color2="$COLOR_14"
         ;;
     esac
 
@@ -46,6 +49,7 @@ else
     if [ "$pomodoro_pause" = "Yes" ]; then
         icone="󱫞"
         color="$COLOR_1"
+        color2="$COLOR_9"
     fi
 
     # Gera notificacao quando muda de modo
@@ -68,7 +72,7 @@ else
     fi
 
     # retorno no dwmblocks
-    echo "^b$color^^c$COLOR_BACKGROUND ^ $icone ^d^^c$color^ $pomodoro_minutos  $pomodoro_cont^d^  "
+    echo "^b$color^^c$COLOR_BACKGROUND ^ $icone ^d^^c$COLOR_BACKGROUND^^b$color2^ $pomodoro_minutos  $pomodoro_cont ^d^ "
 fi
 
 exit 0

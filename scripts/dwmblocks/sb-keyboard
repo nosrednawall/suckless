@@ -28,12 +28,12 @@ if [[ -z "$lay" ]]; then
     lay="unknown"
 fi
 
-layout_atual="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰌌 ^d^^c$COLOR_6^ $lay^d^"
+layout_atual="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰌌"
 
 # Verifique o estado atual do Caps Lock
 CAPS_STATE=$(xset q 2>/dev/null | grep "Caps Lock:" | awk '{print $4}')
 if [[ "$CAPS_STATE" == "on" ]]; then
-    caps="^c$COLOR_3^󰪛"
+    caps="󰪛"
 else
     caps=""
 fi
@@ -41,7 +41,7 @@ fi
 # Verificar o estado atual do Num Lock
 NUMLOCK_STATE=$(xset q 2>/dev/null | grep "Num Lock:" | awk '{print $8}')
 if [[ "$NUMLOCK_STATE" == "on" ]]; then
-    num="^c$COLOR_5^󰎠"
+    num="󰎠"
 else
     num=""
 fi
@@ -61,7 +61,7 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$output  "
+        echo "$output ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $lay ^d^ "
     ;;
 esac
 

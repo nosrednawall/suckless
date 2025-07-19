@@ -39,7 +39,7 @@ fi
 
 if [ $status_ethernet -eq 1 ]; then
     ip=$(ip addr show $DEVICE_ETHERNET  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
-    ethernet="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰈀 ^d^^c$COLOR_6^ $ip^d^  "
+    ethernet="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰈀 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $ip ^d^ "
 else
     ethernet=""
 fi

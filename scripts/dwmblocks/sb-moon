@@ -92,8 +92,7 @@ main() {
             ;;
         "MOSTRAR_LUA")
             # Força o uso do ponto como separador decimal
-            LC_NUMERIC=C printf "%s" "^b$COLOR_8^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_8^ $fase $nome^d^  "
-            #echo ""
+            LC_NUMERIC=C printf "%s" "^b$COLOR_8^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_16^ $fase $nome ^d^ "
             ;;
     esac
 }

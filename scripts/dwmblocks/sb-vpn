@@ -1,5 +1,10 @@
 #!/bin/bash
 
+###### Observação 2025-07-19
+## Dá um erro bem bizzaro quando abro 2 vpns, no bloco ele para de renderizar as cores, e fica colocando os caracteres sem renderização
+## Acho que isso ocorre porque limitei os blocos pára 80 caracteres de saída
+
+
 # Carrega informacoes do modo de operacao
 arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
 
@@ -17,13 +22,13 @@ status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
 status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
 
 if [ $status -eq 1 ]; then
-    vpn="^b$COLOR_4^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_4^ WVPN  "
+    vpn1="^b$COLOR_4^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_12^ WVPN ^d^ "
 else
-    vpn=""
+    vpn1=""
 fi
 
 if [ $status_nordvpn -eq 1 ]; then
-    vpn2="^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_5^ NVPN  "
+    vpn2="^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_13^ NVPN ^d^ "
 else
     vpn2=""
 fi
@@ -31,7 +36,7 @@ fi
 if [ $status_tailscale -eq 1 ]; then
     vpn3=""
 else
-    vpn3="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_6^ TVPN  "
+    vpn3="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ TVPN ^d^ "
 fi
 
 # Apresentacao condicionada
@@ -40,7 +45,7 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$vpn$vpn2$vpn3"
+        echo "$vpn1$vpn2$vpn3"
     ;;
 esac
 

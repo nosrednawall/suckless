@@ -193,18 +193,28 @@ case $1 in
         EMACS_THEME="doom-solarized-dark";
         WALLPAPER_LIGHTDM="LbI3B9z.jpeg";
 
-        COLOR_BACKGROUND="#073642";
-        COLOR_BACKGROUND2="#073642"
-        COLOR_TEXT="#839496";
-        COLOR_1="#b58900";
-        COLOR_2="#cb4b16";
-        COLOR_3="#dc322f";
-        COLOR_4="#d33682";
-        COLOR_5="#6c71c4";
-        COLOR_6="#268bd2";
-        COLOR_7="#859900";
-        COLOR_8="#2aa198";
+        # Cores base (originais)
+        COLOR_BACKGROUND="#073642"       # Fundo principal (azul-escuro)
+        COLOR_BACKGROUND2="#073642"      # Fundo secundário (mesmo que o principal)
+        COLOR_TEXT="#839496"             # Texto principal (cinza-azulado)
+        COLOR_1="#b58900"                # Amarelo
+        COLOR_2="#cb4b16"                # Laranja
+        COLOR_3="#dc322f"                # Vermelho
+        COLOR_4="#d33682"                # Magenta
+        COLOR_5="#6c71c4"                # Violeta
+        COLOR_6="#268bd2"                # Azul
+        COLOR_7="#859900"                # Verde
+        COLOR_8="#2aa198"                # Ciano
 
+        # Versões mais claras (tints)
+        COLOR_9="#f0c674"          # Amarelo claro
+        COLOR_10="#ff9d5c"          # Laranja claro
+        COLOR_11="#ff6b55"          # Vermelho claro
+        COLOR_12="#ff7cb8"          # Magenta claro
+        COLOR_13="#9a9ee8"          # Violeta claro
+        COLOR_14="#62b3e2"          # Azul claro
+        COLOR_15="#a3d572"          # Verde claro
+        COLOR_16="#69d9cf"          # Ciano claro
     ;;
     $solarized_light)
         THEME_GTK="NumixSolarizedLightCyan"
@@ -478,14 +488,22 @@ COLOR_MODE="$COLOR_MODE"
 COLOR_BACKGROUND="$COLOR_BACKGROUND"
 COLOR_BACKGROUND2="$COLOR_BACKGROUND2"
 COLOR_TEXT="$COLOR_TEXT"
-COLOR_1="$COLOR_1"   # Pink
-COLOR_2="$COLOR_2"   # Purple
-COLOR_3="$COLOR_3"   # Light Red
-COLOR_4="$COLOR_4"   # Magenta
-COLOR_5="$COLOR_5"   # Light Blue
-COLOR_6="$COLOR_6"   # Cyan
-COLOR_7="$COLOR_7"   # Light Green
-COLOR_8="$COLOR_8"   # Light Gray
+COLOR_1="$COLOR_1"     # Pink
+COLOR_2="$COLOR_2"     # Purple
+COLOR_3="$COLOR_3"     # Light Red
+COLOR_4="$COLOR_4"     # Magenta
+COLOR_5="$COLOR_5"     # Light Blue
+COLOR_6="$COLOR_6"     # Cyan
+COLOR_7="$COLOR_7"     # Light Green
+COLOR_8="$COLOR_8"     # Light Gray
+COLOR_9="$COLOR_9"     # Pink
+COLOR_10="$COLOR_10"   # Purple
+COLOR_11="$COLOR_11"   # Light Red
+COLOR_12="$COLOR_12"   # Magenta
+COLOR_13="$COLOR_13"   # Light Blue
+COLOR_14="$COLOR_14"   # Cyan
+COLOR_15="$COLOR_15"   # Light Green
+COLOR_16="$COLOR_16"   # Light Gray
 EOF
 
     # Altero as configuracoes do gtk

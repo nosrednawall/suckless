@@ -29,14 +29,14 @@ volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' 
 
 if [ "$muteVol" -eq 1 ]; then
 ^b$COLOR_3^^c$COLOR_BACKGROUND^ $iconRec ^d^^c$COLOR_3^ REC^d^
-    iconVolume="^b#4A5947^^c$COLOR_BACKGROUND^ 󰸈 ^d^^c#4A5947^ $volume^d^"
+    iconVolume="^b#4A5947^^c$COLOR_BACKGROUND^ 󰸈 ^d^"
 else
     if [ "$volume" -le 30 ]; then
-        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕿 ^d^^c$COLOR_6^ $volume^d^"
+        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕿 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $volume ^d^"
     elif [ "$volume" -le 60 ]; then
-        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰖀 ^d^^c$COLOR_6^ $volume^d^"
+        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰖀 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $volume ^d^"
     elif [ "$volume" -ge 61 ]; then
-        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕾 ^d^^c$COLOR_6^ $volume^d^"
+        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕾 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $volume ^d^"
     fi
 fi
 
@@ -49,7 +49,7 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$iconVolume  "
+        echo "$iconVolume "
     ;;
 esac
 

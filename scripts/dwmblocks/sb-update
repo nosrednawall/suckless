@@ -43,16 +43,16 @@ case "$OPERATION_MODE" in
                 echo ""
                 ;;
             [1-9]|10)
-                echo "^b$COLOR_7^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_7^ $updates  "
+                echo "^b$COLOR_7^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $updates ^d^ "
                 ;;
             [1-4][0-9]|50)
-                echo "^b$COLOR_1^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_1^ $updates  "
+                echo "^b$COLOR_1^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $updates ^d^ "
                 ;;
             [5-9][0-9]|100)
-                echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_2^ $updates  "
+                echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_10^ $updates ^d^ "
                 ;;
             *)
-                echo "^b$COLOR_3^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_3^ $updates  "
+                echo "^b$COLOR_3^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^ $updates ^d^ "
                 ;;
         esac
 

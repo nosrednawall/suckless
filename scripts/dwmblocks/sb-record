@@ -24,17 +24,17 @@ fi
 
 # Mostra o icone conforme a necessidade
 if [ ! -z $iconCam ] && [ ! -z $iconRec ]; then
-    echo "^b#dc322f^^c$COLOR_BACKGROUND^ $iconCam ^d^^c#dc322f^ ON  ^d^^b$COLOR_3^^c$COLOR_BACKGROUND^ $iconRec ^d^^c$COLOR_3^ REC^d^  "
+    echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconCam ^d^ ^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconRec ^d^ "
     exit 0
 fi
 
 if [ ! -z $iconCam ]; then
-    echo "^b#dc322f^^c$COLOR_BACKGROUND^ $iconCam ^d^^c#dc322f^ ON^d^  "
+    echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconCam ^d^ "
     exit 0
 fi
 
 if [ ! -z $iconRec ]; then
-    echo "^b$COLOR_3^^c$COLOR_BACKGROUND^ $iconRec ^d^^c$COLOR_3^ REC^d^  "
+    echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconRec ^d^ "
     exit 0
 fi
 

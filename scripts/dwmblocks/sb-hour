@@ -21,5 +21,5 @@ case "$clock" in
 	"12") icon="󱑊" ;;
 esac
 
-echo "^b$COLOR_1^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_1^ $(date '+%H:%M')^d^"
+echo "^b$COLOR_1^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $(date '+%H:%M') ^d^"
 exit 0

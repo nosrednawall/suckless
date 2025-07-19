@@ -57,6 +57,6 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-    echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^ ^c$COLOR_7^$memory%^d^  "
+    echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $memory% ^d^ "
     ;;
 esac

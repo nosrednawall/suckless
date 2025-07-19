@@ -26,12 +26,13 @@ dunstify "Aplicando tema" "Gerando schema de cores com Pywal.." -h int:value:10 
 if [ "${COLOR_MODE}" = "dark" ];then
 
     #wal -i "$filename"
-    wpg -a "$filename" ; wpg -s  "$filename" 2>/dev/null
+    #wpg -a "$filename" ; wpg -s  "$filename" 2>/dev/null
+    wal --cols16 "darken" -i "$filename"
     sleep 2
     feh --bg-fill $filename 2>/dev/null
 else
     #wal -l -i "$filename"
-    wpg -a -L "$filename" ; wpg -s -L "$filename" 2>/dev/null
+    wal --cols16 "lighten" -i "$filename"
     sleep 2
     feh --bg-fill $filename 2>/dev/null
 fi
