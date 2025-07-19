@@ -10,9 +10,9 @@
 
 //static char *font = "Liberation Mono:pixelsize=18:antialias=true:autohint=true";
 //static char *font = "Fira Mono:pixelsize=15:antialias=true:autohint=true:style=Regular";
-static char *font = "Iosevka:pixelsize=16:antialias=true:autohint=true:style=Regular";
+static char *font = "Iosevka Term:pixelsize=16:antialias=true:autohint=true:style=Regular";
 
-static int borderpx = 20;
+static int borderpx = 15;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -103,7 +103,7 @@ unsigned int tabspaces = 8;
 float alpha = 1.0;
 
 /* Terminal colors (16 first used in escape sequence) */
-#include "themes/gruvbox_dark.h"
+#include "themes/pywal_dark.h"
 
 /*
  * Default shape of cursor

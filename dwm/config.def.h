@@ -50,7 +50,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
-#include "themes/gruvbox_dark.h"
+#include "themes/pywal_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -178,8 +178,8 @@ static const Rule rules[] = {
 
 static const MonitorRule monrules[] = {
 	/* monitor  tag   layout  mfact  nmaster  showbar  topbar */
-	{  1,       -1,   8,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
-	{  -1,      -1,   6,      -1,    -1,      -1,      -1     }, // default
+	{  1,       -1,   5,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
+	{  -1,      -1,   8,      -1,    -1,      -1,      -1     }, // default
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -259,9 +259,11 @@ static const char *dmenucmd[] = {
 	"-nb", normbgcolor,
 	"-nf", normfgcolor,
 	"-sb", selbgcolor,
-	"-sf", selfgcolor,
+//  "-sf", selfgcolor,
+	"-sf", normbgcolor,
 	NULL
 };
+
 static const char *termcmd[]  = { "st", NULL };
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */

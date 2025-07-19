@@ -53,11 +53,14 @@ pywal_color12="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color12')"
 pywal_color13="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color13')"
 pywal_color14="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color14')"
 pywal_color15="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color15')"
+pywal_background="$(cat ~/.cache/wal/colors.json | jq -r '.special.background')"
+pywal_foreground="$(cat ~/.cache/wal/colors.json | jq -r '.special.foreground')"
+pywal_cursor="$(cat ~/.cache/wal/colors.json | jq -r '.special.cursor')"
 
 # Salva a configuracao para o DWM
 rm -rf $HOME/.config/suckless/dwm/themes/pywal_${COLOR_MODE}.h
 cat > $HOME/.config/suckless/dwm/themes/pywal_${COLOR_MODE}.h << EOF
-static char normfgcolor[]                = "${pywal_color7}";
+static char normfgcolor[]                = "${pywal_color2}";
 static char normbgcolor[]                = "${pywal_color0}";
 static char normbordercolor[]            = "${pywal_color0}";
 static char normfloatcolor[]             = "${pywal_color0}";
@@ -67,13 +70,13 @@ static char selbgcolor[]                 = "${pywal_color2}";
 static char selbordercolor[]             = "${pywal_color7}";
 static char selfloatcolor[]              = "${pywal_color2}";
 
-static char titlenormfgcolor[]           = "${pywal_color7}";
-static char titlenormbgcolor[]           = "${pywal_color0}";
-static char titlenormbordercolor[]       = "${pywal_color0}";
-static char titlenormfloatcolor[]        = "${pywal_color2}";
+static char titlenormfgcolor[]           = "${pywal_foreground}";
+static char titlenormbgcolor[]           = "${pywal_background}";
+static char titlenormbordercolor[]       = "${pywal_background}";
+static char titlenormfloatcolor[]        = "${pywal_background}";
 
-static char titleselfgcolor[]            = "${pywal_color0}";
-static char titleselbgcolor[]            = "${pywal_color2}";
+static char titleselfgcolor[]            = "${pywal_foreground}";
+static char titleselbgcolor[]            = "${pywal_background}";
 static char titleselbordercolor[]        = "${pywal_color2}";
 static char titleselfloatcolor[]         = "${pywal_color2}";
 
@@ -82,8 +85,8 @@ static char tagsnormbgcolor[]            = "${pywal_color0}";
 static char tagsnormbordercolor[]        = "${pywal_color0}";
 static char tagsnormfloatcolor[]         = "${pywal_color2}";
 
-static char tagsselfgcolor[]             = "${pywal_color0}";
-static char tagsselbgcolor[]             = "${pywal_color2}";
+static char tagsselfgcolor[]             = "${pywal_color2}";
+static char tagsselbgcolor[]             = "${pywal_color0}";
 static char tagsselbordercolor[]         = "${pywal_color2}";
 static char tagsselfloatcolor[]          = "${pywal_color2}";
 
@@ -97,10 +100,10 @@ static char urgbgcolor[]                 = "${pywal_color15}";
 static char urgbordercolor[]             = "${pywal_color3}";
 static char urgfloatcolor[]              = "${pywal_color2}";
 
-static char c000000[]                    = "${c000000}";
+static char c000000[]                    = "#000000";
 
-static char ltsymbolbgcolor[]            = "#303446";
-static char ltsymbolfgcolor[]            = "#F2D5CF";
+static char ltsymbolbgcolor[]            = "${pywal_background}";
+static char ltsymbolfgcolor[]            = "${pywal_color6}";
 
 static char tagsunusedfgcolor[]        = "${pywal_color8}"; // Cor do texto para tags não utilizadas
 static char tagsunusedbgcolor[]        = "${pywal_color0}"; // Cor de fundo para tags não utilizadas
@@ -113,8 +116,8 @@ rm -rf $HOME/.config/suckless/dmenu/themes/pywal_${COLOR_MODE}.h
 cat > $HOME/.config/suckless/dmenu/themes/pywal_${COLOR_MODE}.h << EOF
 static const char *colors[SchemeLast][2] = {
 /*                            fg         bg       */
-[SchemeNorm]          = { "${pywal_color7}", "${pywal_color0}" }, // Fonte normal, fundo normal
-[SchemeSel]           = { "${pywal_color7}", "${pywal_color2}" }, // Fonte selecionada, fundo selecionado
+[SchemeNorm]          = { "${pywal_color7}", "${pywal_background}" }, // Fonte normal, fundo normal
+[SchemeSel]           = { "${pywal_background}", "${pywal_color2}" }, // Fonte selecionada, fundo selecionado
 [SchemeBorder]        = { "${pywal_color0}", "${pywal_color7}" }, // Borda normal, borda selecionada
 [SchemeSelHighlight]  = { "${pywal_color0}", "${pywal_color2}" }, // Destaque de seleção
 [SchemeNormHighlight] = { "${pywal_color7}", "${pywal_color0}" }, // Destaque normal
