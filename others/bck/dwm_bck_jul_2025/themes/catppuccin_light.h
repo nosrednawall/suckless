@@ -1,7 +1,7 @@
 #ifndef CATPPUCIN_LATTE_H_
 #define CATPPUCIN_LATTE_H_
-static char normfgcolor[]                = "#4C4F69"; // Fonte normal
-static char normbgcolor[]                = "#EFF1F5"; // Fundo normal
+static char normfgcolor[]                = "#7287FD"; // Fonte normal
+static char normbgcolor[]                = "#ccd0da"; // Fundo normal
 static char normbordercolor[]            = "#B4BE82"; // Borda normal
 static char normfloatcolor[]             = "#B4BE82"; // Float normal
 

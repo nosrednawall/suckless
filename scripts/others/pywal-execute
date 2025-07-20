@@ -86,7 +86,7 @@ static char tagsnormbgcolor[]            = "${pywal_color0}";
 static char tagsnormbordercolor[]        = "${pywal_color0}";
 static char tagsnormfloatcolor[]         = "${pywal_color2}";
 
-static char tagsselfgcolor[]             = "${pywal_color2}";
+static char tagsselfgcolor[]             = "${pywal_foreground}";
 static char tagsselbgcolor[]             = "${pywal_color0}";
 static char tagsselbordercolor[]         = "${pywal_color2}";
 static char tagsselfloatcolor[]          = "${pywal_color2}";

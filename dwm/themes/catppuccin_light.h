@@ -1,8 +1,8 @@
 #ifndef CATPPUCIN_LATTE_H_
 #define CATPPUCIN_LATTE_H_
-static char normfgcolor[]                = "#4C4F69"; // Fonte normal
+static char normfgcolor[]                = "#7287FD"; // Fonte normal
 static char normbgcolor[]                = "#EFF1F5"; // Fundo normal
-static char normbordercolor[]            = "#EFF1F5"; // Borda normal
+static char normbordercolor[]            = "#ccd0da"; // Borda normal
 static char normfloatcolor[]             = "#B4BE82"; // Float normal
 
 static char selfgcolor[]                 = "#4C4F69"; // Fonte selecionada
@@ -44,5 +44,10 @@ static char c000000[]                    = "#000000"; // Placeholder value
 
 static char ltsymbolbgcolor[]            = "#EFF1F5";
 static char ltsymbolfgcolor[]            = "#7287FD";
+
+static char tagsunusedfgcolor[]          = "#6C6F93"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#EFF1F5"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#B4BE82"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#7287FD"; // Cor de flutuação para tags não utilizadas
 
 #endif // CATPPUCIN_LATTE_H_

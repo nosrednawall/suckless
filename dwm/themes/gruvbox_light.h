@@ -48,4 +48,9 @@ static char urgfloatcolor[]      = "#d3869b";  // Float color (janelas flutuante
 static char ltsymbolbgcolor[]            = "#fbf1c7";
 static char ltsymbolfgcolor[]            = "#cc241d";
 
+static char tagsunusedfgcolor[]          = "#928374"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#fbf1c7"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#d5c4a1"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#d3869b"; // Cor de flutuação para tags não utilizadas
+
 static char c000000[]                    = "#000000"; // Placeholder value
