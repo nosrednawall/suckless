@@ -533,7 +533,7 @@
  *
  * https://github.com/bakkeby/patches/wiki/banish
  */
-#define BANISH_PATCH 0
+#define BANISH_PATCH 1
 
 /* This patch adds proper support for Right-To-Left languages. (such as Farsi, Arabic or Hebrew).
  *

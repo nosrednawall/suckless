@@ -50,7 +50,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
-#include "themes/pywal_dark.h"
+#include "themes/nord_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -165,7 +165,7 @@ static const Rule rules[] = {
 	// Floating windows
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
-	RULE(.class = "qalculate-gtk", .tags = 0, .isfloating = 1)
+	RULE(.class = "Qalculate-gtk", .tags = 0, .isfloating = 1)
 
 	// Scratchpads
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
@@ -244,11 +244,12 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
-#define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      comboview,      {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      combotag,       {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define TAGKEYS(KEY,TAG)                                                                                               \
+       &((Keychord){1, {{MODKEY, KEY}},                                        view,           {.ui = 1 << TAG} }), \
+       &((Keychord){1, {{MODKEY|ControlMask, KEY}},                            toggleview,     {.ui = 1 << TAG} }), \
+       &((Keychord){1, {{MODKEY|ShiftMask, KEY}},                              tag,            {.ui = 1 << TAG} }), \
+       &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, KEY}},                  toggletag,      {.ui = 1 << TAG} }),
+
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -272,184 +273,179 @@ static const char *termcmd[]  = { "st", NULL };
 // Atalho para chamar os scripts
 #define PATH(name) "$HOME/.config/suckless/scripts/"name
 
-static const Key keys[] = {
-	/* modifier                     key            function                argument */
-	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
-	{ MODKEY,                       XK_b,          togglebar,              {0} },
-    /*Modimentacao das janelas*/
-	{ MODKEY,              			XK_Right,     focusstack,              {.i = +1 } },
-	{ MODKEY,              			XK_Left,      focusstack,              {.i = -1 } },
-	{ ControlMask|Mod1Mask,  		XK_Right,     shiftview,               {.i = +1 } },
-	{ ControlMask|Mod1Mask,  		XK_Left,      shiftview,               {.i = -1 } },
+static Keychord *keychords[] = {
+    /* modifier                     key            function                argument */
+    &((Keychord){1, {{MODKEY, XK_p}}, spawn, {.v = dmenucmd } }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_Return}}, spawn, {.v = termcmd } }),
+    &((Keychord){1, {{MODKEY, XK_b}}, togglebar, {0} }),
+	&((Keychord){2, {{MODKEY, XK_i}, {MODKEY, XK_i}},                       spawn,          {.v = termcmd } }),
 
-    /*Adiciona e remove janelas da mastes para a lateral*/
-	{ MODKEY|ShiftMask,             XK_equal,     incnmaster,              {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_minus,     incnmaster,              {.i = -1 } },
+    /* Window navigation */
+    &((Keychord){1, {{MODKEY, XK_Right}}, focusstack, {.i = +1 } }),
+    &((Keychord){1, {{MODKEY, XK_Left}}, focusstack, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_Right}}, shiftview, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_Left}}, shiftview, {.i = -1 } }),
 
-    /*Altera o tamanho das janelas horizontal*/
-    { MODKEY|ShiftMask,             XK_Right,      setmfact,                {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Left,       setmfact,                {.f = -0.05} },
+    /* Add/remove windows from master area */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_equal}}, incnmaster, {.i = +1 } }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_minus}}, incnmaster, {.i = -1 } }),
 
-    /*altera tamanho janelas na vertical*/
-    { MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
-	{ MODKEY|ShiftMask,             XK_Down,       setcfact,               {.f = -0.25} },
-	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
-	{ MODKEY,                       XK_Return,     zoom,                   {0} },
+    /* Horizontal window size adjustment */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_Right}}, setmfact, {.f = +0.05} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_Left}}, setmfact, {.f = -0.05} }),
 
-	/*Gaps*/
-	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_1,          incrgaps,               {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_2,          incrigaps,              {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_2,          incrigaps,              {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_3,          incrogaps,              {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_3,          incrogaps,              {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_4,          incrihgaps,             {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_4,          incrihgaps,             {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_5,          incrivgaps,             {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_5,          incrivgaps,             {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_6,          incrohgaps,             {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_6,          incrohgaps,             {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_7,          incrovgaps,             {.i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_7,          incrovgaps,             {.i = -1 } },
-	{ ControlMask|Mod1Mask,              XK_0,          togglegaps,             {0} },
-	{ ControlMask|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
+    /* Vertical window size adjustment */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_Up}}, setcfact, {.f = +0.25} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_Down}}, setcfact, {.f = -0.25} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_o}}, setcfact, {0} }),
+    &((Keychord){1, {{MODKEY, XK_Return}}, zoom, {0} }),
 
+    /* Gaps */
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_1}}, incrgaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_1}}, incrgaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_2}}, incrigaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_2}}, incrigaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_3}}, incrogaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_3}}, incrogaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_4}}, incrihgaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_4}}, incrihgaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_5}}, incrivgaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_5}}, incrivgaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_6}}, incrohgaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_6}}, incrohgaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_7}}, incrovgaps, {.i = +1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_7}}, incrovgaps, {.i = -1 } }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_0}}, togglegaps, {0} }),
+    &((Keychord){1, {{ControlMask|Mod1Mask|ShiftMask, XK_0}}, defaultgaps, {0} }),
 
-	{ MODKEY,                       XK_Tab,        view,                   {0} },
-	{ ControlMask|Mod1Mask,         XK_c,          killclient,             {0} },
-	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
-	{ ControlMask|Mod1Mask,         XK_r,          quit,                   {1} }, //restart
-	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
+    &((Keychord){1, {{MODKEY, XK_Tab}}, view, {0} }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_c}}, killclient, {0} }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_q}}, quit, {0} }), //exit
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_r}}, quit, {1} }), //restart
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F5}}, xrdb, {.v = NULL } }),
 
-    //Layouts
-	{ MODKEY,                       XK_F1,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_F2,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_F3,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_F4,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_F5,      setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                       XK_F6,      setlayout,      {.v = &layouts[5]} },
-	{ MODKEY,                       XK_F7,      setlayout,      {.v = &layouts[6]} },
-	{ MODKEY,                       XK_F8,      setlayout,      {.v = &layouts[7]} },
-	{ MODKEY,                       XK_F9,      setlayout,      {.v = &layouts[8]} },
-	{ MODKEY,                       XK_F10,     setlayout,      {.v = &layouts[9]} },
-	{ MODKEY,                       XK_F11,     setlayout,      {.v = &layouts[10]} },
-	{ MODKEY,                       XK_F12,     setlayout,      {.v = &layouts[11]} },
-	{ MODKEY|ShiftMask,             XK_F1,      setlayout,      {.v = &layouts[12]} },
-	{ MODKEY|ShiftMask,             XK_F2,      setlayout,      {.v = &layouts[13]} },
-    { MODKEY|ShiftMask,             XK_F3,      setlayout,      {.v = &layouts[14]} },
+    // Layouts
+    &((Keychord){1, {{MODKEY, XK_F1}}, setlayout, {.v = &layouts[0]} }),
+    &((Keychord){1, {{MODKEY, XK_F2}}, setlayout, {.v = &layouts[1]} }),
+    &((Keychord){1, {{MODKEY, XK_F3}}, setlayout, {.v = &layouts[2]} }),
+    &((Keychord){1, {{MODKEY, XK_F4}}, setlayout, {.v = &layouts[3]} }),
+    &((Keychord){1, {{MODKEY, XK_F5}}, setlayout, {.v = &layouts[4]} }),
+    &((Keychord){1, {{MODKEY, XK_F6}}, setlayout, {.v = &layouts[5]} }),
+    &((Keychord){1, {{MODKEY, XK_F7}}, setlayout, {.v = &layouts[6]} }),
+    &((Keychord){1, {{MODKEY, XK_F8}}, setlayout, {.v = &layouts[7]} }),
+    &((Keychord){1, {{MODKEY, XK_F9}}, setlayout, {.v = &layouts[8]} }),
+    &((Keychord){1, {{MODKEY, XK_F10}}, setlayout, {.v = &layouts[9]} }),
+    &((Keychord){1, {{MODKEY, XK_F11}}, setlayout, {.v = &layouts[10]} }),
+    &((Keychord){1, {{MODKEY, XK_F12}}, setlayout, {.v = &layouts[11]} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F1}}, setlayout, {.v = &layouts[12]} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F2}}, setlayout, {.v = &layouts[13]} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F3}}, setlayout, {.v = &layouts[14]} }),
 
+    &((Keychord){1, {{MODKEY, XK_space}}, setlayout, {0} }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_space}}, togglefloating, {0} }),
 
-	{ MODKEY,                       XK_space,      setlayout,              {0} },
-	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
+    &((Keychord){1, {{MODKEY, XK_0}}, view, {.ui = ~SPTAGMASK } }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_0}}, tag, {.ui = ~SPTAGMASK } }),
+    &((Keychord){1, {{MODKEY, XK_comma}}, focusmon, {.i = -1 } }),
+    &((Keychord){1, {{MODKEY, XK_period}}, focusmon, {.i = +1 } }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}}, tagmon, {.i = -1 } }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}}, tagmon, {.i = +1 } }),
+    /* Layout cycling */
+    &((Keychord){1, {{MODKEY, XK_minus}}, cyclelayout, {.i = -1 } }),
+    &((Keychord){1, {{MODKEY, XK_equal}}, cyclelayout, {.i = +1 } }),
 
-	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
-	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
-	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
-	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,      tagmon,                 {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period,     tagmon,                 {.i = +1 } },
-	/*Layout ciclico*/
-	{ MODKEY,          				XK_minus,      cyclelayout,            {.i = -1 } },
-	{ MODKEY,                       XK_equal,      cyclelayout,            {.i = +1 } },
+    /* Scratchpads */
+    &((Keychord){1, {{MODKEY|ControlMask, XK_grave}}, setscratch, {.ui = 0 } }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_grave}}, removescratch, {.ui = 0 } }),
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_s}}, togglescratch, {.ui = 0 } }),
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_b}}, togglescratch, {.ui = 1 } }),
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_n}}, togglescratch, {.ui = 2 } }),
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}}, togglescratch, {.ui = 3 } }),
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}}, togglescratch, {.ui = 4 } }),
 
-	/*Scratpads*/
-	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } },
-	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } },
-	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
-	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 1 } },
-	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 2 } },
-	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 3 } },
-	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 4 } },
+    /* Custom shortcuts */
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_l}}, spawn, SHCMD(PATH("dwm/dwm-slock-personalizado")) }),
+    &((Keychord){1, {{0, XK_Caps_Lock}}, spawn, SHCMD(PATH("dwm/dwm-capslock-indicator")) }),
+    &((Keychord){1, {{0, XK_Num_Lock}}, spawn, SHCMD(PATH("dwm/dwm-numlock-indicator")) }),
+    &((Keychord){1, {{0, XK_Scroll_Lock}}, spawn, SHCMD(PATH("dwm/dwm-som-capslock-numlock")) }),
+    &((Keychord){1, {{MODKEY, XK_k}}, spawn, SHCMD(PATH("dwm/dwm-altera-layout-teclado")) }),
+    &((Keychord){1, {{MODKEY, XK_l}}, spawn, SHCMD(PATH("dwm/dwm-conky-toggle")) }),
 
+    /* Pulseaudio volume */
+    &((Keychord){1, {{0, XF86XK_AudioLowerVolume}}, spawn, SHCMD(PATH("dwm/dwm-diminui-volume")) }),
+    &((Keychord){1, {{0, XF86XK_AudioRaiseVolume}}, spawn, SHCMD(PATH("dwm/dwm-aumenta-volume")) }),
+    &((Keychord){1, {{0, XF86XK_AudioMute}}, spawn, SHCMD(PATH("dwm/dwm-muta-volume")) }),
 
-	/*Meus atalhos*/
-	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
-	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/dwm-capslock-indicator")) },
-	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/dwm-numlock-indicator")) },
-	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD(PATH("dwm/dwm-som-capslock-numlock")) },
-	{ MODKEY,			            XK_k,                           spawn,          SHCMD(PATH("dwm/dwm-altera-layout-teclado")) },
-	{ MODKEY,			            XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-conky-toggle")) },
+    /* Microphone volume */
+    &((Keychord){1, {{ControlMask, XF86XK_AudioRaiseVolume}}, spawn, SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) }),
+    &((Keychord){1, {{ControlMask, XF86XK_AudioLowerVolume}}, spawn, SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) }),
+    &((Keychord){1, {{ControlMask, XF86XK_AudioMute}}, spawn, SHCMD(PATH("dwm/dwm-muta-microfone")) }),
 
-	/*volume pulseaudio*/
-	{ 0,                            XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume")) },
-	{ 0,                            XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume")) },
-	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-volume")) },
+    /* Music player */
+    &((Keychord){1, {{0, XF86XK_AudioPlay}}, spawn, SHCMD(PATH("dwm/dwm-playerctl-play")) }),
+    &((Keychord){1, {{0, XF86XK_AudioStop}}, spawn, SHCMD(PATH("dwm/dwm-playerctl-stop")) }),
+    &((Keychord){1, {{0, XF86XK_AudioPrev}}, spawn, SHCMD(PATH("dwm/dwm-playerctl-prev")) }),
+    &((Keychord){1, {{0, XF86XK_AudioNext}}, spawn, SHCMD(PATH("dwm/dwm-playerctl-next")) }),
 
-	/*Volume Microfone Pulseaudio*/
-	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
-	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
-	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
+    /* Other keyboard shortcuts */
+    &((Keychord){1, {{0, XF86XK_HomePage}}, spawn, SHCMD(PATH("dwm/dwm-homepage-program")) }),
+    &((Keychord){1, {{0, XF86XK_Mail}}, spawn, SHCMD(PATH("dwm/dwm-mail-program")) }),
+    &((Keychord){1, {{0, XF86XK_Search}}, spawn, SHCMD(PATH("dwm/dwm-search-program")) }),
+    &((Keychord){1, {{0, XF86XK_Calculator}}, spawn, SHCMD(PATH("dwm/dwm-calculator-program")) }),
 
-	/*Player de musidwm-ca*/
-	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-play")) },
-	{ 0,                            XF86XK_AudioStop,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-stop")) },
-	{ 0,                            XF86XK_AudioPrev,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-prev")) },
-	{ 0,                            XF86XK_AudioNext,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-next")) },
+    /* Screenshot */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_s}}, spawn, SHCMD(PATH("dwm/dwm-print-edita")) }),
+    &((Keychord){1, {{0, XK_Print}}, spawn, SHCMD(PATH("dwm/dwm-print-copia")) }),
 
-	/*Outros atalhosdwm- teclado*/
-	{ 0,                            XF86XK_HomePage,                spawn,          SHCMD(PATH("dwm/dwm-homepage-program")) },
-	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD(PATH("dwm/dwm-mail-program")) },
-	{ 0,                            XF86XK_Search,                  spawn,          SHCMD(PATH("dwm/dwm-search-program")) },
-	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD(PATH("dwm/dwm-calculator-program")) },
+    /* Screen brightness */
+    &((Keychord){1, {{0, XF86XK_MonBrightnessUp}}, spawn, SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) }),
+    &((Keychord){1, {{0, XF86XK_MonBrightnessDown}}, spawn, SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F9}}, spawn, SHCMD(PATH("dwm/dwm-redshift-aumenta.sh")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F8}}, spawn, SHCMD(PATH("dwm/dwm-redshift-diminui.sh")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_F7}}, spawn, SHCMD(PATH("dwm/dwm-toggle-redshift.sh")) }),
 
-	/*Printscreen*/
-	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD(PATH("dwm/dwm-print-edita")) },
-	{ 0,                            XK_Print,                       spawn,          SHCMD(PATH("dwm/dwm-print-copia")) },
+    /* Dmenus */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_e}}, spawn, SHCMD(PATH("dmenu/dmenu-saida-sistema")) }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_p}}, spawn, SHCMD(PATH("dmenu/dmenu-pass")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_i}}, spawn, SHCMD(PATH("dmenu/dmenu-wallpaper")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_w}}, spawn, SHCMD(PATH("dmenu/dmenu-controle-monitor")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_a}}, spawn, SHCMD(PATH("dmenu/dmenu-controle-som")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_l}}, spawn, SHCMD(PATH("dmenu/dmenu-layouts-dwm")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_t}}, spawn, SHCMD(PATH("dmenu/dmenu-tema")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_v}}, spawn, SHCMD(PATH("dmenu/dmenu-vpn")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_m}}, spawn, SHCMD(PATH("dmenu/dmenu-powertop")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_n}}, spawn, SHCMD(PATH("dmenu/dmenu-nvidia-switch")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_k}}, spawn, SHCMD(PATH("dmenu/dmenu-close-programs")) }),
+    &((Keychord){1, {{MODKEY|ControlMask, XK_l}}, spawn, SHCMD(PATH("dmenu/dmenu-live-wallpaper")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_p}}, spawn, SHCMD(PATH("dmenu/dmenu-player")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_r}}, spawn, SHCMD(PATH("dmenu/dmenu-rec")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_h}}, spawn, SHCMD(PATH("dmenu/dmenu-homelab")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_g}}, spawn, SHCMD(PATH("dmenu/dmenu-pomodoro")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_d}}, spawn, SHCMD(PATH("dmenu/dmenu-dwmblocks-operation")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_c}}, spawn, SHCMD(PATH("dmenu/dmenu-docker")) }),
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_b}}, spawn, SHCMD(PATH("dmenu/dmenu-bookmark")) }),
+    &((Keychord){1, {{Mod1Mask|ShiftMask, XK_b}}, spawn, SHCMD(PATH("dmenu/dmenu-bookmark private")) }),
+    &((Keychord){1, {{MODKEY|ControlMask, XK_b}}, spawn, SHCMD(PATH("dmenu/dmenu-bookmark add")) }),
+    &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_b}}, spawn, SHCMD(PATH("dmenu/dmenu-bookmark del")) }),
 
-	/*Brilho tela notebook*/
-	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
-	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
-	{ MODKEY|ShiftMask,             XK_F9,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta.sh" ))},
-	{ MODKEY|ShiftMask,             XK_F8,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui.sh" ))},
-	{ MODKEY|ShiftMask,             XK_F7,                          spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" ))},
+    /* Record selected area */
+    &((Keychord){1, {{MODKEY, XK_r}}, spawn, SHCMD(PATH("dwm/dwm-rec-area")) }),
 
-	/*Dmenus*/
-	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
-	{ ControlMask|Mod1Mask,         XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-pass" )) },
-	{ MODKEY|ShiftMask,             XK_i,                           spawn,          SHCMD(PATH("dmenu/dmenu-wallpaper" )) },
-	{ MODKEY|ShiftMask,			    XK_w,	     					spawn,			SHCMD(PATH("dmenu/dmenu-controle-monitor" )) },
-	{ MODKEY|ShiftMask,             XK_a,                           spawn,          SHCMD(PATH("dmenu/dmenu-controle-som")) },
-	{ MODKEY|ShiftMask,             XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },
-	{ MODKEY|ShiftMask,             XK_t,                           spawn,          SHCMD(PATH("dmenu/dmenu-tema")) },
-	{ MODKEY|ShiftMask,             XK_v,                           spawn,          SHCMD(PATH("dmenu/dmenu-vpn")) },
-	{ MODKEY|ShiftMask,	            XK_m,                           spawn,          SHCMD(PATH("dmenu/dmenu-powertop")) },
-	{ MODKEY|ShiftMask,	            XK_n,                           spawn,          SHCMD(PATH("dmenu/dmenu-nvidia-switch")) },
-	{ MODKEY|ShiftMask,	            XK_k,                           spawn,          SHCMD(PATH("dmenu/dmenu-close-programs")) },
-	{ MODKEY|ControlMask,	        XK_l,                           spawn,          SHCMD(PATH("dmenu/dmenu-live-wallpaper")) },
-	{ MODKEY|ShiftMask,	            XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-player")) },
-	{ MODKEY|ShiftMask,	            XK_r,                           spawn,          SHCMD(PATH("dmenu/dmenu-rec")) },
-	{ MODKEY|ShiftMask,	            XK_h,                           spawn,          SHCMD(PATH("dmenu/dmenu-homelab")) },
-	{ MODKEY|ShiftMask,	            XK_g,                           spawn,          SHCMD(PATH("dmenu/dmenu-pomodoro")) },
-	{ MODKEY|ShiftMask,	            XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-dwmblocks-operation")) },
-	{ MODKEY|ShiftMask,	            XK_c,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker")) },
-	{ MODKEY|ShiftMask,	            XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark")) },
-	{ Mod1Mask|ShiftMask,	        XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark private")) },
-	{ MODKEY|ControlMask,	        XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark add")) },
-	{ MODKEY|ControlMask|ShiftMask,	XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark del")) },
+    /* Rofi menus */
+    &((Keychord){1, {{MODKEY, XK_d}}, spawn, SHCMD(PATH("dwm/dwm-roficmd")) }),
 
-	/* Grava area selecionada */
-	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },
+    /* Program launchers */
+    &((Keychord){1, {{MODKEY, XK_w}}, spawn, SHCMD("firefox-beta") }),
+    &((Keychord){1, {{MODKEY, XK_e}}, spawn, SHCMD("emacsclient -c -a 'emacs'") }),
+    &((Keychord){1, {{MODKEY, XK_f}}, spawn, SHCMD("thunar") }),
+    &((Keychord){1, {{ControlMask|Mod1Mask, XK_d}}, spawn, SHCMD("killall dwmblocks ; dwmblocks") }),
 
-	/*Rofi menus*/
-	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
-
-	/*Lancamento Programas*/
-	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox-beta") },
-	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
-	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
-	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) },
-
-	TAGKEYS(                        XK_1,                                  0)
-	TAGKEYS(                        XK_2,                                  1)
-	TAGKEYS(                        XK_3,                                  2)
-	TAGKEYS(                        XK_4,                                  3)
-	TAGKEYS(                        XK_5,                                  4)
-	TAGKEYS(                        XK_6,                                  5)
-/*	TAGKEYS(                        XK_7,                                  6)
-	TAGKEYS(                        XK_8,                                  7)
-	TAGKEYS(                        XK_9,                                  8)
-*/
+    TAGKEYS(XK_1, 0)
+    TAGKEYS(XK_2, 1)
+    TAGKEYS(XK_3, 2)
+    TAGKEYS(XK_4, 3)
+    TAGKEYS(XK_5, 4)
+    TAGKEYS(XK_6, 5)
 };
 
 /* button definitions */

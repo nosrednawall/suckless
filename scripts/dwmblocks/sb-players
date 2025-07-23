@@ -121,48 +121,48 @@ case "$PLAYER_SELECIONADO" in
     "chromium.instance2")
         icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
 
     "mpv")
         icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
 
     "vlc")
         icon="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰕼 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
 
     "mpd")
         icon="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰝚 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
 
     "spotube.instance2")
         icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
 
     "spotify")
         icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
     *)
         icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
         icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^^c#4A5947^^b$COLOR_15^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
         ;;
 esac
@@ -190,14 +190,14 @@ case "$OPERATION_MODE" in
     ;;
     "MEDIO")
         if [[ -z "$song" ]]; then
-            echo "$icon_close ^d^ "
+            echo "$icon_close "
         else
             echo "$icon $song ^d^ "
         fi
     ;;
     *)
         if [[ -z "$song" ]]; then
-            echo "$icon_close ^d^ "
+            echo "$icon_close "
         else
             echo "$icon $song ^d^ "
         fi
