@@ -166,6 +166,7 @@ static const Rule rules[] = {
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
 	RULE(.class = "Qalculate-gtk", .tags = 0, .isfloating = 1)
+    RULE(.class = "Nm-connection-editor", .tags = 0, .isfloating = 1)
 
 	// Scratchpads
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)

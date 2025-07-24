@@ -17,7 +17,7 @@ DEVICE_WIFI=$(ls /sys/class/net/ | grep "wl" | awk '{print $1}')
 
 # funcoes cliclaveis
 case $BUTTON in
-    1) xsetroot -name "fsignal:togglescratch ui 5" ;;
+    1) xsetroot -name "fsignal:togglescratch ui 2" ;;
     3) bash ~/.config/suckless/scripts/dmenu/dmenu-vpn ;;
     6) setsid -f st -e emacs -nw "$0" ;;
     8)
