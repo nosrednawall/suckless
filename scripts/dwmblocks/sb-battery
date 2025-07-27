@@ -67,14 +67,14 @@ fi
 
 # Define o ícone e a cor com base no estado do carregador e nível de bateria
 if [[ "$is_plugged" -eq 1 ]]; then
-    icon="^b$COLOR_7^^c$COLOR_BACKGROUND^    ^d^ ^c$COLOR_7^"
+    icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
 else
     case $battery_level in
-        [0-30])   icon="^b$COLOR_3^^c$COLOR_BACKGROUND^    ^d^ ^c$COLOR_3^" ;; # Bateria crítica
-        [31-40])  icon="^b$COLOR_2^^c$COLOR_BACKGROUND^    ^d^ ^c$COLOR_2^" ;; # Bateria baixa
-        [41-60])  icon="^b$COLOR_1^^c$COLOR_BACKGROUND^    ^d^ ^c$COLOR_1^" ;; # Bateria moderada
-        [61-90])  icon="^b$COLOR_7^^c$COLOR_BACKGROUND^    ^d^ ^c$COLOR_7^" ;; # Bateria boa
-        *)        icon="^b$COLOR_8^^c$COLOR_BACKGROUND^    ^d^ ^c$COLOR_8^" ;; # Bateria cheia
+        [0-30])   icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^" ;; # Bateria crítica
+        [31-40])  icon="^b$COLOR_2^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_10^" ;; # Bateria baixa
+        [41-60])  icon="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^" ;; # Bateria moderada
+        [61-90])  icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^" ;; # Bateria boa
+        *)        icon="^b$COLOR_8^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_16^" ;; # Bateria cheia
     esac
 fi
 
@@ -89,7 +89,7 @@ case "$OPERATION_MODE" in
         if [ $battery_level -gt 97 ]; then
             echo ""
         else
-            echo "$icon$battery_level^d^  "
+            echo "$icon $battery_level ^d^ "
         fi
     ;;
 esac

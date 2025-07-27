@@ -228,13 +228,6 @@ typedef struct {
 } Key;
 
 typedef struct {
-    unsigned int n;
-    const Key keys[5];
- 	void (*func)(const Arg *);
- 	const Arg arg;
-} Keychord;
-
-typedef struct {
 	const char *symbol;
 	void (*arrange)(Monitor *);
 } Layout;
@@ -437,7 +430,6 @@ static Display *dpy;
 static Drw *drw;
 static Monitor *mons, *selmon;
 static Window root, wmcheckwin;
-unsigned int currentkey = 0;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -1408,8 +1400,7 @@ grabkeys(void)
 {
 	updatenumlockmask();
 	{
-//		unsigned int i, j, k;
-		unsigned int i, c, k;
+		unsigned int i, j, k;
 		unsigned int modifiers[] = { 0, LockMask, numlockmask, numlockmask|LockMask };
 		int start, end, skip;
 		KeySym *syms;
@@ -1419,22 +1410,15 @@ grabkeys(void)
 		syms = XGetKeyboardMapping(dpy, start, end - start + 1, &skip);
 		if (!syms)
 			return;
-
 		for (k = start; k <= end; k++)
-//			for (i = 0; i < LENGTH(keys); i++)
-			for (i = 0; i < LENGTH(keychords); i++)
+			for (i = 0; i < LENGTH(keys); i++)
 				/* skip modifier codes, we do that ourselves */
-//				if (keys[i].keysym == syms[(k - start) * skip])
-//					for (j = 0; j < LENGTH(modifiers); j++)
-				if (keychords[i]->keys[currentkey].keysym == syms[(k - start) * skip])
-					for (c = 0; c < LENGTH(modifiers); c++)
+				if (keys[i].keysym == syms[(k - start) * skip])
+					for (j = 0; j < LENGTH(modifiers); j++)
 						XGrabKey(dpy, k,
-							 //keys[i].mod | modifiers[j],
-						     keychords[i]->keys[currentkey].mod | modifiers[c],
+							 keys[i].mod | modifiers[j],
 							 root, True,
 							 GrabModeAsync, GrabModeAsync);
-                if(currentkey > 0)
-                        XGrabKey(dpy, XKeysymToKeycode(dpy, XK_Escape), AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
 		XFree(syms);
 	}
 }
@@ -1461,51 +1445,19 @@ isuniquegeom(XineramaScreenInfo *unique, size_t n, XineramaScreenInfo *info)
 void
 keypress(XEvent *e)
 {
-    XEvent event = *e;
-    unsigned int ran = 0;
-    KeySym keysym;  // Changed from KeySym* to KeySym
-    XKeyEvent *ev;
+	unsigned int i;
+	int keysyms_return;
+	KeySym* keysym;
+	XKeyEvent *ev;
 
-    Keychord *arr1[sizeof(keychords) / sizeof(Keychord*)];
-    Keychord *arr2[sizeof(keychords) / sizeof(Keychord*)];
-    memcpy(arr1, keychords, sizeof(keychords));
-    Keychord **rpointer = arr1;
-    Keychord **wpointer = arr2;
-
-    size_t r = sizeof(keychords)/ sizeof(Keychord*);
-
-    while(1) {
-        ev = &event.xkey;
-        keysym = XKeycodeToKeysym(dpy, (KeyCode)ev->keycode, 0);  // Now correctly assigning to KeySym
-        size_t w = 0;
-        for (int i = 0; i < r; i++) {
-            if(keysym == (*(rpointer + i))->keys[currentkey].keysym
-               && CLEANMASK((*(rpointer + i))->keys[currentkey].mod) == CLEANMASK(ev->state)
-               && (*(rpointer + i))->func) {
-                if((*(rpointer + i))->n == currentkey + 1) {
-                    (*(rpointer + i))->func(&((*(rpointer + i))->arg));
-                    ran = 1;
-                } else {
-                    *(wpointer + w) = *(rpointer + i);
-                    w++;
-                }
-            }
-        }
-        currentkey++;
-        if(w == 0 || ran == 1)
-            break;
-        grabkeys();
-        while (running && !XNextEvent(dpy, &event) && !ran)
-            if(event.type == KeyPress)
-                break;
-        r = w;
-        Keychord **holder = rpointer;
-        rpointer = wpointer;
-        wpointer = holder;
-    }
-    currentkey = 0;
-    grabkeys();
-    // Removed XFree(keysym) since keysym is not allocated memory
+	ev = &e->xkey;
+	keysym = XGetKeyboardMapping(dpy, (KeyCode)ev->keycode, 1, &keysyms_return);
+	for (i = 0; i < LENGTH(keys); i++)
+		if (*keysym == keys[i].keysym
+				&& CLEANMASK(keys[i].mod) == CLEANMASK(ev->state)
+				&& keys[i].func)
+			keys[i].func(&(keys[i].arg));
+	XFree(keysym);
 }
 
 void
