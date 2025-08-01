@@ -275,7 +275,7 @@ static const char *termcmd[]  = { "st", NULL };
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
 	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
+	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
 	{ MODKEY,                       XK_b,          togglebar,              {0} },
     /*Modimentacao das janelas*/
 	{ MODKEY,              			XK_Right,     focusstack,              {.i = +1 } },
@@ -295,7 +295,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
 	{ MODKEY|ShiftMask,             XK_Down,       setcfact,               {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
-	{ MODKEY,                       XK_Return,     zoom,                   {0} },
+	{ MODKEY|ShiftMask,             XK_Return,     zoom,                   {0} },
 
 	/*Gaps*/
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
@@ -317,7 +317,7 @@ static const Key keys[] = {
 
 
 	{ MODKEY,                       XK_Tab,        view,                   {0} },
-	{ ControlMask|Mod1Mask,         XK_c,          killclient,             {0} },
+	{ MODKEY,                       XK_q,          killclient,             {0} },
 	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
 	{ ControlMask|Mod1Mask,         XK_r,          quit,                   {1} }, //restart
 	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
