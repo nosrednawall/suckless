@@ -45,12 +45,12 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Term:pixelsize=15",
-    "Symbols Nerd Font:style=Bold:antialias=true:pixelsize=16",  //for dwmblocks
-	"Font Awesome 6 Free Solid:style=Bold:pixelsize=16",  // for weather in dwmblocks
+	"Iosevka Term:size=10",
+    "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
+	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
-#include "themes/solarized_dark.h"
+#include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
