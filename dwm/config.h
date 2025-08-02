@@ -13,10 +13,10 @@ static const unsigned int borderpx       = 4;   /* border pixel of windows */
 static const unsigned int barborderpx    = 4;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
-static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
-static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
-static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 10;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappih         = 5;  /* horiz inner gap between windows */
+static const unsigned int gappiv         = 5;  /* vert inner gap between windows */
+static const unsigned int gappoh         = 5;  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov         = 5;  /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
@@ -45,11 +45,11 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Term:size=10",
-    "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
-	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
+	"Iosevka Term:size=9",
+    "Symbols Nerd Font:style=Bold:antialias=true:size=10",  //for dwmblocks
+	"Font Awesome 6 Free Solid:style=Bold:size=10",  // for weather in dwmblocks
 };
-static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true:pixelsize=17";
+static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
 #include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
@@ -67,10 +67,10 @@ static char *colors[][ColCount] = {
 	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 };
 
-const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "100x25", NULL };
 const char *spcmd2[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
-const char *spcmd3[]  = {"st", "-n", "spnmtui", "-g", "100x34", "-e", "nmtui", NULL };
-const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x34", "-e", "rmpc", NULL };
+const char *spcmd3[]  = {"st", "-n", "spnmtui", "-g", "100x25", "-e", "nmtui", NULL };
+const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "rmpc", NULL };
 const char *spcmd5[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
 
 static Sp scratchpads[] = {
@@ -166,6 +166,7 @@ static const Rule rules[] = {
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
 	RULE(.class = "Qalculate-gtk", .tags = 0, .isfloating = 1)
+	RULE(.class = "kruler", .tags = 0, .isfloating = 1)
 
 	// Scratchpads
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
