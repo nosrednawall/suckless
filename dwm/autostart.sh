@@ -54,7 +54,7 @@ is_running "emacs --daemon" || emacs --daemon &
 setxkbmap -model pc105 -layout br -variant abnt2
 
 # Bluetooth
-is_running "blueman-applet" || blueman-applet &
+#is_running "blueman-applet" || blueman-applet &
 
 #if [ $TECLADO_USA_CONECTADO = "0" ]; then
 #    setxkbmap -model pc105 -layout us -variant altgr-intl

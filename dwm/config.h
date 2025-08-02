@@ -277,7 +277,7 @@ static const Key keys[] = {
 	/* modifier                     key            function                argument */
 	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
-	{ MODKEY,                       XK_b,          togglebar,              {0} },
+//	{ MODKEY,                       XK_b,          togglebar,              {0} },
     /*Modimentacao das janelas*/
 	{ MODKEY,              			XK_Right,     focusstack,              {.i = +1 } },
 	{ MODKEY,              			XK_Left,      focusstack,              {.i = -1 } },
@@ -319,8 +319,8 @@ static const Key keys[] = {
 
 	{ MODKEY,                       XK_Tab,        view,                   {0} },
 	{ MODKEY,                       XK_q,          killclient,             {0} },
-	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
-	{ ControlMask|Mod1Mask,         XK_r,          quit,                   {1} }, //restart
+//	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
+	{ MODKEY,                       XK_r,          quit,                   {1} }, //restart
 	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
 
     //Layouts
@@ -358,7 +358,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } },
 	{ MODKEY,                       XK_s,      togglescratch,  {.ui = 0 } },
-	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 1 } },
+	{ MODKEY,                       XK_b,      togglescratch,  {.ui = 1 } },
 	{ MODKEY,                       XK_n,      togglescratch,  {.ui = 2 } },
 	{ MODKEY,                       XK_m,      togglescratch,  {.ui = 3 } },
 	{ MODKEY,                       XK_c,      togglescratch,  {.ui = 4 } },
@@ -430,7 +430,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask|ShiftMask,	XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark del")) },
 
 	/* Grava area selecionada */
-	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },
+//	{ MODKEY,			            XK_r,                           spawn,          SHCMD(PATH("dwm/dwm-rec-area")) },
 
 	/*Rofi menus*/
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
