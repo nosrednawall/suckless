@@ -50,5 +50,4 @@ static char tagsunusedbgcolor[]          = "#303446"; // Cor de fundo para tags 
 static char tagsunusedbordercolor[]      = "#51576D"; // Cor da borda para tags não utilizadas
 static char tagsunusedfloatcolor[]       = "#F2D5CF"; // Cor de flutuação para tags não utilizadas
 
-
 #endif // CATPPUCIN_FRAPPE_H_

@@ -37,7 +37,7 @@ case "$OPERATION_MODE" in
     "MINIMO")
         echo ""
     ;;
-    *)
+    "bastate")
         case "$updates" in
             0)
                 echo ""

@@ -6,17 +6,16 @@
 
 /* appearance */
 static const unsigned int borderpx       = 4;   /* border pixel of windows */
-
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
 static const unsigned int barborderpx    = 4;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
-static const unsigned int gappih         = 5;  /* horiz inner gap between windows */
-static const unsigned int gappiv         = 5;  /* vert inner gap between windows */
-static const unsigned int gappoh         = 5;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 5;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
+static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
+static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov         = 10;  /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
@@ -29,7 +28,6 @@ static const int vertpad                 = 10;  /* vertical padding of bar */
 static const int sidepad                 = 10;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
-
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = -1;
 static const char buttonbar[]            = "  ";
@@ -45,9 +43,9 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Term:size=9",
-    "Symbols Nerd Font:style=Bold:antialias=true:size=10",  //for dwmblocks
-	"Font Awesome 6 Free Solid:style=Bold:size=10",  // for weather in dwmblocks
+	"Iosevka Term:size=10",
+    "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
+	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
 #include "themes/gruvbox_dark.h"
@@ -63,7 +61,7 @@ static char *colors[][ColCount] = {
 	[SchemeHidNorm]      = { hidnormfgcolor,   hidnormbgcolor,   c000000,              c000000 },
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },
-	[SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
+    [SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
 	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 };
 
@@ -109,19 +107,11 @@ static Sp scratchpads[] = {
  * until it an icon matches. Similarly if there are two tag icons then it would alternate between
  * them. This works seamlessly with alternative tags and alttagsdecoration patches.
  */
-/*
 static char *tagicons[][NUMTAGS] =
 {
 	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
 	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
-	[ALT_TAGS_DECORATION] = { "1", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
-};
-*/
-static char *tagicons[][NUMTAGS] =
-{
-	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6" },
-	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F" },
-	[ALT_TAGS_DECORATION] = { "1", "<2>", "<3>", "<4>", "<5>", "<6>" },
+	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
 };
 
 /* There are two options when it comes to per-client rules:
@@ -206,7 +196,7 @@ static const BarRule barrules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.51; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -260,11 +250,9 @@ static const char *dmenucmd[] = {
 	"-nb", normbgcolor,
 	"-nf", normfgcolor,
 	"-sb", selbgcolor,
-//  "-sf", selfgcolor,
-	"-sf", normbgcolor,
+	"-sf", selfgcolor,
 	NULL
 };
-
 static const char *termcmd[]  = { "st", NULL };
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */
@@ -276,11 +264,15 @@ static const char *termcmd[]  = { "st", NULL };
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
 	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
 //	{ MODKEY,                       XK_b,          togglebar,              {0} },
     /*Modimentacao das janelas*/
 	{ MODKEY,              			XK_Right,     focusstack,              {.i = +1 } },
 	{ MODKEY,              			XK_Left,      focusstack,              {.i = -1 } },
+	{ MODKEY|ControlMask,             XK_Right,     rotatestack,             {.i = +1 } },
+	{ MODKEY|ControlMask,             XK_Left,      rotatestack,             {.i = -1 } },
+//	{ MODKEY|ControlMask,           XK_Right,     pushdown,                {0} },
+//	{ MODKEY|ControlMask,           XK_Left,      pushup,                  {0} },
 	{ ControlMask|Mod1Mask,  		XK_Right,     shiftview,               {.i = +1 } },
 	{ ControlMask|Mod1Mask,  		XK_Left,      shiftview,               {.i = -1 } },
 
@@ -296,7 +288,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
 	{ MODKEY|ShiftMask,             XK_Down,       setcfact,               {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
-	{ MODKEY|ShiftMask,             XK_Return,     zoom,                   {0} },
+	{ MODKEY,                       XK_Return,     zoom,                   {0} },
 
 	/*Gaps*/
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
@@ -401,9 +393,9 @@ static const Key keys[] = {
 	/*Brilho tela notebook*/
 	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
 	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
-	{ MODKEY|ShiftMask,             XK_F9,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta.sh" ))},
-	{ MODKEY|ShiftMask,             XK_F8,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui.sh" ))},
-	{ MODKEY|ShiftMask,             XK_F7,                          spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" ))},
+	{ MODKEY|ControlMask,             XK_F9,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta.sh" ))},
+	{ MODKEY|ControlMask,             XK_F8,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui.sh" ))},
+	{ MODKEY|ControlMask,             XK_F7,                          spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" ))},
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
@@ -447,10 +439,10 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_4,                                  3)
 	TAGKEYS(                        XK_5,                                  4)
 	TAGKEYS(                        XK_6,                                  5)
-/*	TAGKEYS(                        XK_7,                                  6)
+	TAGKEYS(                        XK_7,                                  6)
 	TAGKEYS(                        XK_8,                                  7)
 	TAGKEYS(                        XK_9,                                  8)
-*/
+
 };
 
 /* button definitions */
@@ -514,6 +506,9 @@ static const Signal signals[] = {
 	{ "incnmaster",              incnmaster },
 	{ "togglefloating",          togglefloating },
 	{ "focusmon",                focusmon },
+	{ "rotatestack",             rotatestack },
+	{ "pushdown",                pushdown },
+	{ "pushup",                  pushup },
 	{ "setcfact",                setcfact },
 	{ "tagmon",                  tagmon },
 	{ "zoom",                    zoom },
@@ -547,3 +542,4 @@ static const Signal signals[] = {
 	{ "setlayout",               setlayout },
 	{ "setlayoutex",             setlayoutex },
 };
+

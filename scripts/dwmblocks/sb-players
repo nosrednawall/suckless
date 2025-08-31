@@ -190,14 +190,14 @@ case "$OPERATION_MODE" in
     ;;
     "MEDIO")
         if [[ -z "$song" ]]; then
-            echo "$icon_close "
+            echo ""
         else
             echo "$icon $song ^d^ "
         fi
     ;;
     *)
         if [[ -z "$song" ]]; then
-            echo "$icon_close "
+            echo ""
         else
             echo "$icon $song ^d^ "
         fi

@@ -51,5 +51,4 @@ static char tagsunusedbgcolor[]          = "#282A36"; // Cor de fundo para tags 
 static char tagsunusedbordercolor[]      = "#44475A"; // Cor da borda para tags não utilizadas
 static char tagsunusedfloatcolor[]       = "#6272A4"; // Cor de flutuação para tags não utilizadas
 
-
 #endif // DRACULA_DARK_H_
