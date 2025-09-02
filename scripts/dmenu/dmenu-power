@@ -18,7 +18,7 @@ case $chosen in
 	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A systemctl reboot
 	;;
     $logout)
-	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A pkill -KILL -u $USER
+	pkill -KILL -u $USER
 	;;
     $suspend)
 	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A systemctl suspend

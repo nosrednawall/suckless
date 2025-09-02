@@ -790,7 +790,7 @@ EOF"
         feh --recursive --bg-fill --randomize $(find ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | shuf -n 1) &
     fi
     # Restart dwm
-    xdotool key Control+alt+r
+    xdotool key Super_L+r
 
     dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
 fi

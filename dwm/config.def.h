@@ -48,7 +48,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -393,9 +393,9 @@ static const Key keys[] = {
 	/*Brilho tela notebook*/
 	{ 0,							XF86XK_MonBrightnessUp,		    spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
 	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
-	{ MODKEY|ControlMask,             XK_F9,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta.sh" ))},
-	{ MODKEY|ControlMask,             XK_F8,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui.sh" ))},
-	{ MODKEY|ControlMask,             XK_F7,                          spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" ))},
+	{ MODKEY|ControlMask,           XK_F9,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta.sh" ))},
+	{ MODKEY|ControlMask,           XK_F8,                          spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui.sh" ))},
+	{ MODKEY|ControlMask,           XK_F7,                          spawn,          SHCMD(PATH("dwm/dwm-toggle-redshift.sh" ))},
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
@@ -428,7 +428,7 @@ static const Key keys[] = {
 	{ MODKEY,						XK_d,	  						spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
 
 	/*Lancamento Programas*/
-	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
+	{ MODKEY,						XK_w,							spawn,			SHCMD("x-www-browser") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) },

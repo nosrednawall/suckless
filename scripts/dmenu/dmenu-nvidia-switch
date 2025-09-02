@@ -81,6 +81,7 @@ Section "Device"
     BusID "PCI:1:0:0"
     Option "ForceCompositionPipeline" "On"
     Option "ForceFullCompositionPipeline" "On"
+    Option "DPI" "96 x 96"
 EndSection
 
 Section "Screen"
