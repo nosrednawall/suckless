@@ -5,6 +5,7 @@ killall mpv 2>/dev/null
 
 # Define a pasta de wallpapers
 pasta_wallpapers="$HOME/Imagens/live-wallpaper"
+picom &
 
 # Usa dmenu para selecionar um arquivo na pasta de wallpapers
 chosen=$(ls "$pasta_wallpapers" | dmenu -p "Live Wallpapers")
@@ -27,10 +28,10 @@ xrandr --query | grep " connected" | while read -r line; do
     # Extrai o nome do monitor, resolução e posição (ex: HDMI-1 1920x1080+0+0)
     monitor=$(echo "$line" | awk '{print $1}')
     geometry=$(echo "$line" | grep -o '[0-9]*x[0-9]*+[0-9]*+[0-9]*')
-
+    killall picom
     # Aplica o live wallpaper no monitor com a resolução e posição correta
-    xwinwrap -g "$geometry" -ov -- mpv --no-audio --loop --no-border --wid=%WID% --panscan=1 --geometry=100%:100% "$arquivo" &
-    echo "xwinwrap -g "$geometry" -ov -- mpv --no-audio --loop --no-border --wid=WID --panscan=1 --geometry=100%:100% "$arquivo""
+    xwinwrap -g "$geometry" -ov -- mpv --no-osc --no-audio --loop --no-border --wid=%WID% --panscan=1 --geometry=100%:100% "$arquivo" &
+    echo "xwinwrap -g "$geometry" -ov -- mpv --no-osc --no-audio --loop --no-border --wid=WID --panscan=1 --geometry=100%:100% "$arquivo""
 done
 
 echo "Live wallpaper aplicado em todos os monitores."

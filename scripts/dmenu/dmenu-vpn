@@ -47,7 +47,7 @@ case $chosen in
          tailscale up
          notify-send -t 3000 "VPN Tailscale" "VPN Tailscale Ligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
          kill -46 $(pidof dwmblocks)
-         x-www-browser "umbrel.tail65e7c9.ts.net"
+         x-www-browser "tailscale.tail65e7c9.ts.net"
     ;;
     "  2-Desligar")
          tailscale down
