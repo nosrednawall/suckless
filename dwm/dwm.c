@@ -51,7 +51,7 @@
 #define Button7                 7
 #define Button8                 8
 #define Button9                 9
-#define NUMTAGS                 9
+#define NUMTAGS                 6
 #define NUMVIEWHIST             NUMTAGS
 #define BARRULES                20
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
@@ -410,7 +410,6 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[DestroyNotify] = destroynotify,
 	[EnterNotify] = enternotify,
 	[Expose] = expose,
-	[GenericEvent] = genericevent,
 	[FocusIn] = focusin,
 	[KeyPress] = keypress,
 	[KeyRelease] = keyrelease,
@@ -613,20 +612,6 @@ buttonpress(XEvent *e)
 		focus(NULL);
 	}
 
-	c = wintoclient(ev->window);
-
-	if (!c && cursor_hidden) {
-		c = recttoclient(mouse_x, mouse_y, 1, 1, 1);
-		showcursor(NULL);
-	}
-
-	if (c) {
-		focus(c);
-		restack(selmon);
-		XAllowEvents(dpy, ReplayPointer, CurrentTime);
-		click = ClkClientWin;
-	}
-
 	for (bar = selmon->bar; bar; bar = bar->next) {
 		if (ev->window == bar->win) {
 			for (r = 0; r < LENGTH(barrules); r++) {
@@ -650,6 +635,13 @@ buttonpress(XEvent *e)
 		}
 	}
 
+	if (click == ClkRootWin && (c = wintoclient(ev->window))) {
+		focus(c);
+		restack(selmon);
+		XAllowEvents(dpy, ReplayPointer, CurrentTime);
+		click = ClkClientWin;
+	}
+
 	for (i = 0; i < LENGTH(buttons); i++) {
 		if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
 				&& CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state)) {
@@ -661,7 +653,6 @@ buttonpress(XEvent *e)
 		}
 	}
 
-	last_button_press = now();
 }
 
 void
@@ -991,7 +982,6 @@ createmon(void)
 				m->pertag->ltidxs[i][1] = m->lt[0];
 				m->pertag->nmasters[i] = (mr->nmaster > -1 ? mr->nmaster : m->nmaster);
 				m->pertag->mfacts[i] = (mr->mfact > -1 ? mr->mfact : m->mfact);
-				m->pertag->showbars[i] = (mr->showbar > -1 ? mr->showbar : m->showbar);
 				break;
 			}
 		}
@@ -1207,9 +1197,6 @@ enternotify(XEvent *e)
 	Monitor *m;
 	XCrossingEvent *ev = &e->xcrossing;
 
-	if (cursor_hidden)
-		return;
-
 	if ((ev->mode != NotifyNormal || ev->detail == NotifyInferior) && ev->window != root)
 		return;
 	c = wintoclient(ev->window);
@@ -1341,12 +1328,6 @@ getrootptr(int *x, int *y)
 	int di;
 	unsigned int dui;
 	Window dummy;
-
-	if (cursor_hidden) {
-		*x = mouse_x;
-		*y = mouse_y;
-		return 1;
-	}
 
 	return XQueryPointer(dpy, root, &dummy, &dummy, x, y, &di, &di, &dui);
 }
@@ -1983,7 +1964,7 @@ sendmon(Client *c, Monitor *m)
 	c->mon = m;
 	if (!(c->tags & SPTAGMASK))
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
-	attachx(c);
+	attach(c);
 	attachstack(c);
 	arrange(NULL);
 	focus(NULL);
@@ -2203,24 +2184,6 @@ setup(void)
 	XChangeWindowAttributes(dpy, root, CWEventMask|CWCursor, &wa);
 	XSelectInput(dpy, root, wa.event_mask);
 
-	if (!XQueryExtension(dpy, "XInputExtension", &xi_opcode, &i, &i)) {
-		fprintf(stderr, "Warning: XInput is not available.");
-	}
-	/* Tell XInput to send us all RawMotion events. */
-	unsigned char mask_bytes[XIMaskLen(XI_LASTEVENT)];
-	memset(mask_bytes, 0, sizeof(mask_bytes));
-	XISetMask(mask_bytes, XI_RawMotion);
-	XISetMask(mask_bytes, XI_RawKeyRelease);
-	XISetMask(mask_bytes, XI_RawTouchBegin);
-	XISetMask(mask_bytes, XI_RawTouchEnd);
-	XISetMask(mask_bytes, XI_RawTouchUpdate);
-
-	XIEventMask mask;
-	mask.deviceid = XIAllMasterDevices;
-	mask.mask_len = sizeof(mask_bytes);
-	mask.mask = mask_bytes;
-	XISelectEvents(dpy, root, &mask, 1);
-
 	grabkeys();
 	focus(NULL);
 }
@@ -2322,7 +2285,7 @@ void
 togglebar(const Arg *arg)
 {
 	Bar *bar;
-	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
+	selmon->showbar = !selmon->showbar;
 	updatebarpos(selmon);
 	for (bar = selmon->bar; bar; bar = bar->next)
 		XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
@@ -2393,8 +2356,6 @@ toggleview(const Arg *arg)
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
 		selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 		selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
-		if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
-			togglebar(NULL);
 		arrange(selmon);
 		focus(NULL);
 	}

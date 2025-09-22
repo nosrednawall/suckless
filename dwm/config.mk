@@ -52,7 +52,7 @@ XCBLIBS = -lX11-xcb -lxcb -lxcb-res
 IMLIB2LIBS = -lImlib2
 
 # Uncomment for the banish patch / BANISH_PATCH (for mouse related features)
-XILIB = `pkg-config --libs xi xfixes`
+#XILIB = `pkg-config --libs xi xfixes`
 
 # Uncomment for the bidi patch
 #BDINC = `pkg-config --cflags fribidi`
