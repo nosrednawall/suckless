@@ -67,7 +67,7 @@ void setmonitorfields(Monitor *m)
 		uint32_t data[] = {
 			(m->pertag->nmasters[i] & 0x7) |
 			(getlayoutindex(m->pertag->ltidxs[i][m->pertag->sellts[i]]) & 0xF) << 6 |
-			m->showbar << 31
+			m->pertag->showbars[i] << 31
 		};
 
 		XChangeProperty(dpy, root, monitor_fields, XA_CARDINAL, 32,
@@ -120,12 +120,13 @@ getmonitorfields(Monitor *m)
 		layout_index = (state >> 6) & 0xF;
 		if (layout_index < LENGTH(layouts))
 			m->pertag->ltidxs[i][m->pertag->sellts[i]] = &layouts[layout_index];
+		m->pertag->showbars[i] = (state >> 31) & 0x1;
 
 		if (!restored && i && (tags & (1 << i))) {
 			m->nmaster = m->pertag->nmasters[i];
 			m->sellt = m->pertag->sellts[i];
 			m->lt[m->sellt] = m->pertag->ltidxs[i][m->sellt];
-			m->showbar = (state >> 31) & 0x1;
+			m->showbar = m->pertag->showbars[i];
 			restored = 1;
 		}
 
