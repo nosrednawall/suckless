@@ -31,7 +31,7 @@ is_running() {
 }
 
 # Polkit - para autenticar programas
-is_running "lxpolkit" || lxpolkit &
+# is_running "lxpolkit" || lxpolkit &
 
 # Inicia o xautolock com as configurações personalizadas se não estiver rodando
 is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/dwm/dwm-slock-personalizado -detectsleep &
@@ -43,7 +43,7 @@ is_running "picom" || picom -b
 is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
 
 # Inicia o copyq se não estiver rodando
-is_running "copyq" || copyq &
+is_running "copyq" || env QT_QPA_PLATFORM=xcb copyq
 #is_running "copyq" || flatpak run com.github.hluk.copyq &
 
 # Inicia o daemon do emacs se não estiver rodando

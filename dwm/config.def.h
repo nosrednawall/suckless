@@ -154,6 +154,7 @@ static const Rule rules[] = {
 
 	// Floating windows
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
+	RULE(.class = "parcellite", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
 	RULE(.class = "Qalculate-gtk", .tags = 0, .isfloating = 1)
 	RULE(.class = "kruler", .tags = 0, .isfloating = 1)

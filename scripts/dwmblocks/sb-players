@@ -5,30 +5,34 @@ PLAYER_SELECIONADO=""
 # Carrega informacoes do modo de operacao
 arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
 
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
+if [ -f "$arquivo_modo" ]; then
+    source "$arquivo_modo"
 else
     OPERATION_MODE="COMPLETO"
 fi
 
 # Carrega as cores do tema
-source ~/.theme_selected
-source ~/.cache/playerctl_selecionado
+if [ -f ~/.theme_selected ]; then
+    source ~/.theme_selected
+fi
+
+if [ -f ~/.cache/playerctl_selecionado ]; then
+    source ~/.cache/playerctl_selecionado
+fi
 
 # Funcao para mudar o player
 fchange_player() {
-    # Parâmetro indicando direção (+1 para próximo, -1 para anterior)
     direction="$1"
     if [[ "$direction" != "+1" && "$direction" != "-1" ]]; then
-        echo "Uso: fchange_player [+1 | -1]" >&2
         return 1
     fi
 
     # Obtém a lista de players ativos
-    players=( $(playerctl -l) )
+    players=( $(playerctl -l 2>/dev/null) )
     if [ ${#players[@]} -eq 0 ]; then
-        echo "Nenhum player ativo encontrado." >&2
-        return 1
+        PLAYER_SELECIONADO="mpd"
+        echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+        return 0
     fi
 
     # Carrega o player atualmente selecionado
@@ -40,80 +44,122 @@ fchange_player() {
         fi
     done
 
-    # Calcula o próximo índice com base na direção
+    # Calcula o próximo índice
     if [[ "$direction" == "+1" ]]; then
         next_index=$(( (current_index + 1) % ${#players[@]} ))
     else
         next_index=$(( (current_index - 1 + ${#players[@]}) % ${#players[@]} ))
     fi
 
-    # Atualiza o player selecionado
     PLAYER_SELECIONADO="${players[next_index]}"
-    rm -rf ~/.cache/playerctl_selecionado
     echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
-    ~/.config/suckless/scripts/others/playerctl_songinfo
-    exit 0
+    return 0
 }
 
-# Quando nao houver mais players, coloca no mpd
-list=$(playerctl -l)
-array=($list)
-if [ "${#array[@]}" -le 1 ] && [ "$PLAYER_SELECIONADO" != "mpd" ]; then
-    rm -rf ~/.cache/playerctl_selecionado
-    echo "PLAYER_SELECIONADO=mpd" > ~/.cache/playerctl_selecionado
-    source ~/.cache/playerctl_selecionado
+# Função para verificar e atualizar o player selecionado
+atualizar_player_selecionado() {
+    local players=( $(playerctl -l 2>/dev/null) )
 
-fi
+    # Se não há players, usa mpd
+    if [ ${#players[@]} -eq 0 ]; then
+        if [ "$PLAYER_SELECIONADO" != "mpd" ]; then
+            PLAYER_SELECIONADO="mpd"
+            echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+        fi
+        return
+    fi
 
-# Verifica se o player principal esta tocando, se nao estiver coloca como principal o que estiver tocando
-status="$(playerctl --player=$PLAYER_SELECIONADO status 2>&1)"
-if [ "$status" != "Playing" ]; then
-    for item in "${array[@]}"; do
-        status_item="$(playerctl --player=$item status 2>&1)"
-        if [ "$status_item" = "Playing" ]; then
-            rm -rf ~/.cache/playerctl_selecionado
-            echo "PLAYER_SELECIONADO=$item" > ~/.cache/playerctl_selecionado
-            source ~/.cache/playerctl_selecionado
+    # Verifica se o player atual existe
+    local player_existe=0
+    for player in "${players[@]}"; do
+        if [ "$player" = "$PLAYER_SELECIONADO" ]; then
+            player_existe=1
+            break
         fi
     done
-fi
 
-# Verifica se o player principal esta na lista
-if [[ ! " ${array[@]} " =~ " $PLAYER_SELECIONADO " ]]; then
-    fchange_player +1
-fi
+    if [ $player_existe -eq 0 ]; then
+        fchange_player +1
+        return
+    fi
 
-
-# Botões
-case "$BUTTON" in
-    1)
-        # Se o player estiver tocando, aplica o play-pause, caso contrario
-        # pausa todos os outros e toca o novo
-        STATUS_ATUAL=$(playerctl --player=$PLAYER_SELECIONADO status)
-        if [ $STATUS_ATUAL = "Playing" ]; then
-            playerctl --player=$PLAYER_SELECIONADO play-pause
-        else
-            playerctl --all-players pause
-            playerctl --player=$PLAYER_SELECIONADO play-pause
+    # Verifica se há algum player tocando
+    local status_atual
+    if status_atual=$(playerctl --player="$PLAYER_SELECIONADO" status 2>/dev/null); then
+        if [ "$status_atual" != "Playing" ]; then
+            for player in "${players[@]}"; do
+                if player_status=$(playerctl --player="$player" status 2>/dev/null); then
+                    if [ "$player_status" = "Playing" ]; then
+                        PLAYER_SELECIONADO="$player"
+                        echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+                        return
+                    fi
+                fi
+            done
         fi
-        ~/.config/suckless/scripts/others/playerctl_songinfo
-    ;;
-    2)  playerctl --player=$PLAYER_SELECIONADO previous
-        ~/.config/suckless/scripts/others/playerctl_songinfo
-    ;;
+    else
+        # Player atual não responde, muda para o próximo
+        fchange_player +1
+    fi
+}
+
+# Atualiza o player selecionado antes de qualquer ação
+atualizar_player_selecionado
+
+# Processa cliques primeiro
+case "${BUTTON:-0}" in
+    1)
+        # Play/Pause
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" play-pause
+            # Pequena pausa para evitar múltiplas execuções
+            sleep 0.1
+        fi
+        ;;
+    2)
+        # Previous
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" previous
+            sleep 0.1
+        fi
+        ;;
     3)
-        playerctl --player=$PLAYER_SELECIONADO next
-        ~/.config/suckless/scripts/others/playerctl_songinfo
-    ;;
-    4) playerctl --player=$PLAYER_SELECIONADO position 10+ ; sleep 1;;
-    5) playerctl --player=$PLAYER_SELECIONADO position 10- ; sleep 1;;
-    6) setsid -f st -e emacs -nw "$0" ;;
-    8) xsetroot -name "fsignal:togglescratch ui 6" ;;
-    9) fchange_player +1 ;;
-    10) fchange_player +1 ;;
+        # Next
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" next
+            sleep 0.1
+        fi
+        ;;
+    4)
+        # Forward
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" position 10+
+        fi
+        ;;
+    5)
+        # Backward
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" position 10-
+        fi
+        ;;
+    6)
+        setsid -f st -e emacs -nw "$0"
+        ;;
+    8)
+        xsetroot -name "fsignal:togglescratch ui 6"
+        ;;
+    9)
+        fchange_player +1
+        ;;
+    10)
+        fchange_player -1
+        ;;
 esac
 
-# Display currently playing music.
+# Atualiza novamente após ações
+atualizar_player_selecionado
+
+# Display currently playing music
 PLAYERS="--player=$PLAYER_SELECIONADO"
 
 # Ícones
@@ -168,38 +214,53 @@ case "$PLAYER_SELECIONADO" in
 esac
 
 # Verifica status
-if status="$(playerctl $PLAYERS status 2>&1)" && [ "$status" != "Stopped" ]; then
-    [ "$status" = "Paused" ] && icon="$icon_paused"
+song=""
+icon_to_use="$icon_close"
 
-    song="$(playerctl $PLAYERS metadata --format=$format_player)"
-    if [ "$song" = "" ]; then
-        song=$(playerctl $PLAYERS metadata xesam:url | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" | xargs -I {} basename "{}")
-    fi
+if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+    status=$(playerctl --player="$PLAYER_SELECIONADO" status 2>/dev/null)
 
-    if [[ ${#song} -gt 17 ]]; then
-        song="${song:0:17}..."
+    if [ "$status" = "Playing" ] || [ "$status" = "Paused" ]; then
+        if [ "$status" = "Paused" ]; then
+            icon_to_use="$icon_paused"
+        else
+            icon_to_use="$icon"
+        fi
+
+        song=$(playerctl --player="$PLAYER_SELECIONADO" metadata --format="$format_player" 2>/dev/null)
+
+        if [ -z "$song" ]; then
+            song=$(playerctl --player="$PLAYER_SELECIONADO" metadata xesam:url 2>/dev/null | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" 2>/dev/null | xargs -I {} basename "{}" 2>/dev/null)
+        fi
+
+        if [ -n "$song" ]; then
+            song=$(echo "$song" | tr -d ';')
+            if [ ${#song} -gt 17 ]; then
+                song="${song:0:17}..."
+            fi
+        fi
     fi
-    # Remove ; da musica se tiver
-    song=$(echo $song | tr -d ';')
 fi
 
 # Apresentacao condicionada
-case "$OPERATION_MODE" in
+case "${OPERATION_MODE:-COMPLETO}" in
     "MINIMO")
         echo ""
-    ;;
+        ;;
     "MEDIO")
-        if [[ -z "$song" ]]; then
-            echo ""
+        if [ -z "$song" ]; then
+            echo "$icon_close"
         else
-            echo "$icon $song ^d^ "
+            echo "$icon_to_use $song ^d^ "
         fi
-    ;;
+        ;;
     *)
-        if [[ -z "$song" ]]; then
-            echo ""
+        if [ -z "$song" ]; then
+            echo "$icon_close "
         else
-            echo "$icon $song ^d^ "
+            echo "$icon_to_use $song ^d^ "
         fi
-    ;;
+        ;;
 esac
+
+exit 0
