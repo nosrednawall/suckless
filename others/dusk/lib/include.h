@@ -13,6 +13,7 @@
 #include "bar_ltsymbol.h"
 #include "bar_status2d.h"
 #include "winicon.h"
+#include "bar_config_error.h"
 #include "bar_flexwintitle.h"
 #include "bar_wintitle_floating.h"
 #include "bar_wintitle_hidden.h"
@@ -44,9 +45,6 @@
 #include "focusmaster.h"
 #include "focusurgent.h"
 #include "inplacerotate.h"
-#include "ipc.h"
-#include "ipc/ipc.h"
-#include "ipc/util.h"
 #include "killunsel.h"
 #include "movemouse.h"
 #include "resizemouse.h"
@@ -84,3 +82,11 @@
 
 /* Layouts */
 #include "layout_flextile-deluxe.h"
+
+/* Debug */
+#include "x11_debug.h"
+
+/* dbus */
+#ifdef HAVE_DBUS
+#include "dbus_server.h"
+#endif

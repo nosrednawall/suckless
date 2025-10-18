@@ -3,8 +3,13 @@ static void getclientflags(Client *c);
 static void getclientfields(Client *c);
 static void getclienticonpath(Client *c);
 static void getclientlabel(Client *c);
-static void getworkspacestate(Workspace *ws);
+static void getclientalttitle(Client *c);
 static void persistworkspacestate(Workspace *ws);
+static unsigned char *readworkspacestate(Display *dpy, Window w, Atom property,
+                   Atom *actual_type_return, int *actual_format_return,
+                   unsigned long *nitems_return);
+static void restoreworkspacestate(Workspace *ws, unsigned long settings);
+static void restoreworkspacestates(void);
 static void persistpids(void);
 static void restorepids(void);
 static void savewindowfloatposition(Client *c, Monitor *m);
@@ -16,6 +21,9 @@ static void setclientflags(Client *c);
 static void setclientfields(Client *c);
 static void setclienticonpath(Client *c);
 static void setclientlabel(Client *c);
+static void setclientalttitle(Client *c);
+static void setclientstate(Client *c, long state);
+static void setclientnetstate(Client *c, int state);
 static void setnumdesktops(void);
 static void setviewport(void);
 static void updatecurrentdesktop(void);
@@ -155,6 +163,7 @@ enum {
 	DuskClientFlags,
 	DuskClientFields,
 	DuskClientLabel,
+	DuskClientAltName,
 	DuskClientIconPath,
 	DuskWorkspace,
 	SteamGameID,
@@ -168,6 +177,7 @@ static char *dusk_names[DuskLast] = {
 	[DuskClientFlags] = "_DUSK_CLIENT_FLAGS",
 	[DuskClientFields] = "_DUSK_CLIENT_FIELDS",
 	[DuskClientLabel] = "_DUSK_CLIENT_LABEL",
+	[DuskClientAltName] = "_DUSK_CLIENT_ALT_TITLE",
 	[DuskClientIconPath] = "_DUSK_CLIENT_ICON_PATH",
 	[DuskWorkspace] = "_DUSK_WORKSPACE",
 	[SteamGameID] = "STEAM_GAME",

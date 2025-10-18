@@ -63,7 +63,7 @@ draw_workspaces(Bar *bar, BarArg *a)
 				}
 
 			nextscheme =
-				nextws == nextws->mon->selws
+				nextws == nextws->mon->selws && nextws->visible
 				? nextws->scheme[SELECTED]
 				: nextws->visible
 				? nextws->scheme[VISIBLE]
@@ -87,19 +87,19 @@ draw_workspaces(Bar *bar, BarArg *a)
 						draw_window_icon = 1;
 						w += occupied_workspace_label_format_length;
 						if (swap_occupied_workspace_label_format_strings)
-							snprintf(label, 127, occupied_workspace_label_format, "", icon);
+							snprintf(label, 127, CFG(occupied_workspace_label_format), "", icon);
 						else
-							snprintf(label, 127, occupied_workspace_label_format, icon, "");
+							snprintf(label, 127, CFG(occupied_workspace_label_format), icon, "");
 					} else {
 						w += occupied_workspace_label_format_length + TEXTW(c->label);
 						if (swap_occupied_workspace_label_format_strings)
-							snprintf(label, 127, occupied_workspace_label_format, c->label, icon);
+							snprintf(label, 127, CFG(occupied_workspace_label_format), c->label, icon);
 						else
-							snprintf(label, 127, occupied_workspace_label_format, icon, c->label);
+							snprintf(label, 127, CFG(occupied_workspace_label_format), icon, c->label);
 					}
 				} else {
 					w += vacant_workspace_label_format_length;
-					snprintf(label, 127, vacant_workspace_label_format, icon);
+					snprintf(label, 127, CFG(vacant_workspace_label_format), icon);
 				}
 				icon = label;
 			}
@@ -120,15 +120,15 @@ draw_workspaces(Bar *bar, BarArg *a)
 			if (plw && nextws)
 				drw_arrow(drw, x + w, y, plw, h, a->value, scheme[wsscheme][ColBg], scheme[nextscheme][ColBg], scheme[SchemeNorm][ColBg]);
 
-			drawindicator(ws, NULL, hasclients(ws), x, y, w , h, -1, 0, indicators[IndicatorWsOcc]);
-			drawindicator(ws, NULL, ws->pinned, x, y, w, h, -1, 0, indicators[IndicatorPinnedWs]);
+			drawindicator(ws, NULL, hasclients(ws), x, y, w , h, ws->visible, 0, indicators[IndicatorWsOcc]);
+			drawindicator(ws, NULL, ws->pinned, x, y, w, h, 0, 0, indicators[IndicatorPinnedWs]);
 
 			if (!ws->visible) {
-				drawindicator(ws, NULL, 1, x, y, w, h, -1, 0, indicators[IndicatorWsNorm]);
+				drawindicator(ws, NULL, 1, x, y, w, h, 0, 0, indicators[IndicatorWsNorm]);
 			} else if (ws == selws) {
-				drawindicator(ws, NULL, 1, x, y, w, h, -1, 0, indicators[IndicatorWsSel]);
+				drawindicator(ws, NULL, 1, x, y, w, h, 1, 0, indicators[IndicatorWsSel]);
 			} else {
-				drawindicator(ws, NULL, 1, x, y, w, h, -1, 0, indicators[IndicatorWsVis]);
+				drawindicator(ws, NULL, 1, x, y, w, h, 0, 0, indicators[IndicatorWsVis]);
 			}
 
 			if (bar->vert) {
@@ -285,9 +285,13 @@ saveclientclass(Client *c)
 {
 	XClassHint ch = { NULL, NULL };
 	XGetClassHint(dpy, c->win, &ch);
-	strlcpy(c->label, ch.res_class ? ch.res_class : broken, sizeof c->label);
+	freestrdup(&c->label, ch.res_class ? ch.res_class : broken);
 	if (lowercase_workspace_labels)
-		c->label[0] = tolower(c->label[0]);
+		for (char *p = c->label; *p; ++p) *p = tolower(*p);
+    if (ch.res_class)
+        XFree(ch.res_class);
+    if (ch.res_name)
+        XFree(ch.res_name);
 }
 
 void

@@ -24,8 +24,8 @@ stackfocus(const Arg *arg)
 		return;
 	}
 
-	focus(c);
 	arrangews(ws);
+	focus(c);
 	skipfocusevents();
 	if (canwarp(c))
 		warp(c);
@@ -81,13 +81,13 @@ stackswap(const Arg *arg)
 		return;
 
 	swap(sel, c);
+	arrangews(ws);
 
 	if (!ISINC(arg) && ismasterclient(c)) {
 		focus(c);
 		sel = c;
 	}
 
-	arrangews(ws);
 	drawbar(ws->mon);
 	skipfocusevents();
 	if (canwarp(sel))
@@ -111,13 +111,16 @@ stackposclient(const Arg *arg)
 	if (ISSTACK(arg))
 		return nthstack(ws->clients, GETSTACK(arg), 1);
 
+	if (ISTILE(arg))
+		return nthtiled(ws->clients, GETTILE(arg), 1);
+
 	if (ISLAST(arg))
 		return lasttiled(ws->clients);
 
 	if (ISPREVSEL(arg))
 		return prevsel();
 
-	return nthtiled(ws->clients, arg->i, 1);
+	return nthvisible(ws->clients, arg->i, 1);
 }
 
 const StackerIcon *
@@ -129,13 +132,15 @@ getstackericonforclient(Client *c)
 	int nc, nt, nf, nm, ns;           // num clients, tiled, floating, master, stack
 	getclientindices(c, &nthc, &ntht, &nthf, &nthm, &nths, &nc, &nt, &nf, &nm, &ns);
 
-	for (i = 0; i < LENGTH(stackericons); i++) {
-		stacklevel = stackericons[i].arg.i;
+	for (i = 0; i < num_stackericons; i++) {
+		stacklevel = _cfg_stackericons[i].arg.i;
 
-		/* MASTER, STACK and implicit client positions take precedence for icons */
+		/* MASTER, STACK, TILE and implicit client positions take precedence for icons */
 		if (nthm && stacklevel == MASTER(nthm)) {
 			best = i;
 		} else if (nths && stacklevel == STACK(nths)) {
+			best = i;
+		} else if (ntht && stacklevel == TILE(ntht)) {
 			best = i;
 		} else if (stacklevel == nthc) {
 			best = i;
@@ -166,5 +171,5 @@ getstackericonforclient(Client *c)
 	if (i == -1)
 		return NULL;
 
-	return &stackericons[i];
+	return &_cfg_stackericons[i];
 }

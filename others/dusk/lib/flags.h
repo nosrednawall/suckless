@@ -5,6 +5,7 @@ static void toggleflag(Client *c, const uint64_t flag);
 static void toggleclientflag(const Arg *arg);
 static void toggleflagop(Client *c, const uint64_t flag, int op);
 static const uint64_t getflagbyname(const char *name);
+static const char *getnamebyflag(const uint64_t flag);
 
 static const uint64_t
 	AlwaysOnTop = 0x1, // client window is intended to always display on top (even above floating windows)
@@ -66,8 +67,8 @@ static const uint64_t
 	FlagPlaceholder0x8000000000000 = 0x8000000000000,
 	FlagPlaceholder0x10000000000000 = 0x10000000000000,
 	FlagPlaceholder0x20000000000000 = 0x20000000000000,
-	FlagPlaceholder0x40000000000000 = 0x40000000000000,
 	/* Below are flags that are intended to only be used internally */
+	Swallowed = 0x40000000000000,
 	RefreshSizeHints = 0x80000000000000, // used internally to indicate that size hints for the window should be (re-)loaded
 	/* Debug = 0x100000000000000,  // same name and value as debug functionality, see util.h */
 	Invisible = 0x200000000000000, // by default all clients are visible, used by scratchpads to hide clients
@@ -82,11 +83,78 @@ static const uint64_t
 	Marked = 0x4000000000000000, // indicates that the client has been marked for group action
 	Unmanaged = 0x8000000000000000; // indicates that the client is not to be managed by the window manager
 
+#define map(F) { #F, F }
+
+static const struct nv flag_names[] = {
+	map(AlwaysOnTop),
+	map(Fixed),
+	map(Floating),
+	map(Urgent),
+	map(NeverFocus),
+	map(FullScreen),
+	map(FakeFullScreen),
+	map(RestoreFakeFullScreen),
+	map(Centered),
+	map(Permanent),
+	map(Hidden),
+	map(Sticky),
+	map(Terminal),
+	map(NoSwallow),
+	map(Locked),
+	map(Transient),
+	map(OnlyModButtons),
+	map(Disallowed),
+	map(AttachDefault),
+	map(AttachMaster),
+	map(AttachAbove),
+	map(AttachBelow),
+	map(AttachAside),
+	map(AttachBottom),
+	map(AttachFlag),
+	map(SwitchWorkspace),
+	map(EnableWorkspace),
+	map(RevertWorkspace),
+	map(IgnoreCfgReq),
+	map(IgnoreCfgReqPos),
+	map(IgnoreCfgReqSize),
+	map(IgnorePropTransientFor),
+	map(IgnoreSizeHints),
+	map(IgnoreMinimumSizeHints),
+	map(IgnoreDecorationHints),
+	map(SemiScratchpad),
+	map(RespectSizeHints),
+	map(RioDrawNoMatchPID),
+	map(NoBorder),
+	map(SteamGame),
+	map(NoFocusOnNetActive),
+	map(ScratchpadStayOnMon),
+	map(Lower),
+	map(Raise),
+	map(SkipTaskbar),
+	map(ReapplyRules),
+	map(CfgReqPosRelativeToMonitor),
+	map(SwallowRetainSize),
+	map(NoWarp),
+	map(SwallowNoInheritFullScreen),
+	map(Swallowed),
+	map(RefreshSizeHints),
+	map(Invisible),
+	map(MoveResize),
+	map(MovePlace),
+	map(NeedResize),
+	map(Ruled),
+	map(Marked),
+	map(Unmanaged),
+	{ NULL, 0 }
+};
+
+#undef map
+
 #define ALWAYSONTOP(C) (C && C->flags & AlwaysOnTop)
 #define CFGREQPOSRELATIVETOMONITOR(C) (C && C->flags & CfgReqPosRelativeToMonitor)
 #define DEBUGGING(C) (C && C->flags & Debug)
 #define DISALLOWED(C) (C && C->flags & Disallowed)
-#define HIDDEN(C) (C && ((C->flags & Hidden) || (getstate(C->win) == IconicState)))
+#define HIDDEN(C) (C && C->flags & Hidden)
 #define ISFIXED(C) (C && C->flags & Fixed)
 #define FLOATING(C) (C && C->flags & Floating)
 #define ISFLOATING(C) (C && C->flags & (Floating|Sticky|Fixed))
@@ -120,6 +188,7 @@ static const uint64_t
 #define NOBORDER(C) (C && C->flags & NoBorder)
 #define NOFOCUSONNETACTIVE(C) (C && C->flags & NoFocusOnNetActive)
 #define NOSWALLOW(C) (C && C->flags & NoSwallow)
+#define SWALLOWED(C) (C && C->flags & Swallowed)
 #define NOWARP(C) (C && C->flags & NoWarp)
 #define ONLYMODBUTTONS(C) (C && C->flags & OnlyModButtons)
 #define REAPPLYRULES(C) (C && C->flags & ReapplyRules)

@@ -5,7 +5,6 @@
 #include <kvm.h>
 #endif /* __OpenBSD__ */
 
-static int scanner;
 static xcb_connection_t *xcon;
 
 void
@@ -34,20 +33,35 @@ swallow(const Arg *arg)
 }
 
 int
-swallowclient(Client *t, Client *c)
+swallowclient(Client *term, Client *c)
 {
 	if (disabled(Swallow) || NOSWALLOW(c))
 		return 0;
 	if (!RULED(c) && disabled(SwallowFloating) && ISFLOATING(c))
 		return 0;
 
-	replaceclient(t, c);
-	hide(t);
+	replaceclient(term, c);
+	hide(term);
 	addflag(c, IgnoreCfgReqPos);
-	c->swallowing = t;
+	c->swallowing = term;
 	c->revertws = NULL;
 
 	return 1;
+}
+
+int
+swallowterm(Client *term)
+{
+	Client *c;
+
+	if (!ISTERMINAL(term))
+		return 0;
+
+	if (!(c = winforterm(term)))
+		return 0;
+
+	replaceclient(c, term);
+	return swallowclient(term, c);
 }
 
 int
@@ -58,15 +72,12 @@ replaceclient(Client *old, Client *new)
 
 	Client *c = NULL;
 	Workspace *ws = old->ws;
-	XWindowChanges wc;
 	int x, y, w, h;
 
 	new->ws = ws;
 
 	/* Place the new window below the old in terms of stack order. */
-	wc.stack_mode = Below;
-	wc.sibling = old->win;
-	XConfigureWindow(dpy, new->win, CWSibling|CWStackMode, &wc);
+	restackwin(new->win, Below, old->win);
 	setflag(new, Floating, old->flags & Floating);
 
 	new->scratchkey = old->scratchkey;
@@ -133,6 +144,11 @@ replaceclient(Client *old, Client *new)
 	}
 
 	toggleflagop(new, Floating, FLOATING(old));
+	toggleflagop(new, Sticky, ISSTICKY(old));
+	addflag(old, Swallowed);
+	removeflag(new, Swallowed);
+	setclientnetstate(old, NetWMHidden);
+	setclientnetstate(new, 0);
 
 	if (ISVISIBLE(new)) {
 		if (ISTRUEFULLSCREEN(new)) {
@@ -155,15 +171,18 @@ unswallow(const Arg *arg)
 	s = c->swallowing;
 
 	if (replaceclient(c, s)) {
-		c->swallowing = s->swallowing;
-		s->swallowing = NULL;
+		c->swallowing = NULL;
 		attachabove(c, s);
 		attachstack(c);
-		if (!arg->v) {
-			focus(c);
-			arrange(c->ws);
-		} else {
-			restack(c->ws);
+
+		if (s->ws->visible) {
+			show(s);
+			if (!arg->v) {
+				focus(s);
+				arrange(s->ws);
+			} else {
+				restack(s->ws);
+			}
 		}
 	}
 }
@@ -208,7 +227,7 @@ winpid(Window w)
 	unsigned char *prop;
 	pid_t ret;
 
-	if (XGetWindowProperty(dpy, w, XInternAtom(dpy, "_NET_WM_PID", 1), 0, 1, False, AnyPropertyType, &type, &format, &len, &bytes, &prop) != Success || !prop)
+	if (XGetWindowProperty(dpy, w, XInternAtom(dpy, "_NET_WM_PID", False), 0, 1, False, AnyPropertyType, &type, &format, &len, &bytes, &prop) != Success || !prop)
 		return 0;
 
 	ret = *(pid_t*)prop;
@@ -264,7 +283,7 @@ void
 readswallowkey(Client *c)
 {
 	struct stat st;
-	char buffer[1024];
+	char buffer[1024] = {0};
 	ssize_t bytes_read;
 	char path[30];
 	FILE* envfile;
@@ -328,6 +347,36 @@ termforwin(const Client *w)
 
 	return NULL;
 }
+
+Client *
+winforterm(const Client *term)
+{
+	Workspace *ws;
+	Client *c;
+	char key = term->swallowkey;
+
+	if (disabled(Swallow))
+		return NULL;
+
+	if (!term->pid)
+		return NULL;
+
+	c = selws->sel;
+	if (c && ((key && c->swallowedby == key) || (c->pid && isdescprocess(term->pid, c->pid))))
+		return c;
+
+	for (ws = workspaces; ws; ws = ws->next) {
+		for (c = ws->stack; c; c = c->snext) {
+			if (!RULED(c) && disabled(SwallowFloating) && ISFLOATING(c))
+				continue;
+			if (!NOSWALLOW(c) && ((key && c->swallowedby == key) || (c->pid && isdescprocess(term->pid, c->pid))))
+				return c;
+		}
+	}
+
+	return NULL;
+}
+
 
 Client *
 swallowingparent(Window w)

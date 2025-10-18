@@ -66,7 +66,7 @@ markmouse(const Arg *arg)
 	Workspace *w;
 	XEvent ev;
 	Time lasttime = 0;
-	unsigned long mark = (arg->i == 1 ? Marked : arg->i);
+	uint64_t mark = (arg->i == 1 ? Marked : arg->i);
 
 	if (r && mark != ISMARKED(r))
 		togglemark(&((Arg) { .v = r }));
@@ -86,7 +86,7 @@ markmouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / MARKMOUSE_HZ))
+			if ((ev.xmotion.time - lasttime) <= (1000 / markmouse_hz))
 				continue;
 			lasttime = ev.xmotion.time;
 

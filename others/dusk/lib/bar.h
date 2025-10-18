@@ -1,6 +1,3 @@
-
-static int bh; /* bar geometry */
-
 enum {
 	BAR_ALIGN_TOP,
 	BAR_ALIGN_LEFT,
@@ -28,14 +25,18 @@ struct BarDef {
 	int monitor;
 	int idx;
 	int vert;
-	const char *barpos;
-	const char *name;
+	char *barpos;
+	char *name;
+	char *extclass;
+	char *extinstance;
+	char *extname;
 };
 
 struct Bar {
 	Window win;
 	Monitor *mon;
 	Bar *next;
+	const BarDef *def;
 	const char *barpos;
 	const char *name;
 	int vert;
@@ -46,10 +47,10 @@ struct Bar {
 	int scheme;
 	int groupactive;
 	int bx, by, bw, bh; /* bar geometry */
-	int s[BARRULES]; // width/height, array length == barrules, then use r index for lookup purposes
-	int p[BARRULES]; // x/y position, array length == ^
-	int sscheme[BARRULES]; // start scheme
-	int escheme[BARRULES]; // end scheme
+	int *s; // width/height, array length == barrules, then use r index for lookup purposes
+	int *p; // x/y position, array length == ^
+	int *sscheme; // start scheme
+	int *escheme; // end scheme
 };
 
 typedef struct {
@@ -80,6 +81,9 @@ typedef struct {
 	char *name; // for debugging
 } BarRule;
 
+static int bh; /* bar geometry */
+int num_bars, num_barrules;
+
 static void barhover(XEvent *e, Bar *bar);
 static void barpress(XButtonPressedEvent *ev, Monitor *m, Arg *arg, int *click);
 static void createbars(Monitor *m);
@@ -94,9 +98,14 @@ static void recreatebar(Bar *bar);
 static void reducewindowarea(Monitor *m);
 static void removebar(Bar *bar);
 static void setbarpos(Bar *bar);
+static void getbarsize(Bar *bar, int *w, int *h);
 static void showbar(const Arg *arg);
 static void hidebar(const Arg *arg);
+static void showhidebar(Bar *bar);
+static void teardownbars(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglebarpadding(const Arg *arg);
 static void togglecompact(const Arg *arg);
 static Bar * wintobar(Window win);
+static Bar * mapexternalbar(Window win);
+static int matchextbar(Bar *bar, Window win);

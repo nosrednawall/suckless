@@ -219,6 +219,26 @@ drw_fontset_create(Drw* drw, const char *fonts[], size_t fontcount)
 	return (drw->fonts = ret);
 }
 
+Fnt*
+drw_font_add(Drw* drw, const char *font)
+{
+	Fnt *cur, *ret;
+
+	if (!drw || !font)
+		return NULL;
+
+	ret = xfont_create(drw, font, NULL);
+
+	if (!drw->fonts) {
+		drw->fonts = ret;
+	} else {
+		for (cur = drw->fonts; cur->next; cur = cur->next);
+		cur->next = ret;
+	}
+
+	return ret;
+}
+
 void
 drw_fontset_free(Fnt *font)
 {
@@ -332,6 +352,8 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 			XSetForeground(drw->dpy, drw->gc, drw->scheme[invert ? ColFg : ColBg].pixel);
 			XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, y, w, h);
 		}
+		if (w < lpad)
+			return x + w;
 		d = XftDrawCreate(drw->dpy, drw->drawable, drw->visual, drw->cmap);
 		x += lpad;
 		w -= lpad * 2;
@@ -562,124 +584,60 @@ drw_cur_free(Drw *drw, Cur *cursor)
 	free(cursor);
 }
 
-/* imlib API header documentation, see
- * https://fossies.org/linux/imlib2/src/lib/Imlib2.h */
-
 Picture
-drw_picture_create_resized_data(Drw *drw, char *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth)
-{
-	if (srcw <= (dstw << 1u) && srch <= (dsth << 1u))
-		return drw_picture_create_centered_data(drw, src, srcw, srch, dstw, dsth);
+drw_picture_create_from_argb32(
+	Drw *drw,
+	const uint32_t *data,
+	unsigned int w, unsigned int h
+) {
+	Pixmap pm = XCreatePixmap(drw->dpy, drw->root, w, h, 32);
+	if (!pm)
+		return None;
 
-	return drw_picture_create_scaled_data(drw, src, srcw, srch, dstw, dsth);
-}
+	XImage *img = XCreateImage(drw->dpy, drw->visual, 32, ZPixmap, 0, (char *)data, w, h, 32, 0);
+	if (!img) {
+		XFreePixmap(drw->dpy, pm);
+		return None;
+	}
 
-Picture
-drw_picture_create_resized_image(Drw *drw, Imlib_Image origin, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth)
-{
-	if (srcw <= (dstw << 1u) && srch <= (dsth << 1u))
-		return drw_picture_create_centered_image(drw, origin, srcw, srch, dstw, dsth);
-
-	return drw_picture_create_scaled_image(drw, origin, srcw, srch, dstw, dsth);
-}
-
-Picture
-drw_picture_create_centered_data(Drw *drw, char *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth)
-{
-	Pixmap pm;
-	Picture pic;
-	GC gc;
-
-	XImage img = {
-		srcw, srch, 0, ZPixmap, src,
-		ImageByteOrder(drw->dpy), BitmapUnit(drw->dpy), BitmapBitOrder(drw->dpy), 32,
-		32, 0, 32,
-		0, 0, 0
-	};
-	XInitImage(&img);
-	pm = XCreatePixmap(drw->dpy, drw->root, srcw, srch, 32);
-	gc = XCreateGC(drw->dpy, pm, 0, NULL);
-	XPutImage(drw->dpy, pm, gc, &img, 0, 0, 0, 0, srcw, srch);
+	GC gc = XCreateGC(drw->dpy, pm, 0, NULL);
+	XPutImage(drw->dpy, pm, gc, img, 0, 0, 0, 0, w, h);
 	XFreeGC(drw->dpy, gc);
 
-	pic = XRenderCreatePicture(drw->dpy, pm, XRenderFindStandardFormat(drw->dpy, PictStandardARGB32), 0, NULL);
-	XFreePixmap(drw->dpy, pm);
+	img->data = NULL;  /* prevent XDestroyImage() from freeing the data */
+	XDestroyImage(img);
 
-	XRenderSetPictureFilter(drw->dpy, pic, FilterBilinear, NULL, 0);
-	XTransform xf;
-	xf.matrix[0][0] = (srcw << 16u) / dstw; xf.matrix[0][1] = 0; xf.matrix[0][2] = 0;
-	xf.matrix[1][0] = 0; xf.matrix[1][1] = (srch << 16u) / dsth; xf.matrix[1][2] = 0;
-	xf.matrix[2][0] = 0; xf.matrix[2][1] = 0; xf.matrix[2][2] = 65536;
+	Picture pic = XRenderCreatePicture(
+		drw->dpy, pm,
+		XRenderFindStandardFormat(drw->dpy, PictStandardARGB32),
+		0, NULL);
+
+	XFreePixmap(drw->dpy, pm);
+	return pic;
+}
+
+Picture
+drw_picture_scale_from_argb32(
+	Drw *drw,
+	const uint32_t *src,
+	unsigned int srcw, unsigned int srch,
+	unsigned int dstw, unsigned int dsth
+) {
+	/* Create Picture from the original data */
+	Picture pic = drw_picture_create_from_argb32(drw, src, srcw, srch);
+	if (!pic)
+		return None;
+
+	/* Choose quality/performance tradeoff: FilterFast, FilterGood, FilterBest */
+	XRenderSetPictureFilter(drw->dpy, pic, FilterGood, NULL, 0);
+
+	/* Apply XRender transform to fit dst size */
+	XTransform xf = {{
+		{ (srcw << 16) / dstw, 0, 0 },
+		{ 0, (srch << 16) / dsth, 0 },
+		{ 0, 0, 65536 }
+	}};
 	XRenderSetPictureTransform(drw->dpy, pic, &xf);
-
-	return pic;
-}
-
-Picture
-drw_picture_create_centered_image(Drw *drw, Imlib_Image origin, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth)
-{
-	if (!origin)
-		return None;
-
-	imlib_context_set_image(origin);
-	imlib_image_set_has_alpha(1);
-	return drw_picture_create_centered_data(drw, (char *)imlib_image_get_data_for_reading_only(), srcw, srch, dstw, dsth);
-}
-
-Picture
-drw_picture_create_scaled_data(Drw *drw, char *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth)
-{
-	Imlib_Image origin;
-	Picture pic;
-
-	origin = imlib_create_image_using_data(srcw, srch, (DATA32 *)src);
-	if (!origin)
-		return None;
-
-	pic = drw_picture_create_scaled_image(drw, origin, srcw, srch, dstw, dsth);
-	imlib_context_set_image(origin);
-	imlib_free_image_and_decache();
-
-	return pic;
-}
-
-Picture
-drw_picture_create_scaled_image(Drw *drw, Imlib_Image origin, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth)
-{
-	Pixmap pm;
-	Picture pic;
-	GC gc;
-
-	if (!origin)
-		return None;
-
-	imlib_context_set_image(origin);
-	imlib_image_set_has_alpha(1);
-	Imlib_Image scaled = imlib_create_cropped_scaled_image(0, 0, srcw, srch, dstw, dsth);
-
-	if (!scaled)
-		return None;
-
-	imlib_context_set_image(scaled);
-	imlib_image_set_has_alpha(1);
-	XImage img = {
-		dstw, dsth, 0, ZPixmap, (char *)imlib_image_get_data_for_reading_only(),
-		ImageByteOrder(drw->dpy), BitmapUnit(drw->dpy), BitmapBitOrder(drw->dpy), 32,
-		32, 0, 32,
-		0, 0, 0
-	};
-
-	XInitImage(&img);
-
-	pm = XCreatePixmap(drw->dpy, drw->root, dstw, dsth, 32);
-	gc = XCreateGC(drw->dpy, pm, 0, NULL);
-	XPutImage(drw->dpy, pm, gc, &img, 0, 0, 0, 0, dstw, dsth);
-	XFreeGC(drw->dpy, gc);
-
-	pic = XRenderCreatePicture(drw->dpy, pm, XRenderFindStandardFormat(drw->dpy, PictStandardARGB32), 0, NULL);
-	imlib_context_set_image(scaled);
-	imlib_free_image_and_decache();
-	XFreePixmap(drw->dpy, pm);
 
 	return pic;
 }

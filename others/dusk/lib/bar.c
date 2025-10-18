@@ -1,6 +1,3 @@
-/* Compile-time check to make sure that the number of bar rules do not exceed the limit */
-struct NumBarRules { char TooManyBarRules__Increase_BARRULES_macro_to_fix_this[LENGTH(barrules) > BARRULES ? -1 : 1]; };
-
 void
 barhover(XEvent *e, Bar *bar)
 {
@@ -13,8 +10,8 @@ barhover(XEvent *e, Bar *bar)
 	BarArg barg = { 0, 0, 0, 0 };
 	int r;
 
-	for (r = 0; r < LENGTH(barrules); r++) {
-		br = &barrules[r];
+	for (r = 0; r < num_barrules; r++) {
+		br = &_cfg_barrules[r];
 		if (br->bar != bar->idx || (br->monitor == 'A' && m != selmon) || br->hoverfunc == NULL)
 			continue;
 		if (br->monitor != 'A' && br->monitor != -1 && br->monitor != bar->mon->num)
@@ -54,8 +51,8 @@ barpress(XButtonPressedEvent *ev, Monitor *m, Arg *arg, int *click)
 
 	for (bar = selmon->bar; bar; bar = bar->next) {
 		if (ev->window == bar->win) {
-			for (r = 0; r < LENGTH(barrules); r++) {
-				br = &barrules[r];
+			for (r = 0; r < num_barrules; r++) {
+				br = &_cfg_barrules[r];
 				if (br->bar != bar->idx || (br->monitor == 'A' && m != selmon) || br->clickfunc == NULL || !bar->s[r])
 					continue;
 				if (br->monitor != 'A' && br->monitor != -1 && br->monitor != bar->mon->num)
@@ -95,8 +92,8 @@ createbars(Monitor *m)
 {
 	const BarDef *def;
 
-	for (int i = 0; i < LENGTH(bars); i++) {
-		def = &bars[i];
+	for (int i = 0; i < num_bars; i++) {
+		def = &_cfg_bars[i];
 		if (def->monitor == m->num)
 			createbar(def, m);
 	}
@@ -107,6 +104,8 @@ createbar(const BarDef *def, Monitor *m)
 {
 	Bar *bar;
 	bar = ecalloc(1, sizeof(Bar));
+	bar->def = def;
+	bar->win = 0;
 	bar->mon = m;
 	bar->idx = def->idx;
 	bar->next = m->bar;
@@ -116,6 +115,11 @@ createbar(const BarDef *def, Monitor *m)
 	bar->showbar = 1;
 	bar->external = 0;
 	bar->borderpx = enabled(BarBorder) ? borderpx : 0;
+	bar->s = ecalloc(num_barrules, sizeof(int));
+	bar->p = ecalloc(num_barrules, sizeof(int));
+	bar->sscheme = ecalloc(num_barrules, sizeof(int));
+	bar->escheme = ecalloc(num_barrules, sizeof(int));
+
 	m->bar = bar;
 }
 
@@ -148,7 +152,7 @@ drawbarwin(Bar *bar)
 	if (!bar || !bar->win || bar->external)
 		return;
 
-	int r, w, mw, total_drawn = 0;
+	int r, w, mw, total_drawn = 0, idx;
 	int rx, lx, rw, lw; // bar size, split between left and right if a center module is added
 	const BarRule *br;
 	Monitor *lastmon;
@@ -161,7 +165,8 @@ drawbarwin(Bar *bar)
 		bar->scheme = SchemeNorm;
 
 	if (bar->borderpx) {
-		XSetForeground(drw->dpy, drw->gc, scheme[bar->scheme][ColBorder].pixel);
+		idx = (enabled(BarBorderColBg) ? ColBg : ColBorder);
+		XSetForeground(drw->dpy, drw->gc, scheme[bar->scheme][idx].pixel);
 		XFillRectangle(drw->dpy, drw->drawable, drw->gc, 0, 0, bar->bw, bar->bh);
 	}
 
@@ -176,8 +181,8 @@ drawbarwin(Bar *bar)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, lx, bar->borderpx, lw, bar->bh - 2 * bar->borderpx, 1, 1);
 
-	for (r = 0; r < LENGTH(barrules); r++) {
-		br = &barrules[r];
+	for (r = 0; r < num_barrules; r++) {
+		br = &_cfg_barrules[r];
 		bar->s[r] = 0;
 		if (br->bar != bar->idx || !br->sizefunc || (br->monitor == 'A' && bar->mon != selmon))
 			continue;
@@ -254,20 +259,11 @@ drawbarwin(Bar *bar)
 		}
 
 		if (br->drawfunc == draw_powerline) {
-
+			/* Check if the bar overlaps with another powerline or is at
+			 * the start or end of the bar, in which case we skip it. */
 			if (reducepowerline(bar, r)) {
 				bar->s[r] = 0;
 				continue;
-			}
-
-			/* If the powerline is at the start or end of the bar, then keep the powerline but
-			 * reduce the size by half. When drawn this will be made a solid block rather than
-			 * slashes or arrows. */
-			if (bar->p[r] == bar->borderpx)
-				barg.w = w = bar->s[r] = bar->s[r] / 2;
-			else if (bar->p[r] + bar->s[r] + bar->borderpx == bar->bw) {
-				bar->p[r] += bar->s[r] / 2 + bar->s[r] % 2;
-				barg.w = w = bar->s[r] = bar->s[r] / 2;
 			}
 		}
 
@@ -346,8 +342,8 @@ drawbarwin(Bar *bar)
 	}
 
 	/* Draw powerline separators */
-	for (r = 0; r < LENGTH(barrules); r++) {
-		br = &barrules[r];
+	for (r = 0; r < num_barrules; r++) {
+		br = &_cfg_barrules[r];
 		if (!bar->s[r] || br->drawfunc != draw_powerline)
 			continue;
 
@@ -368,13 +364,13 @@ drawbarwin(Bar *bar)
 	if (total_drawn == 0 && bar->showbar) {
 		bar->showbar = 0;
 		updatebarpos(bar->mon);
-		XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
+		showhidebar(bar);
 		setworkspaceareasformon(bar->mon);
 		arrangemon(bar->mon);
 	} else if (total_drawn > 0 && !bar->showbar) {
 		bar->showbar = 1;
 		updatebarpos(bar->mon);
-		XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
+		showhidebar(bar);
 		drw_map(drw, bar->win, 0, 0, bar->bw, bar->bh);
 		setworkspaceareasformon(bar->mon);
 		arrangemon(bar->mon);
@@ -398,7 +394,7 @@ drawbarmodule(const BarRule *br, int r)
 		if ((br->monitor > -1 && br->monitor != m->num) || !m->showbar)
 			continue;
 		for (bar = m->bar; bar; bar = bar->next) {
-			if (br->bar > -1 && br->bar != bar->idx)
+			if ((br->bar > -1 && br->bar != bar->idx) || bar->external)
 				continue;
 
 			if (bar->vert) {
@@ -447,8 +443,8 @@ setbarpos(Bar *bar)
 	float w, h;
 	float x, y;
 
-	int y_pad = (enabled(BarPadding) ? vertpad : 0);
-	int x_pad = (enabled(BarPadding) ? sidepad : 0);
+	int y_pad = (enabled(BarPadding) && !bar->external ? vertpad : 0);
+	int x_pad = (enabled(BarPadding) && !bar->external ? sidepad : 0);
 	Monitor *m = bar->mon;
 
 	switch (sscanf(bar->barpos, "%f%c %f%c %f%c %f%c", &x, &xCh, &y, &yCh, &w, &wCh, &h, &hCh)) {
@@ -462,7 +458,9 @@ setbarpos(Bar *bar)
 
 	bar->bx = m->mx + x_pad;
 	bar->by = m->my + y_pad;
-	if (bar->vert) {
+	if (bar->external) {
+		getbarsize(bar, &bar->bw, &bar->bh);
+	} else if (bar->vert) {
 		bar->bh = m->mh - 2 * y_pad;
 		bar->bw = bh + bar->borderpx * 2;
 	} else {
@@ -496,32 +494,31 @@ setbarpos(Bar *bar)
 		if (y >= 0)
 			bar->by = m->my + y;
 	}
+}
 
-	if (!bar->showbar || !m->showbar) {
-		if (bar->vert) {
-			bar->bx = -bar->bw;
-		} else {
-			bar->by = -bar->bh;
-		}
-	}
+void
+getbarsize(Bar *bar, int *w, int *h)
+{
+	XWindowAttributes wa;
+
+	if (!bar->win)
+		return;
+
+	if (!XGetWindowAttributes(dpy, bar->win, &wa))
+		return;
+
+	*w = wa.width;
+	*h = wa.height;
 }
 
 void
 recreatebar(Bar *bar)
 {
-	const BarDef *def;
+	const BarDef *def = bar->def;
 	Monitor *m = bar->mon;
-	int idx = bar->idx;
 	int setsystraybar = (systray && bar == systray->bar);
 	removebar(bar);
-
-	for (int i = 0; i < LENGTH(bars); i++) {
-		def = &bars[i];
-		if (def->idx == idx && def->monitor == m->num) {
-			createbar(def, m);
-			break;
-		}
-	}
+	createbar(def, m);
 
 	if (setsystraybar)
 		systray->bar = m->bar;
@@ -541,6 +538,9 @@ reducewindowarea(Monitor *m)
 	m->wh = m->mh;
 
 	for (bar = m->bar; bar; bar = bar->next) {
+		if (!bar->showbar || !bar->mon->showbar)
+			continue;
+
 		if (bar->vert) { // vertical bar
 			if (bar->bx < m->mx + m->mw / 2) { // left aligned
 				if (m->wx < bar->bx + bar->bw) {
@@ -613,9 +613,10 @@ updatebars(void)
 				bar->win = XCreateWindow(dpy, root, bar->bx, bar->by, bar->bw, bar->bh, 0, depth,
 					InputOutput, visual,
 					CWOverrideRedirect|CWBackPixel|CWBorderPixel|CWColormap|CWEventMask, &wa);
+				restackwin(bar->win, Above, wmcheckwin);
 				XDefineCursor(dpy, bar->win, cursor[CurNormal]->cursor);
-				XMapRaised(dpy, bar->win);
 				XSetClassHint(dpy, bar->win, &ch);
+				XMapWindow(dpy, bar->win);
 			}
 		}
 	}
@@ -640,13 +641,58 @@ hidebar(const Arg *arg)
 }
 
 void
+showhidebar(Bar *bar)
+{
+	int x = bar->bx;
+	int y = bar->by;
+	int w = bar->bw;
+	int h = bar->bh;
+
+	if (!bar->showbar || !bar->mon->showbar) {
+		if (bar->vert) {
+			x = -bar->bw;
+		} else {
+			y = -bar->bh;
+		}
+	}
+
+	XMoveResizeWindow(dpy, bar->win, x, y, w, h);
+}
+
+void
+teardownbars(Monitor *m)
+{
+	Bar *bar, *next;
+
+	for (bar = m->bar; bar; bar = next) {
+		next = bar->next;
+
+		if (!bar->external) {
+			XUnmapWindow(dpy, bar->win);
+			XDestroyWindow(dpy, bar->win);
+		}
+
+		if (systray && bar == systray->bar)
+			systray->bar = NULL;
+
+		free(bar->s);
+		free(bar->p);
+		free(bar->sscheme);
+		free(bar->escheme);
+		free(bar);
+	}
+
+	m->bar = NULL;
+}
+
+void
 togglebar(const Arg *arg)
 {
 	Bar *bar;
 	selmon->showbar = (selmon->showbar == 2 ? 1 : !selmon->showbar);
 	updatebarpos(selmon);
 	for (bar = selmon->bar; bar; bar = bar->next)
-		XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
+		showhidebar(bar);
 	if (!selmon->showbar && systray)
 		XMoveWindow(dpy, systray->win, -32000, -32000);
 	setworkspaceareasformon(selmon);
@@ -662,7 +708,7 @@ togglebarpadding(const Arg *arg)
 	for (Monitor *m = mons; m; m = m->next) {
 		updatebarpos(m);
 		for (bar = m->bar; bar; bar = bar->next)
-			XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
+			showhidebar(bar);
 		setworkspaceareasformon(m);
 		drawbar(m);
 		arrangemon(m);
@@ -700,4 +746,98 @@ wintobar(Window win)
 			if (bar->win == win)
 				return bar;
 	return NULL;
+}
+
+Bar *
+mapexternalbar(Window win)
+{
+	Monitor *m;
+	Bar *bar;
+
+	for (m = mons; m; m = m->next) {
+		for (bar = m->bar; bar; bar = bar->next) {
+			if (matchextbar(bar, win)) {
+				if (bar->win && bar->win != win) {
+					XUnmapWindow(dpy, bar->win);
+					XDestroyWindow(dpy, bar->win);
+				}
+
+				bar->win = win;
+				bar->showbar = 1;
+				bar->external = 1;
+				bar->borderpx = 0;
+				updatebarpos(m);
+				showhidebar(bar);
+				setworkspaceareasformon(m);
+				restackwin(win, Above, wmcheckwin);
+				XMapWindow(dpy, win);
+				restack(m->selws);
+				arrangemon(m);
+				drawbars();
+				return bar;
+			}
+		}
+	}
+	return NULL;
+}
+
+int
+matchextbar(Bar *bar, Window win)
+{
+	if (bar->win == win)
+		return 1;
+
+	const BarDef *def = bar->def;
+
+	if (def->extclass == NULL && def->extinstance == NULL && def->extname == NULL)
+		return 0;
+
+	const char *class, *instance;
+	XClassHint ch = { NULL, NULL };
+	if (!XGetClassHint(dpy, win, &ch))
+		return 0;
+
+	char *name = NULL;
+	int matched = 0;
+	class    = ch.res_class ? ch.res_class : broken;
+	instance = ch.res_name  ? ch.res_name  : broken;
+
+	if (!gettextprop(win, netatom[NetWMName], &name))
+		if (!gettextprop(win, XA_WM_NAME, &name))
+			name = strdup(broken);
+
+	if (enabled(Debug)) {
+		fprintf(stderr, "matchextbar: checking new window %s (%ld), class = '%s', instance = '%s'\n", name, win, class, instance);
+		fprintf(stderr, "             against external bar %d monitor %d class = '%s', instance = '%s', name = '%s'\n",
+			def->idx,
+			def->monitor,
+			NVL(def->extclass, "NULL"),
+			NVL(def->extinstance, "NULL"),
+			NVL(def->extname, "NULL")
+		);
+	}
+
+	matched = 1;
+
+	if (def->extclass != NULL && strcmp(def->extclass, class))
+		matched = 0;
+
+	if (def->extinstance != NULL && strcmp(def->extinstance, instance))
+		matched = 0;
+
+	if (def->extname != NULL && strcmp(def->extname, name))
+		matched = 0;
+
+	if (ch.res_class)
+		XFree(ch.res_class);
+	if (ch.res_name)
+		XFree(ch.res_name);
+
+	free(name);
+
+	if (enabled(Debug)) {
+		fprintf(stderr, "matchextbar: window %ld %s a match for external bar %d monitor %d\n", win, matched ? "is" : "is not", def->idx, def->monitor);
+	}
+
+	return matched;
 }

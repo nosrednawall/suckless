@@ -39,6 +39,7 @@ void drw_free(Drw *drw);
 
 /* Fnt abstraction */
 Fnt *drw_fontset_create(Drw* drw, const char *fonts[], size_t fontcount);
+Fnt *drw_font_add(Drw* drw, const char *font);
 void drw_fontset_free(Fnt* set);
 unsigned int drw_fontset_getwidth(Drw *drw, const char *text);
 unsigned int drw_fontset_getwidth_clamp(Drw *drw, const char *text, unsigned int n);
@@ -75,9 +76,7 @@ void drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h)
 
 /* Picture functions */
 void drw_pic(Drw *drw, int x, int y, unsigned int w, unsigned int h, Picture pic);
-Picture drw_picture_create_resized_data(Drw *drw, char *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
-Picture drw_picture_create_resized_image(Drw *drw, Imlib_Image origin, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
-Picture drw_picture_create_centered_data(Drw *drw, char *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
-Picture drw_picture_create_centered_image(Drw *drw, Imlib_Image origin, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
-Picture drw_picture_create_scaled_data(Drw *drw, char *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
-Picture drw_picture_create_scaled_image(Drw *drw, Imlib_Image origin, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
+
+Picture drw_picture_create_from_argb32(Drw *drw, const uint32_t *data, unsigned int w, unsigned int h);
+Picture drw_picture_scale_from_argb32(Drw *drw, const uint32_t *src, unsigned int srcw, unsigned int srch, unsigned int dstw, unsigned int dsth);
+uint32_t *bilinear_scale(const uint32_t *src, int sw, int sh, unsigned int dw, unsigned int dh);

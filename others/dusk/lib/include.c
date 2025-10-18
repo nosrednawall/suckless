@@ -1,5 +1,5 @@
 /* Utilities */
-#include "defaults.h"
+#include "conf.c"
 #include "lookup.c"
 
 /* Bar functionality */
@@ -12,6 +12,7 @@
 #include "bar_alpha.c"
 #include "bar.c"
 #include "bar_ltsymbol.c"
+#include "bar_config_error.c"
 #include "bar_flexwintitle.c"
 #include "bar_status2d.c"
 #include "bar_wintitle_floating.c"
@@ -44,13 +45,6 @@
 #include "focusmaster.c"
 #include "focusurgent.c"
 #include "inplacerotate.c"
-#include "ipc.c"
-#ifdef VERSION
-#include "ipc/IPCClient.c"
-#include "ipc/yajl_dumps.c"
-#include "ipc/ipc.c"
-#include "ipc/util.c"
-#endif
 #include "killunsel.c"
 #include "mark.c"
 #include "maximize.c"
@@ -87,5 +81,13 @@
 #include "xban.c"
 #endif
 
+/* Debug */
+#include "x11_debug.c"
+
 /* Layouts */
 #include "layout_flextile-deluxe.c"
+
+/* dbus */
+#ifdef HAVE_DBUS
+#include "dbus_server.c"
+#endif

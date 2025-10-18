@@ -1,7 +1,7 @@
 void
 dragmfact(const Arg *arg)
 {
-	unsigned int n;
+	int n;
 	int py, px; // pointer coordinates
 	int ax, ay, aw, ah; // area position, width and height
 	int oh, ov, ih, iv;
@@ -101,7 +101,7 @@ dragmfact(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / DRAGMFACT_HZ))
+			if ((ev.xmotion.time - lasttime) <= (1000 / dragmfact_hz))
 				continue;
 			if (lasttime != 0) {
 				px = ev.xmotion.x;

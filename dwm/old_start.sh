@@ -2,8 +2,6 @@
 
 # Carrega configuracoes do tema
 source /home/anderson/.theme_selected
-source /home/anderson/.bashrc
-xrdb -merge ~/.Xresources
 
 # Executa o script para verificar se o segundo monitor está ativo
 if [ ! -f ~/.monitor_config.sh ]
@@ -31,7 +29,7 @@ is_running() {
 }
 
 # Polkit - para autenticar programas
-# is_running "lxpolkit" || lxpolkit &
+is_running "lxpolkit" || lxpolkit &
 
 # Inicia o xautolock com as configurações personalizadas se não estiver rodando
 is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/dwm/dwm-slock-personalizado -detectsleep &
@@ -43,11 +41,17 @@ is_running "picom" || picom -b
 is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
 
 # Inicia o copyq se não estiver rodando
-is_running "copyq" || env QT_QPA_PLATFORM=xcb copyq
+# is_running "copyq" || env QT_QPA_PLATFORM=xcb copyq
 #is_running "copyq" || flatpak run com.github.hluk.copyq &
 
+# Inicia o parceallite
+# is_running "parcellite" || parcellite &
+
+# is_running "clipit" || clipit &
+
+
 # Inicia o daemon do emacs se não estiver rodando
-is_running "emacs --daemon" || emacs --daemon &
+is_running "emacs" || emacs --daemon &
 
 #is_running "solaar" || /usr/bin/solaar -w hide &
 #TECLADO_USA_CONECTADO=$(solaar show 521B6154 | grep "unknown (device is offline)" -ic)

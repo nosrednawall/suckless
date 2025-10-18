@@ -30,7 +30,6 @@ draw_systray(Bar *bar, BarArg *a)
 	}
 
 	XSetWindowAttributes wa;
-	XWindowChanges wc;
 	Client *i, *next;
 	unsigned int w;
 
@@ -41,9 +40,7 @@ draw_systray(Bar *bar, BarArg *a)
 	if (!systray && !initsystray())
 		return 0;
 
-	wc.stack_mode = Above;
-	wc.sibling = bar->win;
-	XConfigureWindow(dpy, systray->win, CWSibling|CWStackMode, &wc);
+	restackwin(systray->win, Above, bar->win);
 	if (enabled(SystrayNoAlpha)) {
 		XSetWindowBackground(dpy, systray->win, scheme[a->scheme][ColBg].pixel);
 		XClearWindow(dpy, systray->win);
@@ -244,8 +241,11 @@ updatesystrayiconstate(Client *i, XPropertyEvent *ev)
 	long flags;
 	int code = 0;
 
-	if (enabled(Debug) || DEBUGGING(i))
-		fprintf(stderr, "updatesystrayiconstate: ev->atom = %ld (%s), xatom[XembedInfo] = %ld\n", ev->atom, XGetAtomName(dpy, ev->atom), xatom[XembedInfo]);
+	if (enabled(Debug) || DEBUGGING(i)) {
+		char *atom_name = XGetAtomName(dpy, ev->atom);
+		fprintf(stderr, "updatesystrayiconstate: ev->atom = %ld (%s), xatom[XembedInfo] = %ld\n", ev->atom, atom_name, xatom[XembedInfo]);
+		XFree(atom_name);
+	}
 
 	if (!systray || !i || ev->atom != xatom[XembedInfo] ||
 			!(flags = getatomprop(i, xatom[XembedInfo], xatom[XembedInfo])))

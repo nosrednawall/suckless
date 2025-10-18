@@ -48,7 +48,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -69,6 +69,7 @@ const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "100x25", NULL };
 const char *spcmd2[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
 const char *spcmd3[]  = {"st", "-n", "spnmtui", "-g", "100x25", "-e", "nmtui", NULL };
 const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "rmpc", NULL };
+//const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "ncmpcpp", NULL };
 const char *spcmd5[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
 
 static Sp scratchpads[] = {
@@ -260,7 +261,7 @@ static const char *termcmd[]  = { "st", NULL };
 #define STATUSBAR "dwmblocks"
 #include <X11/XF86keysym.h>
 // Atalho para chamar os scripts
-#define PATH(name) "$HOME/.config/suckless/scripts/"name
+#define PATH(name) "$HOME/.local/bin/"name
 
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
@@ -431,7 +432,7 @@ static const Key keys[] = {
 	/*Lancamento Programas*/
 	{ MODKEY,						XK_w,							spawn,			SHCMD("x-www-browser") },
 	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
-	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
+	{ MODKEY,						XK_f,							spawn,			SHCMD("pcmanfm" ) },
 	{ ControlMask|Mod1Mask,         XK_d,                           spawn,			SHCMD("killall dwmblocks ; dwmblocks" ) },
 
 	TAGKEYS(                        XK_1,                                  0)

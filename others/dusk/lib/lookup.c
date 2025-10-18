@@ -6,6 +6,14 @@ clientptr(Client *c)
 	return tc;
 }
 
+Client **
+stackptr(Client *c)
+{
+	Client **tc;
+	for (tc = &c->ws->stack; *tc && *tc != c; tc = &(*tc)->snext);
+	return tc;
+}
+
 /* Calculates the position of a client in a workspace.
  *
  *   nth_client   - the position of the given client in the client list
@@ -123,6 +131,28 @@ nexttiled(Client *c)
 }
 
 Client *
+nextwsclient(Client *c)
+{
+	Workspace *ws = c->ws;
+	Client *next = c->next;
+
+	if (!next) {
+		for (ws = NVL(ws->next, workspaces); !next; ws = NVL(ws->next, workspaces)) {
+			next = ws->clients;
+		}
+	}
+
+	return next;
+}
+
+Client *
+nextvisible(Client *c)
+{
+	for (; c && !ISVISIBLE(c); c = c->next);
+	return c;
+}
+
+Client *
 nexthidden(Client *c)
 {
 	for (; c && !HIDDEN(c); c = c->next);
@@ -142,7 +172,7 @@ nthmaster(Client *c, int n, int reduce)
 	if (!c)
 		return NULL;
 
-	return nthtiled(c, MIN(n, c->ws->nmaster), 1);
+	return nthtiled(c, MIN(n, c->ws->nmaster), reduce);
 }
 
 Client *
@@ -151,7 +181,7 @@ nthstack(Client *c, int n, int reduce)
 	if (!c)
 		return NULL;
 
-	return nthtiled(c, n + c->ws->nmaster, 1);
+	return nthtiled(c, n + c->ws->nmaster, reduce);
 }
 
 Client *
@@ -160,6 +190,20 @@ nthtiled(Client *c, int n, int reduce)
 	Client *prev = NULL;
 	int i;
 	for (i = 1, c = nexttiled(c); c && (i++ < n); prev = c, c = nexttiled(c->next));
+
+	if (!c && reduce) {
+		c = prev;
+	}
+
+	return c;
+}
+
+Client *
+nthvisible(Client *c, int n, int reduce)
+{
+	Client *prev = NULL;
+	int i;
+	for (i = 1, c = nextvisible(c); c && (i++ < n); prev = c, c = nextvisible(c->next));
 
 	if (!c && reduce) {
 		c = prev;
@@ -218,6 +262,30 @@ swap(Client *a, Client *b)
 	Client **bp = clientptr(b);
 	Client *an = a->next;
 	Client *bn = b->next;
+
+	if (a->ws != b->ws) {
+		Client **asp = stackptr(a);
+		Client **bsp = stackptr(b);
+		Client *asn = a->snext;
+		Client *bsn = b->snext;
+		Workspace *aws = a->ws;
+		Workspace *bws = b->ws;
+
+		b->snext = asn;
+		a->snext = bsn;
+		*asp = b;
+		*bsp = a;
+		a->ws = bws;
+		b->ws = aws;
+
+		if (aws->sel == a) {
+			aws->sel = b;
+		}
+
+		if (bws->sel == b) {
+			bws->sel = a;
+		}
+	}
 
 	if (bn == a) {
 		b->next = an;

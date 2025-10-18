@@ -15,7 +15,7 @@
 // Control whether a trailing delimiter should be appended to the status.
 #define TRAILING_DELIMITER 0
 
-#define PATH(name) "/home/anderson/.config/suckless/scripts/"name
+#define PATH(name) "~/.local/bin/"name
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)             \

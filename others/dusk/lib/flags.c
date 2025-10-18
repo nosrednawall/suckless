@@ -51,81 +51,31 @@ toggleclientflag(const Arg *arg)
 	arrangews(selws);
 }
 
-#define map(N,F) else if (!strcmp(name, N)) return F;
-
 const uint64_t
 getflagbyname(const char *name)
 {
+	int i;
+
 	if (!name)
 		return 0;
-	map("AlwaysOnTop", AlwaysOnTop)
-	map("Fixed", Fixed)
-	map("Floating", Floating)
-	map("Urgent", Urgent)
-	map("NeverFocus", NeverFocus)
-	map("FullScreen", FullScreen)
-	map("FakeFullScreen", FakeFullScreen)
-	map("RestoreFakeFullScreen", RestoreFakeFullScreen)
-	map("Centered", Centered)
-	map("Permanent", Permanent)
-	map("Hidden", Hidden)
-	map("Sticky", Sticky)
-	map("Terminal", Terminal)
-	map("NoSwallow", NoSwallow)
-	map("Locked", Locked)
-	map("Transient", Transient)
-	map("OnlyModButtons", OnlyModButtons)
-	map("Disallowed", Disallowed)
-	map("AttachMaster", AttachMaster)
-	map("AttachAbove", AttachAbove)
-	map("AttachBelow", AttachBelow)
-	map("AttachAside", AttachAside)
-	map("AttachBottom", AttachBottom)
-	map("SwitchWorkspace", SwitchWorkspace)
-	map("EnableWorkspace", EnableWorkspace)
-	map("RevertWorkspace", RevertWorkspace)
-	map("IgnoreCfgReq", IgnoreCfgReq)
-	map("IgnoreCfgReqPos", IgnoreCfgReqPos)
-	map("IgnoreCfgReqSize", IgnoreCfgReqSize)
-	map("IgnorePropTransientFor", IgnorePropTransientFor)
-	map("IgnoreSizeHints", IgnoreSizeHints)
-	map("IgnoreMinimumSizeHints", IgnoreMinimumSizeHints)
-	map("IgnoreDecorationHints", IgnoreDecorationHints)
-	map("NoBorder", NoBorder)
-	map("FlagPlaceholder0x400000000", FlagPlaceholder0x400000000)
-	map("SemiScratchpad", SemiScratchpad)
-	map("RespectSizeHints", RespectSizeHints)
-	map("RioDrawNoMatchPID", RioDrawNoMatchPID)
-	map("FlagPlaceholder0x200000000", FlagPlaceholder0x200000000)
-	map("SteamGame", SteamGame)
-	map("NoFocusOnNetActive", NoFocusOnNetActive)
-	map("ScratchpadStayOnMon", ScratchpadStayOnMon)
-	map("Lower", Lower)
-	map("Raise", Raise)
-	map("SkipTaskbar", SkipTaskbar)
-	map("ReapplyRules", ReapplyRules)
-	map("CfgReqPosRelativeToMonitor", CfgReqPosRelativeToMonitor)
-	map("SwallowRetainSize", SwallowRetainSize)
-	map("NoWarp", NoWarp)
-	map("SwallowNoInheritFullScreen", SwallowNoInheritFullScreen)
-	map("FlagPlaceholder0x4000000000000", FlagPlaceholder0x4000000000000)
-	map("FlagPlaceholder0x8000000000000", FlagPlaceholder0x8000000000000)
-	map("FlagPlaceholder0x10000000000000", FlagPlaceholder0x10000000000000)
-	map("FlagPlaceholder0x20000000000000", FlagPlaceholder0x20000000000000)
-	map("FlagPlaceholder0x40000000000000", FlagPlaceholder0x40000000000000)
-	map("RefreshSizeHints", RefreshSizeHints)
-	map("Debug", Debug)
-	map("Invisible", Invisible)
-	map("MoveResize", MoveResize)
-	map("MovePlace", MovePlace)
-	map("NeedResize", NeedResize)
-	map("Ruled", Ruled)
-	map("Marked", Marked)
-	map("Unmanaged", Unmanaged)
 
-	if (enabled(Debug))
-		fprintf(stderr, "getflagbyname for name '%s' not found\n", name);
+	for (i = 0; flag_names[i].name != NULL; i++) {
+		if (strcmp(flag_names[i].name, name) == 0)
+			return flag_names[i].value;
+	}
+
 	return 0;
 }
 
-#undef map
+const char *
+getnamebyflag(const uint64_t flag)
+{
+	int i;
+
+	for (i = 0; flag_names[i].name != NULL; i++) {
+		if (flag_names[i].value == flag)
+			return flag_names[i].name;
+	}
+
+	return 0;
+}

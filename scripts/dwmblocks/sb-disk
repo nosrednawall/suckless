@@ -13,8 +13,8 @@ fi
 source ~/.theme_selected
 
 # carrega informacoes
-percent_used=$(df -h | grep -E '[/]$' | awk '{print$5}' | sed 's/%//')
-
+# percent_used=$(df -h | grep -E '[/]$' | awk '{print$5}' | sed 's/%//')
+percent_used=$(df -h / | awk 'NR==2 {gsub(/%/,"",$5); print $5}')
 # Saída formatada
 
 # Apresentacao condicionada

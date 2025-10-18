@@ -9,7 +9,7 @@ dragfact(const Arg *arg)
 	Workspace *ws = selws;
 	XEvent ev;
 	Time lasttime = 0;
-	unsigned int n = numtiled(ws);
+	int n = numtiled(ws);
 
 	if (!(c = ws->sel) || !n || !ws->layout->arrange)
 		return;
@@ -53,7 +53,7 @@ dragfact(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / DRAGFACT_HZ))
+			if ((ev.xmotion.time - lasttime) <= (1000 / dragfact_hz))
 				continue;
 			lasttime = ev.xmotion.time;
 
