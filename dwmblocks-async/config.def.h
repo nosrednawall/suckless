@@ -15,34 +15,49 @@
 // Control whether a trailing delimiter should be appended to the status.
 #define TRAILING_DELIMITER 0
 
-#define PATH(name) "~/.local/bin/"name
+// Path for scripts - now using /usr/local/bin
+#define SCRIPT_PATH(name) "~/.local/bin/dwmblocks/"name
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)             \
-    /* X("", PATH("dwmblocks/sb-mpd"),       1, 1)  */  \
-    X("", PATH("dwmblocks/sb-potato-c"),     1, 20)    \
-    X("", PATH("dwmblocks/sb-players"),      1, 19)   \
-    X("", PATH("dwmblocks/sb-weather"),     600,17)    \
-    X("", PATH("dwmblocks/sb-update"),      6000,2)     \
-    X("", PATH("dwmblocks/sb-loadavg"),     10,  3)     \
-    X("", PATH("dwmblocks/sb-memory"),      10,  4)     \
-    X("", PATH("dwmblocks/sb-disk"),        10,  5)    \
-    X("", PATH("dwmblocks/sb-vpn"),         10, 16)    \
-    X("", PATH("dwmblocks/sb-wifi"),        10,  6)     \
-    X("", PATH("dwmblocks/sb-ethernet"),    10,  7)     \
-    X("", PATH("dwmblocks/sb-brightness"),  0,   8)     \
-    X("", PATH("dwmblocks/sb-volume"),      0,   9)     \
-    X("", PATH("dwmblocks/sb-mic"),         0,  10)    \
-    X("", PATH("dwmblocks/sb-record"),      10, 11)    \
-    X("", PATH("dwmblocks/sb-keyboard"),    1,  12)    \
-    X("", PATH("dwmblocks/sb-battery"),     30, 13)    \
-    X("", PATH("dwmblocks/sb-moon"),        6000,18)    \
-    X("", PATH("dwmblocks/sb-date"),        600,14)    \
-    X("", PATH("dwmblocks/sb-hour"),        1,  15)
-
+    /* X("", SCRIPT_PATH("sb-mpd"),       1, 1)  */  \
+    X("", SCRIPT_PATH("sb-potato-c"),     1, 20)    \
+    X("", SCRIPT_PATH("sb-players"),      1, 19)   \
+    X("", SCRIPT_PATH("sb-weather"),     600, 17)   \
+    X("", SCRIPT_PATH("sb-update"),     6000, 2)    \
+    X("", SCRIPT_PATH("sb-loadavg"),      10, 3)    \
+    X("", SCRIPT_PATH("sb-memory"),       10, 4)    \
+    X("", SCRIPT_PATH("sb-disk"),         10, 5)    \
+    X("", SCRIPT_PATH("sb-vpn"),          10, 16)   \
+    X("", SCRIPT_PATH("sb-wifi"),         10, 6)    \
+    X("", SCRIPT_PATH("sb-ethernet"),     10, 7)    \
+    X("", SCRIPT_PATH("sb-brightness"),    0, 8)    \
+    X("", SCRIPT_PATH("sb-volume"),        0, 9)    \
+    X("", SCRIPT_PATH("sb-mic"),           0, 10)   \
+    X("", SCRIPT_PATH("sb-record"),       10, 11)   \
+    X("", SCRIPT_PATH("sb-keyboard"),      1, 12)   \
+    X("", SCRIPT_PATH("sb-battery"),      30, 13)   \
+    X("", SCRIPT_PATH("sb-moon"),        6000, 18)  \
+    X("", SCRIPT_PATH("sb-date"),        600, 14)   \
+    X("", SCRIPT_PATH("sb-hour"),          1, 15)
 
 /*
-kill -43 $(pidof dwmblocks) //atualiza o block numero 15
-kill -52 $(pidof dwmblocks) //atualiza o block numero 18
+Comandos para atualizar blocos específicos:
+kill -43 $(pidof dwmblocks)  // atualiza o bloco 15 (hora)
+kill -52 $(pidof dwmblocks)  // atualiza o bloco 18 (lua)
 
+Sinais correspondentes:
+2: sb-update     15: sb-hour
+3: sb-loadavg    16: sb-vpn  
+4: sb-memory     17: sb-weather
+5: sb-disk       18: sb-moon
+6: sb-wifi       19: sb-players
+7: sb-ethernet   20: sb-potato-c
+8: sb-brightness
+9: sb-volume
+10: sb-mic
+11: sb-record
+12: sb-keyboard
+13: sb-battery
+14: sb-date
 */
