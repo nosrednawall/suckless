@@ -102,7 +102,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 0.9;
 float alphaUnfocused = 0.6;
 
 /*
@@ -113,30 +113,26 @@ float alphaUnfocused = 0.6;
 char *xdndescchar = " !\"#$&'()*;<>?[\\]^`{|}~";
 
 /* Terminal colors (16 first used in escape sequence) */
-#include "themes/solarized_dark.h"
+#include "themes/gruvbox_dark.h"
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
 
-unsigned int bg = 0, bgUnfocused = 16;
+//unsigned int bg = 8, bgUnfocused = 16;
+unsigned int bg = 0;
+unsigned int bgUnfocused = 16;
+unsigned int selectionfg = 7;
+unsigned int selectionbg = 4;
 
-/* está no tema
-unsigned int defaultbg = 0;
-unsigned int defaultfg = 259;
-unsigned int defaultcs = 256;
-unsigned int defaultrcs = 257;
-*/
-
-unsigned int selectionfg = 258;
-unsigned int selectionbg = 259;
 /* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
 /* Else if 1 keep original foreground-color of each cell => more colors :) */
 static int ignoreselfg = 1;
+
 /* Foreground and background color of search results */
 unsigned int highlightfg = 15;
-unsigned int highlightbg = 160;
+unsigned int highlightbg = 1;
 
 /*
  * Default shape of cursor
