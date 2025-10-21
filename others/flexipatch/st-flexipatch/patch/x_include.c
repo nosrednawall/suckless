@@ -8,6 +8,9 @@
 #if BOXDRAW_PATCH
 #include "boxdraw.c"
 #endif
+#if DRAG_AND_DROP_PATCH
+#include "drag-n-drop.c"
+#endif
 #if OPENCOPIED_PATCH
 #include "opencopied.c"
 #endif
@@ -35,6 +38,9 @@
 #elif NETWMICON_LEGACY_PATCH
 #include "netwmicon_legacy.c"
 #endif
+#if OPEN_SELECTED_TEXT_PATCH
+#include "openselectedtext.c"
+#endif
 #if OPENURLONCLICK_PATCH
 #include "openurlonclick.c"
 #endif
@@ -46,4 +52,7 @@
 #endif
 #if XRESOURCES_PATCH
 #include "xresources.c"
+#endif
+#if OSC133_PATCH
+#include "osc133.c"
 #endif

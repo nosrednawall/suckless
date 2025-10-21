@@ -29,6 +29,10 @@
 #define IS_TRUECOL(x)		(1 << 24 & (x))
 #define HISTSIZE      2000
 
+#define HEX_TO_INT(c)		((c) >= '0' && (c) <= '9' ? (c) - '0' : \
+				(c) >= 'a' && (c) <= 'f' ? (c) - 'a' + 10 : \
+				(c) >= 'A' && (c) <= 'F' ? (c) - 'A' + 10 : -1)
+
 enum glyph_attribute {
 	ATTR_NULL           = 0,
 	ATTR_SET            = 1 << 0,
@@ -43,8 +47,11 @@ enum glyph_attribute {
 	ATTR_WRAP           = 1 << 9,
 	ATTR_WIDE           = 1 << 10,
 	ATTR_WDUMMY         = 1 << 11,
+	ATTR_SELECTED       = 1 << 12,
 	ATTR_LIGA           = 1 << 15,
+	ATTR_HIGHLIGHT      = 1 << 17,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
+	ATTR_FTCS_PROMPT    = 1 << 18,  /* OSC 133 ; A ST */
 };
 
 /* Used to control which screen(s) keybindings and mouse shortcuts apply to. */
@@ -112,9 +119,10 @@ typedef struct {
 	Line *line;   /* screen */
 	Line *alt;    /* alternate screen */
 	Line hist[HISTSIZE]; /* history buffer */
-	int histi;    /* history index */
-	int histn;    /* number of history entries */
-	int scr;      /* scroll back */
+	int histi;           /* history index */
+	int histf;           /* nb history available */
+	int scr;             /* scroll back */
+	int wrapcwidth[2];   /* used in updating WRAPNEXT when resizing */
 	int *dirty;   /* dirtyness of lines */
 	TCursor c;    /* cursor */
 	int ocx;      /* old cursor col */
@@ -128,6 +136,7 @@ typedef struct {
 	int icharset; /* selected charset for sequence */
 	int *tabs;
 	Rune lastc;   /* last printed char outside of sequence, 0 if control */
+	char* cwd;    /* current working directory */
 } Term;
 
 typedef union {
@@ -142,6 +151,7 @@ typedef union {
 typedef struct {
 	int tw, th; /* tty width and height */
 	int w, h; /* window width and height */
+	int hborderpx, vborderpx;
 	int ch; /* char height */
 	int cw; /* char width  */
 	int mode; /* window state/mode flags */
@@ -156,6 +166,13 @@ typedef struct {
 	GlyphFontSpec *specbuf; /* font spec buffer used for rendering */
 	GlyphFontSeq *specseq;
 	Atom xembed, wmdeletewin, netwmname, netwmiconname, netwmpid;
+	Atom XdndTypeList, XdndSelection, XdndEnter, XdndPosition, XdndStatus,
+	     XdndLeave, XdndDrop, XdndFinished, XdndActionCopy, XdndActionMove,
+	     XdndActionLink, XdndActionAsk, XdndActionPrivate, XtextUriList,
+	     XtextPlain, XdndAware;
+	int64_t XdndSourceWin, XdndSourceVersion;
+	int32_t XdndSourceFormat;
+	Atom netwmstate, netwmfullscreen;
 	Atom netwmicon;
 	struct {
 		XIM xim;
@@ -277,6 +294,8 @@ extern char *scroll;
 extern char *stty_args;
 extern char *vtiden;
 extern wchar_t *worddelimiters;
+extern wchar_t *kbds_sdelim;
+extern wchar_t *kbds_ldelim;
 extern int allowaltscreen;
 extern int allowwindowops;
 extern char *termname;
@@ -286,6 +305,7 @@ extern unsigned int defaultbg;
 extern unsigned int defaultcs;
 
 extern float alpha;
+extern float alphaUnfocused;
 
 extern DC dc;
 extern XWindow xw;

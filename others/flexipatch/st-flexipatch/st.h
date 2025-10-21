@@ -37,6 +37,12 @@
 #define HISTSIZE      2000
 #endif // SCROLLBACK_PATCH | REFLOW_PATCH
 
+#if DRAG_AND_DROP_PATCH
+#define HEX_TO_INT(c)		((c) >= '0' && (c) <= '9' ? (c) - '0' : \
+				(c) >= 'a' && (c) <= 'f' ? (c) - 'a' + 10 : \
+				(c) >= 'A' && (c) <= 'F' ? (c) - 'A' + 10 : -1)
+#endif // DRAG_AND_DROP_PATCH
+
 enum glyph_attribute {
 	ATTR_NULL           = 0,
 	ATTR_SET            = 1 << 0,
@@ -70,6 +76,9 @@ enum glyph_attribute {
 	ATTR_HIGHLIGHT      = 1 << 17,
 	#endif // KEYBOARDSELECT_PATCH
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
+	#if OSC133_PATCH
+	ATTR_FTCS_PROMPT    = 1 << 18,  /* OSC 133 ; A ST */
+	#endif // OSC133_PATCH
 };
 
 #if SIXEL_PATCH
@@ -202,6 +211,9 @@ typedef struct {
 	ImageList *images_alt; /* sixel images for alternate screen */
 	#endif // SIXEL_PATCH
 	Rune lastc;   /* last printed char outside of sequence, 0 if control */
+	#if OSC7_PATCH
+	char* cwd;    /* current working directory */
+	#endif // OSC7_PATCH
 } Term;
 
 typedef union {
@@ -241,6 +253,14 @@ typedef struct {
 	GlyphFontSeq *specseq;
 	#endif // LIGATURES_PATCH
 	Atom xembed, wmdeletewin, netwmname, netwmiconname, netwmpid;
+	#if DRAG_AND_DROP_PATCH
+	Atom XdndTypeList, XdndSelection, XdndEnter, XdndPosition, XdndStatus,
+	     XdndLeave, XdndDrop, XdndFinished, XdndActionCopy, XdndActionMove,
+	     XdndActionLink, XdndActionAsk, XdndActionPrivate, XtextUriList,
+	     XtextPlain, XdndAware;
+	int64_t XdndSourceWin, XdndSourceVersion;
+	int32_t XdndSourceFormat;
+	#endif // DRAG_AND_DROP_PATCH
 	#if FULLSCREEN_PATCH
 	Atom netwmstate, netwmfullscreen;
 	#endif // FULLSCREEN_PATCH

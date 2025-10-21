@@ -318,6 +318,7 @@ void
 zoomabs(const Arg *arg)
 {
 	#if SIXEL_PATCH
+	int i;
 	ImageList *im;
 	#endif // SIXEL_PATCH
 
@@ -328,14 +329,16 @@ zoomabs(const Arg *arg)
 	#endif // FONT2_PATCH
 
 	#if SIXEL_PATCH
-	/* deleting old pixmaps forces the new scaled pixmaps to be created */
-	for (im = term.images; im; im = im->next) {
-		if (im->pixmap)
-			XFreePixmap(xw.dpy, (Drawable)im->pixmap);
-		if (im->clipmask)
-			XFreePixmap(xw.dpy, (Drawable)im->clipmask);
-		im->pixmap = NULL;
-		im->clipmask = NULL;
+	/* delete old pixmaps so that xfinishdraw() can create new scaled ones */
+	for (im = term.images, i = 0; i < 2; i++, im = term.images_alt) {
+		for (; im; im = im->next) {
+			if (im->pixmap)
+				XFreePixmap(xw.dpy, (Drawable)im->pixmap);
+			if (im->clipmask)
+				XFreePixmap(xw.dpy, (Drawable)im->clipmask);
+			im->pixmap = NULL;
+			im->clipmask = NULL;
+		}
 	}
 	#endif // SIXEL_PATCH
 
@@ -599,6 +602,13 @@ selnotify(XEvent *e)
 
 	if (property == None)
 		return;
+
+	#if DRAG_AND_DROP_PATCH
+	if (property == xw.XdndSelection) {
+		xdndsel(e);
+		return;
+	}
+	#endif // DRAG_AND_DROP_PATCH
 
 	do {
 		if (XGetWindowProperty(xw.dpy, xw.win, property, ofs,
@@ -1127,7 +1137,7 @@ xhints(void)
 	sizeh->flags = PSize | PResizeInc | PBaseSize | PMinSize;
 	sizeh->height = win.h;
 	sizeh->width = win.w;
-	#if ANYSIZE_PATCH || ANYSIZE_SIMPLE_PATCH
+	#if ANYSIZE_PATCH && !DYNAMIC_PADDING_PATCH || ANYSIZE_SIMPLE_PATCH
 	sizeh->height_inc = 1;
 	sizeh->width_inc = 1;
 	#else
@@ -1423,7 +1433,7 @@ xinit(int cols, int rows)
 	#elif !SWAPMOUSE_PATCH
 	Cursor cursor;
 	#endif // HIDECURSOR_PATCH
-	Window parent;
+	Window parent, root;
 	pid_t thispid = getpid();
 	#if !SWAPMOUSE_PATCH
 	XColor xmousefg, xmousebg;
@@ -1521,11 +1531,12 @@ xinit(int cols, int rows)
 	xw.attrs.event_mask |= PointerMotionMask;
 	#endif // OPENURLONCLICK_PATCH
 
+	root = XRootWindow(xw.dpy, xw.scr);
 	#if !ALPHA_PATCH
 	if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0))))
-		parent = XRootWindow(xw.dpy, xw.scr);
+		parent = root;
 	#endif // ALPHA_PATCH
-	xw.win = XCreateWindow(xw.dpy, parent, xw.l, xw.t,
+	xw.win = XCreateWindow(xw.dpy, root, xw.l, xw.t,
 			#if ALPHA_PATCH
 			win.w, win.h, 0, xw.depth, InputOutput,
 			#else
@@ -1533,6 +1544,8 @@ xinit(int cols, int rows)
 			#endif // ALPHA_PATCH
 			xw.vis, CWBackPixel | CWBorderPixel | CWBitGravity
 			| CWEventMask | CWColormap, &xw.attrs);
+	if (parent != root)
+		XReparentWindow(xw.dpy, xw.win, parent, xw.l, xw.t);
 
 	memset(&gcvalues, 0, sizeof(gcvalues));
 	gcvalues.graphics_exposures = False;
@@ -1545,7 +1558,7 @@ xinit(int cols, int rows)
 	#endif // SINGLE_DRAWABLE_BUFFER_PATCH
 	dc.gc = XCreateGC(xw.dpy, xw.buf, GCGraphicsExposures, &gcvalues);
 	#else
-	dc.gc = XCreateGC(xw.dpy, parent, GCGraphicsExposures,
+	dc.gc = XCreateGC(xw.dpy, xw.win, GCGraphicsExposures,
 			&gcvalues);
 	#if SINGLE_DRAWABLE_BUFFER_PATCH
 	xw.buf = xw.win;
@@ -1649,6 +1662,28 @@ xinit(int cols, int rows)
 	xw.netwmstate = XInternAtom(xw.dpy, "_NET_WM_STATE", False);
 	xw.netwmfullscreen = XInternAtom(xw.dpy, "_NET_WM_STATE_FULLSCREEN", False);
 	#endif // FULLSCREEN_PATCH
+
+	#if DRAG_AND_DROP_PATCH
+	/* Xdnd setup */
+	xw.XdndTypeList = XInternAtom(xw.dpy, "XdndTypeList", 0);
+	xw.XdndSelection = XInternAtom(xw.dpy, "XdndSelection", 0);
+	xw.XdndEnter = XInternAtom(xw.dpy, "XdndEnter", 0);
+	xw.XdndPosition = XInternAtom(xw.dpy, "XdndPosition", 0);
+	xw.XdndStatus = XInternAtom(xw.dpy, "XdndStatus", 0);
+	xw.XdndLeave = XInternAtom(xw.dpy, "XdndLeave", 0);
+	xw.XdndDrop = XInternAtom(xw.dpy, "XdndDrop", 0);
+	xw.XdndFinished = XInternAtom(xw.dpy, "XdndFinished", 0);
+	xw.XdndActionCopy = XInternAtom(xw.dpy, "XdndActionCopy", 0);
+	xw.XdndActionMove = XInternAtom(xw.dpy, "XdndActionMove", 0);
+	xw.XdndActionLink = XInternAtom(xw.dpy, "XdndActionLink", 0);
+	xw.XdndActionAsk = XInternAtom(xw.dpy, "XdndActionAsk", 0);
+	xw.XdndActionPrivate = XInternAtom(xw.dpy, "XdndActionPrivate", 0);
+	xw.XtextUriList = XInternAtom((Display*) xw.dpy, "text/uri-list", 0);
+	xw.XtextPlain = XInternAtom((Display*) xw.dpy, "text/plain", 0);
+	xw.XdndAware = XInternAtom(xw.dpy, "XdndAware", 0);
+	XChangeProperty(xw.dpy, xw.win, xw.XdndAware, 4, 32, PropModeReplace,
+			&XdndVersion, 1);
+	#endif // DRAG_AND_DROP_PATCH
 
 	win.mode = MODE_NUMLOCK;
 	resettitle();
@@ -2199,20 +2234,9 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
 	else
 	#endif // BACKGROUND_IMAGE_PATCH
 
-	#if !WIDE_GLYPHS_PATCH
-	XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
-	#endif // WIDE_GLYPHS_PATCH
-
-	/* Set the clip region because Xft is sometimes dirty. */
-	r.x = 0;
-	r.y = 0;
-	r.height = win.ch;
-	r.width = width;
-	XftDrawSetClipRectangles(xw.draw, winx, winy, &r, 1);
-
-	#if WIDE_GLYPHS_PATCH
 	/* Fill the background */
 	XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
+	#if WIDE_GLYPHS_PATCH
 	}
 	#endif // WIDE_GLYPHS_PATCH
 
@@ -2223,12 +2247,27 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
 	if (base.mode & ATTR_BOXDRAW) {
 		drawboxes(winx, winy, width / len, win.ch, fg, bg, specs, len);
 	} else {
-		/* Render the glyphs. */
-		XftDrawGlyphFontSpec(xw.draw, fg, specs, len);
-	}
+	#endif // BOXDRAW_PATCH
+	/* Set the clip region because Xft is sometimes dirty. */
+	#if WIDE_GLYPHS_PATCH
+	r.x = 0;
+	r.y = 0;
+	r.height = win.ch;
+	r.width = win.w;
+	XftDrawSetClipRectangles(xw.draw, 0, winy, &r, 1);
 	#else
+	r.x = 0;
+	r.y = 0;
+	r.height = win.ch;
+	r.width = width;
+	XftDrawSetClipRectangles(xw.draw, winx, winy, &r, 1);
+	#endif // WIDE_GLYPHS_PATCH
+
 	/* Render the glyphs. */
 	XftDrawGlyphFontSpec(xw.draw, fg, specs, len);
+
+	#if BOXDRAW_PATCH
+	}
 	#endif // BOXDRAW_PATCH
 
 	/* Render underline and strikethrough. */
@@ -2665,21 +2704,19 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 	XRenderColor colbg;
 	#endif // DYNAMIC_CURSOR_COLOR_PATCH
 
-	#if !DYNAMIC_CURSOR_COLOR_PATCH
-	/* remove the old cursor */
+	#if LIGATURES_PATCH
+	/* Redraw the line where cursor was previously.
+	 * It will restore the ligatures broken by the cursor. */
+	xdrawline(line, 0, oy, len);
+	#else
+	/* Remove the old cursor */
 	if (selected(ox, oy))
 		#if SELECTION_COLORS_PATCH
 		og.mode |= ATTR_SELECTED;
 		#else
 		og.mode ^= ATTR_REVERSE;
 		#endif // SELECTION_COLORS_PATCH
-	#endif // DYNAMIC_CURSOR_COLOR_PATCH
 
-	#if LIGATURES_PATCH
-	/* Redraw the line where cursor was previously.
-	 * It will restore the ligatures broken by the cursor. */
-	xdrawline(line, 0, oy, len);
-	#else
 	xdrawglyph(og, ox, oy);
 	#endif // LIGATURES_PATCH
 
@@ -2722,7 +2759,7 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 		}
 		#endif // SELECTION_COLORS_PATCH
 	} else {
-		#if SELECTION_COLORS_PATCH
+		#if SELECTION_COLORS_PATCH && !DYNAMIC_CURSOR_COLOR_PATCH
 		g.fg = defaultbg;
 		g.bg = defaultcs;
 		drawcol = dc.col[defaultcs];
@@ -3164,9 +3201,14 @@ xfinishdraw(void)
 	ImageList *im, *next;
 	Imlib_Image origin, scaled;
 	XGCValues gcvalues;
-	GC gc;
+	GC gc = NULL;
 	int width, height;
-	int x, x2, del, destx, desty;
+	int del, desty, mode, x1, x2, xend;
+	#if ANYSIZE_PATCH
+	int bw = win.hborderpx, bh = win.vborderpx;
+	#else
+	int bw = borderpx, bh = borderpx;
+	#endif // ANYSIZE_PATCH
 	Line line;
 	#endif // SIXEL_PATCH
 
@@ -3177,6 +3219,12 @@ xfinishdraw(void)
 		/* do not draw or process the image, if it is not visible */
 		if (im->x >= term.col || im->y >= term.row || im->y < 0)
 			continue;
+
+		#if KEYBOARDSELECT_PATCH && REFLOW_PATCH
+		/* do not draw the image on the search bar */
+		if (im->y == term.row-1 && IS_SET(MODE_KBDSELECT) && kbds_issearchmode())
+			continue;
+		#endif // KEYBOARDSELECT_PATCH
 
 		/* scale the image */
 		width = MAX(im->width * win.cw / im->cw, 1);
@@ -3251,43 +3299,50 @@ xfinishdraw(void)
 			}
 		}
 
-		/* clip the image so it does not go over to borders */
-		x2 = MIN(im->x + im->cols, term.col);
-		width = MIN(width, (x2 - im->x) * win.cw);
-
-		/* delete the image if the text cells behind it have been changed */
-		#if SCROLLBACK_PATCH || REFLOW_PATCH
-		line = TLINE(im->y);
-		#else
-		line = term.line[im->y];
-		#endif // SCROLLBACK_PATCH | REFLOW_PATCH
-		for (del = 0, x = im->x; x < x2; x++) {
-			if ((del = !(line[x].mode & ATTR_SIXEL)))
-				break;
-		}
-		if (del) {
-			delete_image(im);
-			continue;
+		/* create GC */
+		if (!gc) {
+			memset(&gcvalues, 0, sizeof(gcvalues));
+			gcvalues.graphics_exposures = False;
+			gc = XCreateGC(xw.dpy, xw.win, GCGraphicsExposures, &gcvalues);
 		}
 
-		/* draw the image */
-		memset(&gcvalues, 0, sizeof(gcvalues));
-		gcvalues.graphics_exposures = False;
-		gc = XCreateGC(xw.dpy, xw.win, GCGraphicsExposures, &gcvalues);
-		#if ANYSIZE_PATCH
-		destx = win.hborderpx + im->x * win.cw;
-		desty = win.vborderpx + im->y * win.ch;
-		#else
-		destx = borderpx + im->x * win.cw;
-		desty = borderpx + im->y * win.ch;
-		#endif // ANYSIZE_PATCH
+		/* set the clip mask */
+		desty = bh + im->y * win.ch;
 		if (im->clipmask) {
 			XSetClipMask(xw.dpy, gc, (Drawable)im->clipmask);
-			XSetClipOrigin(xw.dpy, gc, destx, desty);
+			XSetClipOrigin(xw.dpy, gc, bw + im->x * win.cw, desty);
 		}
-		XCopyArea(xw.dpy, (Drawable)im->pixmap, xw.buf, gc, 0, 0, width, height, destx, desty);
-		XFreeGC(xw.dpy, gc);
+
+		/* draw only the parts of the image that are not erased */
+		#if SCROLLBACK_PATCH || REFLOW_PATCH
+		line = TLINE(im->y) + im->x;
+		#else
+		line = term.line[im->y] + im->x;
+		#endif // SCROLLBACK_PATCH || REFLOW_PATCH
+		xend = MIN(im->x + im->cols, term.col);
+		for (del = 1, x1 = im->x; x1 < xend; x1 = x2) {
+			mode = line->mode & ATTR_SIXEL;
+			for (x2 = x1 + 1; x2 < xend; x2++) {
+				if (((++line)->mode & ATTR_SIXEL) != mode)
+					break;
+			}
+			if (mode) {
+				XCopyArea(xw.dpy, (Drawable)im->pixmap, xw.buf, gc,
+				    (x1 - im->x) * win.cw, 0,
+				    MIN((x2 - x1) * win.cw, width - (x1 - im->x) * win.cw), height,
+				    bw + x1 * win.cw, desty);
+				del = 0;
+			}
+		}
+		if (im->clipmask)
+			XSetClipMask(xw.dpy, gc, None);
+
+		/* if all the parts are erased, we can delete the entire image */
+		if (del && im->x + im->cols <= term.col)
+			delete_image(im);
 	}
+	if (gc)
+		XFreeGC(xw.dpy, gc);
 	#endif // SIXEL_PATCH
 
 	#if !SINGLE_DRAWABLE_BUFFER_PATCH
@@ -3642,6 +3697,21 @@ cmessage(XEvent *e)
 	} else if (e->xclient.data.l[0] == xw.wmdeletewin) {
 		ttyhangup();
 		exit(0);
+	#if DRAG_AND_DROP_PATCH
+	} else if (e->xclient.message_type == xw.XdndEnter) {
+		xw.XdndSourceWin = e->xclient.data.l[0];
+		xw.XdndSourceVersion = e->xclient.data.l[1] >> 24;
+		xw.XdndSourceFormat = None;
+		if (xw.XdndSourceVersion > 5)
+			return;
+		xdndenter(e);
+	} else if (e->xclient.message_type == xw.XdndPosition
+			&& xw.XdndSourceVersion <= 5) {
+		xdndpos(e);
+	} else if (e->xclient.message_type == xw.XdndDrop
+			&& xw.XdndSourceVersion <= 5) {
+		xdnddrop(e);
+	#endif // DRAG_AND_DROP_PATCH
 	}
 }
 
@@ -3738,8 +3808,12 @@ run(void)
 
 		xev = 0;
 		while (XPending(xw.dpy)) {
-			xev = 1;
 			XNextEvent(xw.dpy, &ev);
+			#if BLINKING_CURSOR_PATCH
+			xev = (!xev || xev == SelectionRequest) ? ev.type : xev;
+			#else
+			xev = 1;
+			#endif // BLINKING_CURSOR_PATCH
 			if (XFilterEvent(&ev, None))
 				continue;
 			if (handler[ev.type])
@@ -3766,10 +3840,10 @@ run(void)
 			if (!drawing) {
 				trigger = now;
 				#if BLINKING_CURSOR_PATCH
-				if (IS_SET(MODE_BLINK)) {
-					win.mode ^= MODE_BLINK;
+				if (xev != SelectionRequest) {
+					win.mode &= ~MODE_BLINK;
+					lastblink = now;
 				}
-				lastblink = now;
 				#endif // BLINKING_CURSOR_PATCH
 				drawing = 1;
 			}

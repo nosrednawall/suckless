@@ -77,7 +77,7 @@ treflow_moveimages(int oldy, int newy)
 void
 treflow(int col, int row)
 {
-	int i, j, x, x2;
+	int i, j;
 	int oce, nce, bot, scr;
 	int ox = 0, oy = -term.histf, nx = 0, ny = -1, len;
 	int cy = -1; /* proxy for new y coordinate of cursor */
@@ -220,13 +220,12 @@ treflow(int col, int row)
 	}
 
 	/* expand images into new text cells */
-	for (im = term.images; im; im = next) {
-		next = im->next;
-		if (im->x < col) {
-			line = TLINE(im->y);
-			x2 = MIN(im->x + im->cols, col);
-			for (x = im->x; x < x2; x++)
-				line[x].mode |= ATTR_SIXEL;
+	for (im = term.images; im; im = im->next) {
+		j = MIN(im->x + im->cols, col);
+		line = TLINE(im->y);
+		for (i = im->x; i < j; i++) {
+			if (!(line[i].mode & ATTR_SET))
+				line[i].mode |= ATTR_SIXEL;
 		}
 	}
 	#endif // SIXEL_PATCH
@@ -620,8 +619,8 @@ tclearregion(int x1, int y1, int x2, int y2, int usecurattr)
 	int x, y;
 
 	/* regionselected() takes relative coordinates */
-	if (regionselected(x1+term.scr, y1+term.scr, x2+term.scr, y2+term.scr))
-		selremove();
+	if (regionselected(x1, y1+term.scr, x2, y2+term.scr))
+		selclear();
 
 	for (y = y1; y <= y2; y++) {
 		term.dirty[y] = 1;

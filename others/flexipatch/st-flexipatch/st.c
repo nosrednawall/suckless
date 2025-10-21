@@ -220,6 +220,9 @@ static void tsetattr(const int *, int);
 static void tsetchar(Rune, const Glyph *, int, int);
 static void tsetdirt(int, int);
 static void tsetscroll(int, int);
+#if SIXEL_PATCH
+static inline void tsetsixelattr(Line line, int x1, int x2);
+#endif // SIXEL_PATCH
 static void tswapscreen(void);
 static void tsetmode(int, int, const int *, int);
 static int twrite(const char *, int, int);
@@ -817,40 +820,19 @@ sigchld(int a)
 	int stat;
 	pid_t p;
 
-	#if EXTERNALPIPEIN_PATCH && EXTERNALPIPE_PATCH
-	if ((p = waitpid((extpipeactive ? -1 : pid), &stat, WNOHANG)) < 0)
-	#else
-	if ((p = waitpid(pid, &stat, WNOHANG)) < 0)
-	#endif // EXTERNALPIPEIN_PATCH
-		die("waiting for pid %hd failed: %s\n", pid, strerror(errno));
+	while ((p = waitpid(-1, &stat, WNOHANG)) > 0) {
+		if (p == pid) {
+			#if EXTERNALPIPEIN_PATCH && EXTERNALPIPE_PATCH
+			close(csdfd);
+			#endif // EXTERNALPIPEIN_PATCH
 
-	#if EXTERNALPIPE_PATCH
-	if (pid != p) {
-		if (!extpipeactive)
-			return;
-
-		if (p == 0 && wait(&stat) < 0)
-			die("wait: %s\n", strerror(errno));
-
-		/* reinstall sigchld handler */
-		signal(SIGCHLD, sigchld);
-		extpipeactive = 0;
-		return;
+			if (WIFEXITED(stat) && WEXITSTATUS(stat))
+				die("child exited with status %d\n", WEXITSTATUS(stat));
+			else if (WIFSIGNALED(stat))
+				die("child terminated due to signal %d\n", WTERMSIG(stat));
+			_exit(0);
+		}
 	}
-	#else
-	if (pid != p)
-		return;
-	#endif // EXTERNALPIPE_PATCH
-
-	#if EXTERNALPIPEIN_PATCH && EXTERNALPIPE_PATCH
-	close(csdfd);
-	#endif // EXTERNALPIPEIN_PATCH
-
-	if (WIFEXITED(stat) && WEXITSTATUS(stat))
-		die("child exited with status %d\n", WEXITSTATUS(stat));
-	else if (WIFSIGNALED(stat))
-		die("child terminated due to signal %d\n", WTERMSIG(stat));
-	_exit(0);
 }
 
 void
@@ -881,9 +863,7 @@ int
 ttynew(const char *line, char *cmd, const char *out, char **args)
 {
 	int m, s;
-	#if EXTERNALPIPEIN_PATCH && EXTERNALPIPE_PATCH
 	struct sigaction sa;
-	#endif // EXTERNALPIPEIN_PATCH
 
 	if (out) {
 		term.mode |= MODE_PRINT;
@@ -941,15 +921,14 @@ ttynew(const char *line, char *cmd, const char *out, char **args)
 		#if EXTERNALPIPEIN_PATCH && EXTERNALPIPE_PATCH
 		csdfd = s;
 		cmdfd = m;
+		#else
+		close(s);
+		cmdfd = m;
+		#endif // EXTERNALPIPEIN_PATCH
 		memset(&sa, 0, sizeof(sa));
 		sigemptyset(&sa.sa_mask);
 		sa.sa_handler = sigchld;
 		sigaction(SIGCHLD, &sa, NULL);
-		#else
-		close(s);
-		cmdfd = m;
-		signal(SIGCHLD, sigchld);
-		#endif // EXTERNALPIPEIN_PATCH
 		break;
 	}
 	return cmdfd;
@@ -1148,6 +1127,15 @@ tsetdirtattr(int attr)
 		}
 	}
 }
+
+#if SIXEL_PATCH
+void
+tsetsixelattr(Line line, int x1, int x2)
+{
+	for (; x1 <= x2; x1++)
+		line[x1].mode |= ATTR_SIXEL;
+}
+#endif // SIXEL_PATCH
 
 void
 tfulldirt(void)
@@ -1849,7 +1837,7 @@ tsetattr(const int *attr, int l)
 				term.c.attr.fg = idx;
 				#endif // MONOCHROME_PATCH
 			break;
-		case 39:
+		case 39: /* set foreground color to default */
 			term.c.attr.fg = defaultfg;
 			break;
 		case 48:
@@ -1860,7 +1848,7 @@ tsetattr(const int *attr, int l)
 				term.c.attr.bg = idx;
 				#endif // MONOCHROME_PATCH
 			break;
-		case 49:
+		case 49: /* set background color to default */
 			term.c.attr.bg = defaultbg;
 			break;
 		#if UNDERCURL_PATCH
@@ -1875,6 +1863,13 @@ tsetattr(const int *attr, int l)
 			term.c.attr.ucolor[1] = -1;
 			term.c.attr.ucolor[2] = -1;
 			term.c.attr.mode ^= ATTR_DIRTYUNDERLINE;
+			break;
+		#else
+		case 58:
+			/* This starts a sequence to change the color of
+			 * "underline" pixels. We don't support that and
+			 * instead eat up a following "5;n" or "2;r;g;b". */
+			tdefcolor(attr, &i, l);
 			break;
 		#endif // UNDERCURL_PATCH
 		default:
@@ -1990,7 +1985,7 @@ tsetmode(int priv, int set, const int *args, int narg)
 			case 1006: /* 1006: extended reporting mode */
 				xsetmode(set, MODE_MOUSESGR);
 				break;
-			case 1034:
+			case 1034: /* 1034: enable 8-bit mode for keyboard input */
 				xsetmode(set, MODE_8BIT);
 				break;
 			case 1049: /* swap screen & set/restore cursor as xterm */
@@ -1998,8 +1993,8 @@ tsetmode(int priv, int set, const int *args, int narg)
 					break;
 				tcursor((set) ? CURSOR_SAVE : CURSOR_LOAD);
 				/* FALLTHROUGH */
-			case 47: /* swap screen */
-			case 1047:
+			case 47: /* swap screen buffer */
+			case 1047: /* swap screen buffer */
 				if (!allowaltscreen)
 					break;
 				#if REFLOW_PATCH
@@ -2023,7 +2018,7 @@ tsetmode(int priv, int set, const int *args, int narg)
 					break;
 				/* FALLTHROUGH */
 				#endif // REFLOW_PATCH
-			case 1048:
+			case 1048: /* save/restore cursor (like DECSC/DECRC) */
 				#if REFLOW_PATCH
 				if (!allowaltscreen)
 					break;
@@ -2051,6 +2046,15 @@ tsetmode(int priv, int set, const int *args, int narg)
 				MODBIT(term.mode, set, MODE_SIXEL_CUR_RT);
 				break;
 			#endif // SIXEL_PATCH
+			#if SYNC_PATCH
+			case 2026:
+				if (set) {
+					tsync_begin();
+				} else {
+					tsync_end();
+				}
+				break;
+			#endif // SYNC_PATCH
 			default:
 				fprintf(stderr,
 					"erresc: unknown private set/reset mode %d\n",
@@ -2209,11 +2213,11 @@ csihandle(void)
 			break;
 		case 1: /* above */
 			#if REFLOW_PATCH
-			if (term.c.y >= 1)
+			if (term.c.y > 0)
 				tclearregion(0, 0, term.col-1, term.c.y-1, 1);
 			tclearregion(0, term.c.y, term.c.x, term.c.y, 1);
 			#else
-			if (term.c.y > 1)
+			if (term.c.y > 0)
 				tclearregion(0, 0, maxcol-1, term.c.y-1);
 			tclearregion(0, term.c.y, term.c.x, term.c.y);
 			#endif // REFLOW_PATCH
@@ -2447,6 +2451,23 @@ csihandle(void)
 			goto unknown;
 		}
 		break;
+	#if SYNC_PATCH
+	case '$': /* DECRQM -- DEC Request Mode (private) */
+		if (csiescseq.mode[1] == 'p' && csiescseq.priv) {
+			switch (csiescseq.arg[0]) {
+			#if SYNC_PATCH
+			case 2026:
+				/* https://gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036 */
+				ttywrite(su ? "\033[?2026;1$y" : "\033[?2026;2$y", 11, 0);
+				break;
+			#endif // SYNC_PATCH
+			default:
+				goto unknown;
+			}
+			break;
+		}
+		goto unknown;
+	#endif // SYNC_PATCH
 	case 'r': /* DECSTBM -- Set Scrolling Region */
 		if (csiescseq.priv) {
 			goto unknown;
@@ -2510,7 +2531,11 @@ csihandle(void)
 		break;
 	#endif // CSI_22_23_PATCH | SIXEL_PATCH
 	case 'u': /* DECRC -- Restore cursor position (ANSI.SYS) */
-		tcursor(CURSOR_LOAD);
+		if (csiescseq.priv) {
+			goto unknown;
+		} else {
+			tcursor(CURSOR_LOAD);
+		}
 		break;
 	case ' ':
 		switch (csiescseq.mode[1]) {
@@ -2591,8 +2616,8 @@ strhandle(void)
 		{ defaultcs, "cursor" }
 	};
 	#if SIXEL_PATCH
-	ImageList *im, *newimages, *next, *tail;
-	int i, x, y, x1, y1, x2, y2, numimages;
+	ImageList *im, *newimages, *next, *tail = NULL;
+	int i, x1, y1, x2, y2, y, numimages;
 	int cx, cy;
 	Line line;
 	#if SCROLLBACK_PATCH || REFLOW_PATCH
@@ -2631,7 +2656,7 @@ strhandle(void)
 				xsettitle(strescseq.args[1]);
 				#endif // CSI_22_23_PATCH
 			return;
-		case 52:
+		case 52: /* manipulate selection data */
 			if (narg > 2 && allowwindowops) {
 				dec = base64dec(strescseq.args[2]);
 				if (dec) {
@@ -2642,11 +2667,16 @@ strhandle(void)
 				}
 			}
 			return;
+		#if OSC7_PATCH
+		case 7:
+			osc7parsecwd((const char *)strescseq.args[1]);
+			return;
+		#endif // OSC7_PATCH
 		case 8: /* Clear Hyperlinks */
 			return;
-		case 10:
-		case 11:
-		case 12:
+		case 10: /* set dynamic VT100 text foreground color */
+		case 11: /* set dynamic VT100 text background color */
+		case 12: /* set dynamic text cursor color */
 			if (narg < 2)
 				break;
 			p = strescseq.args[1];
@@ -2687,6 +2717,38 @@ strhandle(void)
 				tfulldirt();
 			}
 			return;
+		case 110: /* reset dynamic VT100 text foreground color */
+		case 111: /* reset dynamic VT100 text background color */
+		case 112: /* reset dynamic text cursor color */
+			if (narg != 1)
+				break;
+			if ((j = par - 110) < 0 || j >= LEN(osc_table))
+				break; /* shouldn't be possible */
+			if (xsetcolorname(osc_table[j].idx, NULL)) {
+				fprintf(stderr, "erresc: %s color not found\n", osc_table[j].str);
+			} else {
+				tfulldirt();
+			}
+			return;
+		#if OSC133_PATCH
+		case 133:
+			if (narg < 2)
+				break;
+			switch (*strescseq.args[1]) {
+			case 'A':
+				term.c.attr.mode |= ATTR_FTCS_PROMPT;
+				break;
+			/* We don't handle these arguments yet */
+			case 'B':
+			case 'C':
+			case 'D':
+				break;
+			default:
+				fprintf(stderr, "erresc: unknown OSC 133 argument: %c\n", *strescseq.args[1]);
+				break;
+			}
+			return;
+		#endif // OSC133_PATCH
 		}
 		break;
 	case 'k': /* old title set compatibility */
@@ -2717,15 +2779,33 @@ strhandle(void)
 			y1 = newimages->y;
 			x2 = x1 + newimages->cols;
 			y2 = y1 + numimages;
-			if (newimages->transparent) {
-				for (tail = term.images; tail && tail->next; tail = tail->next);
-			} else {
-				for (tail = NULL, im = term.images; im; im = next) {
+			/* Delete the old images that are covered by the new image(s). We also need
+			 * to check if they have already been deleted before adding the new ones. */
+			if (term.images) {
+				char transparent[numimages];
+				for (i = 0, im = newimages; im; im = im->next, i++) {
+					transparent[i] = im->transparent;
+				}
+				for (im = term.images; im; im = next) {
 					next = im->next;
-					if (im->x >= x1 && im->x + im->cols <= x2 &&
-					    im->y >= y1 && im->y <= y2) {
-						delete_image(im);
-						continue;
+					if (im->y >= y1 && im->y < y2) {
+						y = im->y - scr;
+						if (y >= 0 && y < term.row && term.dirty[y]) {
+							line = term.line[y];
+							j = MIN(im->x + im->cols, term.col);
+							for (i = im->x; i < j; i++) {
+								if (line[i].mode & ATTR_SIXEL)
+									break;
+							}
+							if (i == j) {
+								delete_image(im);
+								continue;
+							}
+						}
+						if (im->x >= x1 && im->x + im->cols <= x2 && !transparent[im->y - y1]) {
+							delete_image(im);
+							continue;
+						}
 					}
 					tail = im;
 				}
@@ -2736,36 +2816,44 @@ strhandle(void)
 			} else {
 				term.images = newimages;
 			}
-			x2 = MIN(x2, term.col);
-			for (i = 0, im = newimages; im; im = next, i++) {
-				next = im->next;
-				#if SCROLLBACK_PATCH || REFLOW_PATCH
-				scr = IS_SET(MODE_ALTSCREEN) ? 0 : term.scr;
-				#endif // SCROLLBACK_PATCH
-				if (IS_SET(MODE_SIXEL_SDM)) {
+			#if COLUMNS_PATCH && !REFLOW_PATCH
+			x2 = MIN(x2, term.maxcol) - 1;
+			#else
+			x2 = MIN(x2, term.col) - 1;
+			#endif // COLUMNS_PATCH
+			if (IS_SET(MODE_SIXEL_SDM)) {
+				/* Sixel display mode: put the sixel in the upper left corner of
+				 * the screen, disable scrolling (the sixel will be truncated if
+				 * it is too long) and do not change the cursor position. */
+				for (i = 0, im = newimages; im; im = next, i++) {
+					next = im->next;
 					if (i >= term.row) {
 						delete_image(im);
 						continue;
 					}
 					im->y = i + scr;
-					line = term.line[i];
-				} else {
+					tsetsixelattr(term.line[i], x1, x2);
+					term.dirty[MIN(im->y, term.row-1)] = 1;
+				}
+			} else {
+				for (i = 0, im = newimages; im; im = next, i++) {
+					next = im->next;
+					#if SCROLLBACK_PATCH || REFLOW_PATCH
+					scr = IS_SET(MODE_ALTSCREEN) ? 0 : term.scr;
+					#endif // SCROLLBACK_PATCH
 					im->y = term.c.y + scr;
-					line = term.line[term.c.y];
+					tsetsixelattr(term.line[term.c.y], x1, x2);
+					term.dirty[MIN(im->y, term.row-1)] = 1;
+					if (i < numimages-1) {
+						im->next = NULL;
+						tnewline(0);
+						im->next = next;
+					}
 				}
-				for (x = im->x; x < x2; x++) {
-					line[x].mode |= ATTR_SIXEL;
-				}
-				term.dirty[MIN(im->y, term.row-1)] = 1;
-				if (!IS_SET(MODE_SIXEL_SDM) && i < numimages-1) {
-					im->next = NULL;
-					tnewline(0);
-					im->next = next;
-				}
+				/* if mode 8452 is set, sixel scrolling leaves cursor to right of graphic */
+				if (IS_SET(MODE_SIXEL_CUR_RT))
+					term.c.x = MIN(term.c.x + newimages->cols, term.col-1);
 			}
-			/* if mode 8452 is set, sixel scrolling leaves cursor to right of graphic */
-			if (!IS_SET(MODE_SIXEL_SDM) && IS_SET(MODE_SIXEL_CUR_RT))
-				term.c.x = MIN(term.c.x + newimages->cols, term.col-1);
 		}
 		#endif // SIXEL_PATCH
 		#if SYNC_PATCH
@@ -2798,6 +2886,19 @@ strparse(void)
 
 	if (*p == '\0')
 		return;
+
+	/* preserve semicolons in window titles, icon names and OSC 7 sequences */
+	if (strescseq.type == ']' && (
+		p[0] <= '2'
+	#if OSC7_PATCH
+		|| p[0] == '7'
+	#endif // OSC7_PATCH
+	) && p[1] == ';') {
+		strescseq.args[strescseq.narg++] = p;
+		strescseq.args[strescseq.narg++] = p + 2;
+		p[1] = '\0';
+		return;
+	}
 
 	while (strescseq.narg < STR_ARG_SIZ) {
 		strescseq.args[strescseq.narg++] = p;
@@ -3383,7 +3484,7 @@ check_control_code:
 
 	#if REFLOW_PATCH
 	/* selected() takes relative coordinates */
-	if (selected(term.c.x + term.scr, term.c.y + term.scr))
+	if (selected(term.c.x, term.c.y + term.scr))
 		selclear();
 	#else
 	if (selected(term.c.x, term.c.y))
@@ -3411,6 +3512,9 @@ check_control_code:
 	}
 
 	tsetchar(u, &term.c.attr, term.c.x, term.c.y);
+	#if OSC133_PATCH
+	term.c.attr.mode &= ~ATTR_FTCS_PROMPT;
+	#endif // OSC133_PATCH
 	term.lastc = u;
 
 	if (width == 2) {
@@ -3505,7 +3609,7 @@ tresize(int col, int row)
 	#endif // COLUMNS_PATCH
 	int *bp;
 	#if SIXEL_PATCH
-	int x, x2;
+	int x2;
 	Line line;
 	ImageList *im, *next;
 	#endif // SIXEL_PATCH
@@ -3612,8 +3716,7 @@ tresize(int col, int row)
 	}
 
 	#if SIXEL_PATCH
-	/* expand images into new text cells to prevent them from being deleted in
-	 * xfinishdraw() that draws the images */
+	/* expand images into new text cells */
 	for (i = 0; i < 2; i++) {
 		for (im = term.images; im; im = next) {
 			next = im->next;
@@ -3638,9 +3741,9 @@ tresize(int col, int row)
 			}
 			line = term.line[im->y];
 			#endif // SCROLLBACK_PATCH
-			x2 = MIN(im->x + im->cols, term.col);
-			for (x = im->x; x < x2; x++)
-				line[x].mode |= ATTR_SIXEL;
+			x2 = MIN(im->x + im->cols, col) - 1;
+			if (mincol < col && x2 >= mincol && im->x < col)
+				tsetsixelattr(line, MAX(im->x, mincol), x2);
 		}
 		tswapscreen();
 	}

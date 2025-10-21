@@ -5,14 +5,12 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-//static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-//static char *font = "CaskaydiaMono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
-
-//static char *font = "Liberation Mono:pixelsize=18:antialias=true:autohint=true";
-//static char *font = "Fira Mono:pixelsize=15:antialias=true:autohint=true:style=Regular";
+//static char *font = "Liberation Mono:pixelsize=16:antialias=true:autohint=true";
 static char *font = "Iosevka Term:pixelsize=16:antialias=true:autohint=true:style=Regular";
 
-static int borderpx = 15;
+/* borderperc: percentage of cell width to use as a border
+ *             0 = no border, 100 = border width is same as cell width */
+int borderperc = 20;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -22,7 +20,7 @@ static int borderpx = 15;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/usr/bin/bash";
+static char *shell = "/bin/bash";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
@@ -41,6 +39,10 @@ static float chscale = 1.0;
  * More advanced example: L" `'\"()[]{}"
  */
 wchar_t *worddelimiters = L" ";
+
+/* Word delimiters for short and long jumps in the keyboard select patch */
+wchar_t *kbds_sdelim = L"!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~ ";
+wchar_t *kbds_ldelim = L" ";
 
 /* selection timeouts (in milliseconds) */
 static unsigned int doubleclicktimeout = 300;
@@ -100,10 +102,41 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 1.0;
+float alpha = 0.8;
+float alphaUnfocused = 0.6;
+
+/*
+ * drag and drop escape characters
+ *
+ * this will add a '\' before any characters specified in the string.
+ */
+char *xdndescchar = " !\"#$&'()*;<>?[\\]^`{|}~";
 
 /* Terminal colors (16 first used in escape sequence) */
-#include "themes/nord_dark.h"
+#include "themes/solarized_dark.h"
+
+/*
+ * Default colors (colorname index)
+ * foreground, background, cursor, reverse cursor
+ */
+
+unsigned int bg = 0, bgUnfocused = 16;
+
+/* está no tema
+unsigned int defaultbg = 0;
+unsigned int defaultfg = 259;
+unsigned int defaultcs = 256;
+unsigned int defaultrcs = 257;
+*/
+
+unsigned int selectionfg = 258;
+unsigned int selectionbg = 259;
+/* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
+/* Else if 1 keep original foreground-color of each cell => more colors :) */
+static int ignoreselfg = 1;
+/* Foreground and background color of search results */
+unsigned int highlightfg = 15;
+unsigned int highlightbg = 160;
 
 /*
  * Default shape of cursor
@@ -120,6 +153,14 @@ static unsigned int cursorshape = 6;
 
 static unsigned int cols = 80;
 static unsigned int rows = 24;
+
+/*
+ * Whether to use pixel geometry or cell geometry
+ */
+
+static Geometry geometry = CellGeometry; // or PixelGeometry to use the below size
+static unsigned int width = 564;
+static unsigned int height = 364;
 
 /*
  * Default colour and shape of the mouse cursor
@@ -147,14 +188,13 @@ static uint forcemousemod = ShiftMask;
  */
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release  screen */
-	{ XK_ANY_MOD,           Button2, clippaste,      {.i = 0},      1 },
-	{ 0,       			    Button4, kscrollup,      {.i = 3},      0, S_PRI},
-	{ 0,		            Button5, kscrolldown,    {.i = 3},      0, S_PRI},
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
-	/*Zoom do terminal*/
-	{ ControlMask,          Button4, zoom,           {.i = +1},    1,        S_PRI },
-	{ ControlMask,          Button5, zoom, 			 {.i = -1},    1,        S_PRI },
+	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
+	{ ShiftMask,            Button4, kscrollup,      {.i = 1},      0, S_PRI},
+	{ ShiftMask,            Button5, kscrolldown,    {.i = 1},      0, S_PRI},
+	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = 1},      0, S_PRI },
+	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = 1},      0, S_PRI },
+	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"}, 0, S_ALT },
+	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"}, 0, S_ALT },
 };
 
 /* Internal keyboard shortcuts. */
@@ -175,18 +215,28 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,   {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,     {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,        {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,            {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,            {.f = -1} },
+	{ TERMMOD,              XK_plus,        zoom,            {.f = +3} },
+	{ TERMMOD,              XK_underscore,  zoom,            {.f = -3} },
 	{ TERMMOD,              XK_Home,        zoomreset,       {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,        {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,       {.i =  0} },
 	{ TERMMOD,              XK_O,           changealpha,     {.f = +0.05} },
 	{ TERMMOD,              XK_P,           changealpha,     {.f = -0.05} },
+	//{ TERMMOD,              XK_,           changealphaunfocused, {.f = +0.05} },
+	//{ TERMMOD,              XK_,           changealphaunfocused, {.f = -0.05} },
+	{ XK_NO_MOD,            XK_F11,         fullscreen,      {.i =  0} },
+	{ MODKEY,               XK_Return,      fullscreen,      {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,       {.i = -1}, S_PRI },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,     {.i = -1}, S_PRI },
-	{ TERMMOD,              XK_Y,           clippaste,       {.i =  0} },
-	{ ShiftMask,            XK_Insert,      clippaste,       {.i =  0} },
+	{ TERMMOD,              XK_Y,           selpaste,        {.i =  0} },
+	{ ShiftMask,            XK_Insert,      selpaste,        {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,         {.i =  0} },
+	{ MODKEY,               XK_l,           copyurl,         {.i =  0} },
+	{ TERMMOD,              XK_Escape,      keyboard_select, { 0 } },
+	{ TERMMOD,              XK_F,           searchforward,   { 0 } },
+	{ TERMMOD,              XK_B,           searchbackward,  { 0 } },
+	{ ControlMask,          XK_Page_Up,     scrolltoprompt,  {.i = -1}, S_PRI },
+	{ ControlMask,          XK_Page_Down,   scrolltoprompt,  {.i =  1}, S_PRI },
 };
 
 /*
@@ -458,4 +508,10 @@ static char ascii_printable[] =
 	" !\"#$%&'()*+,-./0123456789:;<=>?"
 	"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
 	"`abcdefghijklmnopqrstuvwxyz{|}~";
+
+/*
+ * plumb_cmd is run on mouse button 3 click, with argument set to
+ * current selection and with cwd set to the cwd of the active shell
+ */
+static char *plumb_cmd = "plumb";
 

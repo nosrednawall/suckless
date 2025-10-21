@@ -48,7 +48,7 @@ static const char *fonts[]          	 = {
 	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
-#include "themes/nord_dark.h"
+#include "themes/solarized_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

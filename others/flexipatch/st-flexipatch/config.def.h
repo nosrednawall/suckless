@@ -5,8 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-//static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-static char *font = "CaskaydiaMono Nerd Font:size=15:style=Regular:antialias=true:pixelsize=17";
+static char *font = "Liberation Mono:pixelsize=16:antialias=true:autohint=true";
 #if FONT2_PATCH
 /* Spare fonts */
 static char *font2[] = {
@@ -30,7 +29,7 @@ static const int pseudotransparency = 0;
  *             0 = no border, 100 = border width is same as cell width */
 int borderperc = 20;
 #else
-static int borderpx = 20;
+static int borderpx = 2;
 #endif // RELATIVEBORDER_PATCH
 
 #if OPENURLONCLICK_PATCH
@@ -175,6 +174,15 @@ float stat_alpha = 0.46; //constant alpha value that'll get added to grad_alpha
 float alphaUnfocused = 0.6;
 #endif // ALPHA_FOCUS_HIGHLIGHT_PATCH
 #endif // ALPHA_PATCH
+
+#if DRAG_AND_DROP_PATCH
+/*
+ * drag and drop escape characters
+ *
+ * this will add a '\' before any characters specified in the string.
+ */
+char *xdndescchar = " !\"#$&'()*;<>?[\\]^`{|}~";
+#endif // DRAG_AND_DROP_PATCH
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -363,6 +371,9 @@ static uint forcemousemod = ShiftMask;
  */
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release  screen */
+	#if OPEN_SELECTED_TEXT_PATCH
+	{ ControlMask,          Button2, selopen,        {.i = 0},      1 },
+	#endif // OPEN_SELECTED_TEXT_PATCH
 	#if CLIPBOARD_PATCH
 	{ XK_ANY_MOD,           Button2, clippaste,      {.i = 0},      1 },
 	#else
@@ -379,8 +390,8 @@ static MouseShortcut mshortcuts[] = {
 	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
 	#endif // SCROLLBACK_MOUSE_PATCH
 	#if SCROLLBACK_MOUSE_ALTSCREEN_PATCH || REFLOW_PATCH
-	{ XK_NO_MOD,            Button4, kscrollup,      {.i = 1},      0, S_PRI },
-	{ XK_NO_MOD,            Button5, kscrolldown,    {.i = 1},      0, S_PRI },
+	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = 1},      0, S_PRI },
+	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = 1},      0, S_PRI },
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"}, 0, S_ALT },
 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"}, 0, S_ALT },
 	#else
@@ -411,8 +422,8 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,   {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,     {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,        {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,            {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,            {.f = -1} },
+	{ TERMMOD,              XK_plus,        zoom,            {.f = +3} },
+	{ TERMMOD,              XK_underscore,  zoom,            {.f = -3} },
 	{ TERMMOD,              XK_Home,        zoomreset,       {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,        {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,       {.i =  0} },
@@ -428,10 +439,10 @@ static Shortcut shortcuts[] = {
 	{ XK_NO_MOD,            XK_F11,         fullscreen,      {.i =  0} },
 	{ MODKEY,               XK_Return,      fullscreen,      {.i =  0} },
 	#endif // FULLSCREEN_PATCH
-	#if SCROLLBACK_PATCH
+	#if SCROLLBACK_PATCH || REFLOW_PATCH
 	{ ShiftMask,            XK_Page_Up,     kscrollup,       {.i = -1}, S_PRI },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,     {.i = -1}, S_PRI },
-	#endif // SCROLLBACK_PATCH
+	#endif // SCROLLBACK_PATCH || REFLOW_PATCH
 	#if CLIPBOARD_PATCH
 	{ TERMMOD,              XK_Y,           clippaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      clippaste,       {.i =  0} },
@@ -468,6 +479,10 @@ static Shortcut shortcuts[] = {
 	#if INVERT_PATCH
 	{ TERMMOD,              XK_X,           invert,          { 0 } },
 	#endif // INVERT_PATCH
+	#if OSC133_PATCH
+	{ ControlMask,          XK_Page_Up,     scrolltoprompt,  {.i = -1}, S_PRI },
+	{ ControlMask,          XK_Page_Down,   scrolltoprompt,  {.i =  1}, S_PRI },
+	#endif // OSC133_PATCH
 };
 
 /*

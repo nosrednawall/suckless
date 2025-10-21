@@ -22,7 +22,7 @@
  * https://github.com/juliusHuelsmann/st-focus/
  * https://st.suckless.org/patches/alpha_focus_highlight/
  */
-#define ALPHA_FOCUS_HIGHLIGHT_PATCH 0
+#define ALPHA_FOCUS_HIGHLIGHT_PATCH 1
 
 /* Adds gradient transparency to st, depends on the alpha patch.
  * https://st.suckless.org/patches/gradient/
@@ -34,12 +34,12 @@
  * the window to be resized to any pixel size.
  * https://st.suckless.org/patches/anygeometry/
  */
-#define ANYGEOMETRY_PATCH 0
+#define ANYGEOMETRY_PATCH 1
 
 /* This patch allows st to resize to any pixel size rather than snapping to character width/height.
  * https://st.suckless.org/patches/anysize/
  */
-#define ANYSIZE_PATCH 0
+#define ANYSIZE_PATCH 1
 
 /* A simple variant of the anysize patch that only changes the resize hints to allow the window to
  * be resized to any size.
@@ -61,7 +61,42 @@
 /* This patch allows the use of a blinking cursor.
  * Only cursor styles 0, 1, 3, 5, and 7 blink. Set cursorstyle accordingly.
  * Cursor styles are defined here:
- *    https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h4-Functions-using-CSI-_-ordered-by-the-final-character-lparen-s-rparen:CSI-Ps-SP-q.1D81
+ * 0  2025-10-19 14:20:25 sudo lshw -C disk
+  711  2025-10-19 14:21:12 lsblk
+  712  2025-10-19 14:21:37 sudo pacman -S gsmartcontrol
+  713  2025-10-19 14:26:03 lsblk
+  714  2025-10-19 14:26:17 sudo fdisk /dev/sda
+  715  2025-10-19 14:27:45 lsblk
+  716  2025-10-19 14:27:56 sudo mkfs.ext4 /dev/sda1
+  717  2025-10-19 14:22:03 sudo gsmartcontrol
+  718  2025-10-19 14:30:20 sudo chown anderson:anderson /run/media/anderson/99061a46-5ef7-4234-a719-a9e64e38749f
+  719  2025-10-19 14:31:42 gsmartcontrol_polkit
+  720  2025-10-19 14:33:01 smartctl
+  721  2025-10-19 14:33:08 smartctl -h
+  722  2025-10-19 14:33:22 smartctl -a
+  723  2025-10-19 14:33:26 smartctl -a /dev/sda
+  724  2025-10-19 14:33:31 sudo smartctl -a /dev/sda
+  725  2025-10-19 14:33:49 sudo smartctl -a /dev/sda --device=USB
+  726  2025-10-19 14:57:35 LSBLK
+  727  2025-10-19 14:57:38 lsblk
+  728  2025-10-19 14:31:52 sudo gsmartcontrol
+  729  2025-10-20 10:18:53 sxhkd
+  730  2025-10-20 10:25:30 slock
+  731  2025-10-20 10:26:12 sudo chmod +s /usr/local/bin/slock
+  732  2025-10-20 10:26:22 slockl
+  733  2025-10-20 10:26:23 slock
+  734  2025-10-20 10:26:35 edwm
+  735  2025-10-20 10:26:37 cd ..
+  736  2025-10-20 10:26:40 cd slock
+  737  2025-10-20 10:26:47 sudo make clean uninstall
+  738  2025-10-20 10:26:51 sudo make clean install
+  739  2025-10-20 10:26:56 slock
+  740  2025-10-20 10:27:06 /usr/bin/slock
+  741  2025-10-20 10:27:16 /usr/local/bin/slock
+  742  2025-10-20 11:20:19 yay -Syuv
+  743  2025-10-20 12:34:07 syncthing
+  744  2025-10-20 14:05:23 killall sxhkd
+  745  2025-10-20 14:06   https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h4-Functions-using-CSI-_-ordered-by-the-final-character-lparen-s-rparen:CSI-Ps-SP-q.1D81
  * https://st.suckless.org/patches/blinking_cursor/
  */
 #define BLINKING_CURSOR_PATCH 0
@@ -81,7 +116,7 @@
  * This patch makes st set CLIPBOARD on selection.
  * https://st.suckless.org/patches/clipboard/
  */
-#define CLIPBOARD_PATCH 1
+#define CLIPBOARD_PATCH 0
 
 /* This patch allows st to be resized without cutting off text when the terminal window is
  * made larger again. Text does not wrap when the terminal window is made smaller, you may
@@ -95,13 +130,13 @@
  * available URLs.
  * https://st.suckless.org/patches/copyurl/
  */
-#define COPYURL_PATCH 0
+#define COPYURL_PATCH 1
 
 /* Select and copy the last URL displayed with Mod+l. Multiple invocations cycle through the
  * available URLs. This variant also highlights the selected URLs.
  * https://st.suckless.org/patches/copyurl/
  */
-#define COPYURL_HIGHLIGHT_SELECTED_URLS_PATCH 0
+#define COPYURL_HIGHLIGHT_SELECTED_URLS_PATCH 1
 
 /* This patch adds support for CSI escape sequences 22 and 23, which save and
  * restores the window title (for instance nvim does this when opening and closing).
@@ -132,7 +167,7 @@
 /* This patch adds the option of disabling bold fonts globally.
  * https://st.suckless.org/patches/disable_bold_italic_fonts/
  */
-#define DISABLE_BOLD_FONTS_PATCH 1
+#define DISABLE_BOLD_FONTS_PATCH 0
 
 /* This patch adds the option of disabling italic fonts globally.
  * https://st.suckless.org/patches/disable_bold_italic_fonts/
@@ -144,10 +179,26 @@
  */
 #define DISABLE_ROMAN_FONTS_PATCH 0
 
+/* Allows dragging a file into the terminal and have the path printed.
+ * https://st.suckless.org/patches/drag-n-drop
+ */
+#define DRAG_AND_DROP_PATCH 1
+
 /* This patch makes the cursor color the inverse of the current cell color.
  * https://st.suckless.org/patches/dynamic-cursor-color/
  */
 #define DYNAMIC_CURSOR_COLOR_PATCH 1
+
+/* This is a variant of the anysize patch that explicitly do not change the size increment hints,
+ * i.e. only keeping the dynamic padding which is the main thing the anysize patch introduces.
+ * In practice this means that the dynamic padding / anysize functionality only ever comes into
+ * effect when the size hints are intentionally ignored.
+ * An example of this would be dwm respecting the size hints of floating windows, but disrespecting
+ * the size hints when the window is tiled (provided that resizehints config is set to 0).
+ *
+ * Note that this patch depends on ANYSIZE_PATCH being enabled to have an effect.
+ */
+#define DYNAMIC_PADDING_PATCH 1
 
 /* Reading and writing st's screen through a pipe, e.g. pass info to dmenu.
  * https://st.suckless.org/patches/externalpipe/
@@ -191,7 +242,7 @@
  * which matches the default xterm behavior.
  * https://st.suckless.org/patches/fullscreen/
  */
-#define FULLSCREEN_PATCH 0
+#define FULLSCREEN_PATCH 1
 
 /* Hide the X cursor whenever a key is pressed and show it back when the mouse is moved in
  * the terminal window.
@@ -223,7 +274,7 @@
  *
  * https://st.suckless.org/patches/keyboard_select/
  */
-#define KEYBOARDSELECT_PATCH 0
+#define KEYBOARDSELECT_PATCH 1
 
 /* This patch adds support for drawing ligatures using the Harfbuzz library to transform
  * original text of a single line to a list of glyphs with ligatures included.
@@ -294,6 +345,11 @@
  */
 #define OPENCOPIED_PATCH 0
 
+/* Open the selected text using xdg-open.
+ * https://st.suckless.org/patches/open_selected_text/
+ */
+#define OPEN_SELECTED_TEXT_PATCH 0
+
 /* This patch allows for URLs to be opened directly when you click on them. This may not work with
  * all terminal applications.
  *
@@ -301,24 +357,39 @@
  */
 #define OPENURLONCLICK_PATCH 0
 
+/* This patch allows st to fetch the current working directory through the OSC 7 escape
+ * sequence emitted by shells. Must be used with newterm patch.
+ *
+ * https://codeberg.org/dnkl/foot/wiki#spawning-new-terminal-instances-in-the-current-working-directory
+ * https://github.com/veltza/st-sx/commit/817865c2c6ed905af8849580e58bdcf399216fbd
+ */
+#define OSC7_PATCH 1
+
+/* This patch allows jumping between prompts by utilizing the OSC 133 escape sequence
+ * emitted by shells. Must be used with either reflow or scrollback patch.
+ *
+ * https://codeberg.org/dnkl/foot#jumping-between-prompts
+ */
+#define OSC133_PATCH 1
+
 /* Reflow.
  * Allows st to be resized without cutting off text when the terminal window is made larger again.
  * Text wraps when the terminal window is made smaller.
  * Comes with scrollback.
  */
-#define REFLOW_PATCH 0
+#define REFLOW_PATCH 1
 
 /* This patch allows you to specify a border that is relative in size to the width of a cell
  * in the terminal.
  * https://st.suckless.org/patches/relativeborder/
  */
-#define RELATIVEBORDER_PATCH 0
+#define RELATIVEBORDER_PATCH 1
 
 /* This patch allows you to right-click on some selected text to send it to the plumbing
  * program of choice, e.g. open a file, view an image, open a URL.
  * https://st.suckless.org/patches/right_click_to_plumb/
  */
-#define RIGHTCLICKTOPLUMB_PATCH 0
+#define RIGHTCLICKTOPLUMB_PATCH 1
 
 /* Scroll back through terminal output using Shift+{PageUp, PageDown}.
  * https://st.suckless.org/patches/scrollback/
@@ -335,14 +406,14 @@
  * This variant depends on SCROLLBACK_PATCH being enabled.
  * https://st.suckless.org/patches/scrollback/
  */
-#define SCROLLBACK_MOUSE_ALTSCREEN_PATCH 0
+#define SCROLLBACK_MOUSE_ALTSCREEN_PATCH 1
 
 /* This patch adds the two color-settings selectionfg and selectionbg to config.def.h.
  * Those define the fore- and background colors which are used when text on the screen is selected
  * with the mouse. This removes the default behaviour which would simply reverse the colors.
  * https://st.suckless.org/patches/selectioncolors/
  */
-#define SELECTION_COLORS_PATCH 0
+#define SELECTION_COLORS_PATCH 1
 
 /* This is the single drawable buffer patch as outlined in the FAQ to get images
  * in w3m to display. While this patch does not break the alpha patch it images

@@ -22,6 +22,7 @@ enum win_mode {
 	MODE_MOUSE       = MODE_MOUSEBTN|MODE_MOUSEMOTION|MODE_MOUSEX10\
 	                  |MODE_MOUSEMANY,
 	MODE_PLACEHOLDER = 1 << 18,
+	MODE_KBDSELECT   = 1 << 19,
 };
 
 void xbell(void);
@@ -40,3 +41,4 @@ void xsetsel(char *);
 int xstartdraw(void);
 void xximspot(int, int);
 void xclearwin(void);
+void xdrawglyph(Glyph, int, int);
