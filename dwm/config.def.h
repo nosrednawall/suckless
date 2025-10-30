@@ -46,6 +46,7 @@ static const char *fonts[]          	 = {
 	"Iosevka Term:size=10",
     "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
+  	"PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
 #include "themes/gruvbox_dark.h"
