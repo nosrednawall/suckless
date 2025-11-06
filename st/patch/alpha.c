@@ -17,12 +17,3 @@ changealpha(const Arg *arg)
 	redraw();
 }
 
-void
-changealphaunfocused(const Arg *arg)
-{
-	if ((alphaUnfocused > 0 && arg->f < 0) || (alphaUnfocused < 1 && arg->f > 0))
-		alphaUnfocused += arg->f;
-	alphaUnfocused = clamp(alphaUnfocused, 0.0, 1.0);
-	xloadcols();
-	redraw();
-}

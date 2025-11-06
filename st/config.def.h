@@ -20,7 +20,7 @@ int borderperc = 20;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/bash";
+static char *shell = "/bin/sh";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
@@ -79,7 +79,7 @@ static unsigned int cursorthickness = 2;
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
  * it
  */
-static int bellvolume = 10;
+static int bellvolume = 0;
 
 /* default TERM value */
 char *termname = "st-256color";
@@ -102,8 +102,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.9;
-float alphaUnfocused = 0.6;
+float alpha = 1.0;
 
 /*
  * drag and drop escape characters
@@ -115,24 +114,18 @@ char *xdndescchar = " !\"#$&'()*;<>?[\\]^`{|}~";
 /* Terminal colors (16 first used in escape sequence) */
 #include "themes/gruvbox_dark.h"
 
+
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-
-//unsigned int bg = 8, bgUnfocused = 16;
-unsigned int bg = 0;
-unsigned int bgUnfocused = 16;
-unsigned int selectionfg = 7;
-unsigned int selectionbg = 4;
-
-/* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
-/* Else if 1 keep original foreground-color of each cell => more colors :) */
-static int ignoreselfg = 1;
-
+//unsigned int defaultbg = 258;
+//unsigned int defaultfg = 259;
+//unsigned int defaultcs = 256;
+//unsigned int defaultrcs = 257;
 /* Foreground and background color of search results */
 unsigned int highlightfg = 15;
-unsigned int highlightbg = 1;
+unsigned int highlightbg = 160;
 
 /*
  * Default shape of cursor
@@ -141,7 +134,7 @@ unsigned int highlightbg = 1;
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 6;
+static unsigned int cursorshape = 2;
 
 /*
  * Default columns and rows numbers
@@ -218,8 +211,6 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_V,           clippaste,       {.i =  0} },
 	{ TERMMOD,              XK_O,           changealpha,     {.f = +0.05} },
 	{ TERMMOD,              XK_P,           changealpha,     {.f = -0.05} },
-	//{ TERMMOD,              XK_,           changealphaunfocused, {.f = +0.05} },
-	//{ TERMMOD,              XK_,           changealphaunfocused, {.f = -0.05} },
 	{ XK_NO_MOD,            XK_F11,         fullscreen,      {.i =  0} },
 	{ MODKEY,               XK_Return,      fullscreen,      {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,       {.i = -1}, S_PRI },

@@ -22,7 +22,7 @@
  * https://github.com/juliusHuelsmann/st-focus/
  * https://st.suckless.org/patches/alpha_focus_highlight/
  */
-#define ALPHA_FOCUS_HIGHLIGHT_PATCH 1
+#define ALPHA_FOCUS_HIGHLIGHT_PATCH 0
 
 /* Adds gradient transparency to st, depends on the alpha patch.
  * https://st.suckless.org/patches/gradient/
@@ -413,7 +413,7 @@
  * with the mouse. This removes the default behaviour which would simply reverse the colors.
  * https://st.suckless.org/patches/selectioncolors/
  */
-#define SELECTION_COLORS_PATCH 1
+#define SELECTION_COLORS_PATCH 0
 
 /* This is the single drawable buffer patch as outlined in the FAQ to get images
  * in w3m to display. While this patch does not break the alpha patch it images

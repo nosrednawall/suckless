@@ -32,8 +32,8 @@
     X("", SCRIPT_PATH("sb-wifi"),         10, 6)    \
     X("", SCRIPT_PATH("sb-ethernet"),     10, 7)    \
     X("", SCRIPT_PATH("sb-brightness"),    0, 8)    \
-    X("", SCRIPT_PATH("sb-volume"),        0, 9)    \
-    X("", SCRIPT_PATH("sb-mic"),           0, 10)   \
+    X("", SCRIPT_PATH("sb-volume"),        600, 9)    \
+    X("", SCRIPT_PATH("sb-mic"),           600, 10)   \
     X("", SCRIPT_PATH("sb-record"),       10, 11)   \
     X("", SCRIPT_PATH("sb-keyboard"),      1, 12)   \
     X("", SCRIPT_PATH("sb-battery"),      30, 13)   \

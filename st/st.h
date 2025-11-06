@@ -47,7 +47,6 @@ enum glyph_attribute {
 	ATTR_WRAP           = 1 << 9,
 	ATTR_WIDE           = 1 << 10,
 	ATTR_WDUMMY         = 1 << 11,
-	ATTR_SELECTED       = 1 << 12,
 	ATTR_LIGA           = 1 << 15,
 	ATTR_HIGHLIGHT      = 1 << 17,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
@@ -305,7 +304,6 @@ extern unsigned int defaultbg;
 extern unsigned int defaultcs;
 
 extern float alpha;
-extern float alphaUnfocused;
 
 extern DC dc;
 extern XWindow xw;
