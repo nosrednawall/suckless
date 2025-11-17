@@ -19,27 +19,26 @@
 #define SCRIPT_PATH(name) "~/.local/bin/dwmblocks/"name
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
-#define BLOCKS(X)             \
-    /* X("", SCRIPT_PATH("sb-mpd"),       1, 1)  */  \
-    X("", SCRIPT_PATH("sb-potato-c"),     1, 20)    \
-    X("", SCRIPT_PATH("sb-players"),      1, 19)   \
+#define BLOCKS(X)                                   \
+    X("", SCRIPT_PATH("sb-potato-c"),      1, 19)   \
+    X("", SCRIPT_PATH("sb-players"),       1, 18)   \
     X("", SCRIPT_PATH("sb-weather"),     600, 17)   \
-    X("", SCRIPT_PATH("sb-update"),     6000, 2)    \
-    X("", SCRIPT_PATH("sb-loadavg"),      10, 3)    \
-    X("", SCRIPT_PATH("sb-memory"),       10, 4)    \
-    X("", SCRIPT_PATH("sb-disk"),         10, 5)    \
-    X("", SCRIPT_PATH("sb-vpn"),          10, 16)   \
-    X("", SCRIPT_PATH("sb-wifi"),         10, 6)    \
-    X("", SCRIPT_PATH("sb-ethernet"),     10, 7)    \
-    X("", SCRIPT_PATH("sb-brightness"),    0, 8)    \
-    X("", SCRIPT_PATH("sb-volume"),        600, 9)    \
-    X("", SCRIPT_PATH("sb-mic"),           600, 10)   \
-    X("", SCRIPT_PATH("sb-record"),       10, 11)   \
-    X("", SCRIPT_PATH("sb-keyboard"),      1, 12)   \
-    X("", SCRIPT_PATH("sb-battery"),      30, 13)   \
-    X("", SCRIPT_PATH("sb-moon"),        6000, 18)  \
-    X("", SCRIPT_PATH("sb-date"),        600, 14)   \
-    X("", SCRIPT_PATH("sb-hour"),          1, 15)
+    X("", SCRIPT_PATH("sb-update"),     6000, 16)   \
+    X("", SCRIPT_PATH("sb-loadavg"),      10, 15)   \
+    X("", SCRIPT_PATH("sb-memory"),       10, 14)   \
+    X("", SCRIPT_PATH("sb-disk"),         10, 13)   \
+    X("", SCRIPT_PATH("sb-vpn"),          10, 12)   \
+    X("", SCRIPT_PATH("sb-wifi"),         10, 11)   \
+    X("", SCRIPT_PATH("sb-ethernet"),     10, 10)   \
+    X("", SCRIPT_PATH("sb-brightness"),    0,  9)   \
+    X("", SCRIPT_PATH("sb-volume"),      600,  8)   \
+    X("", SCRIPT_PATH("sb-mic"),         600,  7)   \
+    X("", SCRIPT_PATH("sb-record"),       10,  6)   \
+    X("", SCRIPT_PATH("sb-keyboard"),      1,  5)   \
+    X("", SCRIPT_PATH("sb-battery"),      30,  4)   \
+    X("", SCRIPT_PATH("sb-moon"),       6000,  3)   \
+    X("", SCRIPT_PATH("sb-date"),        600,  2)   \
+    X("", SCRIPT_PATH("sb-hour"),          1,  1)
 
 /*
 Comandos para atualizar blocos específicos:
