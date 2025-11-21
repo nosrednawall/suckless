@@ -49,7 +49,7 @@ static const char *fonts[]          	 = {
   	"PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
-#include "themes/nord_dark.h"
+#include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -167,6 +167,9 @@ static const Rule rules[] = {
 	RULE(.instance = "spnmtui" ,  .tags = SPTAG(2), .isfloating = 1)
 	RULE(.instance = "sprmpc",  .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",  .tags = SPTAG(4), .isfloating = 1)
+
+    // Plots no emacs
+    RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
 
 };
 
