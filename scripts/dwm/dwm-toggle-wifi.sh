@@ -10,3 +10,5 @@ else
     nmcli radio wifi on
     notify-send -t 3000 "Wifi On" "Placa wifi ligada" --icon="/usr/share/icons/ePapirus/16x16/actions/brightnesssettings.svg"
 fi
+
+kill -10 $(pidof dwmblocks)

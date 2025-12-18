@@ -1,3 +1,0 @@
-#!/bin/sh
-folders="$HOME/Media/YouTube $HOME/Media/Memes/Webm"
-find -L $folders -type f | sed 's/ /\\ /g' | dmenu | xargs xdg-open 

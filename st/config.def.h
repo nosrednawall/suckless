@@ -112,7 +112,7 @@ float alpha = 1.0;
 char *xdndescchar = " !\"#$&'()*;<>?[\\]^`{|}~";
 
 /* Terminal colors (16 first used in escape sequence) */
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 
 /*

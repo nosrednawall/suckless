@@ -49,7 +49,7 @@ static const char *fonts[]          	 = {
   	"PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -265,7 +265,7 @@ static const char *termcmd[]  = { "st", NULL };
 #define STATUSBAR "dwmblocks"
 #include <X11/XF86keysym.h>
 // Atalho para chamar os scripts
-#define PATH(name) "$HOME/.local/bin/"name
+#define PATH(name) "~/.config/suckless/scripts/"name
 
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
@@ -315,7 +315,7 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
 
 
-	{ MODKEY,                       XK_Tab,        view,                   {0} },
+	{ MODKEY|ShiftMask,                       XK_Tab,        view,                   {0} },
 	{ MODKEY,                       XK_q,          killclient,             {0} },
 //	{ ControlMask|Mod1Mask,         XK_q,          quit,                   {0} }, //exit
 	{ MODKEY,                       XK_r,          quit,                   {1} }, //restart

@@ -19,7 +19,7 @@ static char titlenormbordercolor[]      = "#d9c2ff"; // Borda título normal
 static char titlenormfloatcolor[]       = "#b399ff";      // Borda flutuante título normal
 
 static char titleselfgcolor[]           = "#2e1a47";  // Texto título selecionado
-static char titleselbgcolor[]           = "#b399ff";      // Fundo título selecionado
+static char titleselbgcolor[]           = "#f8f2ff";      // Fundo título selecionado
 static char titleselbordercolor[]       = "#ff66cc";        // Borda título selecionado
 static char titleselfloatcolor[]        = "#ff66cc";        // Borda flutuante título selecionado
 
@@ -47,8 +47,14 @@ static char urgbordercolor[]            = "#66ccff";   // Borda urgente
 static char urgfloatcolor[]             = "#66ccff";   // Borda flutuante urgente
 
 /* Símbolo do layout */
-static char ltsymbolbgcolor[]           = "#b399ff";      // Fundo símbolo layout
-static char ltsymbolfgcolor[]           = "#f8f2ff";   // Texto símbolo layout
+static char ltsymbolbgcolor[]           = "#f8f2ff";      // Fundo símbolo layout
+static char ltsymbolfgcolor[]           = "#00C97A";   // Texto símbolo layout
 
 static char c000000[]                    = "#000000"; // Placeholder value
+
+
+static char tagsunusedfgcolor[]          = "#d9c2ff"; // Cor do texto para tags não utilizadas
+static char tagsunusedbgcolor[]          = "#f8f2ff"; // Cor de fundo para tags não utilizadas
+static char tagsunusedbordercolor[]      = "#f8f2ff"; // Cor da borda para tags não utilizadas
+static char tagsunusedfloatcolor[]       = "#f8f2ff"; // Cor de flutuação para tags não utilizadas
 #endif // VAPORWAVE_LIGHT_H_

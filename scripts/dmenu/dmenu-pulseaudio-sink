@@ -33,3 +33,4 @@ case $chosen in
 	notify-send -t 3000 "Microfone ReDragon" "Alterado o microfone padrão para o Headset ReDragon"  --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
 	;;
 esac
+kill -10 $(pidof dwmblocks)

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Carrega o tema
+source ~/.theme_selected
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f "$arquivo_modo" ]; then
+    source "$arquivo_modo"
+    theme_type="$THEME"
+else
+    OPERATION_MODE="COMPLETO"
+    theme_type="icon-color"
+fi
+
+#theme_type="separador"
+
+aplicar_tema() {
+    local icone="$1"
+    local conteudo="$2"
+    local cor_forte="$3"
+    local cor_fraca="$4"
+
+    if [ "$icone" == "" ] && [ "$conteudo" == ""  ]; then
+        echo ""
+    else
+
+        case "$theme_type" in
+            "colorfull")
+                echo "^b$cor_forte^^c$COLOR_BACKGROUND^ $icone ^d^^c$COLOR_BACKGROUND^^b$cor_fraca^ $conteudo ^d^ "
+                ;;
+            "brackets")
+                echo "[^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^] "
+                ;;
+            "rounded")
+                echo "(^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^) "
+                ;;
+            "keys")
+                echo "{^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^} "
+                ;;
+            "simple")
+                echo " ^b$COLOR_BACKGROUND^^c$COLOR_TEXT^$icone $conteudo^d^ "
+                ;;
+            "simple-color")
+                echo " ^b$COLOR_BACKGROUND^^c$cor_forte^$icone $conteudo^d^ "
+                ;;
+            "icon-color")
+                echo " ^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$COLOR_TEXT^ $conteudo^d^ "
+                ;;
+            "separador")
+				echo "| ^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^ "
+				;;
+        esac
+
+    fi
+}

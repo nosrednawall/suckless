@@ -237,7 +237,7 @@ case $1 in
         WALLPAPER_LIGHTDM="LbI3B9z.jpeg";
 
         # Cores base (originais)
-        COLOR_BACKGROUND="#073642"       # Fundo principal (azul-escuro)
+        COLOR_BACKGROUND="#002B36"       # Fundo principal (azul-escuro)
         COLOR_BACKGROUND2="#073642"      # Fundo secundário (mesmo que o principal)
         COLOR_TEXT="#839496"             # Texto principal (cinza-azulado)
         COLOR_1="#b58900"                # Amarelo
@@ -269,7 +269,7 @@ case $1 in
         WALLPAPER_LIGHTDM="burst-light.png"
 
         # Cores base (originais)
-        COLOR_BACKGROUND="#fdf6e3"       # Fundo principal (bege claro)
+        COLOR_BACKGROUND="#eee8d5"       # Fundo principal (bege claro)
         COLOR_BACKGROUND2="#eee8d5"      # Fundo secundário (bege médio)
         COLOR_TEXT="#657b83"             # Texto principal (cinza-azulado escuro)
 
@@ -436,7 +436,7 @@ case $1 in
     $nordic_dark)
 
         THEME_GTK="Nordic-darker-v40"
-        THEME_ICON="Numix-Circle"
+        THEME_ICON="Zafiro-Nord-Black"
         THEME_MODE="Nord"
         COLOR_MODE="Dark"
         GTK_PREFER_DARK_MODE=1
@@ -622,8 +622,8 @@ case $1 in
         WALLPAPER_LIGHTDM="vaporwave009.jpg"
 
         # Cores base (originais)
-        COLOR_BACKGROUND="#DDA0DD"       # Fundo principal (lavanda)
-        COLOR_BACKGROUND2="#C38EC7"      # Fundo secundário (roxo-pastel)
+        COLOR_BACKGROUND="#f8f2ff"       # Fundo principal (lavanda)
+        COLOR_BACKGROUND2="#f8f2ff"      # Fundo secundário (roxo-pastel)
         COLOR_TEXT="#2e1a47"             # Texto principal (roxo-escuro)
 
         # Cores acentuadas originais (1-8)
@@ -660,6 +660,8 @@ else
     rm -rf ~/.theme_selected
     cat > ~/.theme_selected << EOF
 #!/bin/bash
+THEME_GTK="$THEME_GTK"
+THEME_ICON="$THEME_ICON"
 THEME_MODE="$THEME_MODE"
 COLOR_MODE="$COLOR_MODE"
 COLOR_BACKGROUND="$COLOR_BACKGROUND"
@@ -791,6 +793,6 @@ EOF"
     fi
     # Restart dwm
     xdotool key Super_L+r
-
+    kill -10 $(pidof dwmblocks)
     dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
 fi

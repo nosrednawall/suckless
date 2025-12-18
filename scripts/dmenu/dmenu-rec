@@ -36,7 +36,7 @@ if [[ -f $PID_FILE && -s $PID_FILE ]]; then
         if [[ "$choice" == "Sim" ]]; then
             kill -SIGINT "$rec_pid" && rm -f "$PID_FILE"
             notify-send -h string:fgcolor:$COLOR_3 " Gravação encerrada." --icon="/usr/share/icons/ePapirus/24x24/panel/kazam-stopped.svg"
-            kill -45 $(pidof dwmblocks)
+            kill -10 $(pidof dwmblocks)
         fi
         exit 0
     else
@@ -141,6 +141,6 @@ ffmpeg $PARAMETRO_RESOLUCAO \
 echo $! > "$PID_FILE"
 
 # Atualiza dwmblocks
-kill -45 $(pidof dwmblocks)
+kill -10 $(pidof dwmblocks)
 
 exit 0

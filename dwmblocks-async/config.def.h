@@ -16,7 +16,7 @@
 #define TRAILING_DELIMITER 0
 
 // Path for scripts - now using /usr/local/bin
-#define SCRIPT_PATH(name) "~/.local/bin/dwmblocks/"name
+#define SCRIPT_PATH(name) "~/.config/suckless/scripts/dwmblocks/"name
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)                                   \

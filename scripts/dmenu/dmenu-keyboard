@@ -38,4 +38,4 @@ else
         --icon="/usr/share/icons/ePapirus/16x16/devices/keyboard.svg"
 fi
 # Atualiza dwmblocks
-kill -46 $(pidof dwmblocks)
+kill -10 $(pidof dwmblocks)

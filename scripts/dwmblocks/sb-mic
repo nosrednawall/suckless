@@ -1,16 +1,8 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-source ~/.theme_selected
 # Lê o nome da distribuição a partir do arquivo /etc/os-release
 if [ -f /etc/os-release ]; then
     . /etc/os-release
@@ -41,15 +33,30 @@ case $BUTTON in
 esac
 
 # Display an icon if the microphone is muted.
-#microfoneOn=$(cat /proc/asound/card0/$MICROFONE/sub0/status | grep "RUNNING")
 microfone=$(pactl get-source-volume @DEFAULT_SOURCE@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
 muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
+device=$(pactl get-default-source)
+
+case "$device" in
+    *pci*analog*)      device="I" ;;   # placa on-board
+    *usb*Headset*)     device="F" ;;   # fone USB
+    *usb*)             device="E" ;;   # qualquer outro USB
+    *)                 device="?" ;;
+esac
 
 if [ "$muteMic" -eq 1 ]; then
-    iconMic="^b#4A5947^^c$COLOR_BACKGROUND^  ^d^"
+    icon=""
+    cor_forte="#4A5947"
+    cor_fraca="#4A5947"
+    microfone=""
 else
-    iconMic="^b$COLOR_4^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_12^ $microfone ^d^"
+    icon=""
+    cor_forte=$COLOR_4
+    cor_fraca=$COLOR_12
 fi
+
+
+output=$(aplicar_tema "$icon" "$microfone $device" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
@@ -60,7 +67,7 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$iconMic "
+        echo "$output"
     ;;
 esac
 

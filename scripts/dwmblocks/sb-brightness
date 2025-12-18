@@ -1,19 +1,21 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
-if [ -f "$arquivo_modo" ]; then
-    source "$arquivo_modo"
-else
-    OPERATION_MODE="COMPLETO"
-fi
+## Carrega o brilho da tela
+valor_brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
 
-# Carrega o tema
-source ~/.theme_selected
+## Variaveis que serão passadas a função
+icone="󰃠"
+cor_forte=$COLOR_1
+cor_fraca=$COLOR_9
 
-brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
-brilhoIcone="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $brilho ^d^"
+## Antigo método antes dda função
+# brilhoIcone="$icone_redshift^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $brilho ^d^"
+
+# Monta o retorno do dwmblocks pela função aplicar_tema
+brilhoIcone=$(aplicar_tema "$icone" "$valor_brilho" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
@@ -24,18 +26,15 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$brilhoIcone "
+        echo "$brilhoIcone"
     ;;
 esac
 
 # funcoes cliclaveis
 case $BUTTON in
-    1) bash ~/.config/suckless/scripts/dwm/dwm-redshift.sh;;
     4) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-aumenta ;;
     5) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-diminui ;;
     6) setsid -f st -e emacs -nw "$0" ;;
-    9) bash ~/.config/suckless/scripts/dwm/dwm-redshift-aumenta.sh ;;
-    10) bash ~/.config/suckless/scripts/dwm/dwm-redshift-aumenta.sh ;;
 esac
 
 exit 0

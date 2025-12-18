@@ -4,4 +4,4 @@
 ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 
 # Atualiza dwmblocks
-kill -46 $(pidof dwmblocks)
+kill -10 $(pidof dwmblocks)

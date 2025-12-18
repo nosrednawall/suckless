@@ -1,2 +1,2 @@
-
+#!/bin/bash
 x-www-browser "http://www.est.ufpr.br/"

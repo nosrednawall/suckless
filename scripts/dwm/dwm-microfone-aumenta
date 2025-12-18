@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pactl set-source-volume @DEFAULT_SOURCE@ +5%
+volume=$(pactl get-source-volume @DEFAULT_SOURCE@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
+
+# Atualiza dwmblocks
+kill -10 $(pidof dwmblocks)

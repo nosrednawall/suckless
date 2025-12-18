@@ -1,5 +1,9 @@
 #!/bin/bash
 
+update_dwmblocks() {
+    kill -10 $(pidof dwmblocks)
+}
+
 # Função para atualizar dispositivos dinamicamente
 update_devices() {
     declare -gA sinks sources
@@ -61,6 +65,7 @@ fi
 for sink in "${!sinks[@]}"; do
     if [[ "  󰕾 ${sinks[$sink]} (Saída)" == "$chosen" ]]; then
         pactl set-default-sink "$sink"
+        update_dwmblocks
         notify-send " 󰕾  Áudio alterado" "Saída padrão: ${sinks[$sink]}" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-speakers.svg"
         exit 0
     fi
@@ -69,10 +74,12 @@ done
 for source in "${!sources[@]}"; do
     if [[ "   ${sources[$source]} (Entrada)" == "$chosen" ]]; then
         pactl set-default-source "$source"
+        update_dwmblocks
         notify-send "   Microfone alterado" "Entrada padrão: ${sources[$source]}"  --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
         exit 0
     fi
 done
 
 # Mensagem caso nenhum dispositivo corresponda
+update_dwmblocks
 notify-send "Erro" "Dispositivo selecionado não encontrado."

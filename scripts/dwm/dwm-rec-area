@@ -47,6 +47,6 @@ ffmpeg -video_size "${WIDTH}x${HEIGHT}" -framerate 30 -f x11grab -i :0.0+"${X},$
 echo $! > "$PID_FILE"
 
 # Atualiza dwmblocks
-kill -45 $(pidof dwmblocks)
+kill -10 $(pidof dwmblocks)
 
 exit 0

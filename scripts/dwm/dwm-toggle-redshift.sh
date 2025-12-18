@@ -18,4 +18,5 @@ else
     notify-send -t 3000 "󱩍 Modo Noturno" "Alterado a temperatura para 4500K" --icon="/usr/share/icons/ePapirus/16x16/actions/redeyes.svg"
 fi
 
+kill -10 $(pidof dwmblocks)
 exit 0
