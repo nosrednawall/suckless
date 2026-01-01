@@ -1,5 +1,0 @@
-#include "fuzzymatch.c"
-#include "fzfexpect.c"
-#include "highpriority.c"
-#include "mousesupport.c"
-#include "xresources.c"
