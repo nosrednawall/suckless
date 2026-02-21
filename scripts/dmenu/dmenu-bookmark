@@ -87,5 +87,25 @@ case "$1" in
 		private="--private-window"
 		bmks_display
 	;;
-	*) bmks_display ;;
+	*)
+        show="Show"
+        add="Add"
+        del="Del"
+        private="Private"
+
+        # Variable passed to rofi
+        options="$show\n$add\n$del\n$private"
+
+        chosen="$(echo -e "$options" | dmenu -p "Bookmark-Menu " )"
+        case $chosen in
+            $show) bmks_display ;;
+            $add) bmks_add ;;
+            $del) bmks_del ;;
+            $private)
+                private="--private-window"
+		        bmks_display
+            ;;
+        esac
+
+    ;;
 esac

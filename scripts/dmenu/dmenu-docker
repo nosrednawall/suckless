@@ -47,7 +47,8 @@ if [[ -n "$selected" ]]; then
         parametro=""
 
         if [ "$opcao" = "Build"  ]; then
-            parametro="--build --no-cache"
+            cd $selected
+            docker build .
         fi
 
         #notify-send "Docker Compose" "Contêiner em $selected está sendo iniciado."

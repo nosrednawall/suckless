@@ -1,0 +1,33 @@
+[General]
+# Path to the calcurse binary that is used for importing/exporting items.
+Binary = calcurse
+
+Hostname = apidata.googleusercontent.com
+Path = /caldav/v2/SEU_EMAIL_AQUIm/events/
+AuthMethod = oauth2
+SyncFilter = cal
+
+# Enable this if you want to skip SSL certificate checks.
+InsecureSSL = No
+HTTPS = Yes
+
+# Disable this option to actually enable synchronization. If it is enabled,
+# nothing is actually written to the server or to the local data files. If you
+# combine DryRun = Yes with Verbose = Yes, you get a log of what would have
+# happened with this option disabled.
+DryRun = No
+
+# Enable this if you want detailed logs written to stdout.
+#Verbose = Yes
+
+
+# Use the following to synchronize with an OAuth2-based service
+# such as Google Calendar.
+[OAuth2]
+ClientID = SEU_CODIGO_AQUI
+ClientSecret = SEU_CLIENT_SECRET
+Scope = https://www.googleapis.com/auth/calendar
+RedirectURI = http://127.0.0.1
+
+#ClientID = pass API/calcurse-caldav-clientID
+#ClientSecret = pass API/calcurse-caldav-clienteSecret
