@@ -25,8 +25,6 @@ is_running() {
     ps aux | grep -v grep | grep -q "$1"
 }
 
-is_running "sxhkd" || sxhkd &
-
 # Polkit - para autenticar programas
 is_running "lxpolkit" || lxpolkit &
 

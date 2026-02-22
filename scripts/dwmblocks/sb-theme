@@ -1,4 +1,9 @@
 #!/bin/sh
+
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
+
+
 # Utility functions for theming statusbar scripts.
 
 display() {

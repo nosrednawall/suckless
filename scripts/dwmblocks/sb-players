@@ -3,7 +3,7 @@
 PLAYER_SELECIONADO=""
 
 # Carrega função para aplicar o tema e o tema de cores
-source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
+source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
 if [ -f ~/.cache/playerctl_selecionado ]; then
     source ~/.cache/playerctl_selecionado

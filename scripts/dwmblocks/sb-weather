@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Carrega função para aplicar o tema e o tema de cores
-source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
+source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Carrega informacoes do modo de operacao do weather
 weather_modo="$HOME/.cache/dwmblocks_weather_mode"

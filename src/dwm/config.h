@@ -171,7 +171,7 @@ static const Rule rules[] = {
 	RULE(.instance = "spnmtui" ,                            .tags = SPTAG(2), .isfloating = 1)
 	RULE(.instance = "sprmpc",                              .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",    .tags = SPTAG(4), .isfloating = 1)
-    RULE(.class = "spqalculate-gtk",                       .tags = SPTAG(5), .isfloating = 1)
+    RULE(.class    = "spqalculate-gtk",                     .tags = SPTAG(5), .isfloating = 1)
 
     // Plots no emacs
     RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
@@ -378,9 +378,9 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-volume")) },
 
 	/*Volume Microfone Pulseaudio*/
-	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
-	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
-	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
+	{ MODKEY,                       XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
+	{ MODKEY,                       XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
+	{ MODKEY,                       XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
 
 	/*Player de musidwm-ca*/
 	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-play")) },
@@ -401,6 +401,8 @@ static const Key keys[] = {
 	/*Brilho tela notebook*/
 	{ 0,							XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
 	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
+	{ MODKEY,						XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta")) },
+	{ MODKEY,						XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui")) },
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },

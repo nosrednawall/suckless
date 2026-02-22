@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Carrega função para aplicar o tema e o tema de cores
-source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
+source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
 ## Carrega o brilho da tela
 valor_brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Carrega função para aplicar o tema e o tema de cores
-source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
+source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Identifica os devices de rede do sistema
 DEVICE_WIFI=$(ls /sys/class/net/ | grep "wlp" | awk '{print $1}')

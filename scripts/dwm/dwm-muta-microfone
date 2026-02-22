@@ -5,7 +5,7 @@ pactl set-source-mute @DEFAULT_SOURCE@ toggle
 is_mute=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
 
 # Atualiza dwmblocks
-kill -44 $(pidof dwmblocks)
+kill -10 $(pidof dwmblocks)
 
 
 if [ "$is_mute" -eq 1 ]; then

@@ -378,9 +378,9 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-volume")) },
 
 	/*Volume Microfone Pulseaudio*/
-	{ ControlMask,                  XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
-	{ ControlMask,                  XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
-	{ ControlMask,                  XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
+	{ MODKEY,                       XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
+	{ MODKEY,                       XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
+	{ MODKEY,                       XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
 
 	/*Player de musidwm-ca*/
 	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-play")) },
@@ -401,6 +401,8 @@ static const Key keys[] = {
 	/*Brilho tela notebook*/
 	{ 0,							XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
 	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
+	{ MODKEY,						XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta")) },
+	{ MODKEY,						XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui")) },
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },

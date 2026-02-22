@@ -16,7 +16,7 @@
 #define TRAILING_DELIMITER 0
 
 // Path for scripts - now using /usr/local/bin
-#define SCRIPT_PATH(name) "~/.local/bin/dwmblocks/"name
+#define SCRIPT_PATH(name) "~/.config/suckless/scripts/dwmblocks/"name
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
 #define BLOCKS(X)                                   \
@@ -33,7 +33,7 @@
     X("", SCRIPT_PATH("sb-brightness"),    0,  9)   \
     X("", SCRIPT_PATH("sb-volume"),      600,  8)   \
     X("", SCRIPT_PATH("sb-mic"),         600,  7)   \
-    X("", SCRIPT_PATH("sb-record"),       10,  6)   \
+    X("", SCRIPT_PATH("sb-record"),      100,  6)   \
     X("", SCRIPT_PATH("sb-keyboard"),      1,  5)   \
     X("", SCRIPT_PATH("sb-battery"),      30,  4)   \
     X("", SCRIPT_PATH("sb-moon"),       6000,  3)   \
@@ -41,22 +41,36 @@
     X("", SCRIPT_PATH("sb-hour"),          1,  1)
 
 /*
+Comando para atualizar todos os blocks de uma vez
+kill -10 $(pidof dwmblocks)
+
+
 Comandos para atualizar blocos específicos:
-kill -43 $(pidof dwmblocks)  // atualiza o bloco 15 (hora)
-kill -52 $(pidof dwmblocks)  // atualiza o bloco 18 (lua)
+kill -30 $(pidof dwmblocks)  // atualiza o bloco 2 (hora)
+kill -32 $(pidof dwmblocks)  // atualiza o bloco 3 (lua)
 
 Sinais correspondentes:
-2: sb-update     15: sb-hour
-3: sb-loadavg    16: sb-vpn  
-4: sb-memory     17: sb-weather
-5: sb-disk       18: sb-moon
-6: sb-wifi       19: sb-players
-7: sb-ethernet   20: sb-potato-c
-8: sb-brightness
-9: sb-volume
-10: sb-mic
-11: sb-record
-12: sb-keyboard
-13: sb-battery
-14: sb-date
+
+Script          VP    ID   =  Numero pidof
+
+sb-potato-c     34 +  19   =     52
+sb-players      34 +  18   =     51
+sb-weather      34 +  17   =     50
+sb-update       34 +  16   =     49
+sb-loadavg      34 +  15   =     48
+sb-memory       34 +  14   =     47
+sb-disk         34 +  13   =     46
+sb-vpn          34 +  12   =     45
+sb-wifi         34 +  11   =     44
+sb-ethernet     34 +  10   =     43
+sb-brightness   34 +   9   =     42
+sb-volume       34 +   8   =     41
+sb-mic          34 +   7   =     40
+sb-record       34 +   6   =     40
+sb-keyboard     34 +   5   =     39
+sb-battery      34 +   4   =     38
+sb-moon         34 +   3   =     37
+sb-date         34 +   2   =     36
+sb-hour         34 +   1   =     35
+
 */
