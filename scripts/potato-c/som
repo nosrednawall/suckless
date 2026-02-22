@@ -1,6 +1,6 @@
 #!/bin/bash
 
-diretorio="$HOME/.config/suckless/sons"
+diretorio="$HOME/.config/suckless/assets/audio/"
 
 # Encontra todos os arquivos MP3 no diretório
 arquivos_mp3=("$diretorio"/*.mp3)

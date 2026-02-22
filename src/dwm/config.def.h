@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* Helper macros for spawning commands */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/bash", "-c", cmd, NULL } }
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
 #define STATUSBAR "dwmblocks"
 #include <X11/XF86keysym.h>
@@ -12,7 +12,7 @@ static const unsigned int borderpx       = 4;   /* border pixel of windows */
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
-static const unsigned int barborderpx    = 4;  /* border pixel of bar */
+static const unsigned int barborderpx    = 6;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
 static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
@@ -25,10 +25,10 @@ static const char autostartsh[]          = "autostart.sh";
 static const char dwmdir[]               = "dwm";
 static const char localshare[]           = ".config/suckless";
 static const int showbar                 = 1;   /* 0 means no bar */
-static const int topbar                  = 1;   /* 0 means bottom bar */
+static const int topbar                  = 0;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
-static const int vertpad                 = 10;  /* vertical padding of bar */
-static const int sidepad                 = 10;  /* horizontal padding of bar */
+static const int vertpad                 = 15;  /* vertical padding of bar */
+static const int sidepad                 = 15;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
@@ -46,12 +46,12 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Term:size=10",
+	"Iosevka Term:size=11",
     "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
 	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
   	"PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
-static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=16:style=Regular:antialias=true";
+static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:style=Regular:antialias=true";
 #include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
@@ -181,7 +181,7 @@ static const Rule rules[] = {
 static const MonitorRule monrules[] = {
 	/* monitor  tag   layout  mfact  nmaster  showbar  topbar */
 	{  1,       -1,   5,      -1,    -1,      -1,      -1     }, // use a different layout for the second monitor
-	{  -1,      -1,   8,      -1,    -1,      -1,      -1     }, // default
+	{  -1,      -1,   0,      -1,    -1,      -1,      -1     }, // default
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -265,6 +265,7 @@ static const char *dmenucmd[] = {
 	NULL
 };
 static const char *termcmd[]  = { "st", NULL };
+
 
 static const Key keys[] = {
 	/* modifier                     key            function                argument */

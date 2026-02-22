@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-
 echo "install core"
 sudo pacman -S --noconfirm xorg-server base-devel make gcc libx11 libxft libxinerama harfbuzz \
     imlib2 libxrandr libxcb libx11 xcb-util gd xdotool xorg-xsetroot
@@ -43,6 +42,29 @@ sudo systemctl stop  mpd  # Stop
 systemctl --user enable mpd  # Enable by user
 systemctl --user start mpd
 systemctl --user --now enable mpd-mpris
+
+# Pywal e wpgtk
+sudo pacman -S --noconfirm gtk-engine-murrine xsettingsd libpillowfight python-pillow-heif python-pillowfight python-pyscreenshot python-gobject
+
+sudo pacman -S --noconfirm epapirus-icon-theme papirus-icon-theme lxappearance qt5ct
+
+# Yay
+echo "install yay"
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+yay -Y --gendb
+
+yay -Syuv --noconfirm
+
+# Aur packages
+yay -S --noconfirm python-pywal16 wpgtk-git numix-icon-theme-git cava
+
+echo "fatpak"
+sudo pacman -S --noconfirm flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak install  com.bitwarden.desktop -y
+flatpak install  md.obsidian.Obsidian  -y
+flatpak install  org.filezillaproject.Filezilla  -y
 
 
 echo "Configuration"
