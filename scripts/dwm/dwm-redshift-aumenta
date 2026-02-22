@@ -15,7 +15,7 @@ case "$temperatura" in
         notify-send -t 3000 "Alterado a temperatura para 6000K" --icon="/usr/share/icons/ePapirus/16x16/actions/colors-chromablue.svg"
         ;;
     1.1)
-]        redshift -P -O 5500
+        redshift -P -O 5500
         notify-send -t 3000 "Alterado a temperatura para 5500K" --icon="/usr/share/icons/ePapirus/16x16/actions/colors-chromablue.svg"
         ;;
     1.2)
