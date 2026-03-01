@@ -1,4 +1,4 @@
-This dwm 6.5 (cfb8627, 2024-10-28) side project has a different take on dwm patching. It uses preprocessor directives to decide whether or not to include a patch during build time. Essentially this means that this build, for better or worse, contains both the patched _and_ the original code. The aim being that you can select which patches to include and the build will contain that code and nothing more. Due to the complexity of some of the patches dwm-flexipatch has diverged from mainstream dwm by making some core patches non-optional for maintenance reasons. For the classic dwm-flexipatch build refer to branch [dwm-flexipatch-1.0](https://github.com/bakkeby/dwm-flexipatch/tree/dwm-flexipatch-1.0).
+This dwm 6.8 (c3dd6a8, 2026-02-17) side project has a different take on dwm patching. It uses preprocessor directives to decide whether or not to include a patch during build time. Essentially this means that this build, for better or worse, contains both the patched _and_ the original code. The aim being that you can select which patches to include and the build will contain that code and nothing more. Due to the complexity of some of the patches dwm-flexipatch has diverged from mainstream dwm by making some core patches non-optional for maintenance reasons. For the classic dwm-flexipatch build refer to branch [dwm-flexipatch-1.0](https://github.com/bakkeby/dwm-flexipatch/tree/dwm-flexipatch-1.0).
 
 For example to include the `alpha` patch then you would only need to flip this setting from 0 to 1 in [patches.h](https://github.com/bakkeby/dwm-flexipatch/blob/master/patches.def.h):
 ```c
@@ -18,6 +18,10 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
 ---
 
 ### Changelog:
+
+2025-10-30 - Added the movecenter patch
+
+2025-09-21 - Added the games patch
 
 2025-06-27 - Added the banish patch
 
@@ -499,6 +503,11 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
       - when pressed again it shows the bar and restores the layout that was active before going
         fullscreen
 
+   - [games](https://github.com/bakkeby/patches/wiki/steam)
+      - adds a new client rule option to flag clients as a "game", the effect of which is that
+      - if the client is in fullscreen and it loses focus (e.g. by moving to another tag) then it will automatically be minimized
+      - and the window will automatically be unminimized when receving focus (e.g. by going back to its tag)
+
    - [hidevacanttags](https://dwm.suckless.org/patches/hide_vacant_tags/)
       - prevents dwm from drawing tags with no clients (i.e. vacant) on the bar
 
@@ -576,6 +585,13 @@ Browsing patches? There is a [map of patches](https://coggle.it/diagram/X9IiSSM6
       - always display the the monocle-symbol as defined in config.h if the monocle-layout is
         activated
       - do not display the number of open clients in the current tag
+
+   - [movecenter](https://dwm.suckless.org/patches/movecenter/)
+      - adds a keybinding to center the focused window
+
+   - [moveplace](https://dwm.suckless.org/patches/moveplace/)
+      - adds a function to place a window either centered or in one of 8 cardinal directions
+      - based on the exresize patch
 
    - [moveresize](https://dwm.suckless.org/patches/moveresize/)
       - allows you to move and resize dwm's clients using keyboard bindings

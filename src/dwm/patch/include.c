@@ -13,13 +13,15 @@
 #include "bar_winicon.c"
 #include "bar_tags.c"
 #include "bar_wintitle.c"
+#include "bar_awesomebar.c"
 #include "bar_systray.c"
+#include "bar_wintitleactions.c"
 
 /* Other patches */
+#include "alttab.c"
 #include "attachx.c"
 #include "autostart.c"
 #include "recttoclient.c"
-#include "banish.c"
 #include "cfacts.c"
 #include "cmdcustomize.c"
 #include "cyclelayouts.c"

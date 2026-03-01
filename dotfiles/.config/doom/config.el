@@ -242,3 +242,15 @@
      ("jpo" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results output\n$0\n#+end_src" "jupyter-python output block")
      ("jpf" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results file :file $1\n$2\n#+end_src" "jupyter-python file block"))))
 
+
+;; ~/.doom.d/config.el
+
+;; Função para iniciar R no Docker
+(defun r-docker ()
+  "Inicia uma sessão interativa do R dentro de um container Docker."
+  (interactive)
+  (let ((ess-r-customize-alist
+         (append ess-r-customize-alist
+                 '((inferior-ess-program . "~/.local/bin/R-docker"))))
+        (ess-R-readline t))
+    (R)))

@@ -178,6 +178,9 @@
 #if FULLSCREEN_PATCH
 #include "fullscreen.h"
 #endif
+#if GAMES_PATCH
+#include "games.h"
+#endif
 #if INPLACEROTATE_PATCH
 #include "inplacerotate.h"
 #endif
@@ -200,6 +203,9 @@
 #endif
 #if MPDCONTROL_PATCH
 #include "mpdcontrol.h"
+#endif
+#if MOVECENTER_PATCH
+#include "movecenter.h"
 #endif
 #if MOVEPLACE_PATCH
 #include "moveplace.h"

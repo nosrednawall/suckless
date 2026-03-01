@@ -19,6 +19,7 @@ width_tags(Bar *bar, BarArg *a)
 	return w;
 }
 
+
 int
 draw_tags(Bar *bar, BarArg *a)
 {

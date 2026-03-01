@@ -27,11 +27,6 @@
 
 #define TRUECOLOR(r,g,b)	(1 << 24 | (r) << 16 | (g) << 8 | (b))
 #define IS_TRUECOL(x)		(1 << 24 & (x))
-#define HISTSIZE      2000
-
-#define HEX_TO_INT(c)		((c) >= '0' && (c) <= '9' ? (c) - '0' : \
-				(c) >= 'a' && (c) <= 'f' ? (c) - 'a' + 10 : \
-				(c) >= 'A' && (c) <= 'F' ? (c) - 'A' + 10 : -1)
 
 enum glyph_attribute {
 	ATTR_NULL           = 0,
@@ -47,10 +42,36 @@ enum glyph_attribute {
 	ATTR_WRAP           = 1 << 9,
 	ATTR_WIDE           = 1 << 10,
 	ATTR_WDUMMY         = 1 << 11,
+	ATTR_SELECTED       = 1 << 12,
+	ATTR_BOXDRAW        = 1 << 13,
+	ATTR_DIRTYUNDERLINE = 1 << 14,
 	ATTR_LIGA           = 1 << 15,
+	ATTR_SIXEL          = 1 << 16,
 	ATTR_HIGHLIGHT      = 1 << 17,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
 	ATTR_FTCS_PROMPT    = 1 << 18,  /* OSC 133 ; A ST */
+};
+
+typedef struct _ImageList {
+	struct _ImageList *next, *prev;
+	unsigned char *pixels;
+	void *pixmap;
+	void *clipmask;
+	int width;
+	int height;
+	int x;
+	int y;
+	int reflow_y;
+	int cols;
+	int cw;
+	int ch;
+	int transparent;
+} ImageList;
+
+enum drawing_mode {
+	DRAW_NONE = 0,
+	DRAW_BG   = 1 << 0,
+	DRAW_FG   = 1 << 1,
 };
 
 /* Used to control which screen(s) keybindings and mouse shortcuts apply to. */
@@ -93,6 +114,8 @@ typedef struct {
 	uint32_t mode;    /* attribute flags */
 	uint32_t fg;      /* foreground  */
 	uint32_t bg;      /* background  */
+	int ustyle;	      /* underline style */
+	int ucolor[3];    /* underline color */
 } Glyph;
 
 typedef Glyph *Line;
@@ -117,7 +140,7 @@ typedef struct {
 	int col;      /* nb col */
 	Line *line;   /* screen */
 	Line *alt;    /* alternate screen */
-	Line hist[HISTSIZE]; /* history buffer */
+	Line *hist;   /* history buffer */
 	int histi;           /* history index */
 	int histf;           /* nb history available */
 	int scr;             /* scroll back */
@@ -134,6 +157,8 @@ typedef struct {
 	int charset;  /* current charset */
 	int icharset; /* selected charset for sequence */
 	int *tabs;
+	ImageList *images;     /* sixel images */
+	ImageList *images_alt; /* sixel images for alternate screen */
 	Rune lastc;   /* last printed char outside of sequence, 0 if control */
 	char* cwd;    /* current working directory */
 } Term;
@@ -142,17 +167,22 @@ typedef union {
 	int i;
 	uint ui;
 	float f;
-	const void *v;
-	const char *s;
+	void *v;
+	char *s;
 } Arg;
+
+typedef struct {
+	char *name;  /* string key */
+	char **argv;  /* pointer to execv argument list */
+} Command;
 
 /* Purely graphic info */
 typedef struct {
 	int tw, th; /* tty width and height */
 	int w, h; /* window width and height */
-	int hborderpx, vborderpx;
 	int ch; /* char height */
 	int cw; /* char width  */
+	int cyo; /* char y offset */
 	int mode; /* window state/mode flags */
 	int cursor; /* cursor style */
 } TermWindow;
@@ -171,8 +201,7 @@ typedef struct {
 	     XtextPlain, XdndAware;
 	int64_t XdndSourceWin, XdndSourceVersion;
 	int32_t XdndSourceFormat;
-	Atom netwmstate, netwmfullscreen;
-	Atom netwmicon;
+	Atom netwmstate, netwmfullscreen, netwmicon;
 	struct {
 		XIM xim;
 		XIC xic;
@@ -182,6 +211,12 @@ typedef struct {
 	Draw draw;
 	Visual *vis;
 	XSetWindowAttributes attrs;
+	/* Here, we use the term *pointer* to differentiate the cursor
+	 * one sees when hovering the mouse over the terminal from, e.g.,
+	 * a green rectangle where text would be entered. */
+	Cursor vpointer, bpointer; /* visible and hidden pointers */
+	int pointerisvisible;
+	Cursor upointer; /* url pointer */
 	int scr;
 	int isfixed; /* is fixed geometry? */
 	int depth; /* bit depth */
@@ -201,7 +236,7 @@ typedef struct {
 	uint mod;
 	KeySym keysym;
 	void (*func)(const Arg *);
-	const Arg arg;
+	Arg arg;
 	int screen;
 } Shortcut;
 
@@ -209,8 +244,8 @@ typedef struct {
 	uint mod;
 	uint button;
 	void (*func)(const Arg *);
-	const Arg arg;
-	uint release;
+	Arg arg;
+	int release;
 	int screen;
 } MouseShortcut;
 
@@ -287,6 +322,14 @@ char *xstrdup(const char *);
 
 int xgetcolor(int x, unsigned char *r, unsigned char *g, unsigned char *b);
 
+int isboxdraw(Rune);
+ushort boxdrawindex(const Glyph *);
+#ifdef XFT_VERSION
+/* only exposed to x.c, otherwise we'll need Xft.h for the types */
+void boxdraw_xinit(Display *, Colormap, XftDraw *, Visual *);
+void drawboxes(int, int, int, int, XftColor *, XftColor *, const XftGlyphFontSpec *, int);
+#endif // XFT_VERSION
+
 /* config.h globals */
 extern char *utmp;
 extern char *scroll;
@@ -295,18 +338,23 @@ extern char *vtiden;
 extern wchar_t *worddelimiters;
 extern wchar_t *kbds_sdelim;
 extern wchar_t *kbds_ldelim;
-extern int allowaltscreen;
-extern int allowwindowops;
 extern char *termname;
 extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
 extern unsigned int defaultcs;
+extern int extpipeactive;
 
+extern uint64_t settings;
 extern float alpha;
+extern float alpha_unfocused;
+extern float alpha_selection_background;
 
 extern DC dc;
 extern XWindow xw;
 extern XSelection xsel;
 extern TermWindow win;
 extern Term term;
+extern int histsize;
+extern int histsize_max;
+extern int histsize_incr;

@@ -14,7 +14,7 @@ static const unsigned int borderpx       = 4;   /* border pixel of windows */
  * automatically update with setborderpx. */
 static const unsigned int barborderpx    = 6;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
-static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
+static const int swallowfloating         = 1;   /* 1 means swallow floating windows by default */
 static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
@@ -23,7 +23,7 @@ static const int smartgaps_fact          = 1;   /* gap factor when there is only
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
 static const char dwmdir[]               = "dwm";
-static const char localshare[]           = ".config/suckless";
+static const char localshare[]           = ".config/suckless/src/";
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
@@ -40,6 +40,14 @@ static const unsigned int ulinepad = 1;         /* horizontal padding between th
 static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
 static const unsigned int ulinevoffset = -3;     /* how far above the bottom of the bar the line should appear */
 static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
+
+/* alt-tab configuration */
+static const unsigned int tabmodkey        = 0x40; /* (Alt) when this key is held down the alt-tab functionality stays active. Must be the same modifier as used to run alttabstart */
+static const unsigned int tabcyclekey      = 0x17; /* (Tab) when this key is hit the menu moves one position forward in client stack. Must be the same key as used to run alttabstart */
+static const unsigned int tabposy          = 1;    /* tab position on Y axis, 0 = top, 1 = center, 2 = bottom */
+static const unsigned int tabposx          = 1;    /* tab position on X axis, 0 = left, 1 = center, 2 = right */
+static const unsigned int maxwtab          = 600;  /* tab menu width */
+static const unsigned int maxhtab          = 200;  /* tab menu height */
 
 /* Indicators: see patch/bar_indicators.h for options */
 static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
@@ -162,7 +170,7 @@ static const Rule rules[] = {
 	// Floating windows
 	RULE(.class = "copyq", .tags = 0, .isfloating = 1)
 	RULE(.class = "Sxiv", .tags = 0, .isfloating = 1)
-//	RULE(.class = "Qalculate-gtk", .tags = 0, .isfloating = 1)
+	RULE(.class = "Qalculate-gtk", .tags = 0, .isfloating = 1)
 	RULE(.class = "kruler", .tags = 0, .isfloating = 1)
 
 	// Scratchpads
@@ -175,6 +183,7 @@ static const Rule rules[] = {
 
     // Plots no emacs
     RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
+    RULE(.instance = "r_x11", .class = "R_x11", .tags = 0, .isfloating = 1)
 
 };
 
@@ -203,7 +212,8 @@ static const BarRule barrules[] = {
 	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
 	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_statuscmd,         NULL,                    "status2d" },
-	{ -1,        0,     BAR_ALIGN_NONE,   width_wintitle,           draw_wintitle,          click_wintitle,          NULL,                    "wintitle" },
+	{ 0,        0,     BAR_ALIGN_NONE,   width_wintitle,           draw_wintitle,          click_wintitle,          NULL,                    "wintitle" },
+    { 1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
 };
 
 /* layout(s) */
@@ -211,6 +221,10 @@ static const float mfact     = 0.51; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+static const int refreshrate = 120;  /* refresh rate (per second) for client move/resize */
+static const int refreshrate_placemouse = 60; /* refresh rate (per second) for placemouse */
+static const int refreshrate_dragmfact = 40; /* refresh rate (per second) for dragmfact */
+static const int refreshrate_dragcfact = 60; /* refresh rate (per second) for dragcfact */
 
 #define FORCE_VSPLIT 1
 
@@ -271,9 +285,10 @@ static const Key keys[] = {
 	/* modifier                     key            function                argument */
 
   /* Abrir programas*/
-    { MODKEY,                       XK_d,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
-
+//  { MODKEY,                       XK_d,          spawn,                  {.v = dmenucmd } },
+  	{ MODKEY,						XK_d,	  	   spawn,                  SHCMD(PATH("dwm/dwm-roficmd")) },
+    { MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
+ 	{ Mod1Mask,                     XK_Tab,        alttabstart,            {0} },
     /* Controlar janelas/fechar/mostrar barra */
     { MODKEY,                       XK_b,          togglebar,              {0} },
 
@@ -402,8 +417,8 @@ static const Key keys[] = {
 	/*Brilho tela notebook*/
 	{ 0,							XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
 	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
-	{ MODKEY,						XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta")) },
-	{ MODKEY,						XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui")) },
+	{ MODKEY,						XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta")) },
+	{ MODKEY,						XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui")) },
 
 	/*Dmenus*/
 	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
