@@ -18,7 +18,7 @@ case $chosen in
     systemctl reboot
 	;;
     $logout)
-    sudo -A pkill -KILL -u $USER
+    pkill -KILL -u $USER
 	;;
     $suspend)
 	systemctl suspend

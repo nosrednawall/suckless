@@ -215,7 +215,8 @@ if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
 
     ## caso esteja como parado, muda as cores e o icone
     if [ "$status" = "Stopped" ] || [ "$status" = "" ]; then
-        icon="󰝛"
+        # icon="󰝛"
+        icon=""
         cor_forte="#4A5947"
         cor_fraca="#4A5947"
     fi

@@ -3,11 +3,14 @@
 # Obtém a temperatura atual do monitor
 temperatura=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -1)
 
+
 # Verifica se conseguiu obter a temperatura
 if [ -z "$temperatura" ]; then
     notify-send -t 3000 "Erro" "Não foi possível obter a temperatura atual" --icon=dialog-error
     exit 1
 fi
+
+notify-send -t 3000 "Erro" "temperatura atual $temperatura" --icon=dialog-error
 
 case "$temperatura" in
     1.0)
@@ -45,4 +48,6 @@ case "$temperatura" in
 esac
 
 kill -10 $(pidof dwmblocks)
+
+
 exit 0

@@ -6,6 +6,7 @@ skip="Pular etapa"
 pause="Pausar/Retomar Timer"
 reset="Reseta o timer"
 finish="Finalizar"
+matar_processo="Matar processo"
 
 # Verifica se possui pomodoro ativo
 PID_pomodoro=$(potctl | awk '{print$2}' | tail -1)
@@ -14,7 +15,7 @@ if [[ -z "$PID_pomodoro" ]]; then
 	options="$start"
 else
 	# Variable passed to dmenu
-	options="$pause\n$skip\n$finish\n$reset"
+	options="$pause\n$skip\n$finish\n$reset\n$matar_processo"
 fi
 
 chosen="$(echo -e "$options" | dmenu -p "Comandos pomodoro" )"
@@ -34,4 +35,8 @@ case $chosen in
 	 $reset)
 		 potctl -r
 	 ;;
+     $matar_processo)
+         potd &
+         killall potd
+    ;;
 esac

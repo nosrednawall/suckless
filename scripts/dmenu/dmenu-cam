@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Requisitos
+# MPV e Dmenu
+
+source ~/.rtsps_codes
+
+COSTURA="COSTURA"
+FRENTE="FRENTE"
+
+# Variable passed to dmenu
+options="$FRENTE\n$COSTURA"
+
+chosen="$(echo -e "$options" | dmenu -p "Câmeras disponíveis " )"
+
+echo "$chosen"
+case $chosen in
+	*"$FRENTE"*)
+		mpv \
+		--fullscreen \
+		--no-border \
+		--loop-file=inf \
+		"$FRENTE_RTSPS"
+
+	;;
+
+	*"$COSTURA"*)
+		mpv \
+		--fullscreen \
+		--no-border \
+		--loop-file=inf \
+		"$COSTURA_RTSPS"
+	;;
+esac

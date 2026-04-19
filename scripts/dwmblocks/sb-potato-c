@@ -69,7 +69,7 @@ else
     if [ "00:01" = "$pomodoro_minutos" ]; then
         # ffplay -nodisp -autoexit -t 3 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
         # $HOME/.config/suckless/scripts/others/som
-        diretorio="$HOME/.config/suckless/sons"
+        diretorio="$HOME/.config/suckless/assets/audio"
         
         # Encontra todos os arquivos MP3 no diretório
         arquivos_mp3=("$diretorio"/*.mp3)

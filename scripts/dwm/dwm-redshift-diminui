@@ -1,15 +1,23 @@
 #!/bin/bash
 
-# Obtém a temperatura atual do monitor
-temperatura=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -1)
+if [ -z "$temperatura"  ]; then
+    # Obtém a temperatura atual do monitor
+    tempz=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -1)
+
+else
+    # Obtém a temperatura atual do monitor
+    tempz=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -1)
+fi
 
 # Verifica se conseguiu obter a temperatura
-if [ -z "$temperatura" ]; then
+if [ -z "$tempz" ]; then
     notify-send -t 3000 "Erro" "Não foi possível obter a temperatura atual" --icon=dialog-error
     exit 1
 fi
 
-case "$temperatura" in
+notify-send -t 3000 "Erro" "temperatura atual $tempz" --icon=dialog-error
+
+case "$tempz" in
     1.1)
         redshift -P -O 6500
         notify-send -t 3000 "Alterado a temperatura para 6500K" --icon="/usr/share/icons/ePapirus/16x16/actions/colors-chromablue.svg"

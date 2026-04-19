@@ -5,7 +5,7 @@ CONFIG_DIR="$HOME/.dotfiles"
 THEME_FILE="$CONFIG_DIR/.theme_selected"
 MONITOR_CONFIG="$HOME/.monitor_config.sh"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MAPWACON_SCRIPT="$HOME/.local/bin/mapwacon.sh"
+MAPWACON_SCRIPT="$HOME/.config/suckless/scripts/others/mapwacon.sh"
 
 # Cores para output (opcional)
 RED='\033[0;31m'
@@ -228,6 +228,15 @@ setup_tablet() {
         "$EDP_DEVICE") message="Configurado para tela do Notebook" ;;
         *) message="Configurado para $target" ;;
     esac
+
+    # Configura os botoes da mesa para o Obsidian
+    # https://sobrelinux.info/questions/28926/configuring-wacom-tablet-buttons-and-options
+    xsetwacom set "Wacom Intuos S Pad pad" Button 1 key "1"
+    xsetwacom set "Wacom Intuos S Pad pad" Button 2 key "7"
+    xsetwacom set "Wacom Intuos S Pad pad" Button 3 key "0"
+    xsetwacom set "Wacom Intuos S Pen stylus" Button 2 key "7"
+    xsetwacom set "Wacom Intuos S Pen stylus" Button 3 key "0"
+
     
     send_notification "󰓶 Tablet Wacon" "$message" "/usr/share/icons/ePapirus/16x16/devices/input-tablet.svg"
 }

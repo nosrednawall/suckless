@@ -32,7 +32,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-gruvbox)
+(setq doom-theme ''catppuccin))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -75,13 +75,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(add-hook 'python-mode-hook #'lsp)
-(add-hook 'jupyter-python-mode-hook #'lsp)
-
-;; C-c v a  → escolhe venv com completing-read
-(global-set-key (kbd "C-c v a") #'pyvenv-activate)
-(global-set-key (kbd "C-c v d") #'pyvenv-deactivate)
-
 ;; Adiciona navegação entre os buffers, com as teclas Alt+Seytas
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
@@ -92,165 +85,211 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 
-(defun my-python-send-smart ()
+
+(eval-after-load "term"
+  '(define-key term-raw-map (kbd "C-c y") 'term-paste))
+
+
+;; ;; Python mode custom
+
+;; (add-hook 'python-mode-hook #'lsp)
+;; (add-hook 'jupyter-python-mode-hook #'lsp)
+
+
+;; ;; C-c v a  → escolhe venv com completing-read
+;; (global-set-key (kbd "C-c v a") #'pyvenv-activate)
+;; (global-set-key (kbd "C-c v d") #'pyvenv-deactivate)
+
+
+;; (defun my-python-send-smart ()
+;;   (interactive)
+;;   (cond
+;;    ;; 1) região ativa
+;;    ((use-region-p)
+;;     (python-shell-send-region (region-beginning) (region-end))
+;;     (message "Sent region"))
+
+;;    ;; 2) dentro de def/classe - envia função completa
+;;    ((python-info-current-defun)
+;;     (python-shell-send-defun nil)
+;;     (message "Sent def/class"))
+
+;;    ;; 3) linha atual
+;;    (t
+;;     (save-excursion
+;;       (beginning-of-line)
+;;       (skip-chars-forward " \t")          ; pula indentação
+;;       (let ((bol-pos (point))             ; início da linha útil
+;;             (line-contents (buffer-substring-no-properties
+;;                            (line-beginning-position) (line-end-position))))
+
+;;         ;; Verifica se é um cabeçalho (termina com :) E não é vazia
+;;         (if (and (not (string-blank-p line-contents))
+;;                  (string-suffix-p ":" line-contents))
+
+;;             ;; --------- É CABEÇALHO -> manda BLOCO COMPLETO ----------
+;;             (let ((start (point))
+;;                   (initial-indent (current-indentation)))
+;;               ;; Encontra o início do bloco (linha atual)
+;;               (python-nav-beginning-of-defun)
+;;               (when (< (point) start)
+;;                 ;; Vai para próxima linha se não estamos no início do bloco
+;;                 (python-nav-forward-statement))
+
+;;               (let ((block-begin (point)))
+;;                 ;; Encontra o fim do bloco
+;;                 (python-nav-forward-sexp)
+;;                 (python-shell-send-region block-begin (point))
+;;                 (message "Sent complete block")))
+
+
+;;           ;; --------- NÃO É CABEÇALHO -> manda LINHA ----------
+;;           (python-shell-send-statement)
+;;           (message "Sent statement")))
+
+;;     ;; Anda uma linha no buffer de código
+;;     )))
+;;   (python-nav-forward-statement))
+
+;; ;; Configurações para melhor visualização
+;; (with-eval-after-load 'python
+;;   (setq python-shell-echo-input t
+;;         python-shell-echo-input-ps1 t))
+
+;; (add-hook 'python-mode-hook
+;;           (lambda ()
+;;             (local-set-key (kbd "<C-return>") #'my-python-send-smart)))
+
+
+;; ;; ============================================================================
+;; ;; Jupyter + Org mode configuration
+;; ;; ============================================================================
+
+;; ;; Configurar org-babel para jupyter (simplificado)
+;; (with-eval-after-load 'org
+;;   (org-babel-do-load-languages
+;;    'org-babel-load-languages
+;;    '((python . t)
+;;      (jupyter . t)))
+
+;;   (setq org-babel-default-header-args:jupyter-python
+;;         '((:session . "py")
+;;           (:kernel . "python3"))))
+
+;; ;; Desativar completion problemático do jupyter
+;; (with-eval-after-load 'jupyter
+;;   (setq jupyter-use-native-completion nil)
+;;   (setq jupyter-completion-style 'nil))
+
+;; ;; Funções de exportação com tratamento de caminhos com espaços
+;; (defun my/export-org-to-ipynb ()
+;;   "Exportar arquivo org atual para formato Jupyter notebook."
+;;   (interactive)
+;;   (let* ((org-file (expand-file-name (buffer-file-name)))
+;;          (ipynb-file (concat (file-name-sans-extension org-file) ".ipynb")))
+;;     (if (executable-find "pandoc")
+;;         (let ((command (format "pandoc -s \"%s\" -o \"%s\" --to ipynb --from org"
+;;                               org-file ipynb-file)))
+;;           (if (zerop (shell-command command))
+;;               (message "✓ Exportado para %s" ipynb-file)
+;;             (message "✗ Erro na exportação. Verifique o caminho.")))
+;;       (message "✗ Pandoc não encontrado. Instale: sudo apt install pandoc"))))
+
+;; (defun my/import-ipynb-to-org ()
+;;   "Importar arquivo Jupyter notebook para org mode."
+;;   (interactive)
+;;   (let* ((ipynb-file (expand-file-name (read-file-name "Arquivo .ipynb: ")))
+;;          (org-file (concat (file-name-sans-extension ipynb-file) ".org")))
+;;     (if (executable-find "pandoc")
+;;         (let ((command (format "pandoc -s \"%s\" -o \"%s\" --to org --from ipynb"
+;;                               ipynb-file org-file)))
+;;           (if (zerop (shell-command command))
+;;               (progn
+;;                 (find-file org-file)
+;;                 (message "✓ Importado de %s" ipynb-file))
+;;             (message "✗ Erro na importação. Verifique o arquivo.")))
+;;       (message "✗ Pandoc não encontrado. Instale: sudo apt install pandoc"))))
+
+;; ;; Atalhos para org-mode (sem evil)
+;; (with-eval-after-load 'org
+;;   (define-key org-mode-map (kbd "C-c j e") #'org-babel-execute-maybe)
+;;   (define-key org-mode-map (kbd "C-c j r") #'jupyter-run-repl)
+;;   (define-key org-mode-map (kbd "C-c j i") #'org-toggle-inline-images)
+;;   (define-key org-mode-map (kbd "C-c e p") #'my/export-org-to-ipynb)
+;;   (define-key org-mode-map (kbd "C-c e i") #'my/import-ipynb-to-org))
+
+;; ;; Função para criar novo arquivo jupyter-org
+;; (defun my/new-jupyter-org-file ()
+;;   "Criar um novo arquivo org configurado para jupyter."
+;;   (interactive)
+;;   (let ((filename (read-string "Nome do arquivo: " nil nil "jupyter-notebook.org")))
+;;     (find-file filename)
+;;     (insert "#+TITLE: Jupyter Notebook\n")
+;;     (insert "#+PROPERTY: header-args:jupyter-python :session py :kernel python3\n\n")
+;;     (insert "#+begin_src jupyter-python\n")
+;;     (insert "print('Hello Jupyter!')\n")
+;;     (insert "#+end_src\n")
+;;     (org-mode)))
+
+;; (global-set-key (kbd "C-c n j") #'my/new-jupyter-org-file)
+
+;; ;; Configuração adicional para evitar erros de completion
+;; (with-eval-after-load 'corfu
+;;   (setq corfu-auto nil))  ; Desativar auto-completion temporariamente
+
+
+;; ;; Configurar yasnippet para org-mode
+;; (use-package! yasnippet
+;;   :config
+;;   (yas-reload-all)
+;;   (add-hook 'org-mode-hook #'yas-minor-mode))
+
+;; ;; Criar snippet personalizado para jupyter-python
+;; (with-eval-after-load 'yasnippet
+;;   (yas-define-snippets 'org-mode
+;;    '(("jp" "#+begin_src jupyter-python :session py :kernel python3 :async yes\n$0\n#+end_src" "jupyter-python block")
+;;      ("jpo" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results output\n$0\n#+end_src" "jupyter-python output block")
+;;      ("jpf" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results file :file $1\n$2\n#+end_src" "jupyter-python file block"))))
+
+(defun my/rmd-render-and-view-with-R ()
+  "Renderiza usando o processo R inferior se disponível."
   (interactive)
-  (cond
-   ;; 1) região ativa
-   ((use-region-p)
-    (python-shell-send-region (region-beginning) (region-end))
-    (message "Sent region"))
-
-   ;; 2) dentro de def/classe - envia função completa
-   ((python-info-current-defun)
-    (python-shell-send-defun nil)
-    (message "Sent def/class"))
-
-   ;; 3) linha atual
-   (t
-    (save-excursion
-      (beginning-of-line)
-      (skip-chars-forward " \t")          ; pula indentação
-      (let ((bol-pos (point))             ; início da linha útil
-            (line-contents (buffer-substring-no-properties
-                           (line-beginning-position) (line-end-position))))
-
-        ;; Verifica se é um cabeçalho (termina com :) E não é vazia
-        (if (and (not (string-blank-p line-contents))
-                 (string-suffix-p ":" line-contents))
-
-            ;; --------- É CABEÇALHO -> manda BLOCO COMPLETO ----------
-            (let ((start (point))
-                  (initial-indent (current-indentation)))
-              ;; Encontra o início do bloco (linha atual)
-              (python-nav-beginning-of-defun)
-              (when (< (point) start)
-                ;; Vai para próxima linha se não estamos no início do bloco
-                (python-nav-forward-statement))
-
-              (let ((block-begin (point)))
-                ;; Encontra o fim do bloco
-                (python-nav-forward-sexp)
-                (python-shell-send-region block-begin (point))
-                (message "Sent complete block")))
-
-
-          ;; --------- NÃO É CABEÇALHO -> manda LINHA ----------
-          (python-shell-send-statement)
-          (message "Sent statement")))
-
-    ;; Anda uma linha no buffer de código
-    )))
-  (python-nav-forward-statement))
-
-;; Configurações para melhor visualização
-(with-eval-after-load 'python
-  (setq python-shell-echo-input t
-        python-shell-echo-input-ps1 t))
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (local-set-key (kbd "<C-return>") #'my-python-send-smart)))
-
-
-;; ============================================================================
-;; Jupyter + Org mode configuration
-;; ============================================================================
-
-;; Configurar org-babel para jupyter (simplificado)
-(with-eval-after-load 'org
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (jupyter . t)))
-
-  (setq org-babel-default-header-args:jupyter-python
-        '((:session . "py")
-          (:kernel . "python3"))))
-
-;; Desativar completion problemático do jupyter
-(with-eval-after-load 'jupyter
-  (setq jupyter-use-native-completion nil)
-  (setq jupyter-completion-style 'nil))
-
-;; Funções de exportação com tratamento de caminhos com espaços
-(defun my/export-org-to-ipynb ()
-  "Exportar arquivo org atual para formato Jupyter notebook."
-  (interactive)
-  (let* ((org-file (expand-file-name (buffer-file-name)))
-         (ipynb-file (concat (file-name-sans-extension org-file) ".ipynb")))
-    (if (executable-find "pandoc")
-        (let ((command (format "pandoc -s \"%s\" -o \"%s\" --to ipynb --from org"
-                              org-file ipynb-file)))
-          (if (zerop (shell-command command))
-              (message "✓ Exportado para %s" ipynb-file)
-            (message "✗ Erro na exportação. Verifique o caminho.")))
-      (message "✗ Pandoc não encontrado. Instale: sudo apt install pandoc"))))
-
-(defun my/import-ipynb-to-org ()
-  "Importar arquivo Jupyter notebook para org mode."
-  (interactive)
-  (let* ((ipynb-file (expand-file-name (read-file-name "Arquivo .ipynb: ")))
-         (org-file (concat (file-name-sans-extension ipynb-file) ".org")))
-    (if (executable-find "pandoc")
-        (let ((command (format "pandoc -s \"%s\" -o \"%s\" --to org --from ipynb"
-                              ipynb-file org-file)))
-          (if (zerop (shell-command command))
+  (let* ((rmd-file (buffer-file-name))
+         (html-file (concat (file-name-sans-extension rmd-file) ".html"))
+         (ess-process (get-process "R")))
+    (if (and rmd-file (string-match-p "\\.Rmd$" rmd-file))
+        (progn
+          (save-buffer)
+          (if ess-process
               (progn
-                (find-file org-file)
-                (message "✓ Importado de %s" ipynb-file))
-            (message "✗ Erro na importação. Verifique o arquivo.")))
-      (message "✗ Pandoc não encontrado. Instale: sudo apt install pandoc"))))
+                (message "▶ Usando R inferior para renderizar...")
+                (comint-send-string ess-process
+                                   (format "rmarkdown::render(\"%s\")\n" rmd-file))
+                (message "⏳ Renderizando... Use C-c C-o para abrir o HTML quando terminar")
+                ;; Cria atalho temporário para abrir o HTML
+                (defun my/open-html-quick ()
+                  (interactive)
+                  (if (file-exists-p html-file)
+                      (browse-url html-file)
+                    (message "HTML ainda não gerado. Aguarde a renderização.")))
+                (define-key ess-r-mode-map (kbd "C-c C-o") 'my/open-html-quick))
+            ;; Fallback para Rscript
+            (progn
+              (message "▶ Sem R inferior. Usando Rscript...")
+              (shell-command (format "Rscript -e \"rmarkdown::render('%s')\"" rmd-file))
+              (browse-url html-file)
+              (message "✅ Concluído!"))))
+      (message "❌ Não é um arquivo .Rmd"))))
 
-;; Atalhos para org-mode (sem evil)
-(with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c j e") #'org-babel-execute-maybe)
-  (define-key org-mode-map (kbd "C-c j r") #'jupyter-run-repl)
-  (define-key org-mode-map (kbd "C-c j i") #'org-toggle-inline-images)
-  (define-key org-mode-map (kbd "C-c e p") #'my/export-org-to-ipynb)
-  (define-key org-mode-map (kbd "C-c e i") #'my/import-ipynb-to-org))
+(define-key ess-r-mode-map (kbd "C-c C-r") 'my/rmd-render-and-view-with-R)
 
-;; Função para criar novo arquivo jupyter-org
-(defun my/new-jupyter-org-file ()
-  "Criar um novo arquivo org configurado para jupyter."
+(defun my/open-rmd-html ()
+  "Abre o HTML correspondente ao RMarkdown atual."
   (interactive)
-  (let ((filename (read-string "Nome do arquivo: " nil nil "jupyter-notebook.org")))
-    (find-file filename)
-    (insert "#+TITLE: Jupyter Notebook\n")
-    (insert "#+PROPERTY: header-args:jupyter-python :session py :kernel python3\n\n")
-    (insert "#+begin_src jupyter-python\n")
-    (insert "print('Hello Jupyter!')\n")
-    (insert "#+end_src\n")
-    (org-mode)))
+  (let* ((rmd-file (buffer-file-name))
+         (html-file (concat (file-name-sans-extension rmd-file) ".html")))
+    (if (file-exists-p html-file)
+        (browse-url html-file)
+      (message "❌ HTML não encontrado. Renderize primeiro com C-c C-r"))))
 
-(global-set-key (kbd "C-c n j") #'my/new-jupyter-org-file)
-
-;; Configuração adicional para evitar erros de completion
-(with-eval-after-load 'corfu
-  (setq corfu-auto nil))  ; Desativar auto-completion temporariamente
-
-
-;; Configurar yasnippet para org-mode
-(use-package! yasnippet
-  :config
-  (yas-reload-all)
-  (add-hook 'org-mode-hook #'yas-minor-mode))
-
-;; Criar snippet personalizado para jupyter-python
-(with-eval-after-load 'yasnippet
-  (yas-define-snippets 'org-mode
-   '(("jp" "#+begin_src jupyter-python :session py :kernel python3 :async yes\n$0\n#+end_src" "jupyter-python block")
-     ("jpo" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results output\n$0\n#+end_src" "jupyter-python output block")
-     ("jpf" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results file :file $1\n$2\n#+end_src" "jupyter-python file block"))))
-
-
-;; ~/.doom.d/config.el
-
-;; Função para iniciar R no Docker
-(defun r-docker ()
-  "Inicia uma sessão interativa do R dentro de um container Docker."
-  (interactive)
-  (let ((ess-r-customize-alist
-         (append ess-r-customize-alist
-                 '((inferior-ess-program . "~/.local/bin/R-docker"))))
-        (ess-R-readline t))
-    (R)))
+(define-key ess-r-mode-map (kbd "C-c C-o") 'my/open-rmd-html)

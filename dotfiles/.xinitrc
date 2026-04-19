@@ -6,7 +6,7 @@ source /home/anderson/.theme_selected
 # Executa o script para verificar se o segundo monitor está ativo
 if [ ! -f ~/.monitor_config.sh ]
 then
-    bash ~/.local/bin/check_second_monitor_is_active.sh
+    bash ~/.config/suckless/scripts/others/check_second_monitor_is_active.sh
 else
     bash ~/.monitor_config.sh
 fi

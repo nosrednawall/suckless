@@ -60,7 +60,7 @@ static const char *fonts[]          	 = {
   	"PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:style=Regular:antialias=true";
-#include "themes/gruvbox_dark.h"
+#include "themes/catppuccin_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

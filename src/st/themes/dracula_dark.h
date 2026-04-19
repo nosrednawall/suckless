@@ -4,14 +4,14 @@
 static const char *colorname[] = {
 	/* Dracula Dark */
     /* 8 normal colors */
-    [0] = "#000000", /* black   */
+    [0] = "#282a36", /* black   */
     [1] = "#ff5555", /* red     */
     [2] = "#50fa7b", /* green   */
     [3] = "#f1fa8c", /* yellow  */
     [4] = "#bd93f9", /* blue    */
     [5] = "#ff79c6", /* magenta */
     [6] = "#8be9fd", /* cyan    */
-    [7] = "#bbbbbb", /* white   */
+    [7] = "#f8f8f2", /* white   */
 
     /* 8 bright colors */
     [8]  = "#44475a", /* black   */
@@ -24,13 +24,13 @@ static const char *colorname[] = {
     [15] = "#ffffff", /* white   */
 
     /* special colors */
-    [256] = "#282a36", /* background */
-    [257] = "#f8f8f2", /* foreground */
+    [250] = "#282a36", /* background */
+    [251] = "#f8f8f2", /* foreground */
 };
 
-unsigned int defaultfg = 257; /* White */
-unsigned int defaultbg = 256;  /* Background */
-unsigned int defaultcs = 257; /* Cursor color */
-unsigned int defaultrcs = 257; /* Reverse cursor color */
+unsigned int defaultfg = 7; /* White */
+unsigned int defaultbg = 0;  /* Background */
+unsigned int defaultcs = 7; /* Cursor color */
+unsigned int defaultrcs = 0; /* Reverse cursor color */
 
 #endif // DRACULA_DARK_H_

@@ -56,6 +56,7 @@
 ;; Python tools
 (package! pip-requirements)
 (package! polymode)
+(package! poly-markdown)
 
 (package! all-the-icons)
 (package! rainbow-mode)
