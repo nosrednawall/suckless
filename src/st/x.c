@@ -61,6 +61,8 @@ static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
 
+static char *opt_alpha = NULL;
+
 #include "lib/st_include.h"
 #include "lib/x_include.h"
 
@@ -822,6 +824,7 @@ int
 xloadcolor(int i, const char *name, Color *ncolor)
 {
 	XRenderColor color = { .alpha = 0xffff };
+
 	if (!name) {
 		if (BETWEEN(i, 16, 255)) { /* 256 color */
 			if (i < 6*6*6+16) { /* same colors as xterm */
@@ -834,9 +837,8 @@ xloadcolor(int i, const char *name, Color *ncolor)
 			}
 			return XftColorAllocValue(xw.dpy, xw.vis,
 			                          xw.cmap, &color, ncolor);
-		}
-
-		name = colors[i];
+      }else
+      name = colorname[i];
 	}
 
 	return XftColorAllocName(xw.dpy, xw.vis, xw.cmap, name, ncolor);
@@ -867,30 +869,59 @@ xloadalpha(void)
 void
 xloadcols(void)
 {
+  int i;
 	static int loaded, color;
 	Color *cp;
 
-	if (!loaded) {
-		dc.collen = MAX(num_colors, 256);
-		dc.col = calloc(dc.collen, sizeof(Color));
+//	if (!loaded) {
+//		dc.collen = MAX(num_colors, 256);
+//		dc.col = calloc(dc.collen, sizeof(Color));
+//	}
+
+
+	if (loaded) {
+		for (cp = dc.col; cp < &dc.col[dc.collen]; ++cp)
+			XftColorFree(xw.dpy, xw.vis, xw.cmap, cp);
+	} else {
+		dc.collen = MAX(LEN(colorname), 256);
+		dc.col = xmalloc(dc.collen * sizeof(Color));
 	}
 
-	for (int i = 0; i < dc.collen; ++i) {
+//	for (i = 0; i < dc.collen; ++i) {
+//		if (!xloadcolor(i, NULL, &dc.col[i])) {
+//			if (colors[i])
+//				die("could not allocate color '%s'\n", colors[i]);
+//			else
+//				die("could not allocate color %d\n", i);
+//		}
+//	}
+
+//	if (dc.collen && enabled(AlphaFocusHighlight)) {
+//		color = (focused ? focusedbg : unfocusedbg);
+//		defaultbg = defaultbg_idx;
+//		xloadcolor(color, NULL, &dc.col[defaultbg_idx]);
+//	}
+
+//	xloadalpha();
+
+	for (i = 0; i < dc.collen; i++)
 		if (!xloadcolor(i, NULL, &dc.col[i])) {
-			if (colors[i])
-				die("could not allocate color '%s'\n", colors[i]);
+			if (colorname[i])
+				die("could not allocate color '%s'\n", colorname[i]);
 			else
 				die("could not allocate color %d\n", i);
 		}
-	}
 
-	if (dc.collen && enabled(AlphaFocusHighlight)) {
-		color = (focused ? focusedbg : unfocusedbg);
-		defaultbg = defaultbg_idx;
-		xloadcolor(color, NULL, &dc.col[defaultbg_idx]);
-	}
+	/* set alpha value of bg color */
+	if (opt_alpha)
+		alpha = strtof(opt_alpha, NULL);
+	dc.col[defaultbg].color.alpha = (unsigned short)(0xffff * alpha);
+	dc.col[defaultbg].pixel &= 0x00FFFFFF;
+	dc.col[defaultbg].pixel |= (unsigned char)(0xff * alpha) << 24;
+	dc.col[defaultbg].color.red   *= alpha;
+	dc.col[defaultbg].color.green *= alpha;
+	dc.col[defaultbg].color.blue  *= alpha;
 
-	xloadalpha();
 	loaded = 1;
 }
 
