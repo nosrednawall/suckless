@@ -1,0 +1,131 @@
+#!/bin/bash
+
+CONFIG_FILE="$HOME/.config/suckless/scripts/dmenu/dmenu-radio.conf"
+PLAYER="mpv"
+PID_FILE="/tmp/dmenu_radio.pid"
+CONTROL_PIPE="/tmp/dmenu_radio_control"
+
+# Função para obter valores do arquivo .conf
+get_value() {
+    local radio="$1"
+    local field="$2"
+
+    # Usa sed para extrair o valor entre as seções
+    sed -n "/^\[$radio\]/,/^\[/p" "$CONFIG_FILE" | \
+    grep "^$field =" | \
+    head -1 | \
+    cut -d'=' -f2- | \
+    sed 's/^[[:space:]]*//; s/[[:space:]]*$//; s/^"//; s/"$//'
+}
+
+# Lista todas as rádios
+get_radios() {
+    grep '^\[.*\]$' "$CONFIG_FILE" | sed 's/^\[//; s/\]$//'
+}
+
+# Verifica se há uma rádio tocando
+is_playing() {
+    if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
+        return 0
+    else
+        rm -f "$PID_FILE" 2>/dev/null
+        return 1
+    fi
+}
+
+# Pausa/Resume
+toggle_pause() {
+    if [[ -p "$CONTROL_PIPE" ]]; then
+        echo "cycle pause" > "$CONTROL_PIPE"
+    fi
+}
+
+# Para a reprodução
+stop_radio() {
+    if [[ -f "$PID_FILE" ]]; then
+        kill "$(cat "$PID_FILE")" 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
+    rm -f "$CONTROL_PIPE" 2>/dev/null
+}
+
+# Toca uma rádio
+play_radio() {
+    local radio="$1"
+    local stream_url=$(get_value "$radio" "stream")
+    local tags=$(get_value "$radio" "tags")
+    local site=$(get_value "$radio" "site")
+
+    if [[ -z "$stream_url" ]]; then
+        echo "Stream não encontrada para: $radio" | dmenu -p "ERRO" -l 1
+        return 1
+    fi
+
+    # Para qualquer rádio tocando
+    stop_radio
+
+    # Cria pipe para controle
+    rm -f "$CONTROL_PIPE"
+    mkfifo "$CONTROL_PIPE"
+
+    # Inicia o player
+    if [[ "$PLAYER" == "mpv" ]]; then
+        $PLAYER --input-ipc-server="$CONTROL_PIPE" --no-video "$stream_url" > /dev/null 2>&1 &
+        echo $! > "$PID_FILE"
+    else
+        $PLAYER "$stream_url" > /dev/null 2>&1 &
+        echo $! > "$PID_FILE"
+    fi
+
+    # Notifica
+    notify-send "🎵 Tocando agora" "$radio\n$tags" 2>/dev/null || echo "Tocando: $radio - $tags"
+}
+
+# Menu quando não há rádio tocando
+main_menu_no_playing() {
+    local selected=$(get_radios | dmenu -p "🎵 Selecione uma rádio" -l 10)
+
+    if [[ -n "$selected" ]]; then
+        play_radio "$selected"
+    fi
+}
+
+# Menu quando há rádio tocando
+main_menu_playing() {
+    local options="▶️  Play/Pause\n⏹️  Stop\n📻  Trocar rádio"
+    local selected=$(echo -e "$options" | dmenu -p "🎵 Rádio tocando" -l 3)
+
+    case "$selected" in
+        "▶️  Play/Pause")
+            toggle_pause
+            ;;
+        "⏹️  Stop")
+            stop_radio
+            sleep 0.5
+            main_menu_no_playing
+            ;;
+        "📻  Trocar rádio")
+            local radio_selected=$(get_radios | dmenu -p "🎵 Selecione outra rádio" -l 10)
+            if [[ -n "$radio_selected" ]]; then
+                play_radio "$radio_selected"
+            else
+                main_menu_playing
+            fi
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+}
+
+# Função principal
+main() {
+    if is_playing; then
+        main_menu_playing
+    else
+        main_menu_no_playing
+    fi
+}
+
+# Executa
+main
