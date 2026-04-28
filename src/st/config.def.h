@@ -117,7 +117,7 @@ float gradient_constant = 0.46; // constant alpha value that will get added to g
  */
 char *xdndescchar_def = " !\"#$&'()*;<>?[\\]^`{|}~";
 
-#include "themes/nord_dark.h"
+#include "themes/vaporwave_dark.h"
 
 /* Terminal colors (16 first used in escape sequence) */
 //static const char *colorname[] = {

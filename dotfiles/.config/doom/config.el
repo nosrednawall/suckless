@@ -32,7 +32,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-nord)
+
+(setq doom-theme 'doom-city-lights)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -251,6 +252,8 @@
 ;;      ("jpo" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results output\n$0\n#+end_src" "jupyter-python output block")
 ;;      ("jpf" "#+begin_src jupyter-python :session py :kernel python3 :async yes :results file :file $1\n$2\n#+end_src" "jupyter-python file block"))))
 
+
+(with-eval-after-load 'ess-mode
 (defun my/rmd-render-and-view-with-R ()
   "Renderiza usando o processo R inferior se disponível."
   (interactive)
@@ -293,3 +296,4 @@
       (message "❌ HTML não encontrado. Renderize primeiro com C-c C-r"))))
 
 (define-key ess-r-mode-map (kbd "C-c C-o") 'my/open-rmd-html)
+)
