@@ -6,9 +6,9 @@ static char normbordercolor[]            = "#073642";
 static char normfloatcolor[]             = "#073642";
 
 static char selfgcolor[]                 = "#eee8d5";
-static char selbgcolor[]                 = "#2aa198";
-static char selbordercolor[]             = "#2aa198";
-static char selfloatcolor[]              = "#2aa198";
+static char selbgcolor[]                 = "#859900";
+static char selbordercolor[]             = "#cb4b16";
+static char selfloatcolor[]              = "#859900";
 
 static char titlenormfgcolor[]           = "#839496";
 static char titlenormbgcolor[]           = "#002b36";
@@ -17,8 +17,8 @@ static char titlenormfloatcolor[]        = "#268bd2";
 
 static char titleselfgcolor[]            = "#eee8d5";
 static char titleselbgcolor[]            = "#002b36";
-static char titleselbordercolor[]        = "#2aa198";
-static char titleselfloatcolor[]         = "#2aa198";
+static char titleselbordercolor[]        = "#859900";
+static char titleselfloatcolor[]         = "#859900";
 
 static char tagsnormfgcolor[]            = "#839496";
 static char tagsnormbgcolor[]            = "#002b36";
@@ -27,8 +27,8 @@ static char tagsnormfloatcolor[]         = "#268bd2";
 
 static char tagsselfgcolor[]             = "#eee8d5";
 static char tagsselbgcolor[]             = "#073642";
-static char tagsselbordercolor[]         = "#2aa198";
-static char tagsselfloatcolor[]          = "#2aa198";
+static char tagsselbordercolor[]         = "#859900";
+static char tagsselfloatcolor[]          = "#859900";
 
 static char hidnormfgcolor[]             = "#586e75";
 static char hidselfgcolor[]              = "#657b83";
@@ -43,7 +43,7 @@ static char urgfloatcolor[]              = "#268bd2";
 static char c000000[]                    = "#000000"; // Placeholder value
 
 static char ltsymbolbgcolor[]            = "#002b36";
-static char ltsymbolfgcolor[]            = "#2aa198";
+static char ltsymbolfgcolor[]            = "#859900";
 
 static char tagsunusedfgcolor[]          = "#586e75"; // Cor do texto para tags não utilizadas
 static char tagsunusedbgcolor[]          = "#002b36"; // Cor de fundo para tags não utilizadas

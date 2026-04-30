@@ -54,13 +54,13 @@ static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_NONE;
 static const char *fonts[]          	 = {
-	"Iosevka Term:size=11",
-    "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
-	"Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
-  	"PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
+  "Iosevka Term:size=11",
+  "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
+  "Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
+  "PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:style=Regular:antialias=true";
-#include "themes/vaporwave_dark.h"
+#include "themes/solarized_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -497,8 +497,11 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,                   Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,              Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,              Button3,        toggletag,      {0} },
-	{ ClkTagBar,            0,   		         Button4,        shiftview,     {.i = +1 } },  //avanca para a proxima tag
+	{ ClkTagBar,            0,   		           Button4,        shiftview,     {.i = +1 } },  //avanca para a proxima tag
 	{ ClkTagBar,            0,                   Button5,        shiftview,     {.i = -1 } },  //retorna para a tag anterior
+
+  { ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
+	{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
 };
 
 /* signal definitions */
