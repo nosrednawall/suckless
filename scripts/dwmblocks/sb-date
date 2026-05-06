@@ -26,7 +26,9 @@ data_formatada=$(aplicar_tema "" "$data" $COLOR_7 $COLOR_15)
 echo "$data_formatada"
 
 case $BUTTON in
-	6) setsid -f st -e emacs -nw "$0" ;;
+    1) dunstify "$(cal | head -n1)" "$(cal | tail -n+2 | sed "/^[[:space:]]*$/d;s/$(date '+%e')\b/<span background='#282828' foreground='#ebdbb2'>$(date '+%e')<\/span>/g;s/  /<span>  <\/span>/g")" ;;
+    3) dunstify "$(cal -3 | head -n1)" "$(cal -3 | tail -n+2 | sed "/^[[:space:]]*$/d;s/$(date '+%e')\b/<span background='#282828' foreground='#ebdbb2'>$(date '+%e')<\/span>/g;s/  /<span>  <\/span>/g")" ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
 esac
 
 exit 0

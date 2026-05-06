@@ -238,8 +238,8 @@ if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
 
         if [ -n "$song" ]; then
             song=$(echo "$song" | tr -d ';')
-            if [ ${#song} -gt 16 ]; then
-                song="${song:0:16}..."
+            if [ ${#song} -gt 30 ]; then
+                song="${song:0:30}..."
             fi
         fi
     fi

@@ -38,11 +38,13 @@ muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
 device=$(pactl get-default-source)
 
 case "$device" in
-    *pci*analog*)      device="I" ;;   # placa on-board
-    *usb*Headset*)     device="F" ;;   # fone USB
-    *usb*)             device="E" ;;   # qualquer outro USB
+    *pci*analog*)      device="" ;;   # placa on-board
+    *usb*Headset*)     device="󰋎" ;;   # fone USB
+    *bluez*input*)     device="" ;;   # Via bluetooth
+    *usb*)             device="󰕓" ;;   # qualquer outro USB
     *)                 device="?" ;;
 esac
+
 
 if [ "$muteMic" -eq 1 ]; then
     icon=""

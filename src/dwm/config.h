@@ -179,11 +179,14 @@ static const Rule rules[] = {
 	RULE(.instance = "spnmtui" ,                            .tags = SPTAG(2), .isfloating = 1)
 	RULE(.instance = "sprmpc",                              .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",    .tags = SPTAG(4), .isfloating = 1)
-    RULE(.class    = "spqalculate-gtk",                     .tags = SPTAG(5), .isfloating = 1)
+  RULE(.class    = "spqalculate-gtk",                     .tags = SPTAG(5), .isfloating = 1)
 
     // Plots no emacs
     RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
     RULE(.instance = "r_x11", .class = "R_x11", .tags = 0, .isfloating = 1)
+
+ //Anki
+    RULE(.instance = "anki", .title = "Adicionar", .tags = 0, .isfloating = 1)
 
 };
 

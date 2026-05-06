@@ -23,10 +23,11 @@ cor_forte="$COLOR_6"
 cor_fraca="$COLOR_14"
 
 case "$device" in
-    *pci*analog*)      device="I" ;;   # placa on-board
-    *usb*Headset*)     device="F" ;;   # fone USB
-    *pci*hdmi*)        device="H" ;;   # qualquer outro USB
-    *)                 device="?" ;;
+    *pci*analog*)      device="" ;;   # placa on-board
+    *usb*Headset*)     device="󰋎" ;;   # fone USB
+    *pci*hdmi*)        device="󰡁" ;;   # hdmi
+    *bluez*output*)    device="" ;;   # Via bluetooth
+    *)                 device="?" ;;   # Qualquer outro
 esac
 
 

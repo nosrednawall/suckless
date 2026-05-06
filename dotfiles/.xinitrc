@@ -37,7 +37,8 @@ is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/
 is_running "picom" || picom -b
 
 # Inicia o dunst se não estiver rodando
-is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
+#is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
+is_running "copyq" || dunst -conf "$HOME/.config/dunst/dunstrc" &
 
 # Inicia o copyq se não estiver rodando
 is_running "copyq" || copyq &

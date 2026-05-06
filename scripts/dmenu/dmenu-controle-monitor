@@ -157,6 +157,23 @@ mode_game() {
     create_persistent_config "$config_cmd"
 }
 
+# Modo Game
+mode_game_elden_ring() {
+    local config_cmd="xrandr --output $HDMI_DEVICE --primary --mode 1920x1080 --rate 120 --output $EDP_DEVICE --off"
+
+    eval "$config_cmd"
+
+    # Para serviço redshift
+    systemctl --user stop redshift.service 2>/dev/null
+    killall redshift 2>/dev/null
+    redshift -P -O 6500
+
+    send_notification " Modo Game" "Configuração de gaming ativada" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+    apply_wallpaper
+    create_persistent_config "$config_cmd"
+}
+
+
 # Modo Monitor Externo
 mode_external_only() {
     local config_cmd="xrandr --output $HDMI_DEVICE --primary --auto --rotate normal --dpi 96 --output $EDP_DEVICE --off"
@@ -251,6 +268,7 @@ show_menu() {
         "󰍹 Monitor Externo ($RES_HDMI)"
         " Notebook ($RES_EDP)"
         " Modo Game"
+        " Modo Game Elden Ring"
         " Modo Mirror 1920x1080"
         " Modo Mirror 800x600"
         " Modo Mirror 640x480"
@@ -282,6 +300,9 @@ process_choice() {
             ;;
         *"Modo Game"*)
             mode_game
+            ;;
+        *"Modo Game Elden Ring"*)
+            mode_game_elden_ring
             ;;
         *"Modo Apresentação"*)
             mode_presentation
