@@ -161,10 +161,18 @@ case "$PLAYER_SELECIONADO" in
         ;;
 
     "mpv")
-        icon=""
-        format_player="{{title}}"
-        cor_forte="$COLOR_3"
-        cor_fraca="$COLOR_11"
+        # if se é rádio online
+        if [ "$(playerctl --player="mpv" metadata xesam:url | grep -E 'http' -ic)" -eq 1 ]; then
+            icon=""
+            format_player="{{title}}"
+            cor_forte="$COLOR_16"
+            cor_fraca="$COLOR_11"
+        else
+            icon=""
+            format_player="{{title}}"
+            cor_forte="$COLOR_3"
+            cor_fraca="$COLOR_11"
+        fi
         ;;
 
     "vlc")
