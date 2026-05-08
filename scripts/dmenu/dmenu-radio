@@ -3,14 +3,13 @@
 CONFIG_FILE="$HOME/.config/suckless/scripts/dmenu/dmenu-radio.conf"
 PLAYER="mpv"
 PID_FILE="/tmp/dmenu_radio.pid"
-CONTROL_PIPE="/tmp/dmenu_radio_control"
+MPD_PID_FILE="/tmp/mpd.pid"
 
 # Função para obter valores do arquivo .conf
 get_value() {
     local radio="$1"
     local field="$2"
 
-    # Usa sed para extrair o valor entre as seções
     sed -n "/^\[$radio\]/,/^\[/p" "$CONFIG_FILE" | \
     grep "^$field =" | \
     head -1 | \
@@ -23,6 +22,14 @@ get_radios() {
     grep '^\[.*\]$' "$CONFIG_FILE" | sed 's/^\[//; s/\]$//'
 }
 
+# Mata o processo do MPD se estiver rodando
+kill_mpd() {
+    if pgrep -x "mpd" > /dev/null; then
+        pkill -x "mpd"
+        echo "MPD finalizado"
+    fi
+}
+
 # Verifica se há uma rádio tocando
 is_playing() {
     if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
@@ -33,20 +40,20 @@ is_playing() {
     fi
 }
 
-# Pausa/Resume
+# Pausa/Resume usando playerctl
 toggle_pause() {
-    if [[ -p "$CONTROL_PIPE" ]]; then
-        echo "cycle pause" > "$CONTROL_PIPE"
-    fi
+    playerctl --player=mpv play-pause 2>/dev/null
 }
 
-# Para a reprodução
+# Para a reprodução e mata o MPD
 stop_radio() {
     if [[ -f "$PID_FILE" ]]; then
         kill "$(cat "$PID_FILE")" 2>/dev/null
         rm -f "$PID_FILE"
     fi
-    rm -f "$CONTROL_PIPE" 2>/dev/null
+
+    # Mata o MPD quando o rádio fechar
+    kill_mpd
 }
 
 # Toca uma rádio
@@ -64,18 +71,12 @@ play_radio() {
     # Para qualquer rádio tocando
     stop_radio
 
-    # Cria pipe para controle
-    rm -f "$CONTROL_PIPE"
-    mkfifo "$CONTROL_PIPE"
+    # Inicia o player com suporte ao playerctl
+    $PLAYER --no-video "$stream_url" > /dev/null 2>&1 &
+    echo $! > "$PID_FILE"
 
-    # Inicia o player
-    if [[ "$PLAYER" == "mpv" ]]; then
-        $PLAYER --input-ipc-server="$CONTROL_PIPE" --no-video "$stream_url" > /dev/null 2>&1 &
-        echo $! > "$PID_FILE"
-    else
-        $PLAYER "$stream_url" > /dev/null 2>&1 &
-        echo $! > "$PID_FILE"
-    fi
+    # Aguarda o player inicializar
+    sleep 1
 
     # Notifica
     notify-send "🎵 Tocando agora" "$radio\n$tags" 2>/dev/null || echo "Tocando: $radio - $tags"
@@ -92,12 +93,17 @@ main_menu_no_playing() {
 
 # Menu quando há rádio tocando
 main_menu_playing() {
-    local options="▶️  Play/Pause\n⏹️  Stop\n📻  Trocar rádio"
-    local selected=$(echo -e "$options" | dmenu -p "🎵 Rádio tocando" -l 3)
+    local current_metadata=$(playerctl --player=mpv metadata --format "{{ artist }} - {{ title }}" 2>/dev/null)
+    [[ -z "$current_metadata" ]] && current_metadata="Rádio tocando"
+
+    local options="▶️  Play/Pause\n⏹️  Stop\n📻  Trocar rádio\n🔊  Volume +10%\n🔉  Volume -10%"
+    local selected=$(echo -e "$options" | dmenu -p "🎵 $current_metadata" -l 5)
 
     case "$selected" in
         "▶️  Play/Pause")
             toggle_pause
+            sleep 0.5
+            main_menu_playing
             ;;
         "⏹️  Stop")
             stop_radio
@@ -112,6 +118,16 @@ main_menu_playing() {
                 main_menu_playing
             fi
             ;;
+        "🔊  Volume +10%")
+            playerctl --player=mpv volume 0.1+ 2>/dev/null
+            sleep 0.5
+            main_menu_playing
+            ;;
+        "🔉  Volume -10%")
+            playerctl --player=mpv volume 0.1- 2>/dev/null
+            sleep 0.5
+            main_menu_playing
+            ;;
         *)
             exit 0
             ;;
@@ -120,6 +136,9 @@ main_menu_playing() {
 
 # Função principal
 main() {
+    # Mata o MPD antes de iniciar o rádio
+    kill_mpd
+
     if is_playing; then
         main_menu_playing
     else
