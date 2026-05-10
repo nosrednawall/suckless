@@ -3,7 +3,7 @@
 CONFIG_FILE="$HOME/.config/suckless/scripts/dmenu/dmenu-radio.conf"
 PLAYER="mpv"
 PID_FILE="/tmp/dmenu_radio.pid"
-MPD_PID_FILE="/tmp/mpd.pid"
+MPV_PID_FILE="/tmp/mpv.pid"
 
 # Função para obter valores do arquivo .conf
 get_value() {
@@ -24,9 +24,9 @@ get_radios() {
 
 # Mata o processo do MPD se estiver rodando
 kill_mpd() {
-    if pgrep -x "mpd" > /dev/null; then
-        pkill -x "mpd"
-        echo "MPD finalizado"
+    if pgrep -x "mpv" > /dev/null; then
+        pkill -x "mpv"
+        echo "MPV finalizado"
     fi
 }
 

@@ -8,15 +8,15 @@ static const char *fonts[] = {
 };
 
 /* Cores base */
-static const char norm_fg[]       = "#839496";
+static const char norm_fg[]       = "#fdf6e3";
 static const char norm_bg[]       = "#002B36";
 static const char norm_border[]   = "#b58900";
 
-static const char sel_fg[]        = "#839496";
+static const char sel_fg[]        = "#fdf6e3";
 static const char sel_bg[]        = "#cb4b16";
 static const char sel_border[]    = "#dc322f";
 
-static const char urg_fg[]        = "#839496";
+static const char urg_fg[]        = "#fdf6e3";
 static const char urg_bg[]        = "#d33682";
 static const char urg_border[]    = "#6c71c4";
 

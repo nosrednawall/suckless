@@ -117,7 +117,7 @@ send_notification() {
 
 # Modo Casa (HDMI + Notebook)
 mode_home() {
-    local config_cmd="xrandr --output $HDMI_DEVICE --auto --rotate normal --dpi 96 --output $EDP_DEVICE --primary --auto --rotate normal --dpi 96 --left-of $HDMI_DEVICE"
+    local config_cmd="xrandr --output $HDMI_DEVICE --auto --rotate normal --dpi 106 --output $EDP_DEVICE --primary --auto --rotate normal --dpi 126 --left-of $HDMI_DEVICE"
     
     eval "$config_cmd"
     send_notification "󰍹 Monitor Externo" "Adicionado tela via HDMI" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"

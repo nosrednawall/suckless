@@ -327,11 +327,14 @@ EOF"
     fi
 }
 
+
 # Função para reiniciar serviços
 restart_services() {
     # Reinicia Dunst
     killall dunst 2>/dev/null
-    dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
+    tema_dunst=$(echo "$choice" | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')
+    sh ~/.config/suckless/dotfiles/.config/dunst/scripts/switch-theme.sh $tema_dunst
+    dunst -conf "$HOME/.config/dunst/dunstrc" &
 
     # Fecha programas systray
     killall copyq 2>/dev/null
