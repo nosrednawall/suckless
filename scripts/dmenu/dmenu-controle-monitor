@@ -41,6 +41,12 @@ is_running() {
     ps aux | grep -v grep | grep -q "$1"
 }
 
+is_paused_dust() {
+    if [ "$(dunstctl is-paused)" == "true" ]; then
+        dunstctl set-paused toggle
+    fi
+}
+
 # Detecta dispositivos de vídeo
 detect_displays() {
     local xrandr_output
@@ -117,11 +123,12 @@ send_notification() {
 
 # Modo Casa (HDMI + Notebook)
 mode_home() {
-    local config_cmd="xrandr --output $HDMI_DEVICE --auto --rotate normal --dpi 106 --output $EDP_DEVICE --primary --auto --rotate normal --dpi 126 --left-of $HDMI_DEVICE"
+    local config_cmd="xrandr --output $HDMI_DEVICE --auto --rotate normal --dpi 96 --output $EDP_DEVICE --primary --auto --rotate normal --dpi 96 --left-of $HDMI_DEVICE"
     
     eval "$config_cmd"
     send_notification "󰍹 Monitor Externo" "Adicionado tela via HDMI" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"
     apply_wallpaper
+    is_paused_dust
 
     # Inicia o xautolock com as configurações personalizadas se não estiver rodando
     is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/dwm/dwm-slock-personalizado -detectsleep &
@@ -135,6 +142,7 @@ mode_notebook() {
     eval "$config_cmd"
     send_notification " Modo Laptop" "Alterado tela para modo Laptop" "/usr/share/icons/ePapirus/16x16/devices/computer-laptop.svg"
     apply_wallpaper
+    is_paused_dust
 
     # Inicia o xautolock com as configurações personalizadas se não estiver rodando
     is_running "xautolock" || xautolock -time 15 -locker ~/.config/suckless/scripts/dwm/dwm-slock-personalizado -detectsleep &
@@ -151,6 +159,9 @@ mode_game() {
     systemctl --user stop redshift.service 2>/dev/null
     killall redshift 2>/dev/null
     redshift -P -O 6500
+
+    # Pausa as notificações do dunst
+    dunstctl set-paused toggle
     
     send_notification " Modo Game" "Configuração de gaming ativada" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"
     apply_wallpaper
@@ -168,6 +179,9 @@ mode_game_elden_ring() {
     killall redshift 2>/dev/null
     redshift -P -O 6500
 
+    # Pausa as notificações do dunst
+    dunstctl set-paused toggle
+
     send_notification " Modo Game" "Configuração de gaming ativada" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"
     apply_wallpaper
     create_persistent_config "$config_cmd"
@@ -181,6 +195,7 @@ mode_external_only() {
     eval "$config_cmd"
     send_notification "󱧑 Só Monitor Externo" "Usando apenas monitor externo" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"
     apply_wallpaper
+    is_paused_dust
     create_persistent_config "$config_cmd"
 }
 
