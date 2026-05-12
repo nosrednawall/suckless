@@ -35,6 +35,9 @@ if [ "$muteVol" -eq 1 ]; then
     iconVolume="󰸈"
     cor_forte="#4A5947"
     cor_fraca="#4A5947"
+    device=""
+    volume=""
+    corpo=""
 
 else
     if [ "$volume" -le 30 ]; then
@@ -44,8 +47,11 @@ else
     elif [ "$volume" -ge 61 ]; then
         iconVolume="󰕾"
     fi
+    corpo="$volume $device"
 fi
-output=$(aplicar_tema "$iconVolume" "$volume $device" "$cor_forte" "$cor_fraca")
+
+
+output=$(aplicar_tema "$iconVolume" "$corpo" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in

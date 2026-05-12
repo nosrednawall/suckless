@@ -51,14 +51,17 @@ if [ "$muteMic" -eq 1 ]; then
     cor_forte="#4A5947"
     cor_fraca="#4A5947"
     microfone=""
+    device=""
+    corpo=""
 else
     icon=""
     cor_forte=$COLOR_4
     cor_fraca=$COLOR_12
+    corpo="$microfone $device"
 fi
 
 
-output=$(aplicar_tema "$icon" "$microfone $device" "$cor_forte" "$cor_fraca")
+output=$(aplicar_tema "$icon" "$corpo" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
