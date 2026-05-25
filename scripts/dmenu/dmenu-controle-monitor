@@ -150,9 +150,9 @@ mode_notebook() {
 }
 
 # Modo Game
-mode_game() {
+mode_game_ligar() {
     local config_cmd="xrandr --output $HDMI_DEVICE --mode 1920x1080 --rate 120 --pos 1920x0 --rotate normal --output $EDP_DEVICE --primary --mode 1920x1080 --rate 144 --pos 0x0 --rotate normal"
-    
+#    local config_cmd="xrandr --output $HDMI_DEVICE --mode  2560x1440 --rate 120 --pos 1920x0 --rotate normal --output $EDP_DEVICE --primary --mode 1920x1080 --rate 144 --pos 0x0 --rotate normal"
     eval "$config_cmd"
     
     # Para serviço redshift
@@ -167,6 +167,24 @@ mode_game() {
     apply_wallpaper
     create_persistent_config "$config_cmd"
 }
+
+
+mode_game_desligar() {
+    local config_cmd="xrandr --output $HDMI_DEVICE --auto --rotate normal --dpi 96 --output $EDP_DEVICE --primary --auto --rotate normal --dpi 96 --left-of $HDMI_DEVICE"
+
+    eval "$config_cmd"
+
+    # Para serviço redshift
+    systemctl --user start redshift.service 2>/dev/null
+
+    # Retorna as notificações do dunst
+    dunstctl set-paused toggle
+
+    send_notification " Modo Game" "Configuração de gaming desativada" "/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+    apply_wallpaper
+    create_persistent_config "$config_cmd"
+}
+
 
 # Modo Game
 mode_game_elden_ring() {
@@ -231,12 +249,14 @@ mode_duplicate() {
 
 # Modo Dia
 mode_day() {
+     systemctl --user stop redshift.service
     redshift -P -O 6500
     send_notification "󰛨 Modo Diurno" "Brilho da tela ajustado para modo diurno" "/usr/share/icons/ePapirus/16x16/actions/colors-chromablue.svg"
 }
 
 # Modo Noite
 mode_night() {
+    systemctl --user start redshift.service
     redshift -P -O 4500
     send_notification "󱩍 Modo Noturno" "Brilho da tela ajustado para modo noturno" "/usr/share/icons/ePapirus/16x16/actions/redeyes.svg"
 }
@@ -282,8 +302,8 @@ show_menu() {
     local options=(
         "󰍹 Monitor Externo ($RES_HDMI)"
         " Notebook ($RES_EDP)"
-        " Modo Game"
-        " Modo Game Elden Ring"
+        " Modo Game Ligar"
+        " Modo Game Desligar"
         " Modo Mirror 1920x1080"
         " Modo Mirror 800x600"
         " Modo Mirror 640x480"
@@ -314,10 +334,10 @@ process_choice() {
             mode_notebook
             ;;
         *"Modo Game"*)
-            mode_game
+            mode_game_ligar
             ;;
-        *"Modo Game Elden Ring"*)
-            mode_game_elden_ring
+        *"Modo Game Desligar"*)
+            mode_desligar
             ;;
         *"Modo Apresentação"*)
             mode_presentation

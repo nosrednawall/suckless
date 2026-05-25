@@ -60,7 +60,7 @@ static const char *fonts[]          	 = {
   "PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:style=Regular:antialias=true";
-#include "themes/solarized_dark.h"
+#include "themes/gruvbox_dark.h"
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -438,7 +438,8 @@ static const Key keys[] = {
 	/*Lancamento Programas*/
 //	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
 	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
-	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
+//	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
+	{ MODKEY,						XK_e,							spawn,			SHCMD("emacs" ) },
 	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
 
     /*Alterar entre tags*/
