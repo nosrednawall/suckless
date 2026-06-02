@@ -67,6 +67,7 @@
 (package! multiple-cursors)
 (package! windresize)
 
+
 ;; ~/.doom.d/packages.el
 
 ;; Jupyter integration

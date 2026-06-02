@@ -9,12 +9,14 @@
 
 /* appearance */
 static const unsigned int borderpx       = 4;   /* border pixel of windows */
+static const int corner_radius           = 10;
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
 static const unsigned int barborderpx    = 6;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 1;   /* 1 means swallow floating windows by default */
+static const int scalepreview            = 4;        /* Tag preview scaling */
 static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
@@ -40,6 +42,7 @@ static const unsigned int ulinepad = 1;         /* horizontal padding between th
 static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
 static const unsigned int ulinevoffset = -3;     /* how far above the bottom of the bar the line should appear */
 static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
+static const int ulinetop = 0;                  /* 1 to show the underline above the tags, rather than under */
 
 /* alt-tab configuration */
 static const unsigned int tabmodkey        = 0x40; /* (Alt) when this key is held down the alt-tab functionality stays active. Must be the same modifier as used to run alttabstart */
@@ -92,7 +95,7 @@ static Sp scratchpads[] = {
 	{"spnmtui",     		spcmd3},
 	{"sprmpc",   		    spcmd4},
 	{"whatsapp-firefox",	spcmd5},
-    {"spqalculate-gtk",	spcmd6}
+  {"spqalculate-gtk",	spcmd6}
 };
 
 /* Tags
@@ -181,12 +184,12 @@ static const Rule rules[] = {
 	RULE(.instance = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",    .tags = SPTAG(4), .isfloating = 1)
   RULE(.class    = "spqalculate-gtk",                     .tags = SPTAG(5), .isfloating = 1)
 
-    // Plots no emacs
-    RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
-    RULE(.instance = "r_x11", .class = "R_x11", .tags = 0, .isfloating = 1)
+ // Plots no emacs
+ RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
+ RULE(.instance = "r_x11", .class = "R_x11", .tags = 0, .isfloating = 1)
 
  //Anki
-    RULE(.instance = "anki", .title = "Adicionar", .tags = 0, .isfloating = 1)
+ RULE(.instance = "anki", .title = "Adicionar", .tags = 0, .isfloating = 1)
 
 };
 
@@ -316,8 +319,10 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_Left,      rotatestack,             {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_Down,      pushdown,                {0} },
 	{ MODKEY|ControlMask,           XK_Up,        pushup,                  {0} },
-	{ ControlMask|Mod1Mask,  		XK_Right,     shiftview,               {.i = +1 } },
-	{ ControlMask|Mod1Mask,  		XK_Left,      shiftview,               {.i = -1 } },
+	{ ControlMask|Mod1Mask,         XK_Right,     shiftview,               {.i = +1 } },
+	{ ControlMask|Mod1Mask,         XK_Left,      shiftview,               {.i = -1 } },
+  { MODKEY|Mod1Mask,              XK_Tab,       shiftviewclients,        { .i = -1 } },
+  { MODKEY|Mod1Mask,              XK_backslash, shiftviewclients,        { .i = +1 } },
 
     /*Adiciona e remove janelas da mastes para a lateral*/
 	{ MODKEY|ShiftMask,             XK_equal,     incnmaster,              {.i = +1 } },
@@ -412,6 +417,14 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD(PATH("dwm/dwm-mail-program")) },
 	{ 0,                            XF86XK_Search,                  spawn,          SHCMD(PATH("dwm/dwm-search-program")) },
 	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD(PATH("dwm/dwm-calculator-program")) },
+
+
+
+/* { MODKEY|ControlMask, XK_z, showhideclient, {0} }, */
+{ MODKEY|ControlMask, XK_s, unhideall, {0} },
+/*{ MODKEY|Mod1Mask, XK_j, focusstack, {.i = +2 } }, */
+/*MODKEY|Mod1Mask, XK_k, focusstack, {.i = -2 } }, */
+
 
 	/*Printscreen*/
 	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD(PATH("dwm/dwm-print-edita")) },

@@ -90,11 +90,12 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-
-
 (eval-after-load "term"
   '(define-key term-raw-map (kbd "C-c y") 'term-paste))
 
+
+
+;; Função para renderizar o markdown no emacs
 (after! ess
   ;; Função principal para renderizar Rmd
   (defun my/rmd-render-and-view-with-R ()
