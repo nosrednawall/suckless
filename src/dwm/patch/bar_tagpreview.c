@@ -50,6 +50,7 @@ showtagpreview(int tag, int x, int y)
 		XMoveWindow(dpy, m->tagwin, x, y);
 		XSync(dpy, False);
 		XMapWindow(dpy, m->tagwin);
+    XFlush(dpy);
 	} else
 		XUnmapWindow(dpy, m->tagwin);
 }
