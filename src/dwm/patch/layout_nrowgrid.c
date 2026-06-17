@@ -1,6 +1,7 @@
 void
 nrowgrid(Monitor *m)
 {
+//	unsigned int n = 0, i = 0, ri = 0, ci = 0;  /* counters */
 	unsigned int n = 0, i = 0, ri = 0, ci = 0;  /* counters */
 	int oh, ov, ih, iv;                         /* vanitygap settings */
 	unsigned int cx, cy, cw, ch;                /* client geometry */
@@ -41,6 +42,7 @@ nrowgrid(Monitor *m)
 			uc += cols;
 			cy = m->wy + oh + uh + ih;
 			uh += ch + ih;
+      i = i;
 		}
 
 		cx = m->wx + ov + uw;

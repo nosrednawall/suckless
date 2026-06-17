@@ -1,22 +1,24 @@
 /* See LICENSE file for copyright and license details. */
 
 /* Helper macros for spawning commands */
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/bash", "-c", cmd, NULL } }
+
+/* This defines the name of the executable that handles the bar (used for signalling purposes) */
 #define STATUSBAR "dwmblocks"
+
 #include <X11/XF86keysym.h>
 #define PATH(name) "~/.config/suckless/scripts/"name
 
+
 /* appearance */
 static const unsigned int borderpx       = 4;   /* border pixel of windows */
-static const int corner_radius           = 10;
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
 static const unsigned int barborderpx    = 6;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 1;   /* 1 means swallow floating windows by default */
-static const int scalepreview            = 4;        /* Tag preview scaling */
 static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
@@ -25,37 +27,27 @@ static const int smartgaps_fact          = 1;   /* gap factor when there is only
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
 static const char dwmdir[]               = "dwm";
-static const char localshare[]           = ".config/suckless/src/";
+static const char localshare[]           = ".local/share";
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
-static const int vertpad                 = 15;  /* vertical padding of bar */
-static const int sidepad                 = 15;  /* horizontal padding of bar */
+static const int vertpad                 = 10;  /* vertical padding of bar */
+static const int sidepad                 = 10;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = -1;
+static const int horizpadbar             = 2;   /* horizontal padding for statusbar */
+static const int vertpadbar              = 0;   /* vertical padding for statusbar */
 static const char buttonbar[]            = "  ";
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
-static const unsigned int ulinepad = 1;         /* horizontal padding between the underline and tag */
-static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
-static const unsigned int ulinevoffset = -3;     /* how far above the bottom of the bar the line should appear */
-static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
-static const int ulinetop = 0;                  /* 1 to show the underline above the tags, rather than under */
-
-/* alt-tab configuration */
-static const unsigned int tabmodkey        = 0x40; /* (Alt) when this key is held down the alt-tab functionality stays active. Must be the same modifier as used to run alttabstart */
-static const unsigned int tabcyclekey      = 0x17; /* (Tab) when this key is hit the menu moves one position forward in client stack. Must be the same key as used to run alttabstart */
-static const unsigned int tabposy          = 1;    /* tab position on Y axis, 0 = top, 1 = center, 2 = bottom */
-static const unsigned int tabposx          = 1;    /* tab position on X axis, 0 = left, 1 = center, 2 = right */
-static const unsigned int maxwtab          = 600;  /* tab menu width */
-static const unsigned int maxhtab          = 200;  /* tab menu height */
 
 /* Indicators: see patch/bar_indicators.h for options */
 static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
-static int floatindicatortype            = INDICATOR_NONE;
+static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
+static int aotindicatortype              = INDICATOR_TOP_LEFT_LARGER_SQUARE;
 static const char *fonts[]          	 = {
   "Iosevka Term:size=11",
   "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
@@ -63,7 +55,10 @@ static const char *fonts[]          	 = {
   "PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:style=Regular:antialias=true";
+
+/* Tema - Configurações de cores */
 #include "themes/gruvbox_dark.h"
+
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -76,7 +71,7 @@ static char *colors[][ColCount] = {
 	[SchemeHidNorm]      = { hidnormfgcolor,   hidnormbgcolor,   c000000,              c000000 },
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },
-    [SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
+  [SchemeTagsUnused]   = { tagsunusedfgcolor, tagsunusedbgcolor, tagsunusedbordercolor, tagsunusedfloatcolor }, // Novo esquema
 	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 };
 
@@ -84,7 +79,6 @@ const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "100x25", NULL };
 const char *spcmd2[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
 const char *spcmd3[]  = {"st", "-n", "spnmtui", "-g", "100x25", "-e", "nmtui", NULL };
 const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "rmpc", NULL };
-//const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "ncmpcpp", NULL };
 const char *spcmd5[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
 const char *spcmd6[]  = {"qalculate-gtk", "--class", "spqalculate-gtk" , NULL };
 
@@ -157,7 +151,8 @@ static const Rule rules[] = {
 	 *	WM_WINDOW_ROLE(STRING) = role
 	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
 	 */
-	RULE(.wintype = WTYPE "DIALOG", .isfloating = 1)
+
+  RULE(.wintype = WTYPE "DIALOG", .isfloating = 1)
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
@@ -190,7 +185,6 @@ static const Rule rules[] = {
 
  //Anki
  RULE(.instance = "anki", .title = "Adicionar", .tags = 0, .isfloating = 1)
-
 };
 
 static const MonitorRule monrules[] = {
@@ -218,12 +212,12 @@ static const BarRule barrules[] = {
 	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
 	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_statuscmd,         NULL,                    "status2d" },
-	{ 0,        0,     BAR_ALIGN_NONE,   width_wintitle,           draw_wintitle,          click_wintitle,          NULL,                    "wintitle" },
-    { 1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
+  { 0,         0,     BAR_ALIGN_NONE,   width_wintitle,           draw_wintitle,          click_wintitle,          NULL,                    "wintitle" },
+	{ 1,         0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
 };
 
 /* layout(s) */
-static const float mfact     = 0.51; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -231,6 +225,7 @@ static const int refreshrate = 120;  /* refresh rate (per second) for client mov
 static const int refreshrate_placemouse = 60; /* refresh rate (per second) for placemouse */
 static const int refreshrate_dragmfact = 40; /* refresh rate (per second) for dragmfact */
 static const int refreshrate_dragcfact = 60; /* refresh rate (per second) for dragcfact */
+static const int decorhints  = 1;    /* 1 means respect decoration hints */
 
 #define FORCE_VSPLIT 1
 
@@ -286,59 +281,57 @@ static const char *dmenucmd[] = {
 };
 static const char *termcmd[]  = { "st", NULL };
 
-
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
 
-  /* Abrir programas*/
-//  { MODKEY,                       XK_d,          spawn,                  {.v = dmenucmd } },
-  	{ MODKEY,						XK_d,	  	   spawn,                  SHCMD(PATH("dwm/dwm-roficmd")) },
-    { MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
- 	{ Mod1Mask,                     XK_Tab,        alttabstart,            {0} },
-    /* Controlar janelas/fechar/mostrar barra */
-    { MODKEY,                       XK_b,          togglebar,              {0} },
+  /* ===== ABRIR PROGRAMAS ===== */
+  { MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
+  { MODKEY,                       XK_d,	  	   spawn,                  SHCMD(PATH("dwm/dwm-roficmd")) },
 
-	{ MODKEY|ShiftMask,             XK_Tab,        view,                   {0} },
-	{ MODKEY,                       XK_q,          killclient,             {0} },
-	{ ControlMask|ShiftMask,        XK_q,          quit,                   {0} }, //exit
-	{ MODKEY,                       XK_r,          quit,                   {1} }, //restart
-	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
-	{ MODKEY,                       XK_space,      setlayout,              {0} },
-	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
-	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
-	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
-	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
-	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,      tagmon,                 {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period,     tagmon,                 {.i = +1 } },
+  /* ===== BARRA E CONTROLES BÁSICOS ===== */
+	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
+	{ MODKEY,                       XK_b,          togglebar,              {0} },
+  { MODKEY,                       XK_Tab,        view,                   {0} },
 
-    /*Modimentacao das janelas*/
-	{ MODKEY,                       XK_Right,     focusstack,              {.i = +1 } },
-	{ MODKEY,                       XK_Left,      focusstack,              {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_Right,     rotatestack,             {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_Left,      rotatestack,             {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_Down,      pushdown,                {0} },
-	{ MODKEY|ControlMask,           XK_Up,        pushup,                  {0} },
-	{ ControlMask|Mod1Mask,         XK_Right,     shiftview,               {.i = +1 } },
-	{ ControlMask|Mod1Mask,         XK_Left,      shiftview,               {.i = -1 } },
-  { MODKEY|Mod1Mask,              XK_Tab,       shiftviewclients,        { .i = -1 } },
-  { MODKEY|Mod1Mask,              XK_backslash, shiftviewclients,        { .i = +1 } },
+  /* ===== NAVEGAÇÃO ENTRE JANELAS ===== */
+	{ MODKEY,                       XK_j,          focusstack,             {.i = +1 } },
+	{ MODKEY,                       XK_k,          focusstack,             {.i = -1 } },
+  { MODKEY,                       XK_Right,      focusstack,             {.i = +1 } },
+	{ MODKEY,                       XK_Left,       focusstack,             {.i = -1 } },
+  { MODKEY|Mod1Mask,              XK_j,          focusstack,             {.i = +2 } }, // The +/-2 allows focusstack to also focus on hidden
+	{ MODKEY|Mod1Mask,              XK_k,          focusstack,             {.i = -2 } }, // i.e. minimized clients.
 
-    /*Adiciona e remove janelas da mastes para a lateral*/
-	{ MODKEY|ShiftMask,             XK_equal,     incnmaster,              {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_minus,     incnmaster,              {.i = -1 } },
+  /* ===== PUSH UP/DOWN - MOVER JANELAS PARA CIMA OU PARA BAIXO  ===== */
+	{ MODKEY|ControlMask,           XK_j,          pushdown,               {0} },
+	{ MODKEY|ControlMask,           XK_k,          pushup,                 {0} },
+	{ MODKEY,                       XK_Down,       pushdown,               {0} },
+	{ MODKEY,                       XK_Up,         pushup,                 {0} },
 
-    /*Altera o tamanho das janelas horizontal*/
-    { MODKEY|ShiftMask,             XK_Right,      setmfact,                {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Left,       setmfact,                {.f = -0.05} },
+  /* ===== INCREMENTAR MASTER - adiciona mais janelas a master ===== */
+	{ MODKEY,                       XK_equal,      incnmaster,             {.i = +1 } },
+	{ MODKEY,                       XK_minus,      incnmaster,             {.i = -1 } },
 
-    /*altera tamanho janelas na vertical*/
-    { MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
+  /* ===== SET MFACT - tamanho horizontal entre as janelas ===== */
+	{ MODKEY,                       XK_h,          setmfact,               {.f = -0.05} },
+	{ MODKEY,                       XK_l,          setmfact,               {.f = +0.05} },
+  { MODKEY|ShiftMask,             XK_Left,       setmfact,               {.f = -0.05} },
+	{ MODKEY|ShiftMask,             XK_Right,      setmfact,               {.f = +0.05} },
+
+  /* ===== SET CFACT - tamanho vertical entre as janelas ===== */
+	{ MODKEY|ShiftMask,             XK_h,          setcfact,               {.f = +0.25} },
+	{ MODKEY|ShiftMask,             XK_l,          setcfact,               {.f = -0.25} },
+	{ MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
 	{ MODKEY|ShiftMask,             XK_Down,       setcfact,               {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
+
+  /* ===== RESTAURA O RATIO???? ===== */
+	{ MODKEY|ControlMask|ShiftMask, XK_e,          aspectresize,           {.i = +24} },
+	{ MODKEY|ControlMask|ShiftMask, XK_r,          aspectresize,           {.i = -24} },
+
+  /* ===== ZOOM ===== */
 	{ MODKEY,                       XK_Return,     zoom,                   {0} },
 
-	/*Gaps*/
+  /* ===== GAPS ===== */
 	{ ControlMask|Mod1Mask,              XK_1,          incrgaps,               {.i = +1 } },
 	{ ControlMask|Mod1Mask|ShiftMask,    XK_1,          incrgaps,               {.i = -1 } },
 	{ ControlMask|Mod1Mask,              XK_2,          incrigaps,              {.i = +1 } },
@@ -356,106 +349,134 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask,              XK_0,          togglegaps,             {0} },
 	{ ControlMask|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
 
-
-    //Layouts
-	{ MODKEY,                       XK_F1,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_F2,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_F3,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_F4,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_F5,      setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                       XK_F6,      setlayout,      {.v = &layouts[5]} },
-	{ MODKEY,                       XK_F7,      setlayout,      {.v = &layouts[6]} },
-	{ MODKEY,                       XK_F8,      setlayout,      {.v = &layouts[7]} },
-	{ MODKEY,                       XK_F9,      setlayout,      {.v = &layouts[8]} },
-	{ MODKEY,                       XK_F10,     setlayout,      {.v = &layouts[9]} },
-	{ MODKEY,                       XK_F11,     setlayout,      {.v = &layouts[10]} },
-	{ MODKEY,                       XK_F12,     setlayout,      {.v = &layouts[11]} },
-	{ MODKEY|ShiftMask,             XK_F1,      setlayout,      {.v = &layouts[12]} },
-	{ MODKEY|ShiftMask,             XK_F2,      setlayout,      {.v = &layouts[13]} },
-    { MODKEY|ShiftMask,             XK_F3,      setlayout,      {.v = &layouts[14]} },
-
-	/*Layout ciclico*/
-	{ MODKEY,          			XK_minus,      cyclelayout,            {.i = -1 } },
-	{ MODKEY,                       XK_equal,      cyclelayout,            {.i = +1 } },
-
-	/*Scratpads*/
-	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.ui = 0 } },
-	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.ui = 0 } },
-	{ ControlMask|Mod1Mask,         XK_s,      togglescratch,  {.ui = 0 } },  // terminal
-	{ ControlMask|Mod1Mask,         XK_b,      togglescratch,  {.ui = 1 } },  // bitwarden
-	{ ControlMask|Mod1Mask,         XK_n,      togglescratch,  {.ui = 2 } },  // wifi
-	{ ControlMask|Mod1Mask,         XK_m,      togglescratch,  {.ui = 3 } },  // mpd player
-	{ ControlMask|Mod1Mask,         XK_w,      togglescratch,  {.ui = 4 } },  // whatsapp
-    { ControlMask|Mod1Mask,         XK_c,      togglescratch,  {.ui = 5 } },  // calculadora
-
-	/*Meus atalhos*/
-	{ ControlMask|Mod1Mask,         XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-slock-personalizado")) },
-	{ 0,					        XK_Caps_Lock,                   spawn,          SHCMD(PATH("dwm/dwm-capslock-indicator")) },
-	{ 0,					        XK_Num_Lock,                    spawn,          SHCMD(PATH("dwm/dwm-numlock-indicator")) },
-	{ 0,					        XK_Scroll_Lock,                 spawn,          SHCMD(PATH("dwm/dwm-som-capslock-numlock")) },
-	{ MODKEY,			            XK_k,                           spawn,          SHCMD(PATH("dwm/dwm-altera-layout-teclado")) },
-	{ MODKEY,			            XK_l,                           spawn,          SHCMD(PATH("dwm/dwm-conky-toggle")) },
-
-	/*volume pulseaudio*/
-	{ 0,                            XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume")) },
-	{ 0,                            XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume")) },
-	{ 0,                            XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-volume")) },
-
-	/*Volume Microfone Pulseaudio*/
-	{ MODKEY,                       XF86XK_AudioRaiseVolume,        spawn,          SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
-	{ MODKEY,                       XF86XK_AudioLowerVolume,        spawn,          SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
-	{ MODKEY,                       XF86XK_AudioMute,               spawn,          SHCMD(PATH("dwm/dwm-muta-microfone")) },
-
-	/*Player de musidwm-ca*/
-	{ 0,                            XF86XK_AudioPlay,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-play")) },
-	{ 0,                            XF86XK_AudioStop,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-stop")) },
-	{ 0,                            XF86XK_AudioPrev,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-prev")) },
-	{ 0,                            XF86XK_AudioNext,               spawn,          SHCMD(PATH("dwm/dwm-playerctl-next")) },
-
-	/*Outros atalhosdwm- teclado*/
-	{ 0,                            XF86XK_HomePage,                spawn,          SHCMD(PATH("dwm/dwm-homepage-program")) },
-	{ 0,                            XF86XK_Mail,                    spawn,          SHCMD(PATH("dwm/dwm-mail-program")) },
-	{ 0,                            XF86XK_Search,                  spawn,          SHCMD(PATH("dwm/dwm-search-program")) },
-	{ 0,                            XF86XK_Calculator,              spawn,          SHCMD(PATH("dwm/dwm-calculator-program")) },
+	/* ===== LAYOUTS ===== */
+	{ MODKEY,                            XK_F1,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                            XK_F2,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                            XK_F3,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                            XK_F4,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                            XK_F5,      setlayout,      {.v = &layouts[4]} },
+	{ MODKEY,                            XK_F6,      setlayout,      {.v = &layouts[5]} },
+	{ MODKEY,                            XK_F7,      setlayout,      {.v = &layouts[6]} },
+	{ MODKEY,                            XK_F8,      setlayout,      {.v = &layouts[7]} },
+	{ MODKEY,                            XK_F9,      setlayout,      {.v = &layouts[8]} },
+	{ MODKEY,                            XK_F10,     setlayout,      {.v = &layouts[9]} },
+	{ MODKEY,                            XK_F11,     setlayout,      {.v = &layouts[10]} },
+	{ MODKEY,                            XK_F12,     setlayout,      {.v = &layouts[11]} },
+	{ MODKEY|ShiftMask,                  XK_F1,      setlayout,      {.v = &layouts[12]} },
+	{ MODKEY|ShiftMask,                  XK_F2,      setlayout,      {.v = &layouts[13]} },
+	{ MODKEY|ShiftMask,                  XK_F3,      setlayout,      {.v = &layouts[14]} },
 
 
+  /* ===== LAYOUT CÍCLICO ===== */
+	{ ControlMask|Mod1Mask,           XK_minus,      cyclelayout,           {.i = -1 } },
+	{ ControlMask|Mod1Mask,           XK_equal,      cyclelayout,            {.i = +1 } },
 
-/* { MODKEY|ControlMask, XK_z, showhideclient, {0} }, */
-{ MODKEY|ControlMask, XK_s, unhideall, {0} },
-/*{ MODKEY|Mod1Mask, XK_j, focusstack, {.i = +2 } }, */
-/*MODKEY|Mod1Mask, XK_k, focusstack, {.i = -2 } }, */
+  /* ===== VIEW/TAG 0 ===== */
+	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
+	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
 
 
-	/*Printscreen*/
-	{ MODKEY|ShiftMask,             XK_s,                           spawn,          SHCMD(PATH("dwm/dwm-print-edita")) },
-	{ 0,                            XK_Print,                       spawn,          SHCMD(PATH("dwm/dwm-print-copia")) },
+	/* ===== ShiftTag - Mudanças entre Tags de forma rápida  ===== */
+	{ ControlMask|Mod1Mask,            XK_Left,       shifttag,               { .i = -1 } },
+	{ ControlMask|Mod1Mask,            XK_Right,      shifttag,               { .i = +1 } },
+	{ ControlMask|Mod1Mask|ShiftMask,  XK_Left,       shifttagclients,        { .i = -1 } },
+	{ ControlMask|Mod1Mask|ShiftMask,  XK_Right,      shifttagclients,        { .i = +1 } },
+	{ MODKEY|ShiftMask,                XK_Tab,        shiftview,              { .i = -1 } },
+	{ MODKEY|ShiftMask,                XK_backslash,  shiftview,              { .i = +1 } },
+	{ MODKEY|Mod4Mask,                 XK_Tab,        shiftviewclients,       { .i = -1 } },
+	{ MODKEY|Mod4Mask,                 XK_backslash,  shiftviewclients,       { .i = +1 } },
 
-	/*Brilho tela notebook*/
-	{ 0,							XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
-	{ 0,							XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
-	{ MODKEY,						XF86XK_MonBrightnessDown,		spawn,          SHCMD(PATH("dwm/dwm-redshift-aumenta")) },
-	{ MODKEY,						XF86XK_MonBrightnessUp,		spawn,          SHCMD(PATH("dwm/dwm-redshift-diminui")) },
+  /* ===== SHOW/HIDE CLIENT ===== */
+	{ MODKEY|ControlMask,              XK_z,          showhideclient,         {0} },
+	{ MODKEY|ControlMask,              XK_s,          unhideall,              {0} },
 
-	/*Dmenus*/
-	{ MODKEY|ShiftMask,             XK_e,                           spawn,          SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
-	{ ControlMask|Mod1Mask,         XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-pass" )) },
-	{ MODKEY|ShiftMask,			XK_m,	     					spawn,			SHCMD(PATH("dmenu/dmenu-controle-monitor" )) },
-	{ MODKEY|ShiftMask,             XK_a,                           spawn,          SHCMD(PATH("dmenu/dmenu-controle-som")) },
-	{ MODKEY|ShiftMask,             XK_t,                           spawn,          SHCMD(PATH("dmenu/dmenu-tema")) },
-	{ MODKEY|ShiftMask,             XK_v,                           spawn,          SHCMD(PATH("dmenu/dmenu-vpn")) },
-	{ MODKEY|ShiftMask,	        XK_p,                           spawn,          SHCMD(PATH("dmenu/dmenu-pomodoro")) },
-	{ MODKEY|ShiftMask,	        XK_d,                           spawn,          SHCMD(PATH("dmenu/dmenu-scripts-list")) },
-    { MODKEY|ShiftMask,	        XK_c,                           spawn,          SHCMD(PATH("dmenu/dmenu-docker")) },
-	{ MODKEY|ShiftMask,	        XK_b,                           spawn,          SHCMD(PATH("dmenu/dmenu-bookmark")) },
+  /* ===== KILL E QUIT ===== */
+	{ MODKEY,                          XK_q,          killclient,             {0} },
+	{ MODKEY|ShiftMask,                XK_q,          quit,                   {0} },
+	{ MODKEY,                          XK_r,          quit,                   {1} },
+	{ MODKEY|ShiftMask,                XK_F5,         xrdb,                   {.v = NULL } },
 
-	/*Lancamento Programas*/
-//	{ MODKEY,						XK_w,							spawn,			SHCMD("/opt/google/chrome/google-chrome --enable-feactures=PlataformHEVCDecoderSupport") },
-	{ MODKEY,						XK_w,							spawn,			SHCMD("firefox") },
-//	{ MODKEY,						XK_e,							spawn,			SHCMD("emacsclient -c -a 'emacs'" ) },
-	{ MODKEY,						XK_e,							spawn,			SHCMD("emacs" ) },
-	{ MODKEY,						XK_f,							spawn,			SHCMD("thunar" ) },
+  /* ===== TOGGLE FLOATING E SPACE ===== */
+	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
+	{ MODKEY|ShiftMask,             XK_space,      togglealwaysontop,      {0} },
+  { MODKEY,                       XK_space,      setlayout,              {0} },
 
-    /*Alterar entre tags*/
+	/* ===== SCRATCHPADS ===== */
+	{ MODKEY,                       XK_grave,      togglescratch,          {.ui = 0 } },
+	{ MODKEY|ControlMask,           XK_grave,      setscratch,             {.ui = 0 } },
+	{ MODKEY|ShiftMask,             XK_grave,      removescratch,          {.ui = 0 } },
+	{ ControlMask|Mod1Mask,         XK_s,          togglescratch,          {.ui = 0 } },
+	{ ControlMask|Mod1Mask,         XK_b,          togglescratch,          {.ui = 1 } },
+	{ ControlMask|Mod1Mask,         XK_n,          togglescratch,          {.ui = 2 } },
+	{ ControlMask|Mod1Mask,         XK_m,          togglescratch,          {.ui = 3 } },
+	{ ControlMask|Mod1Mask,         XK_w,          togglescratch,          {.ui = 4 } },
+	{ ControlMask|Mod1Mask,         XK_c,          togglescratch,          {.ui = 5 } },
+
+  /* ===== FOCUS/TAG MONITORS ===== */
+	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
+	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,      tagmon,                 {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,     tagmon,                 {.i = +1 } },
+
+	/* ===== MEUS ATALHOS ===== */
+	{ ControlMask|Mod1Mask,              XK_l,          spawn,                  SHCMD(PATH("dwm/dwm-slock-personalizado")) },
+	{ 0,					                       XK_Caps_Lock,  spawn,                  SHCMD(PATH("dwm/dwm-capslock-indicator")) },
+	{ 0,					                       XK_Num_Lock,   spawn,                  SHCMD(PATH("dwm/dwm-numlock-indicator")) },
+	{ 0,					                       XK_Scroll_Lock, spawn,                 SHCMD(PATH("dwm/dwm-som-capslock-numlock")) },
+	{ MODKEY|ShiftMask,			           XK_k,          spawn,                  SHCMD(PATH("dwm/dwm-altera-layout-teclado")) },
+	{ MODKEY,                            XK_c,          spawn,                  SHCMD(PATH("dwm/dwm-conky-toggle")) },
+
+	/* ===== VOLUME PULSEAUDIO ===== */
+	{ 0,                            XF86XK_AudioLowerVolume, spawn,      SHCMD(PATH("dwm/dwm-diminui-volume")) },
+	{ 0,                            XF86XK_AudioRaiseVolume, spawn,      SHCMD(PATH("dwm/dwm-aumenta-volume")) },
+	{ 0,                            XF86XK_AudioMute, spawn,             SHCMD(PATH("dwm/dwm-muta-volume")) },
+
+	/* ===== VOLUME MICROFONE ===== */
+	{ MODKEY,                       XF86XK_AudioRaiseVolume, spawn,      SHCMD(PATH("dwm/dwm-aumenta-volume-microfone")) },
+	{ MODKEY,                       XF86XK_AudioLowerVolume, spawn,      SHCMD(PATH("dwm/dwm-diminui-volume-microfone")) },
+	{ MODKEY,                       XF86XK_AudioMute, spawn,             SHCMD(PATH("dwm/dwm-muta-microfone")) },
+
+	/* ===== PLAYER DE MUSICA ===== */
+	{ 0,                            XF86XK_AudioPlay, spawn,             SHCMD(PATH("dwm/dwm-playerctl-play")) },
+	{ 0,                            XF86XK_AudioStop, spawn,             SHCMD(PATH("dwm/dwm-playerctl-stop")) },
+	{ 0,                            XF86XK_AudioPrev, spawn,             SHCMD(PATH("dwm/dwm-playerctl-prev")) },
+	{ 0,                            XF86XK_AudioNext, spawn,             SHCMD(PATH("dwm/dwm-playerctl-next")) },
+
+	/* ===== OUTROS ATALHOS TECLADO ===== */
+	{ 0,                            XF86XK_HomePage, spawn,              SHCMD(PATH("dwm/dwm-homepage-program")) },
+	{ 0,                            XF86XK_Mail, spawn,                  SHCMD(PATH("dwm/dwm-mail-program")) },
+	{ 0,                            XF86XK_Search, spawn,                SHCMD(PATH("dwm/dwm-search-program")) },
+	{ 0,                            XF86XK_Calculator, spawn,            SHCMD(PATH("dwm/dwm-calculator-program")) },
+
+	/* ===== PRINTSCREEN ===== */
+	{ MODKEY|ShiftMask,             XK_s,          spawn,                 SHCMD(PATH("dwm/dwm-print-edita")) },
+	{ 0,                            XK_Print,      spawn,                 SHCMD(PATH("dwm/dwm-print-copia")) },
+
+	/* ===== BRILHO TELA ===== */
+	{ 0,							              XF86XK_MonBrightnessUp,		spawn,   SHCMD(PATH("dwm/dwm-brilho-tela-aumenta")) },
+	{ 0,							              XF86XK_MonBrightnessDown,	spawn,   SHCMD(PATH("dwm/dwm-brilho-tela-diminui")) },
+	{ MODKEY,						          XF86XK_MonBrightnessDown,	spawn,   SHCMD(PATH("dwm/dwm-redshift-aumenta")) },
+	{ MODKEY,						          XF86XK_MonBrightnessUp,		spawn,   SHCMD(PATH("dwm/dwm-redshift-diminui")) },
+
+	/* ===== DMENUS ===== */
+	{ MODKEY|ShiftMask,             XK_e,          spawn,                 SHCMD(PATH("dmenu/dmenu-saida-sistema" )) },
+	{ ControlMask|Mod1Mask,         XK_p,          spawn,                 SHCMD(PATH("dmenu/dmenu-pass" )) },
+	{ MODKEY|ShiftMask,             XK_m,	       spawn,                 SHCMD(PATH("dmenu/dmenu-controle-monitor" )) },
+	{ MODKEY|ShiftMask,             XK_a,          spawn,                 SHCMD(PATH("dmenu/dmenu-controle-som")) },
+	{ MODKEY|ShiftMask,             XK_t,          spawn,                 SHCMD(PATH("dmenu/dmenu-tema")) },
+	{ MODKEY|ShiftMask,             XK_v,          spawn,                 SHCMD(PATH("dmenu/dmenu-vpn")) },
+	{ MODKEY|ShiftMask,	          XK_p,          spawn,                 SHCMD(PATH("dmenu/dmenu-pomodoro")) },
+	{ MODKEY|ShiftMask,	          XK_d,          spawn,                 SHCMD(PATH("dmenu/dmenu-scripts-list")) },
+	{ MODKEY|ShiftMask,	          XK_c,          spawn,                 SHCMD(PATH("dmenu/dmenu-docker")) },
+	{ MODKEY|ShiftMask,	          XK_b,          spawn,                 SHCMD(PATH("dmenu/dmenu-bookmark")) },
+
+	/* ===== LANÇAMENTO PROGRAMAS ===== */
+	{ MODKEY,						XK_w,		   spawn,			       SHCMD("firefox") },
+	{ MODKEY,						XK_e,		   spawn,			       SHCMD("emacs" ) },
+	{ MODKEY,						XK_f,		   spawn,			       SHCMD("thunar" ) },
+
+
+  /* ===== TAGKEYS ===== */
 	TAGKEYS(                        XK_1,                                  0)
 	TAGKEYS(                        XK_2,                                  1)
 	TAGKEYS(                        XK_3,                                  2)
@@ -465,22 +486,31 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                                  6)
 	TAGKEYS(                        XK_8,                                  7)
 	TAGKEYS(                        XK_9,                                  8)
-
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask           button          function        argument */
-	{ ClkButton,            0,                   Button1,        spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },  //abre rofi
-	{ ClkButton,            0,                   Button3,        spawn,          SHCMD(PATH("dwm/dwm-timeshiftcmd")) },  //abre timeshift
-	{ ClkLtSymbol,          0,                   Button1,        spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },  //abre dmenu de layouts
-	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[0]} },  //retorna ao layout padrao
-	{ ClkLtSymbol,          0,                   Button4,        cyclelayout,    {.i = +1 } },  //avanca para o proximo layout
-	{ ClkLtSymbol,          0,                   Button5,        cyclelayout,    {.i = -1 } },  //retorna para o layout anterior
-	{ ClkWinTitle,          0,                   Button4,        focusstack,     {.i = +1 } },  //avanca o foco para a proxima janela
-	{ ClkWinTitle,          0,                   Button5,        focusstack,     {.i = -1 } },  //o foco retona para a janela anterior
-	{ ClkWinTitle,          0,                   Button2,        zoom,           {0} },
+	{ ClkButton,            0,                   Button1,        spawn,          SHCMD(PATH("dwm/dwm-roficmd")) },
+	{ ClkButton,            0,                   Button3,        spawn,          SHCMD(PATH("dwm/dwm-timeshiftcmd")) },
+	{ ClkLtSymbol,          0,                   Button1,        spawn,          SHCMD(PATH("dmenu/dmenu-layouts-dwm")) },
+	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[0]} },
+
+  /*faz loop pelos leyous com a roda do mouse*/
+  { ClkLtSymbol,          0,                   Button4,        cyclelayout,    {.i = +1 } },
+	{ ClkLtSymbol,          0,                   Button5,        cyclelayout,    {.i = -1 } },
+
+  /*Oculta ou mostra a aplicacao ao clicar no nome da aplicacao*/
+	{ ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
+	{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
+
+  /*move a roda do mouse para passar entre as janelas da tela*/
+  { ClkWinTitle,          0,                   Button4,        focusstack,     {.i = +1 } },
+	{ ClkWinTitle,          0,                   Button5,        focusstack,     {.i = -1 } },
+  { ClkWinTitle,          0,                   Button2,        zoom,           {0} },
+
+  /*Codigos dos sinais que o dwmblocks identifica com os cliques na barra*/
 	{ ClkStatusText,        0,                   Button1,        sigstatusbar,   {.i = 1 } },
 	{ ClkStatusText,        0,                   Button2,        sigstatusbar,   {.i = 2 } },
 	{ ClkStatusText,        0,                   Button3,        sigstatusbar,   {.i = 3 } },
@@ -514,11 +544,6 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,                   Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,              Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,              Button3,        toggletag,      {0} },
-	{ ClkTagBar,            0,   		           Button4,        shiftview,     {.i = +1 } },  //avanca para a proxima tag
-	{ ClkTagBar,            0,                   Button5,        shiftview,     {.i = -1 } },  //retorna para a tag anterior
-
-  { ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
-	{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
 };
 
 /* signal definitions */
@@ -532,7 +557,6 @@ static const Signal signals[] = {
 	{ "incnmaster",              incnmaster },
 	{ "togglefloating",          togglefloating },
 	{ "focusmon",                focusmon },
-	{ "rotatestack",             rotatestack },
 	{ "pushdown",                pushdown },
 	{ "pushup",                  pushup },
 	{ "setcfact",                setcfact },
@@ -552,6 +576,9 @@ static const Signal signals[] = {
 	{ "viewall",                 viewallex },
 	{ "viewex",                  viewex },
 	{ "toggleview",              toggleview },
+	{ "showhideclient",          showhideclient },
+	{ "shifttag",                shifttag },
+	{ "shifttagclients",         shifttagclients },
 	{ "shiftview",               shiftview },
 	{ "shiftviewclients",        shiftviewclients },
 	{ "cyclelayout",             cyclelayout },

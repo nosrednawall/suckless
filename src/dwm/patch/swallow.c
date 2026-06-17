@@ -40,7 +40,6 @@ swallow(Client *p, Client *c)
 	updateicon(p);
 	updatetitle(p);
 	s = scanner ? c : p;
-	setfloatinghint(s);
 
 	wc.border_width = p->bw;
 	XConfigureWindow(dpy, p->win, CWBorderWidth, &wc);
@@ -78,7 +77,6 @@ unswallow(Client *c)
 	XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
 	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
 
-	setfloatinghint(c);
 	setclientstate(c, NormalState);
 	arrange(c->mon);
 	focus(NULL);

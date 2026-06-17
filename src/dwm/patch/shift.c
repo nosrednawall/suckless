@@ -10,8 +10,6 @@ shift(const Arg *arg, int clients)
 	for (c = selmon->clients; c && clients; c = c->next) {
 		if (c == selmon->sel)
 			continue;
-		if (c->issticky)
-			continue;
 		if (!(c->tags & SPTAGMASK))
 			tagmask |= c->tags;
 	}
