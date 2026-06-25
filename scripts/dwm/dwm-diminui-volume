@@ -1,4 +1,6 @@
 #!/bin/bash
+# Carrega o tema
+source $HOME/.theme_selected
 
 pactl set-sink-volume @DEFAULT_SINK@ -5%
 volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
@@ -7,4 +9,4 @@ volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' 
 kill -43 $(pidof dwmblocks)
 
 
-notify-send -t 3000 "󰝞 $volume%" "Diminuído 5% do volume" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-speakers.svg"
+notify-send -t 3000 "󰝞 $volume%" "Diminuído 5% do volume" --icon="$THEME_ICON_DUNST/16x16/devices/audio-speakers.svg"

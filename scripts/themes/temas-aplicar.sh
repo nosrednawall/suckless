@@ -73,6 +73,12 @@ load_theme() {
     COLOR_15=$(get_theme_value "$theme_name" "color15")
     COLOR_16=$(get_theme_value "$theme_name" "color16")
 
+    if [[ "$COLOR_MODE" == *"Dark"* ]]; then
+        THEME_ICON_DUNST="/usr/share/icons/Papirus-Dark/"
+    else
+        THEME_ICON_DUNST="/usr/share/icons/Papirus-Light/"
+    fi
+
     # Exporta variáveis
     export THEME_NAME="$theme_name"
     export THEME_GTK THEME_ICON THEME_MODE COLOR_MODE
@@ -399,6 +405,7 @@ THEME_GTK="$THEME_GTK"
 THEME_ICON="$THEME_ICON"
 THEME_MODE="$THEME_MODE"
 COLOR_MODE="$COLOR_MODE"
+THEME_ICON_DUNST="$THEME_ICON_DUNST"
 GTK_PREFER_DARK_MODE="$GTK_PREFER_DARK_MODE"
 EMACS_THEME="$EMACS_THEME"
 WALLPAPER_LIGHTDM="$WALLPAPER_LIGHTDM"

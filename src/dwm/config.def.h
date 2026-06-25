@@ -1,8 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
 /* Helper macros for spawning commands */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */
 #define STATUSBAR "dwmblocks"
@@ -12,33 +12,33 @@
 
 
 /* appearance */
-static const unsigned int borderpx       = 4;   /* border pixel of windows */
+static const unsigned int borderpx       = 1;   /* border pixel of windows */
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
-static const unsigned int barborderpx    = 6;  /* border pixel of bar */
+static const unsigned int barborderpx    = 4;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 1;   /* 1 means swallow floating windows by default */
-static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
-static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
-static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 10;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappih         = 20;  /* horiz inner gap between windows */
+static const unsigned int gappiv         = 20;  /* vert inner gap between windows */
+static const unsigned int gappoh         = 20;  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov         = 30;  /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
 static const char dwmdir[]               = "dwm";
 static const char localshare[]           = ".local/share";
 static const int showbar                 = 1;   /* 0 means no bar */
-static const int topbar                  = 1;   /* 0 means bottom bar */
+static const int topbar                  = 0;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
-static const int vertpad                 = 10;  /* vertical padding of bar */
-static const int sidepad                 = 10;  /* horizontal padding of bar */
+static const int vertpad                 = 5;  /* vertical padding of bar */
+static const int sidepad                 = 5;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = -1;
 static const int horizpadbar             = 2;   /* horizontal padding for statusbar */
-static const int vertpadbar              = 0;   /* vertical padding for statusbar */
+static const int vertpadbar              = 2;   /* vertical padding for statusbar */
 static const char buttonbar[]            = "  ";
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
@@ -47,17 +47,16 @@ static const int showsystray             = 1;   /* 0 means no systray */
 static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
-static int aotindicatortype              = INDICATOR_TOP_LEFT_LARGER_SQUARE;
 static const char *fonts[]          	 = {
   "Iosevka Term:size=11",
-  "Symbols Nerd Font:style=Bold:antialias=true:size=11",  //for dwmblocks
-  "Font Awesome 6 Free Solid:style=Bold:size=11",  // for weather in dwmblocks
-  "PowerlineSymbols Bold:style=Bold:size=11",  // for weather in dwmblocks
+  "Symbols Nerd Font:style=Bold:antialias=true:size=12",  //for dwmblocks
+  "Font Awesome 6 Free Solid:style=Bold:size=12",  // for weather in dwmblocks
+  "PowerlineSymbols Bold:style=Bold:size=12",  // for weather in dwmblocks
 };
 static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:style=Regular:antialias=true";
 
 /* Tema - Configurações de cores */
-#include "themes/gruvbox_dark.h"
+#include "themes/nord_dark.h"
 
 
 static char *colors[][ColCount] = {
@@ -324,10 +323,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Down,       setcfact,               {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_o,          setcfact,               {0} },
 
-  /* ===== RESTAURA O RATIO???? ===== */
-	{ MODKEY|ControlMask|ShiftMask, XK_e,          aspectresize,           {.i = +24} },
-	{ MODKEY|ControlMask|ShiftMask, XK_r,          aspectresize,           {.i = -24} },
-
   /* ===== ZOOM ===== */
 	{ MODKEY,                       XK_Return,     zoom,                   {0} },
 
@@ -375,16 +370,13 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_0,          view,                   {.ui = ~SPTAGMASK } },
 	{ MODKEY|ShiftMask,             XK_0,          tag,                    {.ui = ~SPTAGMASK } },
 
+  /*Troca de tag, indo para direita e esquerda*/
+  { ControlMask|Mod1Mask,            XK_Left,       shiftview,              { .i = -1 } },
+	{ ControlMask|Mod1Mask,            XK_Right,      shiftview,              { .i = +1 } },
 
-	/* ===== ShiftTag - Mudanças entre Tags de forma rápida  ===== */
-	{ ControlMask|Mod1Mask,            XK_Left,       shifttag,               { .i = -1 } },
-	{ ControlMask|Mod1Mask,            XK_Right,      shifttag,               { .i = +1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,  XK_Left,       shifttagclients,        { .i = -1 } },
-	{ ControlMask|Mod1Mask|ShiftMask,  XK_Right,      shifttagclients,        { .i = +1 } },
-	{ MODKEY|ShiftMask,                XK_Tab,        shiftview,              { .i = -1 } },
-	{ MODKEY|ShiftMask,                XK_backslash,  shiftview,              { .i = +1 } },
-	{ MODKEY|Mod4Mask,                 XK_Tab,        shiftviewclients,       { .i = -1 } },
-	{ MODKEY|Mod4Mask,                 XK_backslash,  shiftviewclients,       { .i = +1 } },
+  /*SE MOVE APENAS NAS TAGS COM APLICACAO ABERTA*/
+	{ MODKEY|Mod1Mask,                 XK_Left,       shiftviewclients,       { .i = -1 } },
+	{ MODKEY|Mod1Mask,                 XK_Right,      shiftviewclients,       { .i = +1 } },
 
   /* ===== SHOW/HIDE CLIENT ===== */
 	{ MODKEY|ControlMask,              XK_z,          showhideclient,         {0} },
@@ -398,7 +390,6 @@ static const Key keys[] = {
 
   /* ===== TOGGLE FLOATING E SPACE ===== */
 	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
-	{ MODKEY|ShiftMask,             XK_space,      togglealwaysontop,      {0} },
   { MODKEY,                       XK_space,      setlayout,              {0} },
 
 	/* ===== SCRATCHPADS ===== */
@@ -504,6 +495,9 @@ static const Button buttons[] = {
   /*Oculta ou mostra a aplicacao ao clicar no nome da aplicacao*/
 	{ ClkWinTitle,          0,                   Button1,        togglewin,      {0} },
 	{ ClkWinTitle,          0,                   Button3,        showhideclient, {0} },
+	{ ClkWinTitle,          ShiftMask,           Button3,        unhideall, {0} },
+
+
 
   /*move a roda do mouse para passar entre as janelas da tela*/
   { ClkWinTitle,          0,                   Button4,        focusstack,     {.i = +1 } },
@@ -577,8 +571,6 @@ static const Signal signals[] = {
 	{ "viewex",                  viewex },
 	{ "toggleview",              toggleview },
 	{ "showhideclient",          showhideclient },
-	{ "shifttag",                shifttag },
-	{ "shifttagclients",         shifttagclients },
 	{ "shiftview",               shiftview },
 	{ "shiftviewclients",        shiftviewclients },
 	{ "cyclelayout",             cyclelayout },

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Carrega o tema
+source $HOME/.theme_selected
+
+
 brightnessctl -q set 5%-
 brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
 
@@ -7,4 +11,4 @@ brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's
 kill -10 $(pidof dwmblocks)
 
 
-# notify-send -t 3000 "Brilho diminuído em 5%" "Brilho total $brilho%" --icon="/usr/share/icons/ePapirus/16x16/actions/brightnesssettings.svg"
+notify-send -t 3000 "Brilho diminuído em 5%" "Brilho total $brilho%" --icon="$THEME_ICON_DUNST/16x16/actions/brightnesssettings.svg"

@@ -18,8 +18,6 @@
 #include "bar_wintitleactions.h"
 
 /* Other patches */
-#include "alwaysontop.h"
-#include "aspectresize.h"
 #include "attachx.h"
 #include "autostart.h"
 #include "recttoclient.h"
@@ -38,8 +36,6 @@
 #include "scratchpad.h"
 #include "seamless_restart.h"
 #include "shift.h"
-#include "shifttag.h"
-#include "shifttagclients.h"
 #include "shiftview.h"
 #include "shiftviewclients.h"
 #include "swallow.h"

@@ -2,6 +2,7 @@
 
 # Requisitos
 # MPV e Dmenu
+# sudo pacman -S mpv dmenu
 
 source ~/.rtsps_codes
 

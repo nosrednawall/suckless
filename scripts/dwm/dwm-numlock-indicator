@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Carrega o tema
+source $HOME/.theme_selected
+
 # Toca som de switch
 ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 
@@ -22,4 +25,4 @@ else
 fi
 
 # mostra notificacao de uso do capslock
-notify-send -t 3000 "$texto_notify" "" --icon="/usr/share/icons/ePapirus/24x24/panel/$icon"
+notify-send -t 3000 "$texto_notify" "" --icon="$THEME_ICON_DUNST/24x24/panel/$icon"

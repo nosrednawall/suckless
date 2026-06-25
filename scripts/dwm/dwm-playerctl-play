@@ -4,6 +4,7 @@ source ~/.cache/playerctl_selecionado
 # Se o player estiver tocando, aplica o play-pause, caso contrario
 # pausa todos os outros e toca o novo
 STATUS_ATUAL=$(playerctl --player=$PLAYER_SELECIONADO status)
+
 if [ $STATUS_ATUAL = "Playing" ]; then
     playerctl --player=$PLAYER_SELECIONADO play-pause
 else

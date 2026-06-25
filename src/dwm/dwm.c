@@ -209,7 +209,6 @@ struct Client {
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
-	int alwaysontop;
 	int isgame;
 	int beingmoved;
 	int isterminal, noswallow;
@@ -1926,22 +1925,12 @@ restack(Monitor *m)
 	Client *c, *f = NULL;
 	XEvent ev;
 	XWindowChanges wc;
-	Monitor *mon;
 
 	drawbar(m);
 	if (!m->sel)
 		return;
 	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
-
-	/* raise the aot windows */
-	for (mon = mons; mon; mon = mon->next) {
-		for (c = mon->clients; c; c = c->next) {
-			if (c->alwaysontop) {
-				XRaiseWindow(dpy, c->win);
-			}
-		}
-	}
 
 	if (m->lt[m->sellt]->arrange) {
 		wc.stack_mode = Below;
@@ -2388,8 +2377,6 @@ togglefloating(const Arg *arg)
 		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
 	if (c->isfloating) {
 		resize(c, c->x, c->y, c->w, c->h, 0);
-	} else {
-		c->alwaysontop = 0;
 	}
 	arrange(c->mon);
 
