@@ -163,11 +163,13 @@ case "$PLAYER_SELECIONADO" in
     "mpv")
         # if se é rádio online
         if [ "$(playerctl --player="mpv" metadata xesam:url | grep -E 'http' -ic)" -eq 1 ]; then
+            # para as radios online
             icon=""
             format_player="{{title}}"
             cor_forte="$COLOR_16"
             cor_fraca="$COLOR_11"
         else
+            # para todos os outros vídeos
             icon=""
             format_player="{{title}}"
             cor_forte="$COLOR_3"
@@ -229,7 +231,7 @@ if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
         cor_fraca="#4A5947"
     fi
 
-    ## Casp esteja pausado, muda as cores e o icone
+    ## Caso esteja pausado, muda as cores e o icone
     if [ "$status" = "Paused" ]; then
         icon=""
         cor_forte="$COLOR_1"
@@ -245,7 +247,7 @@ if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
         fi
 
         if [ -n "$song" ]; then
-            song=$(echo "$song" | tr -d ';')
+            song=$(echo "$song" | tr -d ';' | tr '.' ' ') # remove ; e substituiu o . por espaço
             if [ ${#song} -gt 30 ]; then
                 song="${song:0:30}..."
             fi

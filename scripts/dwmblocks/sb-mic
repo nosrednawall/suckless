@@ -26,7 +26,7 @@ fi
 case $BUTTON in
 	1) bash ~/.config/suckless/scripts/dwm/dwm-muta-microfone ;;
     2) bash ~/.config/suckless/scripts/dmenu/dmenu-controle-som ;;
-    3) xsetroot -name "fsignal:togglescratch ui 3" ;;
+    3) xsetroot -name "fsignal:togglescratch ui 6" ;;
     4) bash ~/.config/suckless/scripts/dwm/dwm-aumenta-volume-microfone ;;
     5) bash ~/.config/suckless/scripts/dwm/dwm-diminui-volume-microfone ;;
 	6) setsid -f st -e emacs -nw "$0" ;;

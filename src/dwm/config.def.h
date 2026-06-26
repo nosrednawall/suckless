@@ -16,23 +16,23 @@ static const unsigned int borderpx       = 1;   /* border pixel of windows */
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
-static const unsigned int barborderpx    = 4;  /* border pixel of bar */
+static const unsigned int barborderpx    = 8;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 1;   /* 1 means swallow floating windows by default */
-static const unsigned int gappih         = 20;  /* horiz inner gap between windows */
-static const unsigned int gappiv         = 20;  /* vert inner gap between windows */
-static const unsigned int gappoh         = 20;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 30;  /* vert outer gap between windows and screen edge */
-static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
+static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
+static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
+static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov         = 15;  /* vert outer gap between windows and screen edge */
+static const int smartgaps_fact          = 3;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
 static const char dwmdir[]               = "dwm";
 static const char localshare[]           = ".local/share";
 static const int showbar                 = 1;   /* 0 means no bar */
-static const int topbar                  = 0;   /* 0 means bottom bar */
+static const int topbar                  = 1;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
-static const int vertpad                 = 5;  /* vertical padding of bar */
-static const int sidepad                 = 5;  /* horizontal padding of bar */
+static const int vertpad                 = 2;  /* vertical padding of bar */
+static const int sidepad                 = 3;  /* horizontal padding of bar */
 #define ICONSIZE 20    /* icon size */
 #define ICONSPACING 5  /* space between icon and title */
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
@@ -74,21 +74,24 @@ static char *colors[][ColCount] = {
 	[SchemeLtSymbol]     = { ltsymbolfgcolor,  ltsymbolbgcolor,  c000000,              c000000 },
 };
 
-const char *spcmd1[]  = {"st", "-n", "spterm", "-g", "100x25", NULL };
-const char *spcmd2[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
-const char *spcmd3[]  = {"st", "-n", "spnmtui", "-g", "100x25", "-e", "nmtui", NULL };
-const char *spcmd4[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "rmpc", NULL };
-const char *spcmd5[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
-const char *spcmd6[]  = {"qalculate-gtk", "--class", "spqalculate-gtk" , NULL };
+const char *spcmd0[]  = {"st", "-n", "spterm", "-g", "100x25", NULL };
+const char *spcmd1[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL };
+const char *spcmd2[]  = {"st", "-n", "spnmtui", "-g", "100x25", "-e", "nmtui", NULL };
+const char *spcmd3[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "rmpc", NULL };
+const char *spcmd4[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
+const char *spcmd5[]  = {"qalculate-gtk", "--class", "spqalculate-gtk" , NULL };
+const char *spcmd6[] = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
 
 static Sp scratchpads[] = {
    /* name          cmd  */
-	{"spterm",      		spcmd1},
-	{"bitwarden",   		spcmd2},
-	{"spnmtui",     		spcmd3},
-	{"sprmpc",   		    spcmd4},
-	{"whatsapp-firefox",	spcmd5},
-  {"spqalculate-gtk",	spcmd6}
+	{"spterm",      		  spcmd0},
+	{"bitwarden",   		  spcmd1},
+	{"spnmtui",     		  spcmd2},
+	{"sprmpc",   		    spcmd3},
+	{"whatsapp-firefox",	spcmd4},
+  {"spqalculate-gtk",	spcmd5},
+  {"sppulse",	spcmd6}
+
 };
 
 /* Tags
@@ -177,6 +180,7 @@ static const Rule rules[] = {
 	RULE(.instance = "sprmpc",                              .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",    .tags = SPTAG(4), .isfloating = 1)
   RULE(.class    = "spqalculate-gtk",                     .tags = SPTAG(5), .isfloating = 1)
+  RULE(.instance = "sppulse",                             .tags = SPTAG(6), .isfloating = 1)
 
  // Plots no emacs
  RULE(.instance = "matplotlib", .tags = 0, .isfloating = 1)
@@ -402,7 +406,7 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask,         XK_m,          togglescratch,          {.ui = 3 } },
 	{ ControlMask|Mod1Mask,         XK_w,          togglescratch,          {.ui = 4 } },
 	{ ControlMask|Mod1Mask,         XK_c,          togglescratch,          {.ui = 5 } },
-
+  { ControlMask|Mod1Mask,         XK_v,          togglescratch,          {.ui = 6 } },
   /* ===== FOCUS/TAG MONITORS ===== */
 	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
 	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },
@@ -525,19 +529,21 @@ static const Button buttons[] = {
 	 * to control these separately (i.e. to retain the feature to move a tiled window
 	 * into a floating position).
 	 */
-	{ ClkClientWin,         MODKEY,              Button1,        moveorplace,    {.i = 1} },
-	{ ClkClientWin,         MODKEY,              Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,              Button3,        resizemouse,    {0} },
-	{ ClkClientWin,         MODKEY,              Button4,        resizemousescroll, {.v = &scrollargs[0]} },
-	{ ClkClientWin,         MODKEY,              Button5,        resizemousescroll, {.v = &scrollargs[1]} },
-	{ ClkClientWin,         MODKEY,              Button6,        resizemousescroll, {.v = &scrollargs[2]} },
-	{ ClkClientWin,         MODKEY,              Button7,        resizemousescroll, {.v = &scrollargs[3]} },
-	{ ClkClientWin,         MODKEY|ShiftMask,    Button3,        dragcfact,      {0} },
-	{ ClkClientWin,         MODKEY|ShiftMask,    Button1,        dragmfact,      {0} },
-	{ ClkTagBar,            0,                   Button1,        view,           {0} },
-	{ ClkTagBar,            0,                   Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,              Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,              Button3,        toggletag,      {0} },
+	{ ClkClientWin,         MODKEY,              Button1,        moveorplace,          {.i = 1} },
+	{ ClkClientWin,         MODKEY,              Button2,        togglefloating,       {0} },
+	{ ClkClientWin,         MODKEY,              Button3,        resizemouse,          {0} },
+	{ ClkClientWin,         MODKEY,              Button4,        resizemousescroll,    {.v = &scrollargs[0]} },
+	{ ClkClientWin,         MODKEY,              Button5,        resizemousescroll,    {.v = &scrollargs[1]} },
+	{ ClkClientWin,         MODKEY,              Button6,        resizemousescroll,    {.v = &scrollargs[2]} },
+	{ ClkClientWin,         MODKEY,              Button7,        resizemousescroll,    {.v = &scrollargs[3]} },
+	{ ClkClientWin,         MODKEY|ShiftMask,    Button3,        dragcfact,            {0} },
+	{ ClkClientWin,         MODKEY|ShiftMask,    Button1,        dragmfact,            {0} },
+	{ ClkTagBar,            0,                   Button1,        view,                 {0} },
+	{ ClkTagBar,            0,                   Button3,        toggleview,           {0} },
+  { ClkTagBar,            0,                   Button4,        shiftview,            {.i = +1 } },
+  { ClkTagBar,            0,                   Button5,        shiftview,            {.i = -1 } },
+  { ClkTagBar,            MODKEY,              Button1,        tag,                  {0} },
+	{ ClkTagBar,            MODKEY,              Button3,        toggletag,            {0} },
 };
 
 /* signal definitions */

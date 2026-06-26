@@ -22,6 +22,7 @@ declare -A TEMAS=(
     ["T_SIMPLE_COLOR"]="simple-color"
     ["T_ICON_COLOR"]="icon-color"
     ["T_SEPARADOR"]="separador"
+    ["T_COLORFULL_ICON"]="colorfull-icon"
 )
 
 # Função para carregar configuração

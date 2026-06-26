@@ -30,6 +30,9 @@ aplicar_tema() {
             "colorfull")
                 echo "^b$cor_forte^^c$COLOR_BACKGROUND^ $icone ^d^^c$COLOR_BACKGROUND^^b$cor_fraca^ $conteudo ^d^ "
                 ;;
+            "colorfull-icon")
+                echo "^b$cor_forte^^c$COLOR_BACKGROUND^ $icone ^d^^c$COLOR_TEXT^ $conteudo ^d^ "
+                ;;
             "brackets")
                 echo "[^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^] "
                 ;;
