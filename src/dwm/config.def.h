@@ -80,7 +80,7 @@ const char *spcmd2[]  = {"st", "-n", "spnmtui", "-g", "100x25", "-e", "nmtui", N
 const char *spcmd3[]  = {"st", "-n", "sprmpc", "-g", "100x25", "-e", "rmpc", NULL };
 const char *spcmd4[]  = {"/usr/bin/firefoxpwa", "site", "launch", "01K04YSNWVWAC0G6TD61VN9ZPV",  NULL };
 const char *spcmd5[]  = {"qalculate-gtk", "--class", "spqalculate-gtk" , NULL };
-const char *spcmd6[] = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
+const char *spcmd6[]  = {"st", "-n", "sppulse", "-g", "100x34", "-e", "pulsemixer", NULL };
 
 static Sp scratchpads[] = {
    /* name          cmd  */
@@ -90,7 +90,7 @@ static Sp scratchpads[] = {
 	{"sprmpc",   		    spcmd3},
 	{"whatsapp-firefox",	spcmd4},
   {"spqalculate-gtk",	spcmd5},
-  {"sppulse",	spcmd6}
+  {"sppulse",	        spcmd6}
 
 };
 
@@ -407,6 +407,7 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask,         XK_w,          togglescratch,          {.ui = 4 } },
 	{ ControlMask|Mod1Mask,         XK_c,          togglescratch,          {.ui = 5 } },
   { ControlMask|Mod1Mask,         XK_v,          togglescratch,          {.ui = 6 } },
+
   /* ===== FOCUS/TAG MONITORS ===== */
 	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
 	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },

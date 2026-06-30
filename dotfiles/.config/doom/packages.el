@@ -66,7 +66,7 @@
 (package! catppuccin-theme)
 (package! multiple-cursors)
 (package! windresize)
-
+(package! nix-mode)
 
 ;; ~/.doom.d/packages.el
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Carrega o tema
+source $HOME/.theme_selected
+
 # Carrega função para aplicar o tema e o tema de cores
 source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
@@ -23,7 +26,7 @@ cor_forte="$COLOR_6"
 cor_fraca="$COLOR_14"
 
 case "$device" in
-    *pci*analog*)      device="" ;;   # placa on-board
+    *pci*analog*)      device="󰓃" ;;   # placa on-board
     *usb*Headset*)     device="󰋎" ;;   # fone USB
     *pci*hdmi*)        device="󰡁" ;;   # hdmi
     *bluez*output*)    device="" ;;   # Via bluetooth
@@ -47,18 +50,16 @@ else
     elif [ "$volume" -ge 61 ]; then
         iconVolume="󰕾"
     fi
-    corpo="$volume $device"
+    iconVolumeCompleto="$iconVolume $device"
+    corpo="$volume"
 fi
 
 
-output=$(aplicar_tema "$iconVolume" "$corpo" "$cor_forte" "$cor_fraca")
+output=$(aplicar_tema "$iconVolumeCompleto" "$corpo" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")
-        echo ""
-    ;;
-    "MEDIO")
         echo ""
     ;;
     *)

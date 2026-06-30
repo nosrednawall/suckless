@@ -54,10 +54,10 @@ if [ "$muteMic" -eq 1 ]; then
     device=""
     corpo=""
 else
-    icon=""
+    icon=" $device"
     cor_forte=$COLOR_4
     cor_fraca=$COLOR_12
-    corpo="$microfone $device"
+    corpo="$microfone"
 fi
 
 
@@ -66,9 +66,6 @@ output=$(aplicar_tema "$icon" "$corpo" "$cor_forte" "$cor_fraca")
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")
-        echo ""
-    ;;
-    "MEDIO")
         echo ""
     ;;
     *)

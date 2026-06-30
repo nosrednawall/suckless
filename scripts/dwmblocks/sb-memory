@@ -41,6 +41,7 @@ esac
 # Display RAM usage.
 memory=$(free | grep Mem | awk '{printf "%.0f\n", $3/$2 * 100.0}')
 output=$(aplicar_tema "" "$memory" "$COLOR_7" "$COLOR_15")
+
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")

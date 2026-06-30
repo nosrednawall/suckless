@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Carrega o tema
+source $HOME/.theme_selected
+
+
 # Carrega função para aplicar o tema e o tema de cores
 source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
@@ -54,15 +58,15 @@ else
 
     # Gera notificacao quando muda de modo
     if [ "24:59" = "$pomodoro_minutos" ] && [ "PM" = "$pomodoro_modo" ]; then
-        notify-send -t 3000 "Pomodoro Inicio" "Iniciado Pomodoro 25min" --icon="/usr/share/icons/ePapirus/24x24/panel/pomodoro-start-light.svg"
+        notify-send -t 3000 "Pomodoro Inicio" "Iniciado Pomodoro 25min" --icon="$THEME_ICON_DUNST/24x24/panel/pomodoro-start-light.svg"
     fi
 
     if [ "04:59" = "$pomodoro_minutos" ] && [ "SB" = "$pomodoro_modo" ]; then
-        notify-send -t 3000 "Pomodoro Pausa Curta" "Iniciado Pausa curta 5m" --icon="/usr/share/icons/ePapirus/24x24/panel/pomodoro-start-light.svg"
+        notify-send -t 3000 "Pomodoro Pausa Curta" "Iniciado Pausa curta 5m" --icon="$THEME_ICON_DUNST/24x24/panel/pomodoro-start-light.svg"
     fi
 
     if [ "14:59" = "$pomodoro_minutos" ] && [ "LB" = "$pomodoro_modo" ]; then
-        notify-send -t 3000 "Pomodoro Pausa Longa" "Iniciado Pausa longa 15min" --icon="/usr/share/icons/ePapirus/24x24/panel/pomodoro-start-light.svg"
+        notify-send -t 3000 "Pomodoro Pausa Longa" "Iniciado Pausa longa 15min" --icon="$THEME_ICON_DUNST/24x24/panel/pomodoro-start-light.svg"
     fi
 
     # Gera som quando finaliza o modo

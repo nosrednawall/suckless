@@ -3,6 +3,9 @@
 # Carrega função para aplicar o tema e o tema de cores
 source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
+# Carrega o tema
+source $HOME/.theme_selected
+
 # Identifica os dispositivos de bateria e carregador
 DEVICE_CARREGADOR=$(ls /sys/class/power_supply/ | grep -m1 "ACAD")
 DEVICE_BATERIA=$(ls /sys/class/power_supply/ | grep -m1 "BAT")
