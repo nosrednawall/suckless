@@ -15,11 +15,11 @@ static const unsigned int borderpx       = 1;   /* border pixel of windows */
 /* This allows the bar border size to be explicitly set separately from borderpx.
  * If left as 0 then it will default to the borderpx value of the monitor and will
  * automatically update with setborderpx. */
-static const unsigned int barborderpx    = 0;  /* border pixel of bar */
+static const unsigned int barborderpx    = 8;  /* border pixel of bar */
 #endif // BAR_BORDER_PATCH
 static const unsigned int snap           = 32;  /* snap pixel */
 #if SWALLOW_PATCH
-static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
+static const int swallowfloating         = 1;   /* 1 means swallow floating windows by default */
 #endif // SWALLOW_PATCH
 #if BAR_TAGPREVIEW_PATCH
 static const int scalepreview            = 4;        /* Tag preview scaling */
@@ -32,7 +32,7 @@ static const unsigned int gappih         = 20;  /* horiz inner gap between windo
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov         = 30;  /* vert outer gap between windows and screen edge */
-static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
+static const int smartgaps_fact          = 2;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 #endif // VANITYGAPS_PATCH
 #if AUTOSTART_PATCH
 static const char autostartblocksh[]     = "autostart_blocking.sh";
@@ -98,7 +98,7 @@ static const int horizpadbar             = 2;   /* horizontal padding for status
 static const int vertpadbar              = 0;   /* vertical padding for statusbar */
 #endif // BAR_STATUSPADDING_PATCH
 #if BAR_STATUSBUTTON_PATCH
-static const char buttonbar[]            = "<O>";
+static const char buttonbar[]            = "  ";
 #endif // BAR_STATUSBUTTON_PATCH
 #if BAR_SYSTRAY_PATCH
 static const unsigned int systrayspacing = 2;   /* systray spacing */
@@ -168,9 +168,16 @@ static void (*bartabmonfns[])(Monitor *) = { NULL /* , customlayoutfn */ };
 #endif // MONOCLE_LAYOUT
 #endif // BAR_TABGROUPS_PATCH
 #if BAR_PANGO_PATCH
-static const char font[]                 = "monospace 10";
+static const char font[]                 = "monospace 13";
 #else
-static const char *fonts[]               = { "monospace:size=10" };
+//static const char *fonts[]               = { "monospace:size=10" };
+static const char *fonts[]          	 = {
+  "Iosevka Term:size=11",
+  "Symbols Nerd Font:style=Bold:antialias=true:size=12",  //for dwmblocks
+  "Font Awesome 6 Free Solid:style=Bold:size=12",  // for weather in dwmblocks
+  "PowerlineSymbols Bold:style=Bold:size=12",  // for weather in dwmblocks
+};
+
 #endif // BAR_PANGO_PATCH
 static const char dmenufont[]            = "monospace:size=10";
 
@@ -276,7 +283,15 @@ static char selfloatbgcolor[]            = "#117799";
 #endif // BAR_FLEXWINTITLE_PATCH
 
 #if BAR_ALPHA_PATCH
-static const unsigned int baralpha = 0xd0;
+/*
+ *
+ * Valor	Transparência
+ * 0x00	Completamente transparente
+ * 0x80	50% transparente
+ * 0xd0	~80% opaco (seu valor atual)
+ * 0xff	Completamente opaco (sem transparência)
+ */
+static const unsigned int baralpha = 0xff;
 static const unsigned int borderalpha = OPAQUE;
 static const unsigned int alphas[][3] = {
 	/*                       fg      bg        border     */
@@ -988,6 +1003,12 @@ ResourcePref resources[] = {
 	{ "tagsselbgcolor",         STRING,    &tagsselbgcolor },
 	{ "tagsselbordercolor",     STRING,    &tagsselbordercolor },
 	{ "tagsselfloatcolor",      STRING,    &tagsselfloatcolor },
+	// ⬇️⬇️⬇️ ADICIONE ESTAS LINHAS ⬇️⬇️⬇️
+	{ "tagsunusedfgcolor",      STRING,    &tagsunusedfgcolor },
+	{ "tagsunusedbgcolor",      STRING,    &tagsunusedbgcolor },
+	{ "tagsunusedbordercolor",  STRING,    &tagsunusedbordercolor },
+	{ "tagsunusedfloatcolor",   STRING,    &tagsunusedfloatcolor },
+	// ⬆️⬆️⬆️ ADICIONE ESTAS LINHAS ⬆️⬆️⬆️
 	{ "hidnormfgcolor",         STRING,    &hidnormfgcolor },
 	{ "hidnormbgcolor",         STRING,    &hidnormbgcolor },
 	{ "hidselfgcolor",          STRING,    &hidselfgcolor },

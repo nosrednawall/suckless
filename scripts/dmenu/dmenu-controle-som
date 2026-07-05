@@ -4,6 +4,7 @@ update_dwmblocks() {
     kill -10 $(pidof dwmblocks)
 }
 
+
 # Função para atualizar dispositivos dinamicamente
 update_devices() {
     declare -gA sinks sources

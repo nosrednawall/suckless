@@ -6,7 +6,7 @@ TEMA_APPLY_SCRIPT="$HOME/.config/suckless/scripts/themes/temas-aplicar.sh"
 
 # Função para listar temas por modo
 list_themes_by_mode() {
-    local mode="$1"  # Dark ou Light
+    local mode="$1"
 
     awk -v mode="$mode" '
         /^\[.+\]$/ { theme = substr($0, 2, length($0)-2) }

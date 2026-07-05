@@ -40,6 +40,10 @@ load_xresources()
 				XRDB_LOAD_COLOR("dwm.tagsselbgcolor", tagsselbgcolor);
 				XRDB_LOAD_COLOR("dwm.tagsselbordercolor", tagsselbordercolor);
 				XRDB_LOAD_COLOR("dwm.tagsselfloatcolor", tagsselfloatcolor);
+				XRDB_LOAD_COLOR("dwm.tagsunusedfgcolor", tagsunusedfgcolor);
+				XRDB_LOAD_COLOR("dwm.tagsunusedbgcolor", tagsunusedbgcolor);
+				XRDB_LOAD_COLOR("dwm.tagsunusedbordercolor", tagsunusedbordercolor);
+				XRDB_LOAD_COLOR("dwm.tagsunusedfloatcolor", tagsunusedfloatcolor);
 				XRDB_LOAD_COLOR("dwm.hidnormfgcolor", hidnormfgcolor);
 				XRDB_LOAD_COLOR("dwm.hidnormbgcolor", hidnormbgcolor);
 				XRDB_LOAD_COLOR("dwm.hidselfgcolor", hidselfgcolor);
