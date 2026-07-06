@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Carrega o tema
-source $HOME/.theme_selected
-
 # Carrega função para aplicar o tema e o tema de cores
 source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
@@ -35,13 +32,12 @@ esac
 
 
 if [ "$muteVol" -eq 1 ]; then
-    iconVolume="󰸈"
+    iconVolumeCompleto="󰸈"
     cor_forte="#4A5947"
     cor_fraca="#4A5947"
     device=""
     volume=""
     corpo=""
-
 else
     if [ "$volume" -le 30 ]; then
         iconVolume="󰕿"

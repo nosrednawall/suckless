@@ -1,71 +1,7 @@
 #!/bin/bash
 
-# Função para ler cores do Xresources (suporta diferentes formatos)
-get_xresource_color() {
-    local resource="$1"
-    local default="$2"
-
-    local color=""
-
-    if command -v xrdb &> /dev/null; then
-        # Tenta com e sem asterisco
-        color=$(xrdb -query 2>/dev/null | grep -E "^\*?${resource}:" | awk '{print $2}' | head -1)
-
-        # Se não achou, tenta com prefixo dwm.
-        if [ -z "$color" ]; then
-            color=$(xrdb -query 2>/dev/null | grep -E "^dwm\.${resource}:" | awk '{print $2}' | head -1)
-        fi
-    fi
-
-    # Se não encontrou, usa o default
-    if [ -z "$color" ]; then
-        color="$default"
-    fi
-
-    echo "$color"
-}
-
 # Carrega as cores
-load_colors() {
-    echo "Carregando cores do Xresources..." >&2
-
-    # Cores base (usando os nomes do seu Xresources)
-    export COLOR_BACKGROUND=$(get_xresource_color "background" "#282a36")
-    export COLOR_BACKGROUND2=$(get_xresource_color "background2" "#343746")
-    export COLOR_TEXT=$(get_xresource_color "foreground" "#f8f8f2")
-
-    # Cores principais (1-8)
-    export COLOR_1=$(get_xresource_color "color1" "#f1fa8c")
-    export COLOR_2=$(get_xresource_color "color2" "#ffb86c")
-    export COLOR_3=$(get_xresource_color "color3" "#ff5555")
-    export COLOR_4=$(get_xresource_color "color4" "#ff79c6")
-    export COLOR_5=$(get_xresource_color "color5" "#bd93f9")
-    export COLOR_6=$(get_xresource_color "color6" "#8be9fd")
-    export COLOR_7=$(get_xresource_color "color7" "#50fa7b")
-    export COLOR_8=$(get_xresource_color "color8" "#6272a4")
-
-    # Cores secundárias (9-16)
-    export COLOR_9=$(get_xresource_color "color9" "#f8ffb8")
-    export COLOR_10=$(get_xresource_color "color10" "#ffd4a2")
-    export COLOR_11=$(get_xresource_color "color11" "#ff8888")
-    export COLOR_12=$(get_xresource_color "color12" "#ffa6da")
-    export COLOR_13=$(get_xresource_color "color13" "#d9b8ff")
-    export COLOR_14=$(get_xresource_color "color14" "#b1f1ff")
-    export COLOR_15=$(get_xresource_color "color15" "#8affa6")
-    export COLOR_16=$(get_xresource_color "color16" "#8a9acf")
-
-    # Variáveis do tema
-    export THEME_MODE="Dracula"  # ou extraia do Xresources se tiver
-    export COLOR_MODE="Dark"
-
-    echo "✓ Cores carregadas:" >&2
-    echo "  BG: $COLOR_BACKGROUND" >&2
-    echo "  FG: $COLOR_TEXT" >&2
-    echo "  Cor1: $COLOR_1" >&2
-}
-
-# Carrega as cores
-load_colors
+arquivo_cores="$HOME/.theme_selected"
 
 # Carrega informacoes do modo de operacao
 arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
@@ -75,6 +11,10 @@ if [ -f "$arquivo_modo" ]; then
     theme_type="${THEME:-icon-color}"
 else
     theme_type="icon-color"
+fi
+
+if [ -f "$arquivo_cores" ]; then
+    source "$arquivo_cores"
 fi
 
 # Função principal

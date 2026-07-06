@@ -63,6 +63,7 @@ load_theme() {
     GTK_PREFER_DARK_MODE=$(get_theme_value "$theme_name" "gtk_prefer_dark")
     EMACS_THEME=$(get_theme_value "$theme_name" "emacs_theme")
     WALLPAPER_LIGHTDM=$(get_theme_value "$theme_name" "wallpaper")
+    THEME_ICON_DUNST=$(get_theme_value "$theme_name" "theme_icon_dunst")
 
     # Cores base (para compatibilidade)
     COLOR_BACKGROUND=$(get_theme_value "$theme_name" "background")
@@ -417,6 +418,40 @@ EOF
 
     check_error "Falha ao gerar .Xresources" $LINENO
     debug_log "✅ .Xresources gerado com sucesso"
+
+    cat > "$HOME/.theme_selected" <<EOF
+#!/bin/bash
+THEME_GTK="$THEME_GTK"
+THEME_ICON="$THEME_ICON"
+THEME_MODE="$THEME_MODE"
+COLOR_MODE="$COLOR_MODE"
+THEME_ICON_DUNST="$THEME_ICON_DUNST"
+GTK_PREFER_DARK_MODE="$GTK_PREFER_DARK_MODE"
+EMACS_THEME="$EMACS_THEME"
+WALLPAPER_LIGHTDM="$WALLPAPER_LIGHTDM"
+COLOR_BACKGROUND="$COLOR_BACKGROUND"
+COLOR_BACKGROUND2="$COLOR_BACKGROUND2"
+COLOR_TEXT="$COLOR_TEXT"
+COLOR_1="$COLOR_1"
+COLOR_2="$COLOR_2"
+COLOR_3="$COLOR_3"
+COLOR_4="$COLOR_4"
+COLOR_5="$COLOR_5"
+COLOR_6="$COLOR_6"
+COLOR_7="$COLOR_7"
+COLOR_8="$COLOR_8"
+COLOR_9="$COLOR_9"
+COLOR_10="$COLOR_10"
+COLOR_11="$COLOR_11"
+COLOR_12="$COLOR_12"
+COLOR_13="$COLOR_13"
+COLOR_14="$COLOR_14"
+COLOR_15="$COLOR_15"
+COLOR_16="$COLOR_16"
+
+EOF
+    check_error "Falha ao gerar .theme_selected" $LINENO
+    debug_log "✅ .theme_selected gerado com sucesso - $THEME_ICON_DUNST"
 }
 
 # Função para aplicar configurações GTK

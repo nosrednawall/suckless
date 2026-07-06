@@ -8,7 +8,7 @@
 source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks
 
 status_wg=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
-status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
+#status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
 #status_tailscale=$(tailscale status 2>/dev/null | grep -E "Active" -ic)
 
 # Array para armazenar as VPNs ativas
@@ -20,9 +20,9 @@ if [ $status_wg -eq 1 ]; then
 fi
 
 # NordVPN
-if [ $status_nordvpn -eq 1 ]; then
-    vpns+=("$(aplicar_tema "󰢭" "NVPN" "$COLOR_5" "$COLOR_13")")
-fi
+#if [ $status_nordvpn -eq 1 ]; then
+#    vpns+=("$(aplicar_tema "󰢭" "NVPN" "$COLOR_5" "$COLOR_13")")
+#fi
 
 # Tailscale - corrigida a lógica
 #if [ $status_tailscale -eq 1 ]; then
