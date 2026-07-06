@@ -488,7 +488,8 @@ restart_services() {
     tema_dunst=$(echo "$choice" | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')
     if [ -f "$HOME/.config/dunst/scripts/switch-theme.sh" ]; then
         debug_log "   Aplicando tema dunst: $tema_dunst"
-        sh "$HOME/.config/dunst/scripts/switch-theme.sh" "$tema_dunst"
+        #sh "$HOME/.config/dunst/scripts/switch-theme.sh" "$tema_dunst"
+                sh "$HOME/.config/dunst/scripts/switch-theme.sh" "xresources"
     fi
 
     debug_log "   Iniciando dunst"
