@@ -511,26 +511,12 @@ restart_services() {
     debug_log "   Recarregando .Xresources"
     xrdb -merge "$XRESOURCES_FILE" 2>/dev/null || xrdb "$XRESOURCES_FILE"
     check_error "Falha ao carregar .Xresources" $LINENO
-
+    sleep 2
     # Reinicia Dunst (com cuidado para não matar o terminal)
     debug_log "   Reiniciando Dunst"
-    if pgrep -x "dunst" > /dev/null; then
-        debug_log "   Matando dunst existente"
-        killall dunst 2>/dev/null
-        sleep 0.5
-    fi
 
-    tema_dunst=$(echo "$choice" | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')
-    if [ -f "$HOME/.config/dunst/scripts/switch-theme.sh" ]; then
-        debug_log "   Aplicando tema dunst: $tema_dunst"
-        #sh "$HOME/.config/dunst/scripts/switch-theme.sh" "$tema_dunst"
-                sh "$HOME/.config/dunst/scripts/switch-theme.sh" "xresources"
-    fi
-
-    debug_log "   Iniciando dunst"
-    dunst -conf "$HOME/.config/dunst/dunstrc" &
-    sleep 0.5
-
+    sh "$HOME/.config/dunst/scripts/switch-theme.sh"
+    sleep 2
     # Recarrega dwm
     if pgrep -x "dwm" > /dev/null; then
         debug_log "   Recarregando dwm"
@@ -549,11 +535,6 @@ restart_services() {
     else
         debug_log "   ⚠️ dwm não está rodando"
     fi
-
-    # Recarrega outros aplicativos
-    debug_log "   Recarregando aplicativos"
-    pkill -USR1 st 2>/dev/null
-    pkill -USR1 urxvt 2>/dev/null
 
     debug_log "✅ Serviços reiniciados"
 }
