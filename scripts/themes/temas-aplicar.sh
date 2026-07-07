@@ -62,7 +62,7 @@ load_theme() {
     COLOR_MODE=$(get_theme_value "$theme_name" "color_mode")
     GTK_PREFER_DARK_MODE=$(get_theme_value "$theme_name" "gtk_prefer_dark")
     EMACS_THEME=$(get_theme_value "$theme_name" "emacs_theme")
-    WALLPAPER_LIGHTDM=$(get_theme_value "$theme_name" "wallpaper")
+    WALLPAPER_LIGHTDM="/usr/share/images/desktop-base/$(get_theme_value "$theme_name" "wallpaper")"
     THEME_ICON_DUNST=$(get_theme_value "$theme_name" "theme_icon_dunst")
 
     # Cores base (para compatibilidade)
@@ -447,7 +447,7 @@ slock.input   : $slock_input
 slock.failed  : $slock_failed
 slock.capslock: $slock_capslock
 slock.blocks  : $slock_blocks
-
+slock.bg_image: $WALLPAPER_LIGHTDM
 EOF
 
     check_error "Falha ao gerar .Xresources" $LINENO

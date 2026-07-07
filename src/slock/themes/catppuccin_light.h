@@ -1,4 +1,4 @@
-static const char *colorname[NUMCOLS] = {
+ static const char *colorname[NUMCOLS] = {
 	[INIT] =   "#eff1f5",   /* after initialization */
 	[INPUT] =  "#7287fd",   /* during input */
 	[FAILED] = "#d20f39",   /* wrong password */
