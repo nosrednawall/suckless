@@ -80,13 +80,13 @@ echo "=== Updating xresources theme ==="
 echo ""
 
 # Get colors from .Xresources directly from xrdb
-BG="$(get_color 'background' '#1a1a2e')"
-FG="$(get_color 'foreground' '#d8d8d8')"
+BG="$(get_color 'dwm.titlenormbgcolor' '#1a1a2e')"
+FG="$(get_color 'dwm.titlenormfgcolor' '#d8d8d8')"
 
 # Use colorX for different urgencies
-COLOR1="$(get_color 'color1' '#ff77ff')"  # Pink - Critical
-COLOR2="$(get_color 'color2' '#9c64e8')"  # Purple - Normal
-COLOR4="$(get_color 'color4' '#ff5a8f')"  # Pink/Red - Low
+COLOR1="$(get_color 'dwm.tag5' '#ff77ff')"  # Pink - Critical
+COLOR2="$(get_color 'dwm.tag2' '#9c64e8')"  # Purple - Normal
+COLOR4="$(get_color 'dwm.tag3' '#ff5a8f')"  # Pink/Red - Low
 
 # Also try to get dwm colors as fallback
 DWM_SEL="$(get_color 'dwm.selfgcolor' '')"

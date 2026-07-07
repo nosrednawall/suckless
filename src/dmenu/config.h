@@ -117,10 +117,10 @@ char *colors[][2] = {
 	#endif // EMOJI_HIGHLIGHT_PATCH
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
-static unsigned int lines      = 0;
+static unsigned int lines      = 15;
 #if GRID_PATCH
 /* -g option; if nonzero, dmenu uses a grid comprised of columns and lines */
-static unsigned int columns    = 0;
+static unsigned int columns    = 3;
 #endif // GRID_PATCH
 #if LINE_HEIGHT_PATCH
 static unsigned int lineheight = 0;         /* -h option; minimum height of a menu line     */
