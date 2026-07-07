@@ -14,7 +14,7 @@
  * Extrapolated from https://github.com/khuedoan/slock
  * https://github.com/khuedoan/slock/commit/5e7a95b50fd72efcf2a40d487278749a17cbb146
  */
-#define ALPHA_PATCH 0
+#define ALPHA_PATCH 1
 
 /* This patch allows for a command to be executed after a specified time of inactivity.
  * https://tools.suckless.org/slock/patches/auto-timeout/
@@ -64,7 +64,7 @@
  * and don't want to spoil the detection of failed unlocking attempts.
  * https://tools.suckless.org/slock/patches/control-clear/
  */
-#define CONTROLCLEAR_PATCH 0
+#define CONTROLCLEAR_PATCH 1
 
 /* This patch interacts with the Display Power Signaling and automatically shuts down
  * the monitor after a configurable amount of seconds.
@@ -124,7 +124,7 @@
 /* This patch allows for commands to be executed when the user enters special passwords.
  * https://tools.suckless.org/slock/patches/secret-password/
  */
-#define SECRET_PASSWORD_PATCH 0
+#define SECRET_PASSWORD_PATCH 1
 
 /* Adds key commands that are commonly used in terminal applications (in particular the
  * login prompt) to slock.
@@ -142,4 +142,4 @@
 /* This patch adds the ability to get colors via Xresources.
  * https://tools.suckless.org/slock/patches/xresources/
  */
-#define XRESOURCES_PATCH 0
+#define XRESOURCES_PATCH 1

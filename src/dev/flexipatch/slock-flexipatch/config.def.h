@@ -20,6 +20,7 @@ static const char *colorname[NUMCOLS] = {
 	#endif // KEYPRESS_FEEDBACK_PATCH
 };
 
+
 #if MESSAGE_PATCH || COLOR_MESSAGE_PATCH
 /* default message */
 static const char * message = "Suckless: Software that sucks less.";

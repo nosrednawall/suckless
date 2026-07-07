@@ -150,6 +150,13 @@ load_theme() {
     ltsymbolfgcolor=$(get_theme_value "$theme_name" "ltsymbolfgcolor")
     ltsymbolbgcolor=$(get_theme_value "$theme_name" "ltsymbolbgcolor")
 
+    # Símbolo do Layout
+    slock_locked=$(get_theme_value "$theme_name" "locked")
+    slock_input=$(get_theme_value "$theme_name" "input")
+    slock_failed=$(get_theme_value "$theme_name" "failed")
+    slock_capslock=$(get_theme_value "$theme_name" "capslock")
+    slock_blocks=$(get_theme_value "$theme_name" "blocks")
+
     # Fallbacks para cores não definidas
     [ -z "$normfgcolor" ] && normfgcolor="$COLOR_TEXT"
     [ -z "$normbgcolor" ] && normbgcolor="$COLOR_BACKGROUND"
@@ -319,28 +326,36 @@ generate_xresources() {
 ! ==========================================
 
 ! Cores base
-*background: $COLOR_BACKGROUND
-*background2: $COLOR_BACKGROUND2
-*foreground: $COLOR_TEXT
+st.background: $COLOR_BACKGROUND
+st.foreground: $COLOR_TEXT
 
 ! Cores principais (1-16)
-*color0: $COLOR_BACKGROUND
-*color1: $COLOR_1
-*color2: $COLOR_2
-*color3: $COLOR_3
-*color4: $COLOR_4
-*color5: $COLOR_5
-*color6: $COLOR_6
-*color7: $COLOR_TEXT
-*color8: $COLOR_BACKGROUND2
-*color9: $COLOR_9
-*color10: $COLOR_10
-*color11: $COLOR_11
-*color12: $COLOR_12
-*color13: $COLOR_13
-*color14: $COLOR_14
-*color15: $COLOR_15
-*color16: $COLOR_16
+st.color0: $COLOR_BACKGROUND
+st.color1: $COLOR_1
+st.color2: $COLOR_2
+st.color3: $COLOR_3
+st.color4: $COLOR_4
+st.color5: $COLOR_5
+st.color6: $COLOR_6
+st.color7: $COLOR_TEXT
+st.color8: $COLOR_BACKGROUND2
+st.color9: $COLOR_9
+st.color10: $COLOR_10
+st.color11: $COLOR_11
+st.color12: $COLOR_12
+st.color13: $COLOR_13
+st.color14: $COLOR_14
+st.color15: $COLOR_15
+st.color16: $COLOR_16
+
+st.font: Iosevka Term:pixelsize=18:antialias=true:autohint=true:style=Regular
+
+! Configurações adicionais do ST
+st.borderpx: 2
+st.cwscale: 1.0
+st.chscale: 1.0
+st.alpha: 0.95
+st.alphaUnfocused: 0.85
 
 ! ==========================================
 ! CORES COMPLETAS DO DWM
@@ -414,6 +429,25 @@ dwm.tag6: $COLOR_6
 dwm.tag7: $COLOR_7
 dwm.tag8: $COLOR_8
 dwm.tag9: $COLOR_9
+
+! ==========================================
+! CORES COMPLETAS DO DMENU
+! ==========================================
+dmenu.font          : Caskaydia Mono Nerd Font:size=14:style=Regular:antialias=true:pixelsize=15
+dmenu.background    : $COLOR_BACKGROUND
+dmenu.foreground    : $COLOR_TEXT
+dmenu.selbackground : $tagsselbgcolor
+dmenu.selforeground : $tagsselfgcolor
+
+! ==========================================
+! CORES COMPLETAS DO SLOCK
+! ==========================================
+slock.locked  : $slock_locked
+slock.input   : $slock_input
+slock.failed  : $slock_failed
+slock.capslock: $slock_capslock
+slock.blocks  : $slock_blocks
+
 EOF
 
     check_error "Falha ao gerar .Xresources" $LINENO
@@ -621,6 +655,11 @@ main() {
         -h int:value:100 \
         -i /usr/share/icons/ePapirus/16x16/status/package-install.svg 2>/dev/null
 
+    # Atualiza todos os blocks do dwmblocks
+    kill -10 $(pidof dwmblocks)
+
+    # atualiza as cores do st
+    killall -USR1 st
     debug_log "✅ Script finalizado com sucesso!"
     debug_log "=========================================="
 }

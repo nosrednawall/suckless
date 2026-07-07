@@ -10,7 +10,7 @@
 #include "sixel.h"
 #include "sixel_hls.h"
 
-#define SIXEL_RGB(r, g, b) ((255u << 24) + ((r) << 16) + ((g) << 8) +  (b))
+#define SIXEL_RGB(r, g, b) ((255 << 24) + ((r) << 16) + ((g) << 8) +  (b))
 #define SIXEL_PALVAL(n,a,m) (((n) * (a) + ((m) / 2)) / (m))
 #define SIXEL_XRGB(r,g,b) SIXEL_RGB(SIXEL_PALVAL(r, 255, 100), SIXEL_PALVAL(g, 255, 100), SIXEL_PALVAL(b, 255, 100))
 
@@ -34,10 +34,13 @@ static sixel_color_t const sixel_default_color_table[] = {
 };
 
 void
-scroll_images(int n)
-{
+scroll_images(int n) {
 	ImageList *im, *next;
-	int top = tisaltscr() ? 0 : term.scr - histsize;
+	#if SCROLLBACK_PATCH || REFLOW_PATCH
+	int top = tisaltscr() ? 0 : term.scr - HISTSIZE;
+	#else
+	int top = 0;
+	#endif // SCROLLBACK_PATCH
 
 	for (im = term.images; im; im = next) {
 		next = im->next;

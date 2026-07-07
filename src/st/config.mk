@@ -14,28 +14,26 @@ X11LIB = /usr/X11R6/lib
 
 PKG_CONFIG = pkg-config
 
-# Required for transparency support
-XRENDER = `$(PKG_CONFIG) --libs xrender`
+# Uncomment this for the alpha patch / ALPHA_PATCH
+#XRENDER = `$(PKG_CONFIG) --libs xrender`
 
-# Required for themed cursor support
-XCURSOR = `$(PKG_CONFIG) --libs xcursor`
+# Uncomment this for the themed cursor patch / THEMED_CURSOR_PATCH
+#XCURSOR = `$(PKG_CONFIG) --libs xcursor`
 
-# Required for sixel ligatures support
-LIGATURES_C = hb.c
-LIGATURES_H = hb.h
-LIGATURES_INC = `$(PKG_CONFIG) --cflags harfbuzz`
-LIGATURES_LIBS = `$(PKG_CONFIG) --libs harfbuzz`
+# Uncomment the lines below for the ligatures patch / LIGATURES_PATCH
+#LIGATURES_C = hb.c
+#LIGATURES_H = hb.h
+#LIGATURES_INC = `$(PKG_CONFIG) --cflags harfbuzz`
+#LIGATURES_LIBS = `$(PKG_CONFIG) --libs harfbuzz`
 
-# Required for sixel support
-SIXEL_C = sixel.c sixel_hls.c
-SIXEL_LIBS = `$(PKG_CONFIG) --libs imlib2`
-
-CONFIG = `$(PKG_CONFIG) --libs libconfig`
+# Uncomment this for the SIXEL patch / SIXEL_PATCH
+#SIXEL_C = sixel.c sixel_hls.c
+#SIXEL_LIBS = `$(PKG_CONFIG) --libs imlib2`
 
 # Uncomment for the netwmicon patch / NETWMICON_PATCH
-NETWMICON_LIBS = `$(PKG_CONFIG) --libs gdlib`
+#NETWMICON_LIBS = `$(PKG_CONFIG) --libs gdlib`
 
-# includes and libs
+# includes and libs, uncomment harfbuzz for the ligatures patch
 INCS = -I$(X11INC) \
        `$(PKG_CONFIG) --cflags fontconfig` \
        `$(PKG_CONFIG) --cflags freetype2` \
@@ -44,7 +42,7 @@ LIBS = -L$(X11LIB) -lm -lX11 -lutil -lXft ${SIXEL_LIBS} ${XRENDER} ${XCURSOR}\
        `$(PKG_CONFIG) --libs fontconfig` \
        `$(PKG_CONFIG) --libs freetype2` \
        $(LIGATURES_LIBS) \
-       $(CONFIG)
+       $(NETWMICON_LIBS)
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -DICON=\"$(ICONPREFIX)/$(ICONNAME)\" -D_XOPEN_SOURCE=600

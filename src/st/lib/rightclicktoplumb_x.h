@@ -1,1 +1,0 @@
-void plumb(const Arg *);
