@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 tempCpu=$(sensors | awk '/edge/ {print$2}' | sed 's/+//')
 #usageCpu=$(top -bn1 | grep load | awk '{printf "%.2f%%\t\t\n", $(NF-2)}')

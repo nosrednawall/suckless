@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 status_wireguard_casa=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
 if [ "$status_wireguard_casa" = "1" ]; then

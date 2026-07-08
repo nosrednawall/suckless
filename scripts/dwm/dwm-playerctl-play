@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 source ~/.cache/playerctl_selecionado
 
 # Se o player estiver tocando, aplica o play-pause, caso contrario

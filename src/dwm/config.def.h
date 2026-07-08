@@ -2,7 +2,7 @@
 
 /* Helper macros for spawning commands */
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/usr/bin/env", "bash", "-c", cmd, NULL } }
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */
 #define STATUSBAR "dwmblocks"

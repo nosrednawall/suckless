@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 diretorio="$HOME/.config/suckless/assets/audio/"
 

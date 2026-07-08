@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # dwm-tabs - Tab management for dwm (adapted from bspwm-tabs)
 
 TABBED="$HOME/.config/suckless/tabbed/tabbed"

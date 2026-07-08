@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 layout=$(setxkbmap -query | grep layout | awk '{print$2}')
 layout_atual="^c#2aa198^󰌌 ^c#93a1a1^$(setxkbmap -query | grep layout | awk '{print$2}')"

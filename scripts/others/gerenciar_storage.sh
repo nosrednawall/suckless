@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Configurações
 if [ "$1" = "adicionar" ]; then

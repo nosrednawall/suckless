@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###### Observação 2025-07-19
 ## Dá um erro bem bizzaro quando abro 2 vpns, no bloco ele para de renderizar as cores, e fica colocando os caracteres sem renderização

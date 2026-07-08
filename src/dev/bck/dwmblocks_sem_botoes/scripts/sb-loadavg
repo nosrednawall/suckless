@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 tempCpu=$(sensors | awk '/edge/ {print$2}' | sed 's/+//')
 

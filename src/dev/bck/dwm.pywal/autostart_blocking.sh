@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # para a nvidia
 xrandr --setprovideroutputsource modesetting NVIDIA-0

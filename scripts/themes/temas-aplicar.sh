@@ -157,6 +157,29 @@ load_theme() {
     slock_capslock=$(get_theme_value "$theme_name" "capslock")
     slock_blocks=$(get_theme_value "$theme_name" "blocks")
 
+    # st theme
+   ST_COLOR_0=$(get_theme_value  "$theme_name" "st_color0")
+   ST_COLOR_1=$(get_theme_value  "$theme_name" "st_color1")
+   ST_COLOR_2=$(get_theme_value  "$theme_name" "st_color2")
+   ST_COLOR_3=$(get_theme_value  "$theme_name" "st_color3")
+   ST_COLOR_4=$(get_theme_value  "$theme_name" "st_color4")
+   ST_COLOR_5=$(get_theme_value  "$theme_name" "st_color5")
+   ST_COLOR_6=$(get_theme_value  "$theme_name" "st_color6")
+   ST_COLOR_7=$(get_theme_value  "$theme_name" "st_color7")
+   ST_COLOR_8=$(get_theme_value  "$theme_name" "st_color8")
+   ST_COLOR_9=$(get_theme_value  "$theme_name" "st_color9")
+   ST_COLOR_10=$(get_theme_value "$theme_name" "st_color10")
+   ST_COLOR_11=$(get_theme_value "$theme_name" "st_color11")
+   ST_COLOR_12=$(get_theme_value "$theme_name" "st_color12")
+   ST_COLOR_13=$(get_theme_value "$theme_name" "st_color13")
+   ST_COLOR_14=$(get_theme_value "$theme_name" "st_color14")
+   ST_COLOR_15=$(get_theme_value "$theme_name" "st_color15")
+
+   ST_DEFAULTFG=$(get_theme_value "$theme_name" "defaultfg")
+   ST_DEFAULTBG=$(get_theme_value "$theme_name" "defaultbg")
+   ST_DEFAULTCS=$(get_theme_value "$theme_name" "defaultcs")
+   ST_DEFAULTRCS=$(get_theme_value "$theme_name" "defaultrcs")
+
     # Fallbacks para cores não definidas
     [ -z "$normfgcolor" ] && normfgcolor="$COLOR_TEXT"
     [ -z "$normbgcolor" ] && normbgcolor="$COLOR_BACKGROUND"
@@ -326,27 +349,54 @@ generate_xresources() {
 ! ==========================================
 
 ! Cores base
+background: $COLOR_BACKGROUND
+foreground: $COLOR_TEXT
+
+! Cores principais (1-16)
+*color1:  $COLOR_1
+*color2:  $COLOR_2
+*color3:  $COLOR_3
+*color4:  $COLOR_4
+*color5:  $COLOR_5
+*color6:  $COLOR_6
+*color7:  $COLOR_7
+*color8:  $COLOR_8
+*color9:  $COLOR_9
+*color10: $COLOR_10
+*color11: $COLOR_11
+*color12: $COLOR_12
+*color13: $COLOR_13
+*color14: $COLOR_14
+*color15: $COLOR_15
+*color16: $COLOR_16
+
+! ==========================================
+! CORES COMPLETAS DO ST
+! ==========================================
+
+
+! Cores base
 st.background: $COLOR_BACKGROUND
 st.foreground: $COLOR_TEXT
 
-! Cores principais (1-16)
-st.color0: $COLOR_BACKGROUND
-st.color1: $COLOR_1
-st.color2: $COLOR_2
-st.color3: $COLOR_3
-st.color4: $COLOR_4
-st.color5: $COLOR_5
-st.color6: $COLOR_6
-st.color7: $COLOR_TEXT
-st.color8: $COLOR_BACKGROUND2
-st.color9: $COLOR_9
-st.color10: $COLOR_10
-st.color11: $COLOR_11
-st.color12: $COLOR_12
-st.color13: $COLOR_13
-st.color14: $COLOR_14
-st.color15: $COLOR_15
-st.color16: $COLOR_16
+! Cores principais (0-15)
+st.color0:  $ST_COLOR_0
+st.color1:  $ST_COLOR_1
+st.color2:  $ST_COLOR_2
+st.color3:  $ST_COLOR_3
+st.color4:  $ST_COLOR_4
+st.color5:  $ST_COLOR_5
+st.color6:  $ST_COLOR_6
+st.color7:  $ST_COLOR_7
+st.color8:  $ST_COLOR_8
+st.color9:  $ST_COLOR_9
+st.color10: $ST_COLOR_10
+st.color11: $ST_COLOR_11
+st.color12: $ST_COLOR_12
+st.color13: $ST_COLOR_13
+st.color14: $ST_COLOR_14
+st.color15: $ST_COLOR_15
+
 
 st.font: Iosevka Term:pixelsize=18:antialias=true:autohint=true:style=Regular
 
@@ -356,6 +406,12 @@ st.cwscale: 1.0
 st.chscale: 1.0
 st.alpha: 0.95
 st.alphaUnfocused: 0.85
+
+st.defaultfg = $ST_DEFAULTFG
+st.defaultbg = $ST_DEFAULTBG
+st.defaultcs = $ST_DEFAULTCS
+st.defaultrcs = $ST_DEFAULTRCS
+
 
 ! ==========================================
 ! CORES COMPLETAS DO DWM

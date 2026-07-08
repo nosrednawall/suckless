@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # mapwacom script
 
 MAPWACOM=$(basename $0)

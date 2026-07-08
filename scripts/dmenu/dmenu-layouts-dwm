@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 layout_master_stack="[]= - Modo tile"
 layout_floating="><> - Modo NULL"

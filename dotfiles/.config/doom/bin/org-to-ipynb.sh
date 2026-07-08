@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ~/.doom.d/bin/org-to-ipynb.sh
 
 if [ $# -eq 0 ]; then

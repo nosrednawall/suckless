@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Display the current time in HH:MM:SS.
 
 day=$(date "+%d")

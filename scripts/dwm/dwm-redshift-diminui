@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -z "$temperatura"  ]; then
     # Obtém a temperatura atual do monitor

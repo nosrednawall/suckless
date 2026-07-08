@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Carrega função para aplicar o tema e o tema de cores
 source ~/.config/suckless/scripts/dwmblocks/sb-carrega-tema-dwmblocks

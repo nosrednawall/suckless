@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 data=$(date +%Y-%m-%d_%H:%M:%S)
 arquivo="/Imagens/Screenshoots/"

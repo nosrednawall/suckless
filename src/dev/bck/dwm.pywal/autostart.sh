@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Carrega configuracoes do tema
 source $HOME/.theme_selected

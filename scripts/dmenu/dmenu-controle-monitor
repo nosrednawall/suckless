@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Configurações
 CONFIG_DIR="$HOME/.dotfiles"

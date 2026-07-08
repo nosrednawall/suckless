@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 status=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
 

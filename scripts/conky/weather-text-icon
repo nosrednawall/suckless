@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # v2.0
 # I create this scripts to show weather icon with text icon

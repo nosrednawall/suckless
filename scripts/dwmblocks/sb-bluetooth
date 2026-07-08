@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Carrega informacoes do modo de operacao
 arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"

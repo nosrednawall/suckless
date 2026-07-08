@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Identifica os monitores do equipamento
 HDMI_DEVICE=$(xrandr -q | grep "HDMI" | awk '{print $1}')

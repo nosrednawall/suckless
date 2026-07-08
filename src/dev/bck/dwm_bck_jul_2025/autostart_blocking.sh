@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Carrega as configurações do Xresources
 xrdb ~/.Xresources

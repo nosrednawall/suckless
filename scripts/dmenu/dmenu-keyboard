@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 br_abnt2="󰌌 br ABNT2"
 us_intl="󰌌 us Internacional"

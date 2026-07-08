@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Carrega as cores
 arquivo_cores="$HOME/.theme_selected"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Obtém o layout e a variante atual
 layout_atual=$(setxkbmap -query | awk '/layout/ {print $2}')

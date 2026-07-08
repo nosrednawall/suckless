@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Verifica o número de pacotes com atualizações disponíveis
 updates=$(aptitude search "~U" | wc -l)

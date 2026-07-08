@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Verifica se o `slop` está instalado
 if ! command -v slop &> /dev/null; then

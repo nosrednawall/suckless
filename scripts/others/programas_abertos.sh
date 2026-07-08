@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Obtém a lista de processos e agrupa os percentuais de memória para processos com o mesmo nome
 processes=$(ps -eo comm,pmem --sort=-pmem | awk '

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Lê o nome da distribuição a partir do arquivo /etc/os-release
 if [ -f /etc/os-release ]; then

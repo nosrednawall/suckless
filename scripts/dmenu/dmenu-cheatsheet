@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PASTA="$HOME/git/cheatsheets"
 # Lista apenas os nomes dos arquivos

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep "sim" -ic)
 muteMic=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep 'sim' -ic)

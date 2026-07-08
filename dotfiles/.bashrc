@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Enable the subsequent settings only in interactive sessions
 case $- in
   *i*) ;;
@@ -23,7 +25,10 @@ CLEAN_PATH="$HOME/.config/suckless/scripts/dmenu:$CLEAN_PATH"
 CLEAN_PATH="$HOME/.config/suckless/scripts/dwm:$CLEAN_PATH"
 CLEAN_PATH="$HOME/.config/suckless/scripts/dwmblocks:$CLEAN_PATH"
 CLEAN_PATH="$HOME/.config/suckless/scripts/others:$CLEAN_PATH"
-
+CLEAN_PATH="$HOME/.config/suckless/scripts/conky:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.config/suckless/scripts/potato-c:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.config/suckless/scripts/themes:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.config/suckless/scripts/slock:$CLEAN_PATH"
 
 # FINALMENTE: adicionar conda no FINAL
 CLEAN_PATH="$CLEAN_PATH:$HOME/miniconda3/condabin"

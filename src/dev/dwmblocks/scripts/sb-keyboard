@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 case $BUTTON in
 	1) bash ~/.dotfiles/.local/bin/dwm/altera-layout-teclado ;;

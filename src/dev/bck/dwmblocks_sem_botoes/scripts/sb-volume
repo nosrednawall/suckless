@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Display volume levels.
 
 muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep "sim" -ic)

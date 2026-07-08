@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Configurações
 CONFIG_FILE="$HOME/.config/suckless/scripts/themes/temas.conf"

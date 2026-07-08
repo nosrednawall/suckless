@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Helper functions
 
 # Escape the argument into a valid jq string literal (with quotes included)

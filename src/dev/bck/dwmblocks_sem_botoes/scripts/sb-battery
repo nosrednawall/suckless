@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Coloque aqui o local que identifica sem seu dispositivo está carregando ou descarregando
 # IMPORTANTE ! A saída deve ser em binário, caso contrário resultará em erro!

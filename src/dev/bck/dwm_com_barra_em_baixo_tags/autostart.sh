@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Carrega configuracoes do tema
 source /home/anderson/.theme_selected

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Diretório onde estão seus scripts
 SCRIPTS_DIR="$HOME/.config/suckless/scripts/dmenu/"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Função para ler um recurso do Xresources
 get_xres_value() {

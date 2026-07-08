@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 status=$(cat /sys/class/net/enp4s0/operstate | grep "up" -ic)
 status_on="BROADCAST,MULTICAST,UP,LOWER_UP"

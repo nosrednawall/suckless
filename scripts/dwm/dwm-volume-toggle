@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 pactl set-sink-mute @DEFAULT_SINK@ toggle
 is_mute=$(pactl get-sink-mute @DEFAULT_SINK@ | grep 'sim' -ic)

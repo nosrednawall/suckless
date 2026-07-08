@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Finaliza qualquer instância do mpv em execução
 killall mpv 2>/dev/null

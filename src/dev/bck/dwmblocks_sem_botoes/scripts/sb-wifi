@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 status=$(cat /sys/class/net/wlp5s0/operstate | grep "up" -ic)
 

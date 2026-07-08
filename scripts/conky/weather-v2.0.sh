@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # v2.0 Closebox73
 # This script is to get weather data from openweathermap.com in the form of a json file

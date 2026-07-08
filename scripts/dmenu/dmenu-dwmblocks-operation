@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Configurações
 CACHE_DIR="$HOME/.cache"

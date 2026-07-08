@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 state=$(mpc status %state%)
 if [ "$state" == "paused"  ]; then

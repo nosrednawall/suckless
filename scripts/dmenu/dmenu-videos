@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Solicita o termo de pesquisa ao usuário
 search_term=$(echo "" | dmenu -p "Digite o termo de pesquisa para o YouTube:")
