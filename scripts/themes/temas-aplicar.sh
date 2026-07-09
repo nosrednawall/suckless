@@ -180,6 +180,20 @@ load_theme() {
    ST_DEFAULTCS=$(get_theme_value "$theme_name" "defaultcs")
    ST_DEFAULTRCS=$(get_theme_value "$theme_name" "defaultrcs")
 
+   # dmenu
+   dmenu_background=$(get_theme_value "$theme_name" "dmenu_background")
+   dmenu_foreground=$(get_theme_value "$theme_name" "dmenu_foreground")
+   dmenu_selbackground=$(get_theme_value "$theme_name" "dmenu_selbackground")
+   dmenu_selforeground=$(get_theme_value "$theme_name" "dmenu_selforeground")
+   dmenu_outbackground=$(get_theme_value "$theme_name" "dmenu_outbackground")
+   dmenu_outforeground=$(get_theme_value "$theme_name" "dmenu_outforeground")
+   dmenu_bordercolor=$(get_theme_value "$theme_name" "dmenu_bordercolor")
+   dmenu_selhlbackground=$(get_theme_value "$theme_name" "dmenu_selhlbackground")
+   dmenu_selhlforeground=$(get_theme_value "$theme_name" "dmenu_selhlforeground")
+   dmenu_hlbackground=$(get_theme_value "$theme_name" "dmenu_hlbackground")
+   dmenu_hlforeground=$(get_theme_value "$theme_name" "dmenu_hlforeground")
+
+
     # Fallbacks para cores não definidas
     [ -z "$normfgcolor" ] && normfgcolor="$COLOR_TEXT"
     [ -z "$normbgcolor" ] && normbgcolor="$COLOR_BACKGROUND"
@@ -374,7 +388,6 @@ foreground: $COLOR_TEXT
 ! CORES COMPLETAS DO ST
 ! ==========================================
 
-
 ! Cores base
 st.background: $COLOR_BACKGROUND
 st.foreground: $COLOR_TEXT
@@ -397,21 +410,17 @@ st.color13: $ST_COLOR_13
 st.color14: $ST_COLOR_14
 st.color15: $ST_COLOR_15
 
-
-st.font: Iosevka Term:pixelsize=18:antialias=true:autohint=true:style=Regular
-
 ! Configurações adicionais do ST
 st.borderpx: 2
 st.cwscale: 1.0
 st.chscale: 1.0
 st.alpha: 0.95
 st.alphaUnfocused: 0.85
-
-st.defaultfg = $ST_DEFAULTFG
-st.defaultbg = $ST_DEFAULTBG
-st.defaultcs = $ST_DEFAULTCS
-st.defaultrcs = $ST_DEFAULTRCS
-
+st.font: Iosevka Term:pixelsize=18:antialias=true:autohint=true:style=Regular
+st.defaultfg: $ST_DEFAULTFG
+st.defaultbg: $ST_DEFAULTBG
+st.defaultcs: $ST_DEFAULTCS
+st.defaultrcs: $ST_DEFAULTRCS
 
 ! ==========================================
 ! CORES COMPLETAS DO DWM
@@ -489,11 +498,18 @@ dwm.tag9: $COLOR_9
 ! ==========================================
 ! CORES COMPLETAS DO DMENU
 ! ==========================================
-dmenu.font          : Caskaydia Mono Nerd Font:size=14:style=Regular:antialias=true:pixelsize=15
-dmenu.background    : $COLOR_BACKGROUND
-dmenu.foreground    : $COLOR_TEXT
-dmenu.selbackground : $tagsselbgcolor
-dmenu.selforeground : $tagsselfgcolor
+dmenu.font: Caskaydia Mono Nerd Font:size=14:style=Regular:antialias=true:pixelsize=15
+dmenu.background:       $dmenu_background
+dmenu.foreground:       $dmenu_foreground
+dmenu.selbackground:    $dmenu_selbackground
+dmenu.selforeground:    $dmenu_selforeground
+dmenu.outbackground:    $dmenu_outbackground
+dmenu.outforeground:    $dmenu_outforeground
+dmenu.bordercolor:      $dmenu_bordercolor
+dmenu.selhlbackground:  $dmenu_selhlbackground
+dmenu.selhlforeground:  $dmenu_selhlforeground
+dmenu.hlbackground:     $dmenu_hlbackground
+dmenu.hlforeground:     $dmenu_hlforeground
 
 ! ==========================================
 ! CORES COMPLETAS DO SLOCK

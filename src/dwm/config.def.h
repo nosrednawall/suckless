@@ -43,6 +43,12 @@ static const char buttonbar[]            = "  ";
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
 
+static const unsigned int ulinepad = 5;         /* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
+static const unsigned int ulinevoffset = 0;     /* how far above the bottom of the bar the line should appear */
+static const int ulineall = 0;                  /* 1 to show underline on all tags, 0 for just the active ones */
+static const int ulinetop = 0;                  /* 1 to show the underline above the tags, rather than under */
+
 /* Indicators: see patch/bar_indicators.h for options */
 static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype            = INDICATOR_NONE;
@@ -57,7 +63,6 @@ static const char dmenufont[]            = "Caskaydia Mono Nerd Font:size=11:sty
 
 /* Tema - Configurações de cores */
 #include "themes/nord_dark.h"
-
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */

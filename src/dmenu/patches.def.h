@@ -80,13 +80,13 @@
  * G columns * L lines grid.
  * https://tools.suckless.org/dmenu/patches/grid/
  */
-#define GRID_PATCH 0
+#define GRID_PATCH 1
 
 /* This patch adds the ability to move left and right through a grid.
  * This patch depends on the grid patch.
  * https://tools.suckless.org/dmenu/patches/gridnav/
  */
-#define GRIDNAV_PATCH 0
+#define GRIDNAV_PATCH 1
 
 /* This patch highlights the individual characters of matched text for each dmenu list entry.
  * The fuzzy highlight patch takes precedence over this patch.
@@ -312,7 +312,7 @@
  * is too long or there are too many options to be shown in dmenu in one line, to be defined.
  * https://tools.suckless.org/dmenu/patches/symbols/
  */
-#define SYMBOLS_PATCH 0
+#define SYMBOLS_PATCH 1
 
 /* With this patch dmenu will split input lines at first tab character and only display first
  * part, but it will perform matching on and output full lines as usual.
@@ -322,12 +322,12 @@
  * the underlying script.
  * https://tools.suckless.org/dmenu/patches/tsv/
  */
-#define TSV_PATCH 0
+#define TSV_PATCH 1
 
 /* This patch prevents dmenu from indenting items at the same level as the prompt length.
  * https://tools.suckless.org/dmenu/patches/vertfull/
  */
-#define VERTFULL_PATCH 0
+#define VERTFULL_PATCH 1
 
 /* Adds extended window manager hints such as _NET_WM_WINDOW_TYPE and _NET_WM_WINDOW_TYPE_DOCK.
  * https://github.com/Baitinq/dmenu/blob/master/patches/dmenu-wm_type.diff
