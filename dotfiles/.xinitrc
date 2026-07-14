@@ -3,6 +3,8 @@
 # Carrega configuracoes do tema
 source /home/anderson/.theme_selected
 
+export QT_QPA_PLATFORMTHEME=gtk2
+
 # Executa o script para verificar se o segundo monitor está ativo
 if [ ! -f ~/.monitor_config.sh ]
 then

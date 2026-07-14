@@ -16,11 +16,7 @@ list_themes_by_mode() {
 
 # Gera lista de temas disponíveis
 generate_theme_list() {
-    echo "Pywal:"
-    echo "  Wallpaper Atual Dark"
-    echo "  Wallpaper Aleatório Dark"
-    echo "  Wallpaper Atual Light"
-    echo "  Wallpaper Aleatório Light"
+    echo "Pywal"
     echo ""
     echo "Dark :"
     list_themes_by_mode "Dark"

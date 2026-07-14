@@ -255,10 +255,10 @@ apply_pywal() {
 
     if [ -n "$wallpaper" ]; then
         debug_log "   Wallpaper: $wallpaper"
-        wal -i "$wallpaper" -n
+        walrs -i "$wallpaper"
     else
         debug_log "   Wallpaper: random"
-        wal -i "$HOME/.wallpapers/random" -n
+        walrs -i "$HOME/.wallpapers/random"
     fi
     check_error "Falha ao executar pywal" $LINENO
 
@@ -277,27 +277,28 @@ apply_pywal() {
     WALLPAPER_LIGHTDM=$(basename "$(jq -r '.wallpaper' "$colors_json")")
 
     # Carrega cores do pywal
-    COLOR_BACKGROUND=$(jq -r '.colors.color0' "$colors_json")
-    COLOR_BACKGROUND2=$(jq -r '.colors.color0' "$colors_json")
-    COLOR_TEXT=$(jq -r '.colors.color7' "$colors_json")
+    COLOR_BACKGROUND=$(jq -r '.special.background' "$colors_json")
+    COLOR_BACKGROUND2=$(jq -r '.special.background' "$colors_json")
+    COLOR_TEXT=$(jq -r '.special.foreground' "$colors_json")
+    COLOR_CURSOR=$(jq -r '.special.cursor' "$colors_json")
 
-    COLOR_1=$(jq -r '.colors.color1' "$colors_json")
-    COLOR_2=$(jq -r '.colors.color2' "$colors_json")
-    COLOR_3=$(jq -r '.colors.color3' "$colors_json")
-    COLOR_4=$(jq -r '.colors.color4' "$colors_json")
-    COLOR_5=$(jq -r '.colors.color5' "$colors_json")
-    COLOR_6=$(jq -r '.colors.color6' "$colors_json")
-    COLOR_7=$(jq -r '.colors.color8' "$colors_json")
-    COLOR_8=$(jq -r '.colors.color9' "$colors_json")
+    COLOR_1=$(jq -r '.colors.color0' "$colors_json")
+    COLOR_2=$(jq -r '.colors.color1' "$colors_json")
+    COLOR_3=$(jq -r '.colors.color2' "$colors_json")
+    COLOR_4=$(jq -r '.colors.color3' "$colors_json")
+    COLOR_5=$(jq -r '.colors.color4' "$colors_json")
+    COLOR_6=$(jq -r '.colors.color5' "$colors_json")
+    COLOR_7=$(jq -r '.colors.color6' "$colors_json")
+    COLOR_8=$(jq -r '.colors.color7' "$colors_json")
 
-    COLOR_9=$(jq -r '.colors.color1' "$colors_json")
-    COLOR_10=$(jq -r '.colors.color2' "$colors_json")
-    COLOR_11=$(jq -r '.colors.color3' "$colors_json")
-    COLOR_12=$(jq -r '.colors.color4' "$colors_json")
-    COLOR_13=$(jq -r '.colors.color5' "$colors_json")
-    COLOR_14=$(jq -r '.colors.color6' "$colors_json")
-    COLOR_15=$(jq -r '.colors.color8' "$colors_json")
-    COLOR_16=$(jq -r '.colors.color9' "$colors_json")
+    COLOR_9=$(jq -r '.colors.color8' "$colors_json")
+    COLOR_10=$(jq -r '.colors.color9' "$colors_json")
+    COLOR_11=$(jq -r '.colors.color10' "$colors_json")
+    COLOR_12=$(jq -r '.colors.color11' "$colors_json")
+    COLOR_13=$(jq -r '.colors.color12' "$colors_json")
+    COLOR_14=$(jq -r '.colors.color13' "$colors_json")
+    COLOR_15=$(jq -r '.colors.color14' "$colors_json")
+    COLOR_16=$(jq -r '.colors.color15' "$colors_json")
 
     # Mapeia cores do pywal para todas as variáveis do dwm
     normfgcolor="$COLOR_TEXT"
@@ -347,6 +348,52 @@ apply_pywal() {
 
     ltsymbolfgcolor="$COLOR_2"
     ltsymbolbgcolor="$COLOR_BACKGROUND"
+
+
+    # Símbolo do Layout
+    slock_locked="$COLOR_BACKGROUND"
+    slock_input="$COLOR_1"
+    slock_failed="$COLOR_5"
+    slock_capslock="$COLOR_7"
+    slock_blocks="$COLOR_14"
+
+    # st theme
+   ST_COLOR_0="$COLOR_1"
+   ST_COLOR_1="$COLOR_2"
+   ST_COLOR_2="$COLOR_3"
+   ST_COLOR_3="$COLOR_4"
+   ST_COLOR_4="$COLOR_5"
+   ST_COLOR_5="$COLOR_6"
+   ST_COLOR_6="$COLOR_7"
+   ST_COLOR_7="$COLOR_8"
+   ST_COLOR_8="$COLOR_9"
+   ST_COLOR_9="$COLOR_10"
+   ST_COLOR_10="$COLOR_11"
+   ST_COLOR_11="$COLOR_12"
+   ST_COLOR_12="$COLOR_13"
+   ST_COLOR_13="$COLOR_14"
+   ST_COLOR_14="$COLOR_15"
+   ST_COLOR_15="$COLOR_16"
+
+   ST_DEFAULTFG=257
+   ST_DEFAULTBG=0
+   ST_DEFAULTCS=258
+   ST_DEFAULTRCS=258
+
+   # dmenu
+   dmenu_background="$COLOR_BACKGROUND"
+   dmenu_foreground="$COLOR_TEXT"
+   dmenu_selbackground="$COLOR_2"
+   dmenu_selforeground="$COLOR_TEXT"
+   dmenu_outbackground="$COLOR_7"
+   dmenu_outforeground="$COLOR_TEXT"
+   dmenu_bordercolor="$COLOR_BACKGROUND"
+   dmenu_selhlbackground="$COLOR_BACKGROUND"
+   dmenu_selhlforeground="$COLOR_TEXT"
+   dmenu_hlbackground="$COLOR_BACKGROUND"
+   dmenu_hlforeground="$COLOR_TEXT"
+
+
 
     debug_log "✅ Pywal aplicado"
 }
@@ -577,6 +624,14 @@ apply_gtk_settings() {
         sed -i "s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=$GTK_PREFER_DARK_MODE/" ~/.config/gtk-3.0/settings.ini
     fi
 
+    if [ -f ~/.config/gtk-4.0/settings.ini ]; then
+        debug_log "   Atualizando GTK4"
+        sed -i "s/^gtk-theme-name=.*/gtk-theme-name=$THEME_GTK/" ~/.config/gtk-4.0/settings.ini
+        sed -i "s/^gtk-icon-theme-name=.*/gtk-icon-theme-name=$THEME_ICON/" ~/.config/gtk-4.0/settings.ini
+        sed -i "s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=$GTK_PREFER_DARK_MODE/" ~/.config/gtk-4.0/settings.ini
+    fi
+
+
     debug_log "✅ GTK configurado"
 }
 
@@ -661,32 +716,13 @@ main() {
     debug_log "   Choice limpo: '$choice'"
 
     # Verifica se é tema pywal
-    if [[ "$choice" == "Wallpaper"* ]] || [[ "$choice" == "pywal" ]]; then
+    if [[ "$choice" == "Wallpaper"* ]] || [[ "$choice" == "Pywal" ]]; then
         debug_log "🎨 Modo pywal detectado"
         pywal_flag="1"
-        case "$choice" in
-            "Wallpaper Aleatório Dark"|"pywal")
-                apply_pywal "dark"
-                ;;
-            "Wallpaper Atual Dark")
-                local current_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg 2>/dev/null)
-                debug_log "   Wallpaper atual: $current_wallpaper"
-                apply_pywal "dark" "$current_wallpaper"
-                ;;
-            "Wallpaper Aleatório Light")
-                apply_pywal "light"
-                ;;
-            "Wallpaper Atual Light")
-                local current_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg 2>/dev/null)
-                debug_log "   Wallpaper atual: $current_wallpaper"
-                apply_pywal "light" "$current_wallpaper"
-                ;;
-            *)
-                debug_log "❌ Opção pywal inválida: $choice"
-                echo "Opção pywal inválida: $choice"
-                exit 1
-                ;;
-        esac
+        local current_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg 2>/dev/null)
+        debug_log "   Wallpaper atual: $current_wallpaper"
+        apply_pywal "dark" "$current_wallpaper"
+
         check_error "Falha ao aplicar pywal" $LINENO
     else
         debug_log "📂 Modo tema normal"

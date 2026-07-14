@@ -180,7 +180,7 @@ static const Rule rules[] = {
 
 	// Scratchpads
 	RULE(.class = "spterm",                              .tags = SPTAG(0), .isfloating = 1)
-	RULE(.class = "bitwarden",                           .tags = SPTAG(1), .isfloating = 1)
+	RULE(.class = "Bitwarden", .instance = "bitwarden", .role = "browser-window",                          .tags = SPTAG(1), .isfloating = 1)
 	RULE(.class = "spnmtui" ,                            .tags = SPTAG(2), .isfloating = 1)
 	RULE(.class = "sprmpc",                              .tags = SPTAG(3), .isfloating = 1)
 	RULE(.class = "FFPWA-01K04YSNWVWAC0G6TD61VN9ZPV",    .tags = SPTAG(4), .isfloating = 1)
