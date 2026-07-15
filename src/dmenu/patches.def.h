@@ -5,7 +5,7 @@
  * when including this patch.
  * https://github.com/bakkeby/patches/blob/master/dmenu/dmenu-alpha-5.0_20210725_523aa08.diff
  */
-#define ALPHA_PATCH 0
+#define ALPHA_PATCH 1
 
 /* This adds padding for dmenu in similar fashion to the similarly named patch for dwm. The idea
  * is to have dmenu appear on top of the bar when using said patch in dwm.
@@ -327,7 +327,7 @@
 /* This patch prevents dmenu from indenting items at the same level as the prompt length.
  * https://tools.suckless.org/dmenu/patches/vertfull/
  */
-#define VERTFULL_PATCH 1
+#define VERTFULL_PATCH 0
 
 /* Adds extended window manager hints such as _NET_WM_WINDOW_TYPE and _NET_WM_WINDOW_TYPE_DOCK.
  * https://github.com/Baitinq/dmenu/blob/master/patches/dmenu-wm_type.diff

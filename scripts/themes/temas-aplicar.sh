@@ -301,7 +301,7 @@ apply_pywal() {
     COLOR_16=$(jq -r '.colors.color15' "$colors_json")
 
     # Mapeia cores do pywal para todas as variáveis do dwm
-    normfgcolor="$COLOR_TEXT"
+    normfgcolor="$COLOR_12"
     normbgcolor="$COLOR_BACKGROUND"
     normbordercolor="$COLOR_1"
     normfloatcolor="$COLOR_8"
@@ -317,7 +317,7 @@ apply_pywal() {
     titlenormfloatcolor="$COLOR_8"
 
     titleselfgcolor="$COLOR_TEXT"
-    titleselbgcolor="$COLOR_2"
+    titleselbgcolor="$COLOR_BACKGROUND"
     titleselbordercolor="$COLOR_3"
     titleselfloatcolor="$COLOR_4"
 
@@ -327,11 +327,11 @@ apply_pywal() {
     tagsnormfloatcolor="$COLOR_8"
 
     tagsselfgcolor="$COLOR_TEXT"
-    tagsselbgcolor="$COLOR_2"
+    tagsselbgcolor="$COLOR_BACKGROUND"
     tagsselbordercolor="$COLOR_3"
     tagsselfloatcolor="$COLOR_4"
 
-    tagsunusedfgcolor="$COLOR_TEXT"
+    tagsunusedfgcolor="$COLOR_7"
     tagsunusedbgcolor="$COLOR_BACKGROUND"
     tagsunusedbordercolor="$COLOR_1"
     tagsunusedfloatcolor="$COLOR_8"
@@ -346,7 +346,7 @@ apply_pywal() {
     urgbordercolor="$COLOR_3"
     urgfloatcolor="$COLOR_8"
 
-    ltsymbolfgcolor="$COLOR_2"
+    ltsymbolfgcolor="$COLOR_14"
     ltsymbolbgcolor="$COLOR_BACKGROUND"
 
 
@@ -392,8 +392,6 @@ apply_pywal() {
    dmenu_selhlforeground="$COLOR_TEXT"
    dmenu_hlbackground="$COLOR_BACKGROUND"
    dmenu_hlforeground="$COLOR_TEXT"
-
-
 
     debug_log "✅ Pywal aplicado"
 }
@@ -664,6 +662,70 @@ apply_wallpaper() {
     debug_log "✅ Wallpaper aplicado"
 }
 
+select_wallpaper() {
+    # Diretório de wallpapers
+    DIR="$HOME/.wallpapers"
+
+    # Verifica se o diretório existe
+    if [ ! -d "$DIR" ]; then
+        echo "Diretório de wallpapers não encontrado: $DIR"
+        exit 1
+    fi
+
+    # Usa o sxiv para selecionar wallpapers e salva a seleção no arquivo temporário
+    walls=$(sxiv -t -o -r -g 1800x650 "$DIR" | xargs)
+
+    # Verifica se alguma imagem foi selecionada
+    if [ -z "$walls" ]; then
+        echo "Nenhuma imagem selecionada."
+        exit 0
+    fi
+
+    echo "$walls"
+    feh --bg-fill "$walls" &
+    exit 0
+}
+
+next_wallpaper() {
+    local wallpaper_dir="$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}"
+    debug_log "   Procurando em: $wallpaper_dir"
+    local current_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg 2>/dev/null)
+    local saida=0
+
+    debug_log "   Wallpaper atual: $current_wallpaper"
+    if [ -d "$wallpaper_dir" ]; then
+        local wallpapers_list=$(find "$wallpaper_dir" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) 2>/dev/null)
+        local first_wallpaper=$(find "$wallpaper_dir" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) 2>/dev/null | head -n 1)
+        debug_log "   Lista de wallpapers: $wallpapers_list"
+        for wallpaper in $wallpapers_list; do
+
+            if [[ "$saida" == "1" ]]; then
+                debug_log "   Wallpaper Selecionado é: $wallpaper"
+                feh --bg-fill "$wallpaper" &
+                exit 0
+            fi
+
+            # No próximo loop vai apricar o próximo wallpaper
+            if [ -f "$wallpaper" ] && [[ "$wallpaper" == "$current_wallpaper" ]]; then
+                saida=1
+            fi
+        done
+
+        debug_log "   Selecionando o primeiro wallpaper da lista: $first_wallpaper"
+        feh --bg-fill "$first_wallpaper" &
+        exit 0
+    else
+        debug_log "   ⚠️ Diretório não existe: $wallpaper_dir"
+    fi
+    exit 1
+
+}
+
+
+apply_emacs() {
+    sed -i "s|(setq doom-theme .*)|(setq doom-theme '$EMACS_THEME)|" ~/.config/doom/config.el
+}
+
 # Função para reiniciar serviços
 restart_services() {
     debug_log "🔄 Reiniciando serviços"
@@ -716,7 +778,24 @@ main() {
     debug_log "   Choice limpo: '$choice'"
 
     # Verifica se é tema pywal
-    if [[ "$choice" == "Wallpaper"* ]] || [[ "$choice" == "Pywal" ]]; then
+    if [[ "$choice" == "Selecionar"* ]]; then
+        select_wallpaper
+        dunstify "Pronto" "Wallpaper aplicado com sucesso!" \
+        exit 0
+    fi
+    if [[ "$choice" == "Aleatório"* ]]; then
+        pywal_flag="0"
+        source ~/.theme_selected
+        apply_wallpaper
+        dunstify "Pronto" "Wallpaper aplicado com sucesso!" \
+        exit 0
+    fi
+    if [[ "$choice" == "Próximo"* ]]; then
+        source ~/.theme_selected
+        next_wallpaper
+        exit 0
+    fi
+    if [[ "$choice" == "Pywal" ]]; then
         debug_log "🎨 Modo pywal detectado"
         pywal_flag="1"
         local current_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg 2>/dev/null)
@@ -732,6 +811,12 @@ main() {
             exit 1
         fi
     fi
+
+    # Notifica início
+    dunstify "Aplicando tema" "Iniciando aplicação do tema..." \
+        -h int:value:10 \
+        -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
 
     debug_log "📢 Enviando notificação: Configurando $THEME_MODE $COLOR_MODE"
     dunstify "Aplicando tema" "Configurando $THEME_MODE $COLOR_MODE..." \
@@ -750,6 +835,9 @@ main() {
         -h int:value:30 \
         -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg 2>/dev/null
     apply_wallpaper
+
+    # Aplica o novo tema do emacs, para rodar ele tem que usar o MX Doom/Reload
+    apply_emacs
 
     # Reinicia serviços
     debug_log "📢 Enviando notificação: Reiniciando serviços"

@@ -122,17 +122,17 @@ cat > "$THEME_FILE" << EOF
 [urgency_low]
     background = "$BG"
     foreground = "$COLOR4"
-    frame_color = "$COLOR4"
+    frame_color = "$BG"
 
 [urgency_normal]
     background = "$BG"
     foreground = "$FG"
-    frame_color = "$COLOR2"
+    frame_color = "$BG"
 
 [urgency_critical]
     background = "$BG"
     foreground = "$COLOR1"
-    frame_color = "$COLOR1"
+    frame_color = "$BG"
 EOF
 
 echo "✓ Theme file updated: $THEME_FILE"

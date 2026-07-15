@@ -17,10 +17,12 @@ list_themes_by_mode() {
 # Gera lista de temas disponíveis
 generate_theme_list() {
     echo "Pywal"
-    echo ""
+    echo "Wallpaper"
+    echo "  Aleatório"
+    echo "  Selecionar"
+    echo "  Próximo"
     echo "Dark :"
     list_themes_by_mode "Dark"
-    echo ""
     echo "Light :"
     list_themes_by_mode "Light"
 }
@@ -35,11 +37,6 @@ fi
 
 # Remove espaços do início
 chosen_clean=$(echo "$chosen" | sed 's/^[[:space:]]*//')
-
-# Notifica início
-dunstify "Aplicando tema" "Iniciando aplicação do tema..." \
-    -h int:value:10 \
-    -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
 
 # Envia a escolha ao script
 "$TEMA_APPLY_SCRIPT" "$chosen_clean"

@@ -9,7 +9,7 @@ temperatura=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -
 
 ## Variaveis que serão passadas a função
 icone="󰃠"
-cor_forte=$COLOR_1
+cor_forte=$COLOR_2
 cor_fraca=$COLOR_9
 
 ## Antigo método antes dda função
